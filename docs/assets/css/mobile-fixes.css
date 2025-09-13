@@ -30,17 +30,23 @@
     }
     
     .dropdown-menu {
+        position: static !important;
+        display: block !important;
         clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
         opacity: 0;
         transition: clip-path 0.3s ease-out, opacity 0.2s ease-out;
-        background: rgba(45, 55, 72, 0.95); /* Darker background */
-        margin: 0;
-        padding: 0.5rem 0;
+        background: rgba(45, 55, 72, 0.95) !important; /* Darker background */
+        margin: 0 !important;
+        padding: 0;
+        width: 100% !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
     }
     
     .site-menu-item.expanded .dropdown-menu {
         clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
         opacity: 1;
+        padding: 0.5rem 0;
     }
     
     /* Add chevron indicator for dropdowns */
