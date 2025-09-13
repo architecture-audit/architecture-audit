@@ -90,6 +90,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Highlight current page in navigation
     highlightCurrentPage();
+    
+    // Dispatch event for mobile navigation handler
+    document.dispatchEvent(new Event('navigationInjected'));
 });
 
 // Toggle mobile menu

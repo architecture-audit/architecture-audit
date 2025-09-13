@@ -2,6 +2,8 @@
 (function() {
     'use strict';
     
+    let initialized = false;
+    
     // Toggle mobile menu
     window.toggleMobileMenu = function() {
         const menu = document.getElementById('siteMenu');
@@ -12,36 +14,30 @@
     
     // Handle dropdown toggles on mobile
     function initMobileDropdowns() {
-        const dropdownItems = document.querySelectorAll('.site-menu-item.has-dropdown');
+        if (initialized) return;
+        initialized = true;
         
-        dropdownItems.forEach(item => {
-            const link = item.querySelector('a');
-            const dropdown = item.querySelector('.dropdown-menu');
+        // Use event delegation for dynamic content
+        document.addEventListener('click', function(e) {
+            if (window.innerWidth > 768) return;
             
-            if (link && dropdown) {
-                // Remove any existing click handlers
-                link.removeEventListener('click', handleDropdownClick);
+            const link = e.target.closest('.site-menu-item.has-dropdown > a');
+            
+            if (link) {
+                e.preventDefault();
+                e.stopPropagation();
                 
-                // Add click handler for mobile
-                link.addEventListener('click', handleDropdownClick);
+                const menuItem = link.parentElement;
+                const dropdown = menuItem.querySelector('.dropdown-menu');
+                
+                if (!dropdown) return;
+                
+                handleDropdownToggle(menuItem, dropdown);
             }
         });
     }
     
-    function handleDropdownClick(e) {
-        // Only handle on mobile
-        if (window.innerWidth > 768) {
-            return;
-        }
-        
-        e.preventDefault();
-        e.stopPropagation();
-        
-        const menuItem = this.parentElement;
-        const dropdown = menuItem.querySelector('.dropdown-menu');
-        
-        if (!dropdown) return;
-        
+    function handleDropdownToggle(menuItem, dropdown) {
         const isExpanded = menuItem.classList.contains('expanded');
         
         // Close other dropdowns smoothly
@@ -127,11 +123,17 @@
     
     // Initialize on DOM ready
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initMobileDropdowns);
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(initMobileDropdowns, 100);
+        });
     } else {
-        initMobileDropdowns();
+        setTimeout(initMobileDropdowns, 100);
     }
     
     // Reinitialize after navigation injection (for dynamically added navigation)
     setTimeout(initMobileDropdowns, 500);
+    setTimeout(initMobileDropdowns, 1000);
+    
+    // Also listen for navigation updates
+    document.addEventListener('navigationInjected', initMobileDropdowns);
 })();
