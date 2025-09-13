@@ -30,26 +30,17 @@
     }
     
     .dropdown-menu {
-        display: block;
-        max-height: 0;
-        overflow: hidden;
+        clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
         opacity: 0;
-        transform: scaleY(0);
-        transform-origin: top;
-        transition: max-height 0.4s ease-out,
-                    opacity 0.3s ease-out,
-                    transform 0.3s ease-out,
-                    padding 0.3s ease-out;
-        background: rgba(45, 55, 72, 0.5); /* Semi-transparent darker background */
+        transition: clip-path 0.3s ease-out, opacity 0.2s ease-out;
+        background: rgba(45, 55, 72, 0.95); /* Darker background */
         margin: 0;
-        padding: 0;
+        padding: 0.5rem 0;
     }
     
     .site-menu-item.expanded .dropdown-menu {
-        max-height: 400px; /* Enough for all items */
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
         opacity: 1;
-        transform: scaleY(1);
-        padding: 0.5rem 0;
     }
     
     /* Add chevron indicator for dropdowns */
