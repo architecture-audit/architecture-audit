@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test AutoSave Loading</title>
+</head>
+<body>
+    <h1>Testing AutoSave Class Loading</h1>
+    <div id="result"></div>
+    
+    <!-- Load the bundle exactly as calculators do -->
+    <script src="/docs/assets/js/bundle-utilities.min.js"></script>
+    
+    <script>
+        window.addEventListener('DOMContentLoaded', function() {
+            const result = document.getElementById('result');
+            
+            console.log('Checking AutoSave...');
+            
+            if (typeof AutoSave !== 'undefined') {
+                result.innerHTML += '<p style="color: green;">✅ AutoSave class found (direct)</p>';
+            } else {
+                result.innerHTML += '<p style="color: red;">❌ AutoSave class NOT found (direct)</p>';
+            }
+            
+            if (typeof window.AutoSave !== 'undefined') {
+                result.innerHTML += '<p style="color: green;">✅ window.AutoSave found</p>';
+                
+                // Try to create instance
+                try {
+                    const test = new window.AutoSave('test', 5000);
+                    result.innerHTML += '<p style="color: green;">✅ Successfully created AutoSave instance</p>';
+                } catch(e) {
+                    result.innerHTML += '<p style="color: red;">❌ Error creating instance: ' + e + '</p>';
+                }
+            } else {
+                result.innerHTML += '<p style="color: red;">❌ window.AutoSave NOT found</p>';
+            }
+            
+            // Check other classes
+            if (typeof NotificationSystem !== 'undefined') {
+                result.innerHTML += '<p style="color: green;">✅ NotificationSystem found</p>';
+            }
+            
+            if (typeof FormValidator !== 'undefined') {
+                result.innerHTML += '<p style="color: green;">✅ FormValidator found</p>';
+            }
+        });
+    </script>
+</body>
+</html>

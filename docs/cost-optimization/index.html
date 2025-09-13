@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cost Optimization Framework - Complete FinOps Guide & Best Practices</title>
+    <meta name="description" content="Comprehensive guide to cloud cost optimization, FinOps practices, resource management, and financial governance for enterprise organizations">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>💰</text></svg>">
+    
+    <!-- Navigation CSS -->
+    <link rel="stylesheet" href="../assets/css/site-navigation.css">
+    
+    <!-- Base Documentation CSS -->
+    <link rel="stylesheet" href="../assets/css/docs-base.css">
+    
+    <!-- Cost Optimization CSS -->
+    <link rel="stylesheet" href="../assets/css/cost-optimization.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1>💰 Cost Optimization Framework</h1>
+            <h3 style="color: white; margin: 0.5rem 0 1rem 0; font-weight: normal; opacity: 0.8;">Version 1.0 | 2024</h3>
+            <p>Complete guide to FinOps practices, cloud cost management, and financial governance</p>
+            <div class="btn-group" style="margin-top: 1rem;">
+                <a href="calculator.html" class="btn btn-primary">🧮 Use Calculator</a>
+                <a href="#getting-started" class="btn btn-secondary">📖 Read Guide</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <div class="toc">
+            <h3>Table of Contents</h3>
+            <ul>
+                <li><a href="#introduction" class="toc-2">What is Cost Optimization?</a></li>
+                <li><a href="#financial-governance" class="toc-3">Financial Governance</a></li>
+                <li><a href="#technical-optimization" class="toc-3">Technical Optimization</a></li>
+                <li><a href="#cultural-transformation" class="toc-3">Cultural Transformation</a></li>
+                <li><a href="#getting-started" class="toc-2">Getting Started with FinOps</a></li>
+                <li><a href="#three-phases" class="toc-3">The Three Phases of FinOps</a></li>
+                <li><a href="#cost-models" class="toc-2">Cloud Cost Models</a></li>
+                <li><a href="#understanding-pricing" class="toc-3">Understanding Cloud Pricing</a></li>
+                <li><a href="#resource-optimization" class="toc-2">Resource Optimization Strategies</a></li>
+                <li><a href="#right-sizing" class="toc-3">Right-Sizing Best Practices</a></li>
+                <li><a href="#waste-elimination" class="toc-2">Waste Elimination Techniques</a></li>
+                <li><a href="#waste-categories" class="toc-3">Common Cloud Waste Categories</a></li>
+                <li><a href="#budget-management" class="toc-2">Budget Management Best Practices</a></li>
+                <li><a href="#budget-planning" class="toc-3">Budget Planning Strategy</a></li>
+                <li><a href="#cost-allocation" class="toc-2">Cost Allocation & Chargeback</a></li>
+                <li><a href="#tagging-strategy" class="toc-3">Tagging Strategy</a></li>
+                <li><a href="#multi-cloud" class="toc-2">Multi-Cloud Cost Management</a></li>
+                <li><a href="#unified-cost-management" class="toc-3">Unified Cost Management</a></li>
+                <li><a href="#workload-placement" class="toc-3">Workload Placement Strategy</a></li>
+                <li><a href="#containers-serverless" class="toc-2">Container & Serverless Optimization</a></li>
+                <li><a href="#container-optimization" class="toc-3">Container Cost Optimization</a></li>
+                <li><a href="#serverless-optimization" class="toc-3">Serverless Optimization</a></li>
+                <li><a href="#database-optimization" class="toc-2">Database & Storage Optimization</a></li>
+                <li><a href="#database-strategies" class="toc-3">Database Cost Strategies</a></li>
+                <li><a href="#storage-optimization" class="toc-3">Storage Optimization</a></li>
+                <li><a href="#network-optimization" class="toc-2">Network Cost Optimization</a></li>
+                <li><a href="#data-transfer" class="toc-3">Data Transfer Optimization</a></li>
+                <li><a href="#cdn-optimization" class="toc-3">Content Delivery Networks</a></li>
+                <li><a href="#implementation" class="toc-2">Implementation Roadmap</a></li>
+                <li><a href="#phase-1" class="toc-3">Phase 1: Foundation (Months 1-3)</a></li>
+                <li><a href="#phase-2" class="toc-3">Phase 2: Optimization (Months 4-6)</a></li>
+                <li><a href="#phase-3" class="toc-3">Phase 3: Continuous Improvement (Months 7+)</a></li>
+                <li><a href="#tools" class="toc-2">Tools & Technologies</a></li>
+                <li><a href="#native-tools" class="toc-3">Native Cloud Tools</a></li>
+                <li><a href="#third-party" class="toc-3">Third-Party Platforms</a></li>
+                <li><a href="#get-started" class="toc-2">Get Started Today</a></li>
+            </ul>
+        </div>
+        
+        <div class="content">
+            <main class="container">
+        
+        <!-- Introduction Section -->
+        <section class="section" id="introduction">
+            <h2>🎯 What is Cost Optimization?</h2>
+            <p>Cost optimization is the practice of reducing cloud spending while maintaining or improving performance, reliability, and security. It's a continuous process that combines financial governance, technical optimization, and cultural transformation to maximize the business value of cloud investments.</p>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 id="financial-governance">📊 Financial Governance</h3>
+                    </div>
+                    <p>Establish policies, processes, and accountability for cloud spending across your organization.</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 id="technical-optimization">⚙️ Technical Optimization</h3>
+                    </div>
+                    <p>Right-size resources, eliminate waste, and leverage cost-effective cloud services and pricing models.</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 id="cultural-transformation">🤝 Cultural Transformation</h3>
+                    </div>
+                    <p>Build cost awareness and accountability throughout development and operations teams.</p>
+                </div>
+            </div>
+        </section>
+
+        <div style="background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; padding: 2rem; border-radius: 12px; margin: 2rem 0; text-align: center;">
+            <h2 style="color: white; margin-bottom: 1rem;">Ready to Assess Your Cost Optimization?</h2>
+            <p style="margin-bottom: 1.5rem; opacity: 0.9;">Use our comprehensive calculator to evaluate your organization's maturity and get actionable recommendations.</p>
+            <a href="calculator.html" style="display: inline-block; background: white; color: #6366f1; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 1.1rem; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                🧮 Launch Calculator
+            </a>
+        </div>
+
+        <!-- Getting Started Section -->
+        <section class="section" id="getting-started">
+            <h2 id="getting-started">🚀 Getting Started with FinOps</h2>
+            
+            <h3 id="three-phases">The Three Phases of FinOps</h3>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>1️⃣ Inform</h3>
+                    </div>
+                    <p><strong>Goal:</strong> Visibility and accountability</p>
+                    <ul>
+                        <li>Implement cost allocation and tagging</li>
+                        <li>Create cost dashboards and reports</li>
+                        <li>Establish cost awareness culture</li>
+                        <li>Set up basic budget alerts</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>2️⃣ Optimize</h3>
+                    </div>
+                    <p><strong>Goal:</strong> Efficient resource utilization</p>
+                    <ul>
+                        <li>Right-size compute and storage</li>
+                        <li>Implement reservation strategies</li>
+                        <li>Eliminate waste and unused resources</li>
+                        <li>Automate cost optimization</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>3️⃣ Operate</h3>
+                    </div>
+                    <p><strong>Goal:</strong> Continuous improvement</p>
+                    <ul>
+                        <li>Automated governance and policies</li>
+                        <li>Predictive cost modeling</li>
+                        <li>Advanced optimization techniques</li>
+                        <li>Business value measurement</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cloud Cost Models Section -->
+        <section class="section" id="cost-models">
+            <h2 id="cost-models">☁️ Cloud Cost Models</h2>
+            
+            <h3 id="understanding-pricing">Understanding Cloud Pricing</h3>
+            <div class="alert alert-info">
+                Cloud providers offer various pricing models to optimize costs based on your usage patterns and commitment levels.
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>💳 On-Demand (Pay-as-you-go)</h3>
+                    </div>
+                    <p><strong>Best for:</strong> Variable workloads, testing, short-term projects</p>
+                    <ul>
+                        <li>No upfront commitments</li>
+                        <li>Highest per-hour costs</li>
+                        <li>Maximum flexibility</li>
+                        <li>Immediate availability</li>
+                    </ul>
+                    <div class="savings-highlight">
+                        <strong>When to use:</strong> Unpredictable workloads, development/testing environments
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>🔒 Reserved Instances/Capacity</h3>
+                    </div>
+                    <p><strong>Best for:</strong> Steady-state workloads with predictable usage</p>
+                    <ul>
+                        <li>1-3 year commitments</li>
+                        <li>30-70% cost savings</li>
+                        <li>Payment options: All Upfront, Partial, No Upfront</li>
+                        <li>Regional or Availability Zone specific</li>
+                    </ul>
+                    <div class="savings-highlight">
+                        <strong>Typical savings:</strong> 30-70% compared to on-demand pricing
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>📈 Spot Instances</h3>
+                    </div>
+                    <p><strong>Best for:</strong> Fault-tolerant, flexible workloads</p>
+                    <ul>
+                        <li>Unused cloud capacity</li>
+                        <li>50-90% cost savings</li>
+                        <li>Can be interrupted with 2-minute notice</li>
+                        <li>Bid-based pricing model</li>
+                    </ul>
+                    <div class="savings-highlight">
+                        <strong>Ideal for:</strong> Batch processing, CI/CD, data analysis, stateless applications
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>💰 Savings Plans (AWS/Azure/GCP)</h3>
+                    </div>
+                    <p><strong>Best for:</strong> Consistent compute usage across services</p>
+                    <ul>
+                        <li>Flexible usage commitment</li>
+                        <li>Apply to multiple services</li>
+                        <li>1-3 year terms</li>
+                        <li>Automatic discount application</li>
+                    </ul>
+                    <div class="savings-highlight">
+                        <strong>Coverage:</strong> EC2, Lambda, Fargate (AWS), Virtual Machines (Azure), Compute Engine (GCP)
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resource Optimization Section -->
+        <section class="section" id="resource-optimization">
+            <h2 id="resource-optimization">🖥️ Resource Optimization Strategies</h2>
+            
+            <h3 id="right-sizing">Right-Sizing Best Practices</h3>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>📊 Compute Optimization</h3>
+                    </div>
+                    <h4>Monitoring Metrics:</h4>
+                    <ul>
+                        <li><strong>CPU Utilization:</strong> Target 70-80% average</li>
+                        <li><strong>Memory Usage:</strong> Monitor for memory pressure</li>
+                        <li><strong>Network I/O:</strong> Check for bandwidth bottlenecks</li>
+                        <li><strong>Disk I/O:</strong> Monitor IOPS and throughput</li>
+                    </ul>
+                    
+                    <h4>Optimization Actions:</h4>
+                    <ul>
+                        <li>Downsize over-provisioned instances</li>
+                        <li>Use burstable instances for variable workloads</li>
+                        <li>Consider newer generation instances</li>
+                        <li>Implement auto-scaling policies</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>💾 Storage Optimization</h3>
+                    </div>
+                    <h4>Storage Tiering Strategy:</h4>
+                    <ul>
+                        <li><strong>Hot Storage:</strong> Frequently accessed data</li>
+                        <li><strong>Warm Storage:</strong> Occasionally accessed data</li>
+                        <li><strong>Cold Storage:</strong> Rarely accessed data</li>
+                        <li><strong>Archive:</strong> Long-term retention</li>
+                    </ul>
+                    
+                    <h4>Cost-Saving Actions:</h4>
+                    <ul>
+                        <li>Implement lifecycle policies</li>
+                        <li>Delete orphaned snapshots and volumes</li>
+                        <li>Use compression and deduplication</li>
+                        <li>Right-size IOPS provisioning</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>🌐 Network Optimization</h3>
+                    </div>
+                    <h4>Traffic Analysis:</h4>
+                    <ul>
+                        <li>Inter-region data transfer costs</li>
+                        <li>Egress traffic patterns</li>
+                        <li>Load balancer utilization</li>
+                        <li>CDN cache hit rates</li>
+                    </ul>
+                    
+                    <h4>Optimization Techniques:</h4>
+                    <ul>
+                        <li>Deploy resources closer to users</li>
+                        <li>Optimize data transfer patterns</li>
+                        <li>Use CDNs for static content</li>
+                        <li>Implement data compression</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Waste Elimination Section -->
+        <section class="section" id="waste-elimination">
+            <h2 id="waste-elimination">🗑️ Waste Elimination Techniques</h2>
+            
+            <h3 id="waste-categories">Common Cloud Waste Categories</h3>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>💤 Idle Resources</h3>
+                    </div>
+                    <h4>Identification Methods:</h4>
+                    <ul>
+                        <li>CPU utilization &lt; 5% for 7+ days</li>
+                        <li>Network I/O &lt; 5MB for extended periods</li>
+                        <li>Memory utilization consistently low</li>
+                        <li>No user connections or API calls</li>
+                    </ul>
+                    
+                    <h4>Remediation Actions:</h4>
+                    <ul>
+                        <li>Schedule shutdown during off-hours</li>
+                        <li>Implement auto-scaling policies</li>
+                        <li>Move to smaller instance sizes</li>
+                        <li>Consider serverless alternatives</li>
+                    </ul>
+                    
+                    <div class="savings-highlight">
+                        <strong>Potential Savings:</strong> 20-50% of compute costs
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>👻 Orphaned Resources</h3>
+                    </div>
+                    <h4>Common Orphaned Resources:</h4>
+                    <ul>
+                        <li>Unattached storage volumes</li>
+                        <li>Unused elastic IP addresses</li>
+                        <li>Obsolete load balancers</li>
+                        <li>Forgotten snapshots and backups</li>
+                    </ul>
+                    
+                    <h4>Detection Strategy:</h4>
+                    <ul>
+                        <li>Regular resource inventory audits</li>
+                        <li>Automated tagging enforcement</li>
+                        <li>Lifecycle management policies</li>
+                        <li>Cost anomaly detection alerts</li>
+                    </ul>
+                    
+                    <div class="savings-highlight">
+                        <strong>Quick Win:</strong> Often provides immediate 10-30% cost reduction
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>📏 Over-provisioning</h3>
+                    </div>
+                    <h4>Common Over-provisioning:</h4>
+                    <ul>
+                        <li>Database instances with excess capacity</li>
+                        <li>Storage with unnecessary IOPS</li>
+                        <li>Load balancers for low-traffic applications</li>
+                        <li>High-performance instances for simple tasks</li>
+                    </ul>
+                    
+                    <h4>Right-sizing Approach:</h4>
+                    <ul>
+                        <li>Analyze historical usage patterns</li>
+                        <li>Start with 20% capacity reduction</li>
+                        <li>Monitor performance post-optimization</li>
+                        <li>Implement gradual optimization cycles</li>
+                    </ul>
+                    
+                    <div class="savings-highlight">
+                        <strong>Best Practice:</strong> Regular quarterly right-sizing reviews
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Budget Management Section -->
+        <section class="section" id="budget-management">
+            <h2 id="budget-management">💳 Budget Management Best Practices</h2>
+            
+            <h3 id="budget-planning">Budget Planning Strategy</h3>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>📋 Budget Structure</h3>
+                    </div>
+                    <h4>Hierarchical Budget Model:</h4>
+                    <ul>
+                        <li><strong>Organization Level:</strong> Total cloud spend cap</li>
+                        <li><strong>Business Unit:</strong> Department allocations</li>
+                        <li><strong>Project/Application:</strong> Granular tracking</li>
+                        <li><strong>Environment:</strong> Production vs. non-production</li>
+                    </ul>
+                    
+                    <h4>Budget Types:</h4>
+                    <ul>
+                        <li><strong>Cost Budget:</strong> Track actual spending</li>
+                        <li><strong>Usage Budget:</strong> Monitor resource consumption</li>
+                        <li><strong>RI Coverage:</strong> Reserved instance utilization</li>
+                        <li><strong>Savings Plans:</strong> Commitment utilization</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>🚨 Alert Configuration</h3>
+                    </div>
+                    <h4>Alert Thresholds:</h4>
+                    <ul>
+                        <li><strong>50% threshold:</strong> Early warning notification</li>
+                        <li><strong>80% threshold:</strong> Action required alert</li>
+                        <li><strong>100% threshold:</strong> Budget exceeded notification</li>
+                        <li><strong>120% threshold:</strong> Emergency response alert</li>
+                    </ul>
+                    
+                    <h4>Response Actions:</h4>
+                    <ul>
+                        <li>Automated email notifications</li>
+                        <li>Slack/Teams integration</li>
+                        <li>Service Now ticket creation</li>
+                        <li>Automated resource shutdown (for dev/test)</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>📈 Forecasting</h3>
+                    </div>
+                    <h4>Forecasting Models:</h4>
+                    <ul>
+                        <li><strong>Linear Growth:</strong> Steady usage increase</li>
+                        <li><strong>Seasonal Patterns:</strong> Cyclical usage variations</li>
+                        <li><strong>Event-driven:</strong> Planned infrastructure changes</li>
+                        <li><strong>Machine Learning:</strong> Advanced predictive models</li>
+                    </ul>
+                    
+                    <h4>Forecast Accuracy:</h4>
+                    <ul>
+                        <li>Monthly forecast variance &lt; 10%</li>
+                        <li>Quarterly planning accuracy &gt; 85%</li>
+                        <li>Annual budget variance &lt; 15%</li>
+                        <li>Continuous model refinement</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cost Allocation Section -->
+        <section class="section" id="cost-allocation">
+            <h2 id="cost-allocation">🏷️ Cost Allocation & Chargeback</h2>
+            
+            <h3 id="tagging-strategy">Tagging Strategy</h3>
+            <div class="alert alert-warning">
+                <strong>Critical Success Factor:</strong> Consistent tagging is essential for accurate cost allocation and governance. Establish tagging standards before resource deployment.
+            </div>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>🎯 Essential Tags</h3>
+                    </div>
+                    <h4>Business Tags:</h4>
+                    <ul>
+                        <li><strong>CostCenter:</strong> Budget allocation identifier</li>
+                        <li><strong>Project:</strong> Project or application name</li>
+                        <li><strong>Owner:</strong> Technical contact responsible</li>
+                        <li><strong>BusinessUnit:</strong> Department or division</li>
+                    </ul>
+                    
+                    <h4>Technical Tags:</h4>
+                    <ul>
+                        <li><strong>Environment:</strong> prod, dev, test, staging</li>
+                        <li><strong>Application:</strong> Application identifier</li>
+                        <li><strong>Version:</strong> Application version</li>
+                        <li><strong>Component:</strong> Architecture component role</li>
+                    </ul>
+                    
+                    <h4>Operational Tags:</h4>
+                    <ul>
+                        <li><strong>Schedule:</strong> Operating hours (24x7, 9x5)</li>
+                        <li><strong>Backup:</strong> Backup requirements</li>
+                        <li><strong>Compliance:</strong> Regulatory requirements</li>
+                        <li><strong>DataClassification:</strong> Sensitivity level</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>⚖️ Chargeback Models</h3>
+                    </div>
+                    <h4>Direct Chargeback:</h4>
+                    <ul>
+                        <li>Actual cloud costs allocated to business units</li>
+                        <li>Real-time cost visibility and accountability</li>
+                        <li>Incentivizes cost optimization behavior</li>
+                        <li>Requires mature tagging and governance</li>
+                    </ul>
+                    
+                    <h4>Showback Model:</h4>
+                    <ul>
+                        <li>Cost transparency without budget impact</li>
+                        <li>Educational approach to cost awareness</li>
+                        <li>Stepping stone to full chargeback</li>
+                        <li>Useful for initial FinOps maturity building</li>
+                    </ul>
+                    
+                    <h4>Hybrid Approach:</h4>
+                    <ul>
+                        <li>Shared services charged centrally</li>
+                        <li>Application-specific costs charged back</li>
+                        <li>Infrastructure overhead allocated proportionally</li>
+                        <li>Balances accountability with simplicity</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>📊 Allocation Methods</h3>
+                    </div>
+                    <h4>Direct Allocation:</h4>
+                    <ul>
+                        <li>Resources clearly attributable to business units</li>
+                        <li>Most accurate cost assignment</li>
+                        <li>Requires comprehensive tagging</li>
+                        <li>Example: Application-specific EC2 instances</li>
+                    </ul>
+                    
+                    <h4>Proportional Allocation:</h4>
+                    <ul>
+                        <li>Shared resources allocated by usage metrics</li>
+                        <li>Examples: Data transfer, storage, compute hours</li>
+                        <li>Fair distribution of common costs</li>
+                        <li>Requires usage tracking and metrics</li>
+                    </ul>
+                    
+                    <h4>Fixed Allocation:</h4>
+                    <ul>
+                        <li>Predetermined cost distribution</li>
+                        <li>Based on business agreements or SLAs</li>
+                        <li>Simple to implement and understand</li>
+                        <li>May not reflect actual usage patterns</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Multi-Cloud Management Section -->
+        <section class="section" id="multi-cloud">
+            <h2 id="multi-cloud">🌐 Multi-Cloud Cost Management</h2>
+            
+            <div class="alert alert-info">
+                Managing costs across multiple cloud providers requires standardized processes, unified visibility, and consistent governance frameworks.
+            </div>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 id="unified-cost-management">🔄 Unified Cost Management</h3>
+                    </div>
+                    <h4>Centralized Visibility:</h4>
+                    <ul>
+                        <li>Single dashboard for all cloud providers</li>
+                        <li>Standardized cost allocation across platforms</li>
+                        <li>Cross-cloud resource optimization</li>
+                        <li>Unified budgeting and forecasting</li>
+                    </ul>
+                    
+                    <h4>Key Challenges:</h4>
+                    <ul>
+                        <li>Different pricing models and terminology</li>
+                        <li>Varying discount and commitment options</li>
+                        <li>Inconsistent tagging capabilities</li>
+                        <li>Multiple billing systems and currencies</li>
+                    </ul>
+                    
+                    <div class="savings-highlight">
+                        <strong>Tool Categories:</strong> CloudHealth, CloudCheckr, Flexera, native cloud tools
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 id="workload-placement">⚖️ Workload Placement Strategy</h3>
+                    </div>
+                    <h4>Cost Optimization Factors:</h4>
+                    <ul>
+                        <li><strong>Compute Pricing:</strong> Compare instance types and pricing</li>
+                        <li><strong>Storage Costs:</strong> Different tiers and access patterns</li>
+                        <li><strong>Network Costs:</strong> Data transfer and egress charges</li>
+                        <li><strong>Service Availability:</strong> Regional service coverage</li>
+                    </ul>
+                    
+                    <h4>Decision Framework:</h4>
+                    <ul>
+                        <li>Total cost of ownership (TCO) analysis</li>
+                        <li>Performance requirements mapping</li>
+                        <li>Compliance and data residency needs</li>
+                        <li>Vendor lock-in risk assessment</li>
+                    </ul>
+                    
+                    <div class="savings-highlight">
+                        <strong>Best Practice:</strong> Regular workload placement reviews (quarterly)
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>📋 Governance Standardization</h3>
+                    </div>
+                    <h4>Cross-Platform Standards:</h4>
+                    <ul>
+                        <li><strong>Tagging:</strong> Consistent tag taxonomy</li>
+                        <li><strong>Naming:</strong> Standardized resource naming</li>
+                        <li><strong>Policies:</strong> Uniform governance policies</li>
+                        <li><strong>Automation:</strong> Consistent operational procedures</li>
+                    </ul>
+                    
+                    <h4>Implementation Strategy:</h4>
+                    <ul>
+                        <li>Cloud-agnostic policy as code</li>
+                        <li>Standardized deployment templates</li>
+                        <li>Unified monitoring and alerting</li>
+                        <li>Cross-platform cost allocation</li>
+                    </ul>
+                    
+                    <div class="savings-highlight">
+                        <strong>Tools:</strong> Terraform, CloudFormation, ARM templates, Pulumi
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Container and Serverless Section -->
+        <section class="section" id="containers-serverless">
+            <h2 id="containers-serverless">📦 Container & Serverless Optimization</h2>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 id="container-optimization">🐳 Container Cost Optimization</h3>
+                    </div>
+                    <h4>Kubernetes Cost Management:</h4>
+                    <ul>
+                        <li><strong>Resource Requests/Limits:</strong> Right-size container resources</li>
+                        <li><strong>Node Utilization:</strong> Optimize cluster density</li>
+                        <li><strong>Auto-scaling:</strong> Horizontal and vertical pod scaling</li>
+                        <li><strong>Spot Instances:</strong> Use for fault-tolerant workloads</li>
+                    </ul>
+                    
+                    <h4>Container-Specific Strategies:</h4>
+                    <ul>
+                        <li>Multi-tenancy optimization</li>
+                        <li>Resource quota management</li>
+                        <li>Image optimization and caching</li>
+                        <li>Cluster autoscaling configuration</li>
+                    </ul>
+                    
+                    <div class="savings-highlight">
+                        <strong>Tools:</strong> Kubernetes Resource Recommender, KubeCost, Fairwinds Goldilocks
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 id="serverless-optimization">⚡ Serverless Optimization</h3>
+                    </div>
+                    <h4>Function Optimization:</h4>
+                    <ul>
+                        <li><strong>Memory Allocation:</strong> Right-size function memory</li>
+                        <li><strong>Execution Duration:</strong> Optimize cold start times</li>
+                        <li><strong>Concurrency:</strong> Manage concurrent executions</li>
+                        <li><strong>Provisioned Concurrency:</strong> Balance cost vs. performance</li>
+                    </ul>
+                    
+                    <h4>Serverless Cost Factors:</h4>
+                    <ul>
+                        <li>Request volume and execution time</li>
+                        <li>Memory allocation impact on pricing</li>
+                        <li>Data transfer and storage costs</li>
+                        <li>Third-party service integrations</li>
+                    </ul>
+                    
+                    <div class="savings-highlight">
+                        <strong>Cost Model:</strong> Pay-per-request + execution time + memory allocation
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>🔄 Hybrid Optimization</h3>
+                    </div>
+                    <h4>Workload Placement Decisions:</h4>
+                    <ul>
+                        <li><strong>Containers:</strong> Steady-state, long-running processes</li>
+                        <li><strong>Serverless:</strong> Event-driven, sporadic workloads</li>
+                        <li><strong>Virtual Machines:</strong> Legacy applications, specific requirements</li>
+                        <li><strong>Managed Services:</strong> Reduced operational overhead</li>
+                    </ul>
+                    
+                    <h4>Cost Comparison Framework:</h4>
+                    <ul>
+                        <li>Total cost per request/transaction</li>
+                        <li>Operational overhead costs</li>
+                        <li>Performance and scalability requirements</li>
+                        <li>Development and maintenance effort</li>
+                    </ul>
+                    
+                    <div class="savings-highlight">
+                        <strong>Rule of Thumb:</strong> Serverless for &lt;15min workloads, containers for longer processes
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Database Optimization Section -->
+        <section class="section" id="database-optimization">
+            <h2 id="database-optimization">🗄️ Database & Storage Optimization</h2>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 id="database-strategies">💾 Database Cost Strategies</h3>
+                    </div>
+                    <h4>Right-sizing Database Instances:</h4>
+                    <ul>
+                        <li><strong>CPU Utilization:</strong> Target 70-80% average usage</li>
+                        <li><strong>Memory Usage:</strong> Monitor buffer cache hit ratios</li>
+                        <li><strong>IOPS Requirements:</strong> Match storage performance to needs</li>
+                        <li><strong>Connection Pooling:</strong> Optimize concurrent connections</li>
+                    </ul>
+                    
+                    <h4>Database-Specific Optimizations:</h4>
+                    <ul>
+                        <li>Read replicas for read-heavy workloads</li>
+                        <li>Multi-AZ vs. single-AZ deployment</li>
+                        <li>Backup retention optimization</li>
+                        <li>Automated patching and maintenance windows</li>
+                    </ul>
+                    
+                    <div class="savings-highlight">
+                        <strong>Quick Wins:</strong> Dev/test database scheduling can save 60-70% costs
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 id="storage-optimization">📚 Storage Optimization</h3>
+                    </div>
+                    <h4>Storage Tiering Strategy:</h4>
+                    <ul>
+                        <li><strong>Hot Tier:</strong> Frequently accessed (&lt;30 days)</li>
+                        <li><strong>Warm Tier:</strong> Infrequently accessed (30-90 days)</li>
+                        <li><strong>Cool Tier:</strong> Rarely accessed (90-365 days)</li>
+                        <li><strong>Archive:</strong> Long-term retention (&gt;1 year)</li>
+                    </ul>
+                    
+                    <h4>Lifecycle Management:</h4>
+                    <ul>
+                        <li>Automated tier transitions</li>
+                        <li>Intelligent tiering based on access patterns</li>
+                        <li>Compression and deduplication</li>
+                        <li>Regular cleanup of obsolete data</li>
+                    </ul>
+                    
+                    <div class="savings-highlight">
+                        <strong>Typical Savings:</strong> 40-60% through proper storage tiering
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>⚡ Performance vs. Cost</h3>
+                    </div>
+                    <h4>Performance Optimization:</h4>
+                    <ul>
+                        <li><strong>Indexing Strategy:</strong> Optimize query performance</li>
+                        <li><strong>Query Optimization:</strong> Reduce resource consumption</li>
+                        <li><strong>Caching Layers:</strong> Redis, Memcached for frequent data</li>
+                        <li><strong>Connection Pooling:</strong> Reduce connection overhead</li>
+                    </ul>
+                    
+                    <h4>Cost-Performance Balance:</h4>
+                    <ul>
+                        <li>SSD vs. HDD based on access patterns</li>
+                        <li>Provisioned vs. on-demand IOPS</li>
+                        <li>General purpose vs. optimized instances</li>
+                        <li>Regional vs. multi-region deployments</li>
+                    </ul>
+                    
+                    <div class="savings-highlight">
+                        <strong>Key Metric:</strong> Cost per transaction or query, not just infrastructure cost
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Network Optimization Section -->
+        <section class="section" id="network-optimization">
+            <h2 id="network-optimization">🌐 Network Cost Optimization</h2>
+            
+            <div class="alert alert-warning">
+                Network costs, especially data transfer charges, can represent 15-25% of total cloud spend. Proper optimization requires understanding traffic patterns and architectural decisions.
+            </div>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 id="data-transfer">📡 Data Transfer Optimization</h3>
+                    </div>
+                    <h4>Cost Factors:</h4>
+                    <ul>
+                        <li><strong>Ingress:</strong> Usually free (data coming in)</li>
+                        <li><strong>Egress:</strong> Charged (data going out)</li>
+                        <li><strong>Inter-region:</strong> Higher costs between regions</li>
+                        <li><strong>Cross-AZ:</strong> Charges within same region</li>
+                    </ul>
+                    
+                    <h4>Optimization Strategies:</h4>
+                    <ul>
+                        <li>Minimize cross-region data transfer</li>
+                        <li>Use compression for large data transfers</li>
+                        <li>Implement data caching strategies</li>
+                        <li>Optimize API response sizes</li>
+                    </ul>
+                    
+                    <div class="savings-highlight">
+                        <strong>Architecture Impact:</strong> Co-locate related services in same AZ/region
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 id="cdn-optimization">🚀 Content Delivery Networks</h3>
+                    </div>
+                    <h4>CDN Benefits:</h4>
+                    <ul>
+                        <li><strong>Cost Reduction:</strong> Cheaper than origin server delivery</li>
+                        <li><strong>Performance:</strong> Reduced latency for users</li>
+                        <li><strong>Scalability:</strong> Handle traffic spikes efficiently</li>
+                        <li><strong>Availability:</strong> Distributed infrastructure</li>
+                    </ul>
+                    
+                    <h4>Optimization Techniques:</h4>
+                    <ul>
+                        <li>Cache static content at edge locations</li>
+                        <li>Optimize cache headers and TTL settings</li>
+                        <li>Use compression and minification</li>
+                        <li>Implement intelligent caching rules</li>
+                    </ul>
+                    
+                    <div class="savings-highlight">
+                        <strong>Typical Savings:</strong> 30-60% reduction in bandwidth costs
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>🔄 Load Balancer Optimization</h3>
+                    </div>
+                    <h4>Load Balancer Types:</h4>
+                    <ul>
+                        <li><strong>Application Load Balancer:</strong> HTTP/HTTPS traffic</li>
+                        <li><strong>Network Load Balancer:</strong> TCP/UDP traffic</li>
+                        <li><strong>Classic Load Balancer:</strong> Legacy option</li>
+                        <li><strong>Gateway Load Balancer:</strong> Third-party appliances</li>
+                    </ul>
+                    
+                    <h4>Cost Optimization:</h4>
+                    <ul>
+                        <li>Right-size load balancer capacity</li>
+                        <li>Eliminate unused load balancers</li>
+                        <li>Optimize health check configurations</li>
+                        <li>Consider regional vs. global load balancing</li>
+                    </ul>
+                    
+                    <div class="savings-highlight">
+                        <strong>Quick Check:</strong> Review load balancers with &lt;10% utilization
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Implementation Guide Section -->
+        <section class="section" id="implementation">
+            <h2 id="implementation">🚀 Implementation Roadmap</h2>
+            
+            <h3 id="phase-1">Phase 1: Foundation (Months 1-3)</h3>
+            <div class="card">
+                <div class="card-header">
+                    <h3>🎯 Establish Visibility & Governance</h3>
+                </div>
+                <h4>Week 1-2: Initial Assessment</h4>
+                <ul>
+                    <li>Complete FinOps maturity assessment</li>
+                    <li>Inventory all cloud resources and services</li>
+                    <li>Identify key stakeholders and form FinOps team</li>
+                    <li>Establish baseline cost metrics</li>
+                </ul>
+                
+                <h4>Week 3-6: Implement Basic Governance</h4>
+                <ul>
+                    <li>Define and implement tagging standards</li>
+                    <li>Set up cost dashboards and basic reporting</li>
+                    <li>Configure budget alerts and notifications</li>
+                    <li>Establish cost review meetings and processes</li>
+                </ul>
+                
+                <h4>Week 7-12: Build Cost Awareness</h4>
+                <ul>
+                    <li>Deploy cost monitoring tools</li>
+                    <li>Implement showback reporting</li>
+                    <li>Conduct cost awareness training</li>
+                    <li>Begin waste identification and cleanup</li>
+                </ul>
+            </div>
+            
+            <h3 id="phase-2">Phase 2: Optimization (Months 4-6)</h3>
+            <div class="card">
+                <div class="card-header">
+                    <h3>⚙️ Implement Cost Optimization</h3>
+                </div>
+                <h4>Month 4: Right-sizing and Waste Elimination</h4>
+                <ul>
+                    <li>Conduct comprehensive right-sizing analysis</li>
+                    <li>Implement automated resource scheduling</li>
+                    <li>Clean up orphaned and idle resources</li>
+                    <li>Begin reserved instance planning</li>
+                </ul>
+                
+                <h4>Month 5: Reserved Capacity and Commitments</h4>
+                <ul>
+                    <li>Purchase reserved instances for steady workloads</li>
+                    <li>Implement savings plans strategy</li>
+                    <li>Optimize storage tiering and lifecycle policies</li>
+                    <li>Deploy spot instance strategies</li>
+                </ul>
+                
+                <h4>Month 6: Advanced Optimization</h4>
+                <ul>
+                    <li>Implement auto-scaling policies</li>
+                    <li>Optimize network and data transfer costs</li>
+                    <li>Deploy container and serverless optimizations</li>
+                    <li>Establish chargeback processes</li>
+                </ul>
+            </div>
+            
+            <h3 id="phase-3">Phase 3: Continuous Improvement (Months 7+)</h3>
+            <div class="card">
+                <div class="card-header">
+                    <h3>🔄 Establish Continuous Optimization</h3>
+                </div>
+                <h4>Ongoing Activities:</h4>
+                <ul>
+                    <li>Monthly cost optimization reviews</li>
+                    <li>Quarterly right-sizing assessments</li>
+                    <li>Annual reserved capacity planning</li>
+                    <li>Continuous policy refinement</li>
+                </ul>
+                
+                <h4>Advanced Capabilities:</h4>
+                <ul>
+                    <li>Predictive cost modeling and forecasting</li>
+                    <li>Automated policy enforcement</li>
+                    <li>Machine learning-driven optimization</li>
+                    <li>Business value correlation analysis</li>
+                </ul>
+                
+                <h4>Success Metrics:</h4>
+                <ul>
+                    <li>Month-over-month cost reduction: 15-30%</li>
+                    <li>Resource utilization improvement: 20-40%</li>
+                    <li>Budget variance reduction: &lt;10%</li>
+                    <li>Cost awareness and accountability: Quantified by surveys</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Tools and Technologies Section -->
+        <section class="section" id="tools">
+            <h2 id="tools">🛠️ Tools & Technologies</h2>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 id="native-tools">☁️ Native Cloud Tools</h3>
+                    </div>
+                    <h4>AWS:</h4>
+                    <ul>
+                        <li><strong>Cost Explorer:</strong> Cost analysis and budgeting</li>
+                        <li><strong>Budgets:</strong> Budget creation and alerting</li>
+                        <li><strong>Trusted Advisor:</strong> Cost optimization recommendations</li>
+                        <li><strong>Well-Architected Tool:</strong> Best practices assessment</li>
+                    </ul>
+                    
+                    <h4>Azure:</h4>
+                    <ul>
+                        <li><strong>Cost Management:</strong> Cost analysis and budgets</li>
+                        <li><strong>Advisor:</strong> Optimization recommendations</li>
+                        <li><strong>Monitor:</strong> Resource utilization tracking</li>
+                        <li><strong>Policy:</strong> Governance and compliance</li>
+                    </ul>
+                    
+                    <h4>Google Cloud:</h4>
+                    <ul>
+                        <li><strong>Cloud Billing:</strong> Cost management and analysis</li>
+                        <li><strong>Recommender:</strong> Optimization suggestions</li>
+                        <li><strong>Cloud Operations:</strong> Monitoring and logging</li>
+                        <li><strong>Organization Policy:</strong> Governance controls</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 id="third-party">🏢 Third-Party Platforms</h3>
+                    </div>
+                    <h4>Multi-Cloud Management:</h4>
+                    <ul>
+                        <li><strong>CloudHealth (VMware):</strong> Enterprise cost management</li>
+                        <li><strong>CloudCheckr (Spot.io):</strong> Security and cost optimization</li>
+                        <li><strong>Flexera:</strong> Multi-cloud cost optimization</li>
+                        <li><strong>Turbonomic (IBM):</strong> Application resource management</li>
+                    </ul>
+                    
+                    <h4>Specialized Tools:</h4>
+                    <ul>
+                        <li><strong>ParkMyCloud:</strong> Resource scheduling</li>
+                        <li><strong>CloudZero:</strong> Unit cost economics</li>
+                        <li><strong>Yotascale:</strong> Container cost management</li>
+                        <li><strong>Densify:</strong> Resource optimization</li>
+                    </ul>
+                    
+                    <div class="savings-highlight">
+                        <strong>Selection Criteria:</strong> Multi-cloud support, automation, reporting, integration capabilities
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>🔧 Open Source Solutions</h3>
+                    </div>
+                    <h4>Cost Monitoring:</h4>
+                    <ul>
+                        <li><strong>OpenCost:</strong> Kubernetes cost monitoring</li>
+                        <li><strong>KubeCost:</strong> Container cost analysis</li>
+                        <li><strong>Cloud Custodian:</strong> Policy as code</li>
+                        <li><strong>Infracost:</strong> Infrastructure cost estimation</li>
+                    </ul>
+                    
+                    <h4>Automation and Governance:</h4>
+                    <ul>
+                        <li><strong>Terraform:</strong> Infrastructure as code</li>
+                        <li><strong>Pulumi:</strong> Modern IaC with programming languages</li>
+                        <li><strong>OPA (Open Policy Agent):</strong> Policy engine</li>
+                        <li><strong>Falco:</strong> Runtime security and compliance</li>
+                    </ul>
+                    
+                    <div class="savings-highlight">
+                        <strong>Benefits:</strong> No licensing costs, customizable, community support
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Get Started Section -->
+        <section class="section" id="get-started">
+            <h2 id="get-started">🎯 Get Started Today</h2>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>📊 Assessment</h3>
+                    </div>
+                    <p>Start by understanding your current FinOps maturity and identifying immediate opportunities.</p>
+                    <div class="btn-group">
+                        <a href="calculator.html#maturity" class="btn btn-primary">Take Assessment</a>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>💰 Cost Analysis</h3>
+                    </div>
+                    <p>Analyze your cloud spending patterns and identify optimization opportunities.</p>
+                    <div class="btn-group">
+                        <a href="calculator.html#cloud-costs" class="btn btn-primary">Analyze Costs</a>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>🗺️ Roadmap Planning</h3>
+                    </div>
+                    <p>Create a comprehensive optimization roadmap with timelines and savings projections.</p>
+                    <div class="btn-group">
+                        <a href="calculator.html#roadmap" class="btn btn-primary">Plan Roadmap</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="alert alert-success">
+                <strong>Quick Start Guide:</strong> Begin with the FinOps maturity assessment to understand your current state, then use the calculator to identify immediate optimization opportunities. Focus on quick wins like waste elimination and right-sizing before implementing longer-term strategies.
+            </div>
+            
+            <!-- CTA Section -->
+            <div style="background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; padding: 3rem 2rem; border-radius: 12px; margin: 3rem 0; text-align: center;">
+                <h2 style="color: white; margin-bottom: 1rem; font-size: 2rem;">Ready to Optimize Your Cloud Costs?</h2>
+                <p style="margin-bottom: 2rem; opacity: 0.9; font-size: 1.1rem;">Use our comprehensive Cost Optimization Calculator to assess your FinOps maturity, analyze spending patterns, and create an optimization roadmap.</p>
+                
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <a href="calculator.html" style="display: inline-block; background: white; color: #6366f1; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 1.1rem; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                        💰 Launch Cost Calculator
+                    </a>
+                    <a href="/calculators.html" style="display: inline-block; background: rgba(255,255,255,0.2); color: white; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 1.1rem; border: 2px solid white; transition: all 0.3s;" onmouseover="this.style.background='white'; this.style.color='#6366f1'" onmouseout="this.style.background='rgba(255,255,255,0.2)'; this.style.color='white'">
+                        📊 View All Tools
+                    </a>
+                </div>
+            </div>
+
+            <div style="background: #f8fafc; padding: 3rem 2rem; border-radius: 12px; margin: 3rem 0;">
+                <h2 style="text-align: center; color: #1e293b; margin-bottom: 2rem;">Explore Other Frameworks</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; width: 100%; box-sizing: border-box; overflow-x: hidden;">
+                    <a href="/ai-readiness/index.html" style="background: white; padding: 1.5rem; border-radius: 8px; text-decoration: none; border: 1px solid #e2e8f0; transition: all 0.3s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">
+                        <h3 style="color: #6366f1; margin-bottom: 0.5rem;">🤖 AI Readiness</h3>
+                        <p style="color: #64748b; font-size: 0.9rem;">Evaluate AI/ML implementation readiness</p>
+                    </a>
+                    <a href="/cloud-migration/index.html" style="background: white; padding: 1.5rem; border-radius: 8px; text-decoration: none; border: 1px solid #e2e8f0; transition: all 0.3s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">
+                        <h3 style="color: #6366f1; margin-bottom: 0.5rem;">☁️ Cloud Migration</h3>
+                        <p style="color: #64748b; font-size: 0.9rem;">Comprehensive cloud migration assessment</p>
+                    </a>
+                    <a href="/mlops-audit/index.html" style="background: white; padding: 1.5rem; border-radius: 8px; text-decoration: none; border: 1px solid #e2e8f0; transition: all 0.3s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">
+                        <h3 style="color: #6366f1; margin-bottom: 0.5rem;">🔧 MLOps Audit</h3>
+                        <p style="color: #64748b; font-size: 0.9rem;">Machine Learning operations excellence</p>
+                    </a>
+                    <a href="/llm-framework/index.html" style="background: white; padding: 1.5rem; border-radius: 8px; text-decoration: none; border: 1px solid #e2e8f0; transition: all 0.3s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">
+                        <h3 style="color: #6366f1; margin-bottom: 0.5rem;">🧠 LLM Framework</h3>
+                        <p style="color: #64748b; font-size: 0.9rem;">Large Language Model implementation guide</p>
+                    </a>
+                    <a href="/security-audit/index.html" style="background: white; padding: 1.5rem; border-radius: 8px; text-decoration: none; border: 1px solid #e2e8f0; transition: all 0.3s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">
+                        <h3 style="color: #6366f1; margin-bottom: 0.5rem;">🔐 Security Audit</h3>
+                        <p style="color: #64748b; font-size: 0.9rem;">Comprehensive security assessment framework</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+            </main>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer style="background: linear-gradient(135deg, #6366f1, #8b5cf6); padding: 2rem 0; margin-top: 4rem; text-align: center; color: white;">
+        <div style="font-size: 1.1rem; font-weight: 500;">
+            Built with ❤️ by architects, for architects! 🚀
+        </div>
+    </footer>
+    
+    <!-- Navigation JavaScript -->
+    <script src="../assets/js/site-navigation.js"></script>
+    
+    <script>
+        // Smooth scrolling for TOC links
+        document.querySelectorAll('.toc a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Highlight current section in TOC
+        function updateTOC() {
+            const sections = document.querySelectorAll('.content h1, .content h2, .content h3');
+            const tocLinks = document.querySelectorAll('.toc a');
+            
+            let current = '';
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = '#' + section.id;
+                }
+            });
+            
+            tocLinks.forEach(link => {
+                link.style.color = link.getAttribute('href') === current ? 'var(--primary)' : 'var(--gray)';
+                link.style.borderLeftColor = link.getAttribute('href') === current ? 'var(--primary)' : 'transparent';
+            });
+        }
+        
+        window.addEventListener('scroll', updateTOC);
+        window.addEventListener('load', updateTOC);
+    </script>
+</body>
+</html>

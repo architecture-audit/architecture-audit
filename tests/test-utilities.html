@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Utility Systems Test Page</title>
+    
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #1f2937;
+            margin-bottom: 30px;
+        }
+        
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f9fafb;
+            border-radius: 8px;
+        }
+        
+        .test-section h2 {
+            color: #4b5563;
+            margin-bottom: 15px;
+        }
+        
+        button {
+            background: #6366f1;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        button:hover {
+            background: #4f46e5;
+        }
+        
+        input, select, textarea {
+            padding: 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        input[required] {
+            border-left: 3px solid #ef4444;
+        }
+        
+        .status {
+            padding: 10px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Utility Systems Test Page</h1>
+        
+        <!-- Notification System Test -->
+        <div class="test-section">
+            <h2>1. Notification System</h2>
+            <button onclick="testNotification('success')">✅ Success</button>
+            <button onclick="testNotification('error')">❌ Error</button>
+            <button onclick="testNotification('warning')">⚠️ Warning</button>
+            <button onclick="testNotification('info')">ℹ️ Info</button>
+            <div class="status" id="notification-status">Click a button to test notifications</div>
+        </div>
+        
+        <!-- Validation System Test -->
+        <div class="test-section">
+            <h2>2. Form Validation</h2>
+            <form id="test-form">
+                <input type="text" id="name" placeholder="Name" required>
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="number" id="age" placeholder="Age" min="1" max="120" required>
+                <select id="role" required>
+                    <option value="">Select Role</option>
+                    <option value="developer">Developer</option>
+                    <option value="architect">Architect</option>
+                </select>
+                <button type="button" onclick="testValidation()">Validate Form</button>
+            </form>
+            <div class="status" id="validation-status">Fill the form and click validate</div>
+        </div>
+        
+        <!-- Auto-Save Test -->
+        <div class="test-section">
+            <h2>3. Auto-Save System</h2>
+            <textarea id="notes" placeholder="Type something here to test auto-save..." rows="3" style="width: 100%;"></textarea>
+            <button onclick="testManualSave()">💾 Manual Save</button>
+            <button onclick="testClearSave()">🗑️ Clear Saved</button>
+            <div class="status" id="autosave-status">Auto-save will trigger after changes</div>
+        </div>
+        
+        <!-- Progress Tracker Test -->
+        <div class="test-section">
+            <h2>4. Progress Tracker</h2>
+            <input type="text" placeholder="Field 1" required>
+            <input type="text" placeholder="Field 2" required>
+            <input type="text" placeholder="Field 3" required>
+            <input type="text" placeholder="Field 4" required>
+            <button onclick="testProgressUpdate()">Update Progress</button>
+            <div class="status" id="progress-status">Fill fields to see progress bar update</div>
+        </div>
+        
+        <!-- Loading Overlay Test -->
+        <div class="test-section">
+            <h2>5. Loading Overlay</h2>
+            <button onclick="testLoading()">Show Loading (3 seconds)</button>
+            <button onclick="testLoadingWithAsync()">Test Async Operation</button>
+            <div class="status" id="loading-status">Click to test loading overlay</div>
+        </div>
+        
+        <!-- Calculator Utils Test -->
+        <div class="test-section">
+            <h2>6. Calculator Utilities</h2>
+            <input type="text" id="number1" placeholder="Number 1" value="1234.56">
+            <input type="text" id="number2" placeholder="Number 2" value="789">
+            <button onclick="testUtils()">Test Utils</button>
+            <div class="status" id="utils-status">Click to test utility functions</div>
+        </div>
+    </div>
+    
+    <!-- Load all utility scripts -->
+    <script src="../assets/js/notifications.js"></script>
+    <script src="../assets/js/validation.js"></script>
+    <script src="../assets/js/auto-save.js"></script>
+    <script src="../assets/js/progress-tracker.js"></script>
+    <script src="../assets/js/loading-overlay.js"></script>
+    <script src="../assets/js/calculator-utils.js"></script>
+    
+    <script>
+        // Test functions
+        function testNotification(type) {
+            const messages = {
+                success: '✅ This is a success message!',
+                error: '❌ This is an error message!',
+                warning: '⚠️ This is a warning message!',
+                info: 'ℹ️ This is an info message!'
+            };
+            
+            if (window.notify) {
+                window.notify.show(messages[type], type);
+                document.getElementById('notification-status').textContent = `Showed ${type} notification`;
+            } else {
+                document.getElementById('notification-status').textContent = 'Notification system not loaded!';
+            }
+        }
+        
+        function testValidation() {
+            if (window.FormValidator) {
+                const isValid = FormValidator.validateForm('test-form');
+                document.getElementById('validation-status').textContent = isValid ? 
+                    '✅ Form is valid!' : '❌ Form has validation errors';
+            } else {
+                document.getElementById('validation-status').textContent = 'Validation system not loaded!';
+            }
+        }
+        
+        function testManualSave() {
+            if (window.CalculatorUtils) {
+                CalculatorUtils.saveWithFeedback();
+                document.getElementById('autosave-status').textContent = 'Manual save triggered';
+            } else {
+                document.getElementById('autosave-status').textContent = 'Calculator utils not loaded!';
+            }
+        }
+        
+        function testClearSave() {
+            if (window.autoSave) {
+                window.autoSave.clearSaved();
+                document.getElementById('autosave-status').textContent = 'Saved data cleared';
+            } else {
+                document.getElementById('autosave-status').textContent = 'Auto-save not initialized!';
+            }
+        }
+        
+        function testProgressUpdate() {
+            if (window.progressTracker) {
+                const progress = window.progressTracker.updateProgress();
+                document.getElementById('progress-status').textContent = `Progress: ${progress}%`;
+            } else {
+                document.getElementById('progress-status').textContent = 'Progress tracker not loaded!';
+            }
+        }
+        
+        function testLoading() {
+            if (window.LoadingOverlay) {
+                LoadingOverlay.show('Processing your request...');
+                setTimeout(() => {
+                    LoadingOverlay.hide();
+                    document.getElementById('loading-status').textContent = 'Loading overlay shown for 3 seconds';
+                }, 3000);
+            } else {
+                document.getElementById('loading-status').textContent = 'Loading overlay not loaded!';
+            }
+        }
+        
+        async function testLoadingWithAsync() {
+            if (window.LoadingOverlay) {
+                try {
+                    const result = await LoadingOverlay.withLoading(async () => {
+                        // Simulate async operation
+                        await new Promise(resolve => setTimeout(resolve, 2000));
+                        return 'Operation completed!';
+                    }, 'Performing async operation...');
+                    
+                    document.getElementById('loading-status').textContent = result;
+                } catch (error) {
+                    document.getElementById('loading-status').textContent = 'Error: ' + error.message;
+                }
+            }
+        }
+        
+        function testUtils() {
+            if (window.CalculatorUtils) {
+                const num1 = document.getElementById('number1').value;
+                const num2 = document.getElementById('number2').value;
+                
+                const parsed1 = CalculatorUtils.safeParseFloat(num1);
+                const parsed2 = CalculatorUtils.safeParseFloat(num2);
+                const sum = parsed1 + parsed2;
+                
+                const results = [
+                    `Parsed: ${parsed1} + ${parsed2} = ${sum}`,
+                    `Formatted: ${CalculatorUtils.formatNumber(sum)}`,
+                    `Currency: ${CalculatorUtils.formatCurrency(sum)}`,
+                    `Percentage: ${CalculatorUtils.safePercentage(parsed1, sum)}%`
+                ];
+                
+                document.getElementById('utils-status').innerHTML = results.join('<br>');
+            } else {
+                document.getElementById('utils-status').textContent = 'Calculator utils not loaded!';
+            }
+        }
+        
+        // Initialize auto-save for test
+        window.collectAllData = function() {
+            return {
+                notes: document.getElementById('notes').value,
+                timestamp: new Date().toISOString()
+            };
+        };
+        
+        window.restoreData = function(data) {
+            if (data && data.notes) {
+                document.getElementById('notes').value = data.notes;
+            }
+        };
+        
+        // Initialize auto-save
+        if (window.AutoSave) {
+            window.autoSave = new AutoSave('test-utilities');
+        }
+        
+        // Initialize progress tracker
+        if (window.ProgressTracker) {
+            window.progressTracker = new ProgressTracker();
+        }
+    </script>
+</body>
+</html>

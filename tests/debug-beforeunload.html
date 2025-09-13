@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug BeforeUnload Warning</title>
+    <style>
+        body { font-family: monospace; padding: 20px; background: #1a1a1a; color: #0f0; }
+        button { padding: 10px; margin: 5px; }
+        #log { background: #000; padding: 20px; margin: 20px 0; height: 400px; overflow-y: auto; }
+        .change { color: yellow; }
+        .save { color: cyan; }
+        .warning { color: red; }
+    </style>
+</head>
+<body>
+    <h1>Debug BeforeUnload Warning</h1>
+    
+    <button onclick="makeChange()">Make a Change</button>
+    <button onclick="triggerSave()">Trigger Save</button>
+    <button onclick="checkStatus()">Check Status</button>
+    <button onclick="clearLog()">Clear Log</button>
+    <button onclick="testNavigation()">Test Navigation (triggers beforeunload)</button>
+    
+    <input type="text" id="testInput" placeholder="Type here to trigger changes">
+    
+    <div id="log"></div>
+    
+    <script src="/docs/assets/js/bundle-utilities.min.js"></script>
+    
+    <script>
+        const log = document.getElementById('log');
+        
+        function addLog(msg, className = '') {
+            const div = document.createElement('div');
+            div.className = className;
+            div.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+            log.appendChild(div);
+            log.scrollTop = log.scrollHeight;
+        }
+        
+        // Initialize auto-save
+        setTimeout(() => {
+            if (window.AutoSave) {
+                window.autoSave = new AutoSave('debug-test', 5000);
+                addLog('AutoSave initialized', 'save');
+                
+                // Override hasChanges setter to log changes
+                let _hasChanges = false;
+                Object.defineProperty(window.autoSave, 'hasChanges', {
+                    get() {
+                        return _hasChanges;
+                    },
+                    set(value) {
+                        addLog(`hasChanges: ${_hasChanges} → ${value}`, value ? 'warning' : 'save');
+                        _hasChanges = value;
+                        console.trace('hasChanges set to:', value);
+                    }
+                });
+                
+                // Log when save is called
+                const originalSave = window.autoSave.save.bind(window.autoSave);
+                window.autoSave.save = function() {
+                    addLog('save() called', 'save');
+                    const result = originalSave();
+                    addLog(`save() returned: ${result}, hasChanges now: ${this.hasChanges}`, 'save');
+                    return result;
+                };
+            } else {
+                addLog('AutoSave not available!', 'warning');
+            }
+        }, 100);
+        
+        // Create collectAllData function
+        window.collectAllData = function() {
+            return {
+                testInput: document.getElementById('testInput').value,
+                timestamp: new Date().toISOString()
+            };
+        };
+        
+        function makeChange() {
+            document.getElementById('testInput').value = 'Changed at ' + new Date().toLocaleTimeString();
+            document.getElementById('testInput').dispatchEvent(new Event('input', { bubbles: true }));
+            addLog('Triggered input event', 'change');
+        }
+        
+        function triggerSave() {
+            if (window.autoSave) {
+                window.autoSave.manualSave();
+                addLog('Manual save triggered', 'save');
+            }
+        }
+        
+        function checkStatus() {
+            if (window.autoSave) {
+                addLog(`Current status: hasChanges = ${window.autoSave.hasChanges}`);
+                addLog(`Last save: ${window.autoSave.lastSave || 'Never'}`);
+            }
+        }
+        
+        function clearLog() {
+            log.innerHTML = '';
+        }
+        
+        function testNavigation() {
+            // This will trigger beforeunload
+            if (confirm('This will attempt to navigate away. Continue?')) {
+                window.location.href = '#test';
+            }
+        }
+        
+        // Log all input/change events
+        document.addEventListener('input', (e) => {
+            addLog(`Input event on: ${e.target.id || e.target.tagName}`, 'change');
+        });
+        
+        document.addEventListener('change', (e) => {
+            addLog(`Change event on: ${e.target.id || e.target.tagName}`, 'change');
+        });
+        
+        // Override beforeunload to log what's happening
+        window.addEventListener('beforeunload', (e) => {
+            if (window.autoSave) {
+                console.log('BeforeUnload: hasChanges =', window.autoSave.hasChanges);
+                addLog(`BeforeUnload triggered: hasChanges = ${window.autoSave.hasChanges}`, 'warning');
+            }
+        });
+    </script>
+</body>
+</html>

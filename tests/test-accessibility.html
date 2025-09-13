@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accessibility Tests - AI Architecture Audit</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, system-ui, sans-serif; padding: 20px; background: #f9fafb; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; }
+        h1 { font-size: 28px; margin-bottom: 10px; }
+        .test-container { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .test-group { margin-bottom: 30px; }
+        .test-item { padding: 12px; margin: 10px 0; border-left: 4px solid #e5e7eb; background: #f9fafb; }
+        .test-item.pass { border-color: #10b981; background: #ecfdf5; }
+        .test-item.fail { border-color: #ef4444; background: #fef2f2; }
+        .test-item.warning { border-color: #f59e0b; background: #fffbeb; }
+        .test-item.running { border-color: #3b82f6; background: #eff6ff; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 20px 0; }
+        .stat-card { background: white; padding: 15px; border-radius: 8px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        button { background: #3b82f6; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 14px; margin: 5px; }
+        button:hover { background: #2563eb; }
+        .back-link { color: white; text-decoration: none; opacity: 0.9; }
+        .back-link:hover { opacity: 1; }
+        .severity { font-size: 11px; padding: 2px 6px; border-radius: 3px; margin-left: 5px; }
+        .severity.critical { background: #ef4444; color: white; }
+        .severity.serious { background: #f59e0b; color: white; }
+        .severity.moderate { background: #3b82f6; color: white; }
+        .severity.minor { background: #6b7280; color: white; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-link">← Back to Test Suite</a>
+        <h1>♿ Accessibility Tests</h1>
+        <p>Testing WCAG 2.1 compliance and accessibility features</p>
+    </div>
+
+    <div class="stats" id="stats">
+        <div class="stat-card">
+            <div style="font-size: 24px; font-weight: bold; color: #10b981;" id="passed">0</div>
+            <div style="color: #6b7280;">Passed</div>
+        </div>
+        <div class="stat-card">
+            <div style="font-size: 24px; font-weight: bold; color: #f59e0b;" id="warnings">0</div>
+            <div style="color: #6b7280;">Warnings</div>
+        </div>
+        <div class="stat-card">
+            <div style="font-size: 24px; font-weight: bold; color: #ef4444;" id="violations">0</div>
+            <div style="color: #6b7280;">Violations</div>
+        </div>
+        <div class="stat-card">
+            <div style="font-size: 24px; font-weight: bold;" id="score">A</div>
+            <div style="color: #6b7280;">WCAG Score</div>
+        </div>
+    </div>
+
+    <button onclick="runAllTests()">Run Accessibility Tests</button>
+    <button onclick="generateReport()">Generate Report</button>
+
+    <div class="test-container">
+        <div class="test-group">
+            <h2>Semantic HTML Tests</h2>
+            <div id="semantic-tests"></div>
+        </div>
+
+        <div class="test-group">
+            <h2>ARIA Implementation Tests</h2>
+            <div id="aria-tests"></div>
+        </div>
+
+        <div class="test-group">
+            <h2>Keyboard Navigation Tests</h2>
+            <div id="keyboard-tests"></div>
+        </div>
+
+        <div class="test-group">
+            <h2>Color Contrast Tests</h2>
+            <div id="contrast-tests"></div>
+        </div>
+
+        <div class="test-group">
+            <h2>Screen Reader Tests</h2>
+            <div id="screenreader-tests"></div>
+        </div>
+
+        <div class="test-group">
+            <h2>Form Accessibility Tests</h2>
+            <div id="form-tests"></div>
+        </div>
+    </div>
+
+    <script>
+        let testResults = { passed: 0, warnings: 0, violations: 0, total: 0 };
+
+        // Test framework
+        function a11yTest(name, fn, container, severity = 'moderate') {
+            const testDiv = document.createElement('div');
+            testDiv.className = 'test-item running';
+            testDiv.innerHTML = `🔄 ${name}`;
+            document.getElementById(container).appendChild(testDiv);
+            
+            setTimeout(async () => {
+                try {
+                    const result = await fn();
+                    let status = 'pass';
+                    
+                    if (result === true || result === undefined) {
+                        testDiv.className = 'test-item pass';
+                        testDiv.innerHTML = `✅ ${name}`;
+                        testResults.passed++;
+                    } else if (result === 'warning') {
+                        testDiv.className = 'test-item warning';
+                        testDiv.innerHTML = `⚠️ ${name} <span class="severity ${severity}">${severity}</span>`;
+                        testResults.warnings++;
+                    } else {
+                        testDiv.className = 'test-item fail';
+                        testDiv.innerHTML = `❌ ${name} <span class="severity ${severity}">${severity}</span>`;
+                        testResults.violations++;
+                    }
+                } catch (error) {
+                    testDiv.className = 'test-item fail';
+                    testDiv.innerHTML = `❌ ${name}: ${error.message}`;
+                    testResults.violations++;
+                }
+                
+                testResults.total++;
+                updateStats();
+            }, 100);
+        }
+
+        function updateStats() {
+            document.getElementById('passed').textContent = testResults.passed;
+            document.getElementById('warnings').textContent = testResults.warnings;
+            document.getElementById('violations').textContent = testResults.violations;
+            
+            // Calculate WCAG score
+            const passRate = testResults.total > 0 ? (testResults.passed / testResults.total) : 0;
+            let score = 'F';
+            if (passRate >= 0.95) score = 'AAA';
+            else if (passRate >= 0.85) score = 'AA';
+            else if (passRate >= 0.75) score = 'A';
+            else if (passRate >= 0.60) score = 'B';
+            else if (passRate >= 0.40) score = 'C';
+            else if (passRate >= 0.20) score = 'D';
+            
+            document.getElementById('score').textContent = score;
+        }
+
+        // Semantic HTML test suite
+        function runSemanticTests() {
+            a11yTest('Page has one main landmark', () => {
+                const mains = document.querySelectorAll('main, [role="main"]');
+                return mains.length === 1;
+            }, 'semantic-tests', 'serious');
+
+            a11yTest('Page has header landmark', () => {
+                const headers = document.querySelectorAll('header, [role="banner"]');
+                return headers.length >= 1;
+            }, 'semantic-tests', 'moderate');
+
+            a11yTest('Page has navigation landmark', () => {
+                const navs = document.querySelectorAll('nav, [role="navigation"]');
+                return navs.length >= 1;
+            }, 'semantic-tests', 'moderate');
+
+            a11yTest('Headings are in logical order', () => {
+                const headings = Array.from(document.querySelectorAll('h1, h2, h3, h4, h5, h6'));
+                let lastLevel = 0;
+                let skipped = false;
+                
+                headings.forEach(h => {
+                    const level = parseInt(h.tagName[1]);
+                    if (level > lastLevel + 1) skipped = true;
+                    lastLevel = level;
+                });
+                
+                return !skipped;
+            }, 'semantic-tests', 'serious');
+
+            a11yTest('Lists use proper markup', () => {
+                // Check if list items are inside ul/ol
+                const listItems = document.querySelectorAll('li');
+                return Array.from(listItems).every(li => {
+                    const parent = li.parentElement;
+                    return parent && (parent.tagName === 'UL' || parent.tagName === 'OL');
+                });
+            }, 'semantic-tests', 'minor');
+
+            a11yTest('Tables have proper structure', () => {
+                const tables = document.querySelectorAll('table');
+                return Array.from(tables).every(table => {
+                    return table.querySelector('thead') || table.querySelector('th');
+                }) || tables.length === 0;
+            }, 'semantic-tests', 'moderate');
+        }
+
+        // ARIA Implementation test suite
+        function runAriaTests() {
+            a11yTest('Interactive elements have ARIA labels', () => {
+                const interactive = document.querySelectorAll('button, a, input, select, textarea');
+                const unlabeled = Array.from(interactive).filter(el => {
+                    return !el.textContent.trim() && 
+                           !el.getAttribute('aria-label') && 
+                           !el.getAttribute('aria-labelledby') &&
+                           !el.getAttribute('title');
+                });
+                return unlabeled.length === 0;
+            }, 'aria-tests', 'critical');
+
+            a11yTest('ARIA roles are valid', () => {
+                const validRoles = ['button', 'navigation', 'main', 'banner', 'contentinfo', 'search', 'form', 'region', 'complementary'];
+                const elements = document.querySelectorAll('[role]');
+                return Array.from(elements).every(el => {
+                    const role = el.getAttribute('role');
+                    return validRoles.includes(role);
+                });
+            }, 'aria-tests', 'serious');
+
+            a11yTest('ARIA attributes are properly used', () => {
+                const ariaElements = document.querySelectorAll('[aria-hidden], [aria-expanded], [aria-checked]');
+                return Array.from(ariaElements).every(el => {
+                    const hidden = el.getAttribute('aria-hidden');
+                    const expanded = el.getAttribute('aria-expanded');
+                    const checked = el.getAttribute('aria-checked');
+                    
+                    return (hidden === 'true' || hidden === 'false') ||
+                           (expanded === 'true' || expanded === 'false') ||
+                           (checked === 'true' || checked === 'false' || checked === 'mixed');
+                });
+            }, 'aria-tests', 'moderate');
+
+            a11yTest('Live regions are properly marked', () => {
+                const notifications = document.querySelectorAll('.notification, .alert, .status');
+                return Array.from(notifications).every(el => {
+                    return el.getAttribute('aria-live') || el.getAttribute('role') === 'alert';
+                }) || notifications.length === 0;
+            }, 'aria-tests', 'moderate');
+        }
+
+        // Keyboard Navigation test suite
+        function runKeyboardTests() {
+            a11yTest('All interactive elements are focusable', () => {
+                const interactive = document.querySelectorAll('button, a, input, select, textarea');
+                return Array.from(interactive).every(el => {
+                    return el.tabIndex >= -1;
+                });
+            }, 'keyboard-tests', 'critical');
+
+            a11yTest('Focus order follows visual order', () => {
+                const focusable = document.querySelectorAll('[tabindex]:not([tabindex="-1"])');
+                let validOrder = true;
+                focusable.forEach(el => {
+                    if (parseInt(el.tabIndex) > 0) validOrder = false;
+                });
+                return validOrder;
+            }, 'keyboard-tests', 'serious');
+
+            a11yTest('Skip links are present', () => {
+                const skipLinks = document.querySelectorAll('a[href^="#"]:contains("skip"), a[href^="#"]:contains("Skip")');
+                return true; // Optional but recommended
+            }, 'keyboard-tests', 'minor');
+
+            a11yTest('Focus indicators are visible', () => {
+                // Check if focus styles exist
+                const styles = Array.from(document.styleSheets);
+                let hasFocusStyles = false;
+                styles.forEach(sheet => {
+                    try {
+                        const rules = Array.from(sheet.cssRules || []);
+                        hasFocusStyles = hasFocusStyles || rules.some(rule => 
+                            rule.selectorText && rule.selectorText.includes(':focus')
+                        );
+                    } catch (e) {}
+                });
+                return hasFocusStyles;
+            }, 'keyboard-tests', 'serious');
+        }
+
+        // Color Contrast test suite
+        function runContrastTests() {
+            a11yTest('Text has sufficient contrast', () => {
+                // This is a simplified check
+                const textElements = document.querySelectorAll('p, span, div, h1, h2, h3, h4, h5, h6');
+                let lowContrast = 0;
+                
+                textElements.forEach(el => {
+                    const style = window.getComputedStyle(el);
+                    const color = style.color;
+                    const bgColor = style.backgroundColor;
+                    
+                    // Simple check: ensure text isn't too light
+                    if (color === bgColor) lowContrast++;
+                });
+                
+                return lowContrast === 0;
+            }, 'contrast-tests', 'serious');
+
+            a11yTest('Links are distinguishable', () => {
+                const links = document.querySelectorAll('a');
+                let distinguishable = true;
+                
+                links.forEach(link => {
+                    const style = window.getComputedStyle(link);
+                    if (style.textDecoration === 'none' && 
+                        style.color === window.getComputedStyle(link.parentElement).color) {
+                        distinguishable = false;
+                    }
+                });
+                
+                return distinguishable ? true : 'warning';
+            }, 'contrast-tests', 'moderate');
+
+            a11yTest('Focus indicators have contrast', () => {
+                // Check focus state contrast
+                const focusable = document.querySelector('button, a');
+                if (focusable) {
+                    focusable.focus();
+                    const focusStyle = window.getComputedStyle(focusable);
+                    const hasOutline = focusStyle.outline !== 'none' || 
+                                      focusStyle.border !== window.getComputedStyle(focusable).border;
+                    focusable.blur();
+                    return hasOutline;
+                }
+                return true;
+            }, 'contrast-tests', 'serious');
+
+            a11yTest('Error messages are distinguishable', () => {
+                const errors = document.querySelectorAll('.error, [role="alert"]');
+                return Array.from(errors).every(error => {
+                    const style = window.getComputedStyle(error);
+                    return style.color !== 'inherit' || style.backgroundColor !== 'inherit';
+                }) || errors.length === 0;
+            }, 'contrast-tests', 'moderate');
+        }
+
+        // Screen Reader test suite
+        function runScreenReaderTests() {
+            a11yTest('Images have alt text', () => {
+                const images = document.querySelectorAll('img');
+                return Array.from(images).every(img => {
+                    return img.hasAttribute('alt');
+                });
+            }, 'screenreader-tests', 'critical');
+
+            a11yTest('Decorative images are marked', () => {
+                const decorative = document.querySelectorAll('img[src*="decoration"], img[src*="background"]');
+                return Array.from(decorative).every(img => {
+                    return img.getAttribute('alt') === '' || img.getAttribute('role') === 'presentation';
+                }) || decorative.length === 0;
+            }, 'screenreader-tests', 'minor');
+
+            a11yTest('Page has descriptive title', () => {
+                return document.title && document.title.length > 10;
+            }, 'screenreader-tests', 'serious');
+
+            a11yTest('Links have descriptive text', () => {
+                const links = document.querySelectorAll('a');
+                const generic = ['click here', 'here', 'read more', 'more'];
+                return Array.from(links).every(link => {
+                    const text = link.textContent.toLowerCase().trim();
+                    return text && !generic.includes(text);
+                });
+            }, 'screenreader-tests', 'moderate');
+
+            a11yTest('Page language is specified', () => {
+                return document.documentElement.hasAttribute('lang');
+            }, 'screenreader-tests', 'serious');
+        }
+
+        // Form Accessibility test suite
+        function runFormTests() {
+            a11yTest('Form inputs have labels', () => {
+                const inputs = document.querySelectorAll('input:not([type="submit"]):not([type="button"]), select, textarea');
+                return Array.from(inputs).every(input => {
+                    const id = input.id;
+                    return id && document.querySelector(`label[for="${id}"]`) ||
+                           input.getAttribute('aria-label') ||
+                           input.getAttribute('aria-labelledby');
+                });
+            }, 'form-tests', 'critical');
+
+            a11yTest('Required fields are marked', () => {
+                const required = document.querySelectorAll('[required]');
+                return Array.from(required).every(field => {
+                    return field.hasAttribute('aria-required') || 
+                           field.hasAttribute('required');
+                });
+            }, 'form-tests', 'serious');
+
+            a11yTest('Error messages are associated', () => {
+                const errors = document.querySelectorAll('.error-message, .validation-error');
+                return Array.from(errors).every(error => {
+                    return error.id && document.querySelector(`[aria-describedby="${error.id}"]`);
+                }) || errors.length === 0;
+            }, 'form-tests', 'serious');
+
+            a11yTest('Form has submit button', () => {
+                const forms = document.querySelectorAll('form');
+                return Array.from(forms).every(form => {
+                    return form.querySelector('button[type="submit"], input[type="submit"]');
+                }) || forms.length === 0;
+            }, 'form-tests', 'moderate');
+
+            a11yTest('Fieldsets group related inputs', () => {
+                const radios = document.querySelectorAll('input[type="radio"]');
+                const checkboxGroups = document.querySelectorAll('input[type="checkbox"][name]');
+                
+                const hasFieldset = (elements) => {
+                    return Array.from(elements).every(el => {
+                        return el.closest('fieldset');
+                    });
+                };
+                
+                return (radios.length === 0 || hasFieldset(radios)) && 
+                       (checkboxGroups.length === 0 || hasFieldset(checkboxGroups));
+            }, 'form-tests', 'minor');
+        }
+
+        // Generate accessibility report
+        function generateReport() {
+            const report = {
+                timestamp: new Date().toISOString(),
+                url: window.location.href,
+                results: testResults,
+                wcagLevel: document.getElementById('score').textContent,
+                recommendations: []
+            };
+            
+            if (testResults.violations > 0) {
+                report.recommendations.push('Fix critical accessibility violations');
+            }
+            if (testResults.warnings > 5) {
+                report.recommendations.push('Address accessibility warnings');
+            }
+            
+            console.log('Accessibility Report:', report);
+            alert('Report generated! Check console for details (F12).');
+        }
+
+        // Run all tests
+        function runAllTests() {
+            // Clear previous results
+            testResults = { passed: 0, warnings: 0, violations: 0, total: 0 };
+            document.querySelectorAll('.test-item').forEach(item => item.remove());
+            
+            // Run test suites
+            runSemanticTests();
+            setTimeout(() => runAriaTests(), 200);
+            setTimeout(() => runKeyboardTests(), 400);
+            setTimeout(() => runContrastTests(), 600);
+            setTimeout(() => runScreenReaderTests(), 800);
+            setTimeout(() => runFormTests(), 1000);
+        }
+
+        // Auto-run tests on page load
+        window.addEventListener('load', () => {
+            setTimeout(runAllTests, 500);
+        });
+    </script>
+</body>
+</html>

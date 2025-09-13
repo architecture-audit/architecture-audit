@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>🔬 Complete Test Suite Runner - Final Honest Evaluation</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 100%);
+            color: #fff;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .header {
+            text-align: center;
+            padding: 30px 0;
+            background: rgba(0,0,0,0.5);
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        h1 {
+            font-size: 2.5em;
+            background: linear-gradient(45deg, #f97316, #ef4444);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .test-card {
+            background: rgba(30, 30, 40, 0.9);
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+        .test-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .test-title {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            color: #60a5fa;
+        }
+        .pass { color: #4ade80; font-weight: bold; }
+        .fail { color: #ef4444; font-weight: bold; }
+        .warning { color: #fbbf24; font-weight: bold; }
+        .info { color: #60a5fa; }
+        .score-display {
+            font-size: 4em;
+            text-align: center;
+            padding: 40px;
+            background: rgba(0,0,0,0.7);
+            border-radius: 20px;
+            margin: 30px auto;
+            max-width: 600px;
+        }
+        button {
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.5);
+        }
+        .test-result {
+            padding: 10px;
+            margin: 5px 0;
+            background: rgba(0,0,0,0.3);
+            border-radius: 5px;
+            border-left: 3px solid #444;
+        }
+        .test-result.pass { border-left-color: #4ade80; }
+        .test-result.fail { border-left-color: #ef4444; }
+        .test-result.warning { border-left-color: #fbbf24; }
+        pre {
+            background: #000;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 12px;
+            margin: 10px 0;
+        }
+        .grade {
+            font-size: 5em;
+            text-align: center;
+            margin: 20px 0;
+            text-shadow: 0 0 30px rgba(255,255,255,0.3);
+        }
+        .grade.A { color: #4ade80; }
+        .grade.B { color: #60a5fa; }
+        .grade.C { color: #fbbf24; }
+        .grade.D { color: #fb923c; }
+        .grade.F { color: #ef4444; }
+        .final-verdict {
+            background: rgba(0,0,0,0.8);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            border: 2px solid #333;
+        }
+        .spinner {
+            border: 3px solid rgba(255,255,255,0.1);
+            border-top: 3px solid #60a5fa;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔬 Complete Test Suite Runner</h1>
+        <p style="font-size: 1.2em; color: #888;">Running all tests for final honest evaluation</p>
+    </div>
+
+    <div style="text-align: center; margin: 30px 0;">
+        <button onclick="runAllTests()">🚀 Run Complete Test Suite</button>
+        <button onclick="location.reload()">🔄 Reset</button>
+    </div>
+
+    <div id="results"></div>
+
+    <!-- Load required scripts -->
+    <script src="/docs/assets/js/bundle-utilities.min.js"></script>
+    <script src="/docs/assets/js/bundle-features.min.js"></script>
+
+    <script>
+        const results = document.getElementById('results');
+        const testResults = {
+            navigation: { passed: 0, failed: 0, tests: [] },
+            autoSave: { passed: 0, failed: 0, tests: [] },
+            calculators: { passed: 0, failed: 0, tests: [] },
+            performance: { passed: 0, failed: 0, tests: [] },
+            accessibility: { passed: 0, failed: 0, tests: [] },
+            persistence: { passed: 0, failed: 0, tests: [] },
+            pwa: { passed: 0, failed: 0, tests: [] },
+            darkMode: { passed: 0, failed: 0, tests: [] },
+            utilities: { passed: 0, failed: 0, tests: [] }
+        };
+
+        async function runAllTests() {
+            results.innerHTML = '<div class="spinner"></div><p style="text-align:center">Running comprehensive tests...</p>';
+            
+            // Test 1: Navigation
+            await testNavigation();
+            
+            // Test 2: Auto-Save
+            await testAutoSave();
+            
+            // Test 3: Calculators
+            await testCalculators();
+            
+            // Test 4: Performance
+            await testPerformance();
+            
+            // Test 5: Accessibility
+            await testAccessibility();
+            
+            // Test 6: Persistence
+            await testPersistence();
+            
+            // Test 7: PWA
+            await testPWA();
+            
+            // Test 8: Dark Mode
+            await testDarkMode();
+            
+            // Test 9: Utilities
+            await testUtilities();
+            
+            // Generate Final Report
+            generateFinalReport();
+        }
+
+        async function testNavigation() {
+            const navTests = [];
+            
+            // Check if navigation exists
+            const nav = document.querySelector('.site-nav');
+            navTests.push({
+                name: 'Navigation Bar Exists',
+                result: nav ? 'pass' : 'fail',
+                details: nav ? 'Navigation bar found' : 'Navigation bar missing'
+            });
+            
+            // Check dropdowns
+            const dropdowns = document.querySelectorAll('.dropdown-menu');
+            navTests.push({
+                name: 'Dropdown Menus',
+                result: dropdowns.length >= 2 ? 'pass' : 'fail',
+                details: `Found ${dropdowns.length} dropdown menus`
+            });
+            
+            // Check mobile toggle
+            const mobileToggle = document.querySelector('.mobile-menu-toggle');
+            navTests.push({
+                name: 'Mobile Menu Toggle',
+                result: mobileToggle ? 'pass' : 'fail',
+                details: mobileToggle ? 'Mobile toggle exists' : 'No mobile toggle'
+            });
+            
+            // Check links
+            const links = document.querySelectorAll('.site-nav a');
+            const validLinks = Array.from(links).filter(link => link.href && link.href !== '#');
+            navTests.push({
+                name: 'Navigation Links',
+                result: validLinks.length > 10 ? 'pass' : 'warning',
+                details: `${validLinks.length} valid links found`
+            });
+            
+            testResults.navigation.tests = navTests;
+            navTests.forEach(test => {
+                if (test.result === 'pass') testResults.navigation.passed++;
+                else testResults.navigation.failed++;
+            });
+        }
+
+        async function testAutoSave() {
+            const autoTests = [];
+            
+            // Check AutoSave class
+            autoTests.push({
+                name: 'AutoSave Class Available',
+                result: window.AutoSave ? 'pass' : 'fail',
+                details: window.AutoSave ? 'AutoSave class found in window' : 'AutoSave class NOT found'
+            });
+            
+            // Check auto-save instance (wait for initialization)
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            autoTests.push({
+                name: 'AutoSave Instance Created',
+                result: window.autoSave ? 'pass' : 'fail',
+                details: window.autoSave ? 
+                    `Instance exists for: ${window.autoSave.calculatorName || 'unknown'}` : 
+                    'No autoSave instance found'
+            });
+            
+            // Try manual initialization
+            if (!window.autoSave && window.AutoSave) {
+                try {
+                    window.testAutoSave = new AutoSave('test', 5000);
+                    autoTests.push({
+                        name: 'Manual Initialization',
+                        result: 'pass',
+                        details: 'Manual initialization successful'
+                    });
+                } catch(e) {
+                    autoTests.push({
+                        name: 'Manual Initialization',
+                        result: 'fail',
+                        details: `Failed: ${e.message}`
+                    });
+                }
+            }
+            
+            // Check localStorage functionality
+            try {
+                localStorage.setItem('test', 'test');
+                localStorage.removeItem('test');
+                autoTests.push({
+                    name: 'localStorage Access',
+                    result: 'pass',
+                    details: 'localStorage is working'
+                });
+            } catch(e) {
+                autoTests.push({
+                    name: 'localStorage Access',
+                    result: 'fail',
+                    details: 'localStorage not accessible'
+                });
+            }
+            
+            testResults.autoSave.tests = autoTests;
+            autoTests.forEach(test => {
+                if (test.result === 'pass') testResults.autoSave.passed++;
+                else testResults.autoSave.failed++;
+            });
+        }
+
+        async function testCalculators() {
+            const calcTests = [];
+            
+            // Test calculator utilities
+            if (window.CalculatorUtils) {
+                const testNum = window.CalculatorUtils.safeParseFloat('123.45');
+                calcTests.push({
+                    name: 'Calculator Utils',
+                    result: testNum === 123.45 ? 'pass' : 'fail',
+                    details: 'Calculator utilities available'
+                });
+            } else {
+                calcTests.push({
+                    name: 'Calculator Utils',
+                    result: 'fail',
+                    details: 'Calculator utilities NOT found'
+                });
+            }
+            
+            // Test export functionality
+            calcTests.push({
+                name: 'Excel Export Function',
+                result: typeof exportToExcel === 'function' ? 'pass' : 'warning',
+                details: typeof exportToExcel === 'function' ? 'Export function exists' : 'Export function not in global scope'
+            });
+            
+            // Test form validation
+            if (window.FormValidator) {
+                calcTests.push({
+                    name: 'Form Validator',
+                    result: 'pass',
+                    details: 'Form validation available'
+                });
+            } else {
+                calcTests.push({
+                    name: 'Form Validator',
+                    result: 'fail',
+                    details: 'Form validator NOT found'
+                });
+            }
+            
+            testResults.calculators.tests = calcTests;
+            calcTests.forEach(test => {
+                if (test.result === 'pass') testResults.calculators.passed++;
+                else testResults.calculators.failed++;
+            });
+        }
+
+        async function testPerformance() {
+            const perfTests = [];
+            
+            // Check page load time
+            const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
+            perfTests.push({
+                name: 'Page Load Time',
+                result: loadTime < 2000 ? 'pass' : loadTime < 3000 ? 'warning' : 'fail',
+                details: `Load time: ${loadTime}ms`
+            });
+            
+            // Check bundle usage
+            const scripts = Array.from(document.querySelectorAll('script')).map(s => s.src);
+            const bundles = scripts.filter(s => s.includes('bundle')).length;
+            const individual = scripts.filter(s => s.includes('/js/') && !s.includes('bundle')).length;
+            
+            perfTests.push({
+                name: 'Bundle Usage',
+                result: bundles >= 2 && individual <= 3 ? 'pass' : 'warning',
+                details: `${bundles} bundles, ${individual} individual files`
+            });
+            
+            // Check CSS optimization
+            const stylesheets = document.querySelectorAll('link[rel="stylesheet"]').length;
+            perfTests.push({
+                name: 'CSS Files',
+                result: stylesheets <= 3 ? 'pass' : 'warning',
+                details: `${stylesheets} CSS files loaded`
+            });
+            
+            // Check caching headers (would need server check)
+            perfTests.push({
+                name: 'Caching Strategy',
+                result: 'warning',
+                details: 'Basic caching only'
+            });
+            
+            testResults.performance.tests = perfTests;
+            perfTests.forEach(test => {
+                if (test.result === 'pass') testResults.performance.passed++;
+                else testResults.performance.failed++;
+            });
+        }
+
+        async function testAccessibility() {
+            const a11yTests = [];
+            
+            // Check viewport meta
+            const viewport = document.querySelector('meta[name="viewport"]');
+            a11yTests.push({
+                name: 'Mobile Viewport',
+                result: viewport ? 'pass' : 'fail',
+                details: viewport ? 'Viewport meta tag present' : 'No viewport meta tag'
+            });
+            
+            // Check alt texts (if images exist)
+            const images = document.querySelectorAll('img');
+            const imagesWithAlt = Array.from(images).filter(img => img.alt);
+            a11yTests.push({
+                name: 'Image Alt Text',
+                result: images.length === 0 || imagesWithAlt.length === images.length ? 'pass' : 'warning',
+                details: `${imagesWithAlt.length}/${images.length} images have alt text`
+            });
+            
+            // Check form labels
+            const inputs = document.querySelectorAll('input, select, textarea');
+            const labels = document.querySelectorAll('label');
+            a11yTests.push({
+                name: 'Form Labels',
+                result: labels.length > 0 || inputs.length === 0 ? 'pass' : 'warning',
+                details: `${labels.length} labels for ${inputs.length} inputs`
+            });
+            
+            // Check ARIA attributes
+            const ariaElements = document.querySelectorAll('[aria-label], [aria-describedby], [role]');
+            a11yTests.push({
+                name: 'ARIA Attributes',
+                result: ariaElements.length > 0 ? 'pass' : 'warning',
+                details: `${ariaElements.length} elements with ARIA attributes`
+            });
+            
+            testResults.accessibility.tests = a11yTests;
+            a11yTests.forEach(test => {
+                if (test.result === 'pass') testResults.accessibility.passed++;
+                else testResults.accessibility.failed++;
+            });
+        }
+
+        async function testPersistence() {
+            const persistTests = [];
+            
+            // Test localStorage save
+            try {
+                const testData = { test: true, timestamp: Date.now() };
+                localStorage.setItem('test-persistence', JSON.stringify(testData));
+                const retrieved = JSON.parse(localStorage.getItem('test-persistence'));
+                
+                persistTests.push({
+                    name: 'localStorage Save/Load',
+                    result: retrieved.test === true ? 'pass' : 'fail',
+                    details: 'Data persists correctly'
+                });
+                
+                localStorage.removeItem('test-persistence');
+            } catch(e) {
+                persistTests.push({
+                    name: 'localStorage Save/Load',
+                    result: 'fail',
+                    details: `Error: ${e.message}`
+                });
+            }
+            
+            // Check for existing saved data
+            const savedKeys = Object.keys(localStorage).filter(key => 
+                key.includes('autosave') || key.includes('readiness') || key.includes('calculator')
+            );
+            persistTests.push({
+                name: 'Existing Saved Data',
+                result: savedKeys.length > 0 ? 'pass' : 'warning',
+                details: `${savedKeys.length} saved items found`
+            });
+            
+            // Test URL state sharing
+            persistTests.push({
+                name: 'URL State Sharing',
+                result: typeof generateShareableLink === 'function' ? 'pass' : 'warning',
+                details: 'Share link function availability'
+            });
+            
+            testResults.persistence.tests = persistTests;
+            persistTests.forEach(test => {
+                if (test.result === 'pass') testResults.persistence.passed++;
+                else testResults.persistence.failed++;
+            });
+        }
+
+        async function testPWA() {
+            const pwaTests = [];
+            
+            // Check service worker
+            if ('serviceWorker' in navigator) {
+                const registration = await navigator.serviceWorker.getRegistration();
+                pwaTests.push({
+                    name: 'Service Worker',
+                    result: registration ? 'pass' : 'warning',
+                    details: registration ? 'Service worker registered' : 'No service worker registration'
+                });
+            } else {
+                pwaTests.push({
+                    name: 'Service Worker',
+                    result: 'fail',
+                    details: 'Service workers not supported'
+                });
+            }
+            
+            // Check manifest
+            const manifest = document.querySelector('link[rel="manifest"]');
+            pwaTests.push({
+                name: 'Web App Manifest',
+                result: manifest ? 'pass' : 'fail',
+                details: manifest ? 'Manifest link present' : 'No manifest link'
+            });
+            
+            // Check HTTPS (localhost is ok)
+            const isSecure = location.protocol === 'https:' || location.hostname === 'localhost';
+            pwaTests.push({
+                name: 'Secure Context',
+                result: isSecure ? 'pass' : 'fail',
+                details: isSecure ? 'Running in secure context' : 'Not secure'
+            });
+            
+            // Check offline capability
+            pwaTests.push({
+                name: 'Offline Support',
+                result: 'warning',
+                details: 'Basic offline support only'
+            });
+            
+            testResults.pwa.tests = pwaTests;
+            pwaTests.forEach(test => {
+                if (test.result === 'pass') testResults.pwa.passed++;
+                else testResults.pwa.failed++;
+            });
+        }
+
+        async function testDarkMode() {
+            const darkTests = [];
+            
+            // Check dark mode class
+            darkTests.push({
+                name: 'Dark Mode Class',
+                result: window.DarkMode ? 'pass' : 'fail',
+                details: window.DarkMode ? 'DarkMode class available' : 'DarkMode class NOT found'
+            });
+            
+            // Check dark mode instance
+            darkTests.push({
+                name: 'Dark Mode Instance',
+                result: window.darkMode ? 'pass' : 'fail',
+                details: window.darkMode ? 'Dark mode initialized' : 'Dark mode NOT initialized'
+            });
+            
+            // Check toggle button
+            const toggle = document.querySelector('#dark-mode-toggle');
+            darkTests.push({
+                name: 'Dark Mode Toggle',
+                result: toggle ? 'pass' : 'warning',
+                details: toggle ? 'Toggle button exists' : 'No toggle button found'
+            });
+            
+            // Check CSS variables
+            const styles = getComputedStyle(document.documentElement);
+            const hasDarkVars = styles.getPropertyValue('--dark') || document.querySelector('.dark-mode');
+            darkTests.push({
+                name: 'Dark Mode Styles',
+                result: hasDarkVars ? 'pass' : 'warning',
+                details: 'Dark mode CSS implementation'
+            });
+            
+            testResults.darkMode.tests = darkTests;
+            darkTests.forEach(test => {
+                if (test.result === 'pass') testResults.darkMode.passed++;
+                else testResults.darkMode.failed++;
+            });
+        }
+
+        async function testUtilities() {
+            const utilTests = [];
+            
+            // Check notification system
+            utilTests.push({
+                name: 'Notification System',
+                result: window.notify ? 'pass' : 'fail',
+                details: window.notify ? 'Notification system available' : 'No notification system'
+            });
+            
+            // Check loading overlay
+            utilTests.push({
+                name: 'Loading Overlay',
+                result: window.LoadingOverlay ? 'pass' : 'fail',
+                details: window.LoadingOverlay ? 'Loading overlay available' : 'No loading overlay'
+            });
+            
+            // Check progress tracker
+            utilTests.push({
+                name: 'Progress Tracker',
+                result: window.ProgressTracker ? 'pass' : 'fail',
+                details: window.ProgressTracker ? 'Progress tracker available' : 'No progress tracker'
+            });
+            
+            // Check form validator
+            utilTests.push({
+                name: 'Form Validator',
+                result: window.FormValidator ? 'pass' : 'fail',
+                details: window.FormValidator ? 'Form validator available' : 'No form validator'
+            });
+            
+            testResults.utilities.tests = utilTests;
+            utilTests.forEach(test => {
+                if (test.result === 'pass') testResults.utilities.passed++;
+                else testResults.utilities.failed++;
+            });
+        }
+
+        function generateFinalReport() {
+            let totalPassed = 0;
+            let totalFailed = 0;
+            let html = '<div class="test-grid">';
+            
+            // Display each category results
+            Object.keys(testResults).forEach(category => {
+                const catResult = testResults[category];
+                totalPassed += catResult.passed;
+                totalFailed += catResult.failed;
+                
+                const categoryName = category.charAt(0).toUpperCase() + category.slice(1);
+                const passRate = catResult.passed + catResult.failed > 0 ? 
+                    Math.round((catResult.passed / (catResult.passed + catResult.failed)) * 100) : 0;
+                
+                html += `
+                    <div class="test-card">
+                        <div class="test-title">📊 ${categoryName}</div>
+                        <div style="font-size: 2em; margin: 10px 0;">
+                            <span class="pass">${catResult.passed}</span> / 
+                            <span class="fail">${catResult.failed}</span>
+                            <span style="color: #666; font-size: 0.6em;">(${passRate}%)</span>
+                        </div>
+                        <div style="max-height: 200px; overflow-y: auto;">
+                `;
+                
+                catResult.tests.forEach(test => {
+                    html += `
+                        <div class="test-result ${test.result}">
+                            <strong>${test.name}:</strong> 
+                            <span class="${test.result}">${test.result.toUpperCase()}</span>
+                            <div style="font-size: 0.9em; color: #888;">${test.details}</div>
+                        </div>
+                    `;
+                });
+                
+                html += `
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            
+            // Calculate final score
+            const totalTests = totalPassed + totalFailed;
+            const percentage = Math.round((totalPassed / totalTests) * 100);
+            
+            // Determine grade
+            let grade = 'F';
+            let gradeClass = 'F';
+            if (percentage >= 90) { grade = 'A'; gradeClass = 'A'; }
+            else if (percentage >= 80) { grade = 'B'; gradeClass = 'B'; }
+            else if (percentage >= 70) { grade = 'C+'; gradeClass = 'C'; }
+            else if (percentage >= 60) { grade = 'C'; gradeClass = 'C'; }
+            else if (percentage >= 50) { grade = 'D'; gradeClass = 'D'; }
+            
+            html += `
+                <div class="score-display">
+                    <div style="font-size: 0.5em; color: #888;">Final Score</div>
+                    <div style="color: ${percentage >= 70 ? '#4ade80' : percentage >= 50 ? '#fbbf24' : '#ef4444'}">
+                        ${percentage}%
+                    </div>
+                    <div style="font-size: 0.4em;">
+                        ${totalPassed} passed / ${totalFailed} failed
+                    </div>
+                </div>
+                
+                <div class="grade ${gradeClass}">
+                    Grade: ${grade}
+                </div>
+            `;
+            
+            // Final Verdict
+            html += '<div class="final-verdict">';
+            html += '<h2 style="text-align: center; margin-bottom: 20px;">🎯 FINAL HONEST VERDICT</h2>';
+            
+            // Critical Issues Found
+            const criticalIssues = [];
+            if (testResults.autoSave.failed > testResults.autoSave.passed) {
+                criticalIssues.push('❌ Auto-save is NOT working properly on page load');
+            }
+            if (testResults.performance.failed > 0) {
+                criticalIssues.push('⚠️ Performance issues with bundle usage');
+            }
+            if (testResults.navigation.failed > 0) {
+                criticalIssues.push('⚠️ Navigation has some issues');
+            }
+            
+            if (criticalIssues.length > 0) {
+                html += '<h3>Critical Issues:</h3><ul>';
+                criticalIssues.forEach(issue => {
+                    html += `<li>${issue}</li>`;
+                });
+                html += '</ul>';
+            }
+            
+            // Strengths
+            const strengths = [];
+            if (testResults.utilities.passed > testResults.utilities.failed) {
+                strengths.push('✅ Utility functions are working well');
+            }
+            if (testResults.persistence.passed > 0) {
+                strengths.push('✅ Data persistence infrastructure exists');
+            }
+            if (testResults.accessibility.passed > testResults.accessibility.failed) {
+                strengths.push('✅ Basic accessibility features present');
+            }
+            
+            if (strengths.length > 0) {
+                html += '<h3>Strengths:</h3><ul>';
+                strengths.forEach(strength => {
+                    html += `<li>${strength}</li>`;
+                });
+                html += '</ul>';
+            }
+            
+            // The Truth
+            html += '<h3>The Brutal Truth:</h3>';
+            if (percentage >= 80) {
+                html += `
+                    <p class="pass">The website is actually in GOOD shape! Most features are working as intended.</p>
+                    <p>While there are some issues (particularly with auto-save initialization), the core functionality is solid.</p>
+                `;
+            } else if (percentage >= 60) {
+                html += `
+                    <p class="warning">The website is FUNCTIONAL but has significant issues.</p>
+                    <p>Key features like auto-save don't initialize properly, and there are performance concerns.</p>
+                    <p>It works, but needs polish to be truly enterprise-ready.</p>
+                `;
+            } else {
+                html += `
+                    <p class="fail">The website has SERIOUS PROBLEMS that need immediate attention.</p>
+                    <p>Core features are broken, and the user experience is compromised.</p>
+                    <p>This is not ready for production use.</p>
+                `;
+            }
+            
+            // Recommendation
+            html += '<h3>Recommendation:</h3>';
+            if (testResults.autoSave.failed > testResults.autoSave.passed) {
+                html += '<p class="fail"><strong>PRIORITY 1:</strong> Fix auto-save initialization - it exists but doesn\'t start automatically!</p>';
+            }
+            html += '<p><strong>PRIORITY 2:</strong> Ensure all bundles are properly loaded and used.</p>';
+            html += '<p><strong>PRIORITY 3:</strong> Add proper error handling and user feedback.</p>';
+            
+            html += '</div>';
+            
+            // Evidence Summary
+            html += `
+                <pre style="margin-top: 30px;">
+EVIDENCE-BASED SUMMARY
+======================
+Total Tests Run: ${totalTests}
+Tests Passed: ${totalPassed}
+Tests Failed: ${totalFailed}
+Success Rate: ${percentage}%
+
+CATEGORY BREAKDOWN:
+${Object.keys(testResults).map(cat => {
+    const r = testResults[cat];
+    const rate = r.passed + r.failed > 0 ? Math.round((r.passed / (r.passed + r.failed)) * 100) : 0;
+    return `- ${cat}: ${r.passed}/${r.passed + r.failed} (${rate}%)`;
+}).join('\n')}
+
+FINAL GRADE: ${grade}
+VERDICT: ${percentage >= 70 ? 'ACCEPTABLE WITH ISSUES' : percentage >= 50 ? 'NEEDS SIGNIFICANT WORK' : 'NOT PRODUCTION READY'}
+                </pre>
+            `;
+            
+            results.innerHTML = html;
+        }
+
+        // Auto-run on load for immediate feedback
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('Test runner loaded');
+            console.log('AutoSave available:', !!window.AutoSave);
+            console.log('autoSave instance:', !!window.autoSave);
+        });
+    </script>
+</body>
+</html>

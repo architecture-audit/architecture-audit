@@ -1,0 +1,1776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Migration Assessment Framework - AI Architecture Audit</title>
+    <meta name="description" content="Comprehensive cloud migration framework covering AWS, Azure, and GCP with cost analysis and risk management.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🏗️</text></svg>">
+    
+    <!-- Navigation CSS -->
+    <link rel="stylesheet" href="../assets/css/site-navigation.css">
+    
+    <!-- Base Documentation CSS -->
+    <link rel="stylesheet" href="../assets/css/docs-base.css">
+    
+    <!-- Cloud Migration CSS -->
+    <link rel="stylesheet" href="../assets/css/cloud-migration.css">
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>Cloud Migration Assessment Framework</h1>
+            <div class="subtitle">Multi-cloud migration planning and execution guide</div>
+        </div>
+    </div>
+    
+    <!-- Navigation will be loaded by site-navigation.js -->
+    
+    <div class="main-container">
+        <div class="toc">
+            <h3>Table of Contents</h3>
+            <ul><li><a href="#cloud-migration-assessment-framework" class="toc-1">Cloud Migration Assessment Framework</a></li><li><a href="#comprehensive-multi-cloud-migration-excellence" class="toc-2">Comprehensive Multi-Cloud Migration Excellence</a></li><li><a href="#version-1.0-2024" class="toc-3">Version 1.0 | 2024</a></li><li><a href="#table-of-contents" class="toc-2">Table of Contents</a></li><li><a href="#executive-summary" class="toc-2">Executive Summary</a></li><li><a href="#the-cloud-migration-reality" class="toc-3">The Cloud Migration Reality</a></li><li><a href="#why-migrations-fail" class="toc-3">Why Migrations Fail</a></li><li><a href="#framework-overview" class="toc-3">Framework Overview</a></li><li><a href="#key-deliverables" class="toc-3">Key Deliverables</a></li><li><a href="#migration-maturity-model" class="toc-2">Migration Maturity Model</a></li><li><a href="#level-1-cloud-curious-score-0-20" class="toc-3">Level 1: Cloud Curious (Score: 0-20)</a></li><li><a href="#level-2-cloud-experimenting-score-21-40" class="toc-3">Level 2: Cloud Experimenting (Score: 21-40)</a></li><li><a href="#level-3-cloud-adopting-score-41-60" class="toc-3">Level 3: Cloud Adopting (Score: 41-60)</a></li><li><a href="#level-4-cloud-optimizing-score-61-80" class="toc-3">Level 4: Cloud Optimizing (Score: 61-80)</a></li><li><a href="#level-5-cloud-native-score-81-100" class="toc-3">Level 5: Cloud Native (Score: 81-100)</a></li><li><a href="#maturity-scoring-matrix" class="toc-3">Maturity Scoring Matrix</a></li><li><a href="#assessment-dimensions" class="toc-2">Assessment Dimensions</a></li><li><a href="#comprehensive-cloud-migration-assessment-areas" class="toc-3">Comprehensive Cloud Migration Assessment Areas</a></li><li><a href="#discovery-inventory" class="toc-2">Discovery & Inventory</a></li><li><a href="#discovery-methodology" class="toc-3">Discovery Methodology</a></li><li><a href="#discovery-tools-comparison" class="toc-3">Discovery Tools Comparison</a></li><li><a href="#application-assessment" class="toc-2">Application Assessment</a></li><li><a href="#the-6r-migration-strategies" class="toc-3">The 6R Migration Strategies</a></li><li><a href="#application-complexity-scoring" class="toc-3">Application Complexity Scoring</a></li><li><a href="#data-migration-strategy" class="toc-2">Data Migration Strategy</a></li><li><a href="#data-migration-patterns" class="toc-3">Data Migration Patterns</a></li><li><a href="#data-transfer-methods" class="toc-3">Data Transfer Methods</a></li><li><a href="#database-migration-matrix" class="toc-3">Database Migration Matrix</a></li><li><a href="#network-architecture" class="toc-2">Network Architecture</a></li><li><a href="#network-design-patterns" class="toc-3">Network Design Patterns</a></li><li><a href="#connectivity-options" class="toc-3">Connectivity Options</a></li><li><a href="#security-compliance" class="toc-2">Security & Compliance</a></li><li><a href="#security-assessment-framework" class="toc-3">Security Assessment Framework</a></li><li><a href="#compliance-mapping" class="toc-3">Compliance Mapping</a></li><li><a href="#security-tools-comparison" class="toc-3">Security Tools Comparison</a></li><li><a href="#cost-analysis-optimization" class="toc-2">Cost Analysis & Optimization</a></li><li><a href="#total-cost-of-ownership-tco-model" class="toc-3">Total Cost of Ownership (TCO) Model</a></li><li><a href="#cost-optimization-strategies" class="toc-3">Cost Optimization Strategies</a></li><li><a href="#roi-calculation-model" class="toc-3">ROI Calculation Model</a></li><li><a href="#migration-roi-calculator" class="toc-1">Migration ROI Calculator</a></li><li><a href="#3-year-roi" class="toc-1">3-Year ROI</a></li><li><a href="#result-996-roi-over-3-years" class="toc-1">Result: 996% ROI over 3 years</a></li><li><a href="#risk-management" class="toc-2">Risk Management</a></li><li><a href="#technical-risk-matrix" class="toc-3">Technical Risk Matrix</a></li><li><a href="#business-risk-assessment" class="toc-3">Business Risk Assessment</a></li><li><a href="#migration-patterns" class="toc-2">Migration Patterns</a></li><li><a href="#common-migration-patterns" class="toc-3">Common Migration Patterns</a></li><li><a href="#migration-wave-planning" class="toc-3">Migration Wave Planning</a></li><li><a href="#platform-comparison" class="toc-2">Platform Comparison</a></li><li><a href="#major-cloud-platform-comparison" class="toc-3">Major Cloud Platform Comparison</a></li><li><a href="#migration-tool-comparison" class="toc-3">Migration Tool Comparison</a></li><li><a href="#implementation-roadmap" class="toc-2">Implementation Roadmap</a></li><li><a href="#phase-1-assessment-planning-weeks-1-8" class="toc-3">Phase 1: Assessment & Planning (Weeks 1-8)</a></li><li><a href="#phase-2-pilot-migration-weeks-9-12" class="toc-3">Phase 2: Pilot Migration (Weeks 9-12)</a></li><li><a href="#phase-3-production-migration-weeks-13-24" class="toc-3">Phase 3: Production Migration (Weeks 13-24)</a></li><li><a href="#phase-4-optimization-weeks-25-32" class="toc-3">Phase 4: Optimization (Weeks 25-32)</a></li><li><a href="#industry-considerations" class="toc-2">Industry Considerations</a></li><li><a href="#financial-services" class="toc-3">Financial Services</a></li><li><a href="#healthcare" class="toc-3">Healthcare</a></li><li><a href="#retaile-commerce" class="toc-3">Retail/E-commerce</a></li><li><a href="#manufacturing" class="toc-3">Manufacturing</a></li><li><a href="#success-metrics" class="toc-2">Success Metrics</a></li><li><a href="#technical-metrics" class="toc-3">Technical Metrics</a></li><li><a href="#business-metrics" class="toc-3">Business Metrics</a></li><li><a href="#migration-success-criteria" class="toc-3">Migration Success Criteria</a></li><li><a href="#appendix-templates-tools" class="toc-2">Appendix: Templates & Tools</a></li><li><a href="#migration-readiness-checklist" class="toc-3">Migration Readiness Checklist</a></li><li><a href="#cost-estimation-template" class="toc-3">Cost Estimation Template</a></li></ul>
+        </div>
+        
+        <div class="content">
+            
+<h1 id="cloud-migration-assessment-framework">Cloud Migration Assessment
+Framework</h1>
+<h2 id="comprehensive-multi-cloud-migration-excellence">Comprehensive
+Multi-Cloud Migration Excellence</h2>
+<h3 id="version-1.0-2024" style="color: #6366f1; margin: 0.5rem 0 2rem 0; font-weight: normal; opacity: 0.8;">Version 1.0 | 2024</h3>
+<hr />
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol type="1">
+<li><a href="#executive-summary">Executive Summary</a></li>
+<li><a href="#migration-maturity-model">Migration Maturity
+Model</a></li>
+<li><a href="#assessment-dimensions">Assessment Dimensions</a></li>
+<li><a href="#discovery-inventory">Discovery &amp; Inventory</a></li>
+<li><a href="#application-assessment">Application Assessment</a></li>
+<li><a href="#data-migration-strategy">Data Migration Strategy</a></li>
+<li><a href="#network-architecture">Network Architecture</a></li>
+<li><a href="#security-compliance">Security &amp; Compliance</a></li>
+<li><a href="#cost-analysis-optimization">Cost Analysis &amp;
+Optimization</a></li>
+<li><a href="#risk-management">Risk Management</a></li>
+<li><a href="#migration-patterns">Migration Patterns</a></li>
+<li><a href="#platform-comparison">Platform Comparison</a></li>
+<li><a href="#implementation-roadmap">Implementation Roadmap</a></li>
+<li><a href="#industry-considerations">Industry Considerations</a></li>
+<li><a href="#success-metrics">Success Metrics</a></li>
+</ol>
+<hr />
+<h2 id="executive-summary">Executive Summary</h2>
+<h3 id="the-cloud-migration-reality">The Cloud Migration Reality</h3>
+<p><strong>83% of enterprise workloads will be in the cloud by
+2025</strong>, yet <strong>67% of migrations fail to meet their
+objectives</strong>. Failed migrations cost enterprises an average of
+<strong>$2.8M</strong> in lost productivity, overruns, and rework.</p>
+<h3 id="why-migrations-fail">Why Migrations Fail</h3>
+<ul>
+<li><strong>37%</strong> - Incomplete discovery (unknown
+dependencies)</li>
+<li><strong>28%</strong> - Underestimated complexity</li>
+<li><strong>23%</strong> - Inadequate skills/resources</li>
+<li><strong>12%</strong> - Poor stakeholder alignment</li>
+</ul>
+<h3 id="framework-overview">Framework Overview</h3>
+<p>This framework provides a systematic approach to cloud migration
+assessment across eight critical dimensions:</p>
+<ol type="1">
+<li><strong>Infrastructure Discovery</strong> - Complete inventory and
+dependencies</li>
+<li><strong>Application Portfolio</strong> - 6R analysis and
+modernization</li>
+<li><strong>Data Architecture</strong> - Migration patterns and sync
+strategies</li>
+<li><strong>Network Design</strong> - Connectivity and security
+architecture</li>
+<li><strong>Security Posture</strong> - Compliance and governance</li>
+<li><strong>Cost Optimization</strong> - TCO and ROI analysis</li>
+<li><strong>Risk Management</strong> - Technical and business risks</li>
+<li><strong>Organizational Readiness</strong> - Skills and change
+management</li>
+</ol>
+<h3 id="key-deliverables">Key Deliverables</h3>
+<ul>
+<li>Cloud Readiness Score (1-5 scale)</li>
+<li>Complete Asset Inventory</li>
+<li>Dependency Mapping (Application &amp; Data)</li>
+<li>Migration Wave Plan</li>
+<li>Cost-Benefit Analysis</li>
+<li>Risk Register with Mitigation</li>
+<li>18-Month Roadmap</li>
+<li>Runbook Templates</li>
+</ul>
+
+<div style="background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; padding: 2rem; border-radius: 12px; margin: 2rem 0; text-align: center;">
+    <h2 style="color: white; margin-bottom: 1rem;">Ready to Assess Your Cloud Migration?</h2>
+    <p style="margin-bottom: 1.5rem; opacity: 0.9;">Use our comprehensive calculator to evaluate your organization's maturity and get actionable recommendations.</p>
+    <a href="calculator.html" style="display: inline-block; background: white; color: #6366f1; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 1.1rem; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+        🧮 Launch Calculator
+    </a>
+</div>
+
+<hr />
+<h2 id="migration-maturity-model">Migration Maturity Model</h2>
+<h3 id="level-1-cloud-curious-score-0-20">Level 1: Cloud Curious (Score:
+0-20)</h3>
+<p><strong>Characteristics:</strong> - On-premises focused - No cloud
+strategy - Limited cloud knowledge - Manual operations - Waterfall
+development</p>
+<p><strong>Typical Environment:</strong> - Physical servers dominant -
+Monolithic applications - Manual deployments - No automation - Tribal
+knowledge</p>
+<p><strong>Migration Readiness:</strong> ❌ Not Ready</p>
+<h3 id="level-2-cloud-experimenting-score-21-40">Level 2: Cloud
+Experimenting (Score: 21-40)</h3>
+<p><strong>Characteristics:</strong> - Some cloud usage (shadow IT) -
+Basic understanding - Lift-and-shift mindset - Some virtualization -
+Limited automation</p>
+<p><strong>Typical Environment:</strong> - Mix of physical/virtual -
+Some IaaS usage - Manual configurations - Basic monitoring - Documented
+processes</p>
+<p><strong>Migration Readiness:</strong> ⚠️ Significant Preparation
+Needed</p>
+<h3 id="level-3-cloud-adopting-score-41-60">Level 3: Cloud Adopting
+(Score: 41-60)</h3>
+<p><strong>Characteristics:</strong> - Cloud-first for new projects -
+Hybrid architecture - DevOps practices emerging - Cost awareness -
+Security considerations</p>
+<p><strong>Typical Environment:</strong> - Mostly virtualized - IaaS and
+some PaaS - CI/CD for some apps - Centralized logging - Change
+management exists</p>
+<p><strong>Migration Readiness:</strong> ✅ Ready with Planning</p>
+<h3 id="level-4-cloud-optimizing-score-61-80">Level 4: Cloud Optimizing
+(Score: 61-80)</h3>
+<p><strong>Characteristics:</strong> - Cloud-native development -
+Multi-cloud strategy - Mature DevOps - Cost optimization - Security
+automation</p>
+<p><strong>Typical Environment:</strong> - Containerized workloads -
+PaaS/SaaS preferred - GitOps workflows - Observability platform - FinOps
+practices</p>
+<p><strong>Migration Readiness:</strong> ✅ Ready for Complex
+Migrations</p>
+<h3 id="level-5-cloud-native-score-81-100">Level 5: Cloud Native (Score:
+81-100)</h3>
+<p><strong>Characteristics:</strong> - Serverless-first - Multi-cloud
+orchestration - Full automation - AI/ML operations - Innovation
+focus</p>
+<p><strong>Typical Environment:</strong> - Serverless architectures -
+Event-driven design - Self-healing systems - Predictive operations -
+Continuous optimization</p>
+<p><strong>Migration Readiness:</strong> ✅ Ready for Transformation</p>
+<h3 id="maturity-scoring-matrix">Maturity Scoring Matrix</h3>
+<table>
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 12%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+</colgroup>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Weight</th>
+<th>Level 1</th>
+<th>Level 2</th>
+<th>Level 3</th>
+<th>Level 4</th>
+<th>Level 5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Infrastructure</td>
+<td>20%</td>
+<td>Physical</td>
+<td>Virtual</td>
+<td>Hybrid</td>
+<td>Cloud</td>
+<td>Multi-cloud</td>
+</tr>
+<tr>
+<td>Applications</td>
+<td>20%</td>
+<td>Monolithic</td>
+<td>N-tier</td>
+<td>Services</td>
+<td>Microservices</td>
+<td>Serverless</td>
+</tr>
+<tr>
+<td>Data</td>
+<td>15%</td>
+<td>Siloed</td>
+<td>Centralized</td>
+<td>Integrated</td>
+<td>Distributed</td>
+<td>Real-time</td>
+</tr>
+<tr>
+<td>Security</td>
+<td>15%</td>
+<td>Perimeter</td>
+<td>Layered</td>
+<td>Zero-trust</td>
+<td>Automated</td>
+<td>AI-driven</td>
+</tr>
+<tr>
+<td>Operations</td>
+<td>10%</td>
+<td>Manual</td>
+<td>Scripted</td>
+<td>Automated</td>
+<td>Orchestrated</td>
+<td>Self-healing</td>
+</tr>
+<tr>
+<td>Culture</td>
+<td>10%</td>
+<td>Resistant</td>
+<td>Aware</td>
+<td>Adopting</td>
+<td>Embracing</td>
+<td>Leading</td>
+</tr>
+<tr>
+<td>Skills</td>
+<td>5%</td>
+<td>None</td>
+<td>Basic</td>
+<td>Developing</td>
+<td>Proficient</td>
+<td>Expert</td>
+</tr>
+<tr>
+<td>Governance</td>
+<td>5%</td>
+<td>Ad-hoc</td>
+<td>Defined</td>
+<td>Managed</td>
+<td>Optimized</td>
+<td>Innovative</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="assessment-dimensions">Assessment Dimensions</h2>
+<h3 id="comprehensive-cloud-migration-assessment-areas">Comprehensive
+Cloud Migration Assessment Areas</h3>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 29%" />
+<col style="width: 29%" />
+<col style="width: 15%" />
+</colgroup>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Focus Areas</th>
+<th>Key Metrics</th>
+<th>Tools</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Infrastructure</strong></td>
+<td>Servers, Storage, Network</td>
+<td>Utilization, Age, Dependencies</td>
+<td>AWS Migration Hub, Azure Migrate</td>
+</tr>
+<tr>
+<td><strong>Applications</strong></td>
+<td>Portfolio, Architecture, Code</td>
+<td>Complexity, Technical Debt</td>
+<td>CAST, vFunction</td>
+</tr>
+<tr>
+<td><strong>Data</strong></td>
+<td>Databases, Files, Streams</td>
+<td>Volume, Velocity, Variety</td>
+<td>AWS DMS, Azure DMS</td>
+</tr>
+<tr>
+<td><strong>Security</strong></td>
+<td>Identity, Network, Data</td>
+<td>Vulnerabilities, Compliance</td>
+<td>Prisma Cloud, Dome9</td>
+</tr>
+<tr>
+<td><strong>Performance</strong></td>
+<td>Latency, Throughput, IOPS</td>
+<td>SLA, Baselines, Requirements</td>
+<td>AppDynamics, Datadog</td>
+</tr>
+<tr>
+<td><strong>Cost</strong></td>
+<td>Infrastructure, Licenses, Operations</td>
+<td>TCO, ROI, Payback</td>
+<td>CloudHealth, Cloudability</td>
+</tr>
+<tr>
+<td><strong>Compliance</strong></td>
+<td>Regulatory, Industry, Internal</td>
+<td>Gap Analysis, Remediation</td>
+<td>AWS Audit Manager</td>
+</tr>
+<tr>
+<td><strong>Operations</strong></td>
+<td>Monitoring, Backup, DR</td>
+<td>RTO, RPO, Availability</td>
+<td>PagerDuty, Splunk</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="discovery-inventory">Discovery &amp; Inventory</h2>
+<h3 id="discovery-methodology">Discovery Methodology</h3>
+<h4 id="phase-1-infrastructure-discovery-week-1-2">Phase 1:
+Infrastructure Discovery (Week 1-2)</h4>
+<p><strong>Compute Resources:</strong> - Physical servers inventory -
+Virtual machines catalog - Container deployments - Serverless functions
+- Batch jobs</p>
+<p><strong>Storage Systems:</strong> - SAN/NAS inventory - Object
+storage usage - Database storage - File shares mapping - Backup
+systems</p>
+<p><strong>Network Components:</strong> - Network topology - Firewall
+rules - Load balancers - DNS configuration - VPN/Direct connections</p>
+<h4 id="phase-2-application-discovery-week-3-4">Phase 2: Application
+Discovery (Week 3-4)</h4>
+<p><strong>Application Portfolio:</strong> - Business applications -
+Custom applications - COTS packages - SaaS integrations - Legacy
+systems</p>
+<p><strong>Technical Stack:</strong> - Programming languages -
+Frameworks/libraries - Runtime environments - Middleware components -
+Third-party services</p>
+<h4 id="phase-3-data-discovery-week-5-6">Phase 3: Data Discovery (Week
+5-6)</h4>
+<p><strong>Data Assets:</strong> - Relational databases - NoSQL
+databases - Data warehouses - File storage - Streaming data</p>
+<p><strong>Data Characteristics:</strong> - Data volume (TB/PB) - Growth
+rate - Retention requirements - Compliance needs - Business
+criticality</p>
+<h3 id="discovery-tools-comparison">Discovery Tools Comparison</h3>
+<table>
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 10%" />
+<col style="width: 16%" />
+<col style="width: 24%" />
+<col style="width: 29%" />
+<col style="width: 9%" />
+</colgroup>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Cloud</th>
+<th>Agentless</th>
+<th>Auto-Discovery</th>
+<th>Dependency Mapping</th>
+<th>Cost</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AWS Migration Hub</strong></td>
+<td>AWS</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>Free*</td>
+</tr>
+<tr>
+<td><strong>Azure Migrate</strong></td>
+<td>Azure</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>Free*</td>
+</tr>
+<tr>
+<td><strong>Google Migrate</strong></td>
+<td>GCP</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>Free*</td>
+</tr>
+<tr>
+<td><strong>Cloudamize</strong></td>
+<td>Any</td>
+<td>❌</td>
+<td>✅</td>
+<td>✅</td>
+<td><span class="math display">$$$ |
+| **Turbonomic** | Any | ✅ | ✅ | ✅ | $$</span><span
+class="math display">||* * <em>D</em><em>e</em><em>v</em><em>i</em><em>c</em><em>e</em>42 * *|<em>A</em><em>n</em><em>y</em>|✅|✅|✅|</span>$</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="application-assessment">Application Assessment</h2>
+<h3 id="the-6r-migration-strategies">The 6R Migration Strategies</h3>
+<h4 id="rehost-lift-and-shift">1. Rehost (“Lift and Shift”)</h4>
+<p><strong>When to Use:</strong> - Quick migration needed - Minimal
+changes acceptable - Standard applications - Low risk tolerance</p>
+<p><strong>Complexity:</strong> ⭐⭐☆☆☆</p>
+<p><strong>Example Migration:</strong></p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Source</span><span class="kw">:</span><span class="at"> VMware vSphere VM (Windows Server 2019)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Target</span><span class="kw">:</span><span class="at"> AWS EC2 (m5.xlarge)</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">Method</span><span class="kw">:</span><span class="at"> AWS Application Migration Service</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">Timeline</span><span class="kw">:</span><span class="at"> 2-4 weeks</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">Cost Impact</span><span class="kw">:</span><span class="at"> -30% infrastructure cost</span></span></code></pre></div>
+<h4 id="replatform-lift-and-reshape">2. Replatform (“Lift and
+Reshape”)</h4>
+<p><strong>When to Use:</strong> - Some optimization desired - PaaS
+services available - Moderate risk tolerance - Time for minor
+changes</p>
+<p><strong>Complexity:</strong> ⭐⭐⭐☆☆</p>
+<p><strong>Example Migration:</strong></p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Source</span><span class="kw">:</span><span class="at"> On-premises SQL Server</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Target</span><span class="kw">:</span><span class="at"> Azure SQL Database (Managed)</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">Method</span><span class="kw">:</span><span class="at"> Azure Database Migration Service</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">Timeline</span><span class="kw">:</span><span class="at"> 4-6 weeks</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">Cost Impact</span><span class="kw">:</span><span class="at"> -40% operational cost</span></span></code></pre></div>
+<h4 id="repurchase-drop-and-shop">3. Repurchase (“Drop and Shop”)</h4>
+<p><strong>When to Use:</strong> - SaaS alternative exists - Current
+system outdated - Maintenance burden high - Standard business
+process</p>
+<p><strong>Complexity:</strong> ⭐⭐⭐⭐☆</p>
+<p><strong>Example Migration:</strong></p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Source</span><span class="kw">:</span><span class="at"> On-premises CRM (Custom)</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Target</span><span class="kw">:</span><span class="at"> Salesforce</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">Method</span><span class="kw">:</span><span class="at"> Data migration + Training</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">Timeline</span><span class="kw">:</span><span class="at"> 3-6 months</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">Cost Impact</span><span class="kw">:</span><span class="at"> +20% initially, -50% over 3 years</span></span></code></pre></div>
+<h4 id="refactor-re-architect">4. Refactor (“Re-architect”)</h4>
+<p><strong>When to Use:</strong> - Cloud-native benefits needed -
+Scalability requirements - Modern architecture desired - Innovation
+focus</p>
+<p><strong>Complexity:</strong> ⭐⭐⭐⭐⭐</p>
+<p><strong>Example Migration:</strong></p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Source</span><span class="kw">:</span><span class="at"> Monolithic Java application</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Target</span><span class="kw">:</span><span class="at"> Microservices on Kubernetes</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">Method</span><span class="kw">:</span><span class="at"> Strangler pattern</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">Timeline</span><span class="kw">:</span><span class="at"> 6-12 months</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">Cost Impact</span><span class="kw">:</span><span class="at"> -60% at scale</span></span></code></pre></div>
+<h4 id="retire">5. Retire</h4>
+<p><strong>When to Use:</strong> - Redundant applications - End-of-life
+systems - Low business value - High maintenance cost</p>
+<p><strong>Complexity:</strong> ⭐☆☆☆☆</p>
+<h4 id="retain">6. Retain</h4>
+<p><strong>When to Use:</strong> - Recent major investment - Regulatory
+constraints - High migration risk - Strategic on-premises need</p>
+<p><strong>Complexity:</strong> ⭐☆☆☆☆</p>
+<h3 id="application-complexity-scoring">Application Complexity
+Scoring</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Factor</th>
+<th>Weight</th>
+<th>Score Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Architecture</strong></td>
+<td>25%</td>
+<td>Monolithic(5) → Microservices(1)</td>
+</tr>
+<tr>
+<td><strong>Dependencies</strong></td>
+<td>20%</td>
+<td>Many(5) → Few(1)</td>
+</tr>
+<tr>
+<td><strong>Data Volume</strong></td>
+<td>15%</td>
+<td>PB(5) → GB(1)</td>
+</tr>
+<tr>
+<td><strong>Integrations</strong></td>
+<td>15%</td>
+<td>Complex(5) → Simple(1)</td>
+</tr>
+<tr>
+<td><strong>Performance Requirements</strong></td>
+<td>10%</td>
+<td>Ultra-low latency(5) → Flexible(1)</td>
+</tr>
+<tr>
+<td><strong>Compliance</strong></td>
+<td>10%</td>
+<td>Strict(5) → None(1)</td>
+</tr>
+<tr>
+<td><strong>Age/Technical Debt</strong></td>
+<td>5%</td>
+<td>Legacy(5) → Modern(1)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="data-migration-strategy">Data Migration Strategy</h2>
+<h3 id="data-migration-patterns">Data Migration Patterns</h3>
+<h4 id="big-bang-migration">1. Big Bang Migration</h4>
+<p><strong>Characteristics:</strong> - Complete cutover - Minimal
+migration window - Higher risk - Lower complexity</p>
+<p><strong>Best For:</strong> - Small datasets (&lt;1TB) - Simple
+applications - Acceptable downtime</p>
+<h4 id="trickle-migration">2. Trickle Migration</h4>
+<p><strong>Characteristics:</strong> - Phased approach - Zero downtime -
+Complex setup - Lower risk</p>
+<p><strong>Best For:</strong> - Large datasets (&gt;10TB) - Critical
+applications - No downtime tolerance</p>
+<h4 id="hybrid-sync">3. Hybrid Sync</h4>
+<p><strong>Characteristics:</strong> - Bidirectional sync - Gradual
+transition - Complex orchestration - Rollback capability</p>
+<p><strong>Best For:</strong> - Gradual cloud adoption - Risk-averse
+organizations - Complex dependencies</p>
+<h3 id="data-transfer-methods">Data Transfer Methods</h3>
+<table>
+<colgroup>
+<col style="width: 19%" />
+<col style="width: 17%" />
+<col style="width: 14%" />
+<col style="width: 24%" />
+<col style="width: 24%" />
+</colgroup>
+<thead>
+<tr>
+<th>Method</th>
+<th>Speed</th>
+<th>Cost</th>
+<th>Use Case</th>
+<th>Max Data</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Internet Transfer</strong></td>
+<td>Slow</td>
+<td>$</td>
+<td>&lt;100GB</td>
+<td>100GB</td>
+</tr>
+<tr>
+<td><strong>Direct Connect/ExpressRoute</strong></td>
+<td>Fast</td>
+<td><span class="math display">$$$ | Ongoing sync | Unlimited |
+| **AWS Snowball** | Medium | $$</span></td>
+<td>10TB-80TB</td>
+<td>80TB</td>
+</tr>
+<tr>
+<td><strong>AWS Snowmobile</strong></td>
+<td>Medium</td>
+<td>$<span class="math display">$$$ | &gt;100TB | 100PB |
+| **Azure Data Box** | Medium | $$</span></td>
+<td>40TB-1PB</td>
+<td>1PB</td>
+</tr>
+<tr>
+<td><strong>Database Migration Service</strong></td>
+<td>Fast</td>
+<td>$$</td>
+<td>Databases</td>
+<td>64TB</td>
+</tr>
+</tbody>
+</table>
+<h3 id="database-migration-matrix">Database Migration Matrix</h3>
+<table>
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 18%" />
+<col style="width: 13%" />
+<col style="width: 22%" />
+<col style="width: 27%" />
+</colgroup>
+<thead>
+<tr>
+<th>Source</th>
+<th>Target</th>
+<th>Tool</th>
+<th>Downtime</th>
+<th>Complexity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Oracle → Oracle</td>
+<td>RDS Oracle</td>
+<td>DMS</td>
+<td>Minimal</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>SQL Server → SQL Server</td>
+<td>Azure SQL</td>
+<td>DMS</td>
+<td>Zero</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>Oracle → PostgreSQL</td>
+<td>Aurora PostgreSQL</td>
+<td>SCT + DMS</td>
+<td>Minimal</td>
+<td>High</td>
+</tr>
+<tr>
+<td>MySQL → MySQL</td>
+<td>Cloud SQL</td>
+<td>Native replication</td>
+<td>Zero</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>MongoDB → MongoDB</td>
+<td>Atlas</td>
+<td>mongomirror</td>
+<td>Minimal</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Cassandra → Cassandra</td>
+<td>Managed Cassandra</td>
+<td>sstableloader</td>
+<td>Hours</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="network-architecture">Network Architecture</h2>
+<h3 id="network-design-patterns">Network Design Patterns</h3>
+<h4 id="hub-and-spoke">Hub and Spoke</h4>
+<pre><code>         [Central Hub VPC]
+         /      |        \
+    [Prod]   [Stage]    [Dev]
+      |         |         |
+  [Workload] [Workload] [Workload]</code></pre>
+<p><strong>Benefits:</strong> - Centralized control - Cost-effective -
+Simple management</p>
+<p><strong>Challenges:</strong> - Single point of failure - Potential
+bottleneck</p>
+<h4 id="full-mesh">Full Mesh</h4>
+<pre><code>    [VPC-A] ←→ [VPC-B]
+       ↑ ↘   ↙ ↑
+       ↓   ✕   ↓
+       ↑ ↗   ↖ ↑
+    [VPC-C] ←→ [VPC-D]</code></pre>
+<p><strong>Benefits:</strong> - High availability - Direct communication
+- Low latency</p>
+<p><strong>Challenges:</strong> - Complex management - Higher cost -
+Scaling difficulties</p>
+<h3 id="connectivity-options">Connectivity Options</h3>
+<table>
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 19%" />
+<col style="width: 16%" />
+<col style="width: 10%" />
+<col style="width: 21%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr>
+<th>Option</th>
+<th>Bandwidth</th>
+<th>Latency</th>
+<th>Cost</th>
+<th>Setup Time</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>VPN</strong></td>
+<td>1.25 Gbps</td>
+<td>Variable</td>
+<td>$</td>
+<td>Hours</td>
+<td>Dev/Test</td>
+</tr>
+<tr>
+<td><strong>Direct Connect</strong></td>
+<td>100 Gbps</td>
+<td>Consistent</td>
+<td><span class="math display">$$$ | Weeks | Production |
+| **ExpressRoute** | 100 Gbps | Consistent | $$</span>$</td>
+<td>Weeks</td>
+<td>Production</td>
+</tr>
+<tr>
+<td><strong>Interconnect</strong></td>
+<td>100 Gbps</td>
+<td>Consistent</td>
+<td><span class="math display">$$$ | Weeks | Production |
+| **Private Link** | 10 Gbps | Low | $$</span></td>
+<td>Hours</td>
+<td>SaaS</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="security-compliance">Security &amp; Compliance</h2>
+<h3 id="security-assessment-framework">Security Assessment
+Framework</h3>
+<h4 id="identity-access">Identity &amp; Access</h4>
+<ul>
+<li><strong>Current State Assessment</strong>
+<ul>
+<li>User inventory</li>
+<li>Service accounts</li>
+<li>Privileged access</li>
+<li>MFA adoption</li>
+<li>SSO integration</li>
+</ul></li>
+<li><strong>Target State Design</strong>
+<ul>
+<li>Zero Trust architecture</li>
+<li>Just-in-time access</li>
+<li>Privileged access management</li>
+<li>Identity federation</li>
+<li>Conditional access</li>
+</ul></li>
+</ul>
+<h4 id="network-security">Network Security</h4>
+<ul>
+<li><strong>Current State Assessment</strong>
+<ul>
+<li>Firewall rules</li>
+<li>Network segmentation</li>
+<li>DMZ architecture</li>
+<li>VPN access</li>
+<li>DDoS protection</li>
+</ul></li>
+<li><strong>Target State Design</strong>
+<ul>
+<li>Microsegmentation</li>
+<li>Software-defined perimeter</li>
+<li>Cloud-native firewall</li>
+<li>Private endpoints</li>
+<li>WAF deployment</li>
+</ul></li>
+</ul>
+<h4 id="data-protection">Data Protection</h4>
+<ul>
+<li><strong>Current State Assessment</strong>
+<ul>
+<li>Encryption at rest</li>
+<li>Encryption in transit</li>
+<li>Key management</li>
+<li>Data classification</li>
+<li>DLP policies</li>
+</ul></li>
+<li><strong>Target State Design</strong>
+<ul>
+<li>Cloud KMS</li>
+<li>Certificate management</li>
+<li>Secrets management</li>
+<li>Data tokenization</li>
+<li>Privacy compliance</li>
+</ul></li>
+</ul>
+<h3 id="compliance-mapping">Compliance Mapping</h3>
+<table>
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 25%" />
+<col style="width: 28%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Regulation</th>
+<th>AWS Services</th>
+<th>Azure Services</th>
+<th>GCP Services</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>HIPAA</strong></td>
+<td>HIPAA Eligible Services</td>
+<td>Azure HIPAA Blueprint</td>
+<td>Google Cloud Healthcare API</td>
+</tr>
+<tr>
+<td><strong>PCI DSS</strong></td>
+<td>PCI DSS Compliance Package</td>
+<td>Azure PCI Blueprint</td>
+<td>PCI DSS on GCP</td>
+</tr>
+<tr>
+<td><strong>GDPR</strong></td>
+<td>AWS GDPR Center</td>
+<td>Azure GDPR Tools</td>
+<td>Cloud Data Loss Prevention</td>
+</tr>
+<tr>
+<td><strong>SOC 2</strong></td>
+<td>AWS Artifact</td>
+<td>Azure Compliance Manager</td>
+<td>Google Cloud Compliance</td>
+</tr>
+<tr>
+<td><strong>FedRAMP</strong></td>
+<td>AWS GovCloud</td>
+<td>Azure Government</td>
+<td>Google Cloud FedRAMP</td>
+</tr>
+</tbody>
+</table>
+<h3 id="security-tools-comparison">Security Tools Comparison</h3>
+<table>
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 18%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 18%" />
+<col style="width: 15%" />
+</colgroup>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Cloud</th>
+<th>CSPM</th>
+<th>CWPP</th>
+<th>CNAPP</th>
+<th>Cost</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Prisma Cloud</strong></td>
+<td>Multi</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>$<span class="math display">$$$ |
+| **Dome9** | Multi | ✅ | ✅ | ❌ | $$</span>$</td>
+</tr>
+<tr>
+<td><strong>AWS Security Hub</strong></td>
+<td>AWS</td>
+<td>✅</td>
+<td>❌</td>
+<td>❌</td>
+<td><span
+class="math display">||* * <em>A</em><em>z</em><em>u</em><em>r</em><em>e</em><em>S</em><em>e</em><em>c</em><em>u</em><em>r</em><em>i</em><em>t</em><em>y</em><em>C</em><em>e</em><em>n</em><em>t</em><em>e</em><em>r</em> * *|<em>A</em><em>z</em><em>u</em><em>r</em><em>e</em>|✅|✅|❌|</span></td>
+</tr>
+<tr>
+<td><strong>Chronicle</strong></td>
+<td>GCP</td>
+<td>✅</td>
+<td>❌</td>
+<td>❌</td>
+<td>$$$</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="cost-analysis-optimization">Cost Analysis &amp;
+Optimization</h2>
+<h3 id="total-cost-of-ownership-tco-model">Total Cost of Ownership (TCO)
+Model</h3>
+<h4 id="current-state-costs">Current State Costs</h4>
+<pre><code>Infrastructure Costs:
+├── Hardware depreciation: $50K/month
+├── Data center costs: $30K/month
+├── Network/bandwidth: $10K/month
+├── Software licenses: $40K/month
+├── Support contracts: $20K/month
+└── Total: $150K/month
+
+Operational Costs:
+├── IT staff (10 FTE): $120K/month
+├── Maintenance windows: $20K/month
+├── Downtime impact: $30K/month
+└── Total: $170K/month
+
+Total Current: $320K/month</code></pre>
+<h4 id="future-state-costs">Future State Costs</h4>
+<pre><code>Cloud Infrastructure:
+├── Compute (EC2/VMs): $35K/month
+├── Storage (S3/Blob): $8K/month
+├── Database (RDS/SQL): $15K/month
+├── Network transfer: $5K/month
+├── Other services: $12K/month
+└── Total: $75K/month
+
+Operational Costs:
+├── IT staff (6 FTE): $72K/month
+├── Managed services: $15K/month
+├── Training/certification: $5K/month
+└── Total: $92K/month
+
+Total Future: $167K/month
+Savings: $153K/month (48%)</code></pre>
+<h3 id="cost-optimization-strategies">Cost Optimization Strategies</h3>
+<table>
+<thead>
+<tr>
+<th>Strategy</th>
+<th>Potential Savings</th>
+<th>Effort</th>
+<th>Risk</th>
+<th>Implementation Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Reserved Instances</strong></td>
+<td>30-60%</td>
+<td>Low</td>
+<td>Low</td>
+<td>Immediate</td>
+</tr>
+<tr>
+<td><strong>Spot Instances</strong></td>
+<td>70-90%</td>
+<td>Medium</td>
+<td>Medium</td>
+<td>1 week</td>
+</tr>
+<tr>
+<td><strong>Right-sizing</strong></td>
+<td>20-40%</td>
+<td>Low</td>
+<td>Low</td>
+<td>2 weeks</td>
+</tr>
+<tr>
+<td><strong>Storage tiering</strong></td>
+<td>30-50%</td>
+<td>Low</td>
+<td>Low</td>
+<td>1 week</td>
+</tr>
+<tr>
+<td><strong>Scheduled scaling</strong></td>
+<td>20-30%</td>
+<td>Medium</td>
+<td>Low</td>
+<td>2 weeks</td>
+</tr>
+<tr>
+<td><strong>Serverless refactor</strong></td>
+<td>40-70%</td>
+<td>High</td>
+<td>Medium</td>
+<td>3 months</td>
+</tr>
+<tr>
+<td><strong>License optimization</strong></td>
+<td>20-40%</td>
+<td>Medium</td>
+<td>Low</td>
+<td>1 month</td>
+</tr>
+</tbody>
+</table>
+<h3 id="roi-calculation-model">ROI Calculation Model</h3>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Migration ROI Calculator</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>migration_cost <span class="op">=</span> <span class="dv">500000</span>  <span class="co"># One-time migration cost</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>monthly_savings <span class="op">=</span> <span class="dv">153000</span>  <span class="co"># Monthly operational savings</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>months_to_payback <span class="op">=</span> migration_cost <span class="op">/</span> monthly_savings  <span class="co"># 3.3 months</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 3-Year ROI</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>total_savings_3yr <span class="op">=</span> (monthly_savings <span class="op">*</span> <span class="dv">36</span>) <span class="op">-</span> migration_cost</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>roi_percentage <span class="op">=</span> (total_savings_3yr <span class="op">/</span> migration_cost) <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Result: 996% ROI over 3 years</span></span></code></pre></div>
+<hr />
+<h2 id="risk-management">Risk Management</h2>
+<h3 id="technical-risk-matrix">Technical Risk Matrix</h3>
+<table>
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 24%" />
+<col style="width: 14%" />
+<col style="width: 35%" />
+<col style="width: 14%" />
+</colgroup>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Probability</th>
+<th>Impact</th>
+<th>Mitigation Strategy</th>
+<th>Owner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Data loss during migration</strong></td>
+<td>Low</td>
+<td>Critical</td>
+<td>Backup verification, rollback plan</td>
+<td>Data Team</td>
+</tr>
+<tr>
+<td><strong>Extended downtime</strong></td>
+<td>Medium</td>
+<td>High</td>
+<td>Phased migration, parallel run</td>
+<td>Ops Team</td>
+</tr>
+<tr>
+<td><strong>Performance degradation</strong></td>
+<td>Medium</td>
+<td>Medium</td>
+<td>Performance testing, optimization</td>
+<td>App Team</td>
+</tr>
+<tr>
+<td><strong>Security breach</strong></td>
+<td>Low</td>
+<td>Critical</td>
+<td>Security assessment, WAF, monitoring</td>
+<td>Security</td>
+</tr>
+<tr>
+<td><strong>Cost overrun</strong></td>
+<td>High</td>
+<td>Medium</td>
+<td>Reserved instances, cost monitoring</td>
+<td>Finance</td>
+</tr>
+<tr>
+<td><strong>Skill gaps</strong></td>
+<td>High</td>
+<td>Medium</td>
+<td>Training, partners, staff augmentation</td>
+<td>HR</td>
+</tr>
+<tr>
+<td><strong>Vendor lock-in</strong></td>
+<td>Medium</td>
+<td>Low</td>
+<td>Multi-cloud architecture, portability</td>
+<td>Architecture</td>
+</tr>
+<tr>
+<td><strong>Compliance violation</strong></td>
+<td>Low</td>
+<td>High</td>
+<td>Compliance mapping, audits</td>
+<td>Legal</td>
+</tr>
+</tbody>
+</table>
+<h3 id="business-risk-assessment">Business Risk Assessment</h3>
+<table>
+<thead>
+<tr>
+<th>Risk Category</th>
+<th>Current Risk</th>
+<th>Post-Migration Risk</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Operational</strong></td>
+<td>High</td>
+<td>Low</td>
+<td>↓ 70%</td>
+</tr>
+<tr>
+<td><strong>Financial</strong></td>
+<td>Medium</td>
+<td>Low</td>
+<td>↓ 50%</td>
+</tr>
+<tr>
+<td><strong>Regulatory</strong></td>
+<td>Low</td>
+<td>Low</td>
+<td>→ 0%</td>
+</tr>
+<tr>
+<td><strong>Reputational</strong></td>
+<td>Medium</td>
+<td>Low</td>
+<td>↓ 40%</td>
+</tr>
+<tr>
+<td><strong>Strategic</strong></td>
+<td>High</td>
+<td>Low</td>
+<td>↓ 60%</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="migration-patterns">Migration Patterns</h2>
+<h3 id="common-migration-patterns">Common Migration Patterns</h3>
+<h4 id="strangler-fig-pattern">1. Strangler Fig Pattern</h4>
+<pre><code>[Monolithic App]
+     ↓
+[Proxy/Router] → [New Microservice 1]
+     ↓         → [New Microservice 2]
+[Legacy Components] → [New Microservice 3]</code></pre>
+<p><strong>Use When:</strong> - Gradual modernization needed - Zero
+downtime required - Risk mitigation important</p>
+<h4 id="database-first-migration">2. Database-First Migration</h4>
+<pre><code>[App Tier] → [Database Tier]
+              ↓
+         [Cloud Database]
+              ↓
+[App Tier] → [Cloud Database]
+     ↓
+[Cloud App] → [Cloud Database]</code></pre>
+<p><strong>Use When:</strong> - Database is bottleneck - Data gravity is
+high - Compliance requires data location</p>
+<h4 id="hybrid-bridge-pattern">3. Hybrid Bridge Pattern</h4>
+<pre><code>[On-Premises] ←→ [Bridge/Gateway] ←→ [Cloud]
+     ↓                                    ↓
+[Local Services]                   [Cloud Services]</code></pre>
+<p><strong>Use When:</strong> - Gradual migration needed - Hybrid
+architecture required - Latency sensitive workloads</p>
+<h3 id="migration-wave-planning">Migration Wave Planning</h3>
+<table>
+<colgroup>
+<col style="width: 13%" />
+<col style="width: 30%" />
+<col style="width: 21%" />
+<col style="width: 21%" />
+<col style="width: 13%" />
+</colgroup>
+<thead>
+<tr>
+<th>Wave</th>
+<th>Applications</th>
+<th>Strategy</th>
+<th>Duration</th>
+<th>Risk</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Wave 0</strong></td>
+<td>Dev/Test environments</td>
+<td>Rehost</td>
+<td>2 weeks</td>
+<td>Low</td>
+</tr>
+<tr>
+<td><strong>Wave 1</strong></td>
+<td>Stateless web apps</td>
+<td>Replatform</td>
+<td>4 weeks</td>
+<td>Low</td>
+</tr>
+<tr>
+<td><strong>Wave 2</strong></td>
+<td>Databases (non-critical)</td>
+<td>Replatform</td>
+<td>6 weeks</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><strong>Wave 3</strong></td>
+<td>Core business apps</td>
+<td>Refactor</td>
+<td>12 weeks</td>
+<td>High</td>
+</tr>
+<tr>
+<td><strong>Wave 4</strong></td>
+<td>Legacy systems</td>
+<td>Rehost/Retire</td>
+<td>8 weeks</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><strong>Wave 5</strong></td>
+<td>Data warehouse</td>
+<td>Repurchase</td>
+<td>16 weeks</td>
+<td>High</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="platform-comparison">Platform Comparison</h2>
+<h3 id="major-cloud-platform-comparison">Major Cloud Platform
+Comparison</h3>
+<table>
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 12%" />
+<col style="width: 17%" />
+<col style="width: 12%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Capability</th>
+<th>AWS</th>
+<th>Azure</th>
+<th>GCP</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Global Reach</strong></td>
+<td>31 regions</td>
+<td>60+ regions</td>
+<td>35 regions</td>
+<td>Azure for coverage</td>
+</tr>
+<tr>
+<td><strong>Compute Options</strong></td>
+<td>⭐⭐⭐⭐⭐</td>
+<td>⭐⭐⭐⭐</td>
+<td>⭐⭐⭐⭐</td>
+<td>AWS for variety</td>
+</tr>
+<tr>
+<td><strong>Kubernetes</strong></td>
+<td>⭐⭐⭐⭐</td>
+<td>⭐⭐⭐⭐</td>
+<td>⭐⭐⭐⭐⭐</td>
+<td>GCP for K8s</td>
+</tr>
+<tr>
+<td><strong>Serverless</strong></td>
+<td>⭐⭐⭐⭐⭐</td>
+<td>⭐⭐⭐⭐</td>
+<td>⭐⭐⭐⭐</td>
+<td>AWS for maturity</td>
+</tr>
+<tr>
+<td><strong>Database Options</strong></td>
+<td>⭐⭐⭐⭐⭐</td>
+<td>⭐⭐⭐⭐</td>
+<td>⭐⭐⭐⭐</td>
+<td>AWS for variety</td>
+</tr>
+<tr>
+<td><strong>AI/ML</strong></td>
+<td>⭐⭐⭐⭐</td>
+<td>⭐⭐⭐⭐</td>
+<td>⭐⭐⭐⭐⭐</td>
+<td>GCP for AI/ML</td>
+</tr>
+<tr>
+<td><strong>Enterprise Integration</strong></td>
+<td>⭐⭐⭐⭐</td>
+<td>⭐⭐⭐⭐⭐</td>
+<td>⭐⭐⭐</td>
+<td>Azure for Microsoft</td>
+</tr>
+<tr>
+<td><strong>Cost Management</strong></td>
+<td>⭐⭐⭐⭐</td>
+<td>⭐⭐⭐⭐</td>
+<td>⭐⭐⭐⭐⭐</td>
+<td>GCP for simplicity</td>
+</tr>
+<tr>
+<td><strong>Documentation</strong></td>
+<td>⭐⭐⭐⭐⭐</td>
+<td>⭐⭐⭐⭐</td>
+<td>⭐⭐⭐⭐</td>
+<td>AWS for depth</td>
+</tr>
+<tr>
+<td><strong>Support</strong></td>
+<td>⭐⭐⭐⭐⭐</td>
+<td>⭐⭐⭐⭐</td>
+<td>⭐⭐⭐</td>
+<td>AWS for ecosystem</td>
+</tr>
+</tbody>
+</table>
+<h3 id="migration-tool-comparison">Migration Tool Comparison</h3>
+<table>
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 20%" />
+<col style="width: 12%" />
+<col style="width: 24%" />
+</colgroup>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Source</th>
+<th>Target</th>
+<th>Downtime</th>
+<th>Cost</th>
+<th>Complexity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AWS MGN</strong></td>
+<td>Any</td>
+<td>AWS</td>
+<td>Minimal</td>
+<td>Free*</td>
+<td>Low</td>
+</tr>
+<tr>
+<td><strong>Azure Migrate</strong></td>
+<td>Any</td>
+<td>Azure</td>
+<td>Minimal</td>
+<td>Free*</td>
+<td>Low</td>
+</tr>
+<tr>
+<td><strong>Migrate for Compute Engine</strong></td>
+<td>Any</td>
+<td>GCP</td>
+<td>Minimal</td>
+<td>Free*</td>
+<td>Low</td>
+</tr>
+<tr>
+<td><strong>CloudEndure</strong></td>
+<td>Any</td>
+<td>AWS</td>
+<td>Minimal</td>
+<td><span
+class="math display">|<em>L</em><em>o</em><em>w</em>||* * <em>V</em><em>e</em><em>l</em><em>o</em><em>s</em><em>t</em><em>r</em><em>a</em><em>t</em><em>a</em> * *|<em>A</em><em>n</em><em>y</em>|<em>G</em><em>C</em><em>P</em>|<em>Z</em><em>e</em><em>r</em><em>o</em>|</span></td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><strong>Zerto</strong></td>
+<td>Any</td>
+<td>Any</td>
+<td>Zero</td>
+<td>$$$</td>
+<td>Low</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="implementation-roadmap">Implementation Roadmap</h2>
+<h3 id="phase-1-assessment-planning-weeks-1-8">Phase 1: Assessment &amp;
+Planning (Weeks 1-8)</h3>
+<h4 id="week-1-2-discovery">Week 1-2: Discovery</h4>
+<ul class="task-list">
+<li><label><input type="checkbox" />Deploy discovery tools</label></li>
+<li><label><input type="checkbox" />Inventory
+infrastructure</label></li>
+<li><label><input type="checkbox" />Map applications</label></li>
+<li><label><input type="checkbox" />Document dependencies</label></li>
+<li><label><input type="checkbox" />Identify stakeholders</label></li>
+</ul>
+<h4 id="week-3-4-assessment">Week 3-4: Assessment</h4>
+<ul class="task-list">
+<li><label><input type="checkbox" />Analyze applications
+(6R)</label></li>
+<li><label><input type="checkbox" />Evaluate complexity</label></li>
+<li><label><input type="checkbox" />Assess security posture</label></li>
+<li><label><input type="checkbox" />Review compliance
+requirements</label></li>
+<li><label><input type="checkbox" />Calculate costs</label></li>
+</ul>
+<h4 id="week-5-6-planning">Week 5-6: Planning</h4>
+<ul class="task-list">
+<li><label><input type="checkbox" />Design target
+architecture</label></li>
+<li><label><input type="checkbox" />Define migration waves</label></li>
+<li><label><input type="checkbox" />Create project plan</label></li>
+<li><label><input type="checkbox" />Develop risk mitigation</label></li>
+<li><label><input type="checkbox" />Establish success
+metrics</label></li>
+</ul>
+<h4 id="week-7-8-preparation">Week 7-8: Preparation</h4>
+<ul class="task-list">
+<li><label><input type="checkbox" />Set up cloud accounts</label></li>
+<li><label><input type="checkbox" />Configure networking</label></li>
+<li><label><input type="checkbox" />Establish connectivity</label></li>
+<li><label><input type="checkbox" />Create landing zones</label></li>
+<li><label><input type="checkbox" />Implement governance</label></li>
+</ul>
+<h3 id="phase-2-pilot-migration-weeks-9-12">Phase 2: Pilot Migration
+(Weeks 9-12)</h3>
+<h4 id="week-9-10-environment-setup">Week 9-10: Environment Setup</h4>
+<ul class="task-list">
+<li><label><input type="checkbox" />Configure cloud
+services</label></li>
+<li><label><input type="checkbox" />Set up monitoring</label></li>
+<li><label><input type="checkbox" />Implement security
+controls</label></li>
+<li><label><input type="checkbox" />Create automation
+scripts</label></li>
+<li><label><input type="checkbox" />Test connectivity</label></li>
+</ul>
+<h4 id="week-11-12-pilot-migration">Week 11-12: Pilot Migration</h4>
+<ul class="task-list">
+<li><label><input type="checkbox" />Migrate dev/test
+environment</label></li>
+<li><label><input type="checkbox" />Validate functionality</label></li>
+<li><label><input type="checkbox" />Performance testing</label></li>
+<li><label><input type="checkbox" />Security validation</label></li>
+<li><label><input type="checkbox" />Document lessons
+learned</label></li>
+</ul>
+<h3 id="phase-3-production-migration-weeks-13-24">Phase 3: Production
+Migration (Weeks 13-24)</h3>
+<h4 id="weeks-13-16-wave-1">Weeks 13-16: Wave 1</h4>
+<ul class="task-list">
+<li><label><input type="checkbox" />Migrate stateless
+applications</label></li>
+<li><label><input type="checkbox" />Validate operations</label></li>
+<li><label><input type="checkbox" />Monitor performance</label></li>
+<li><label><input type="checkbox" />Optimize costs</label></li>
+<li><label><input type="checkbox" />Update documentation</label></li>
+</ul>
+<h4 id="weeks-17-20-wave-2">Weeks 17-20: Wave 2</h4>
+<ul class="task-list">
+<li><label><input type="checkbox" />Migrate databases</label></li>
+<li><label><input type="checkbox" />Implement data sync</label></li>
+<li><label><input type="checkbox" />Cutover planning</label></li>
+<li><label><input type="checkbox" />Business validation</label></li>
+<li><label><input type="checkbox" />Performance tuning</label></li>
+</ul>
+<h4 id="weeks-21-24-wave-3">Weeks 21-24: Wave 3</h4>
+<ul class="task-list">
+<li><label><input type="checkbox" />Migrate critical
+applications</label></li>
+<li><label><input type="checkbox" />Execute cutover</label></li>
+<li><label><input type="checkbox" />Monitor stability</label></li>
+<li><label><input type="checkbox" />Optimize configurations</label></li>
+<li><label><input type="checkbox" />Knowledge transfer</label></li>
+</ul>
+<h3 id="phase-4-optimization-weeks-25-32">Phase 4: Optimization (Weeks
+25-32)</h3>
+<h4 id="weeks-25-28-performance">Weeks 25-28: Performance</h4>
+<ul class="task-list">
+<li><label><input type="checkbox" />Performance
+optimization</label></li>
+<li><label><input type="checkbox" />Auto-scaling setup</label></li>
+<li><label><input type="checkbox" />Cost optimization</label></li>
+<li><label><input type="checkbox" />Security hardening</label></li>
+<li><label><input type="checkbox" />Process automation</label></li>
+</ul>
+<h4 id="weeks-29-32-operations">Weeks 29-32: Operations</h4>
+<ul class="task-list">
+<li><label><input type="checkbox" />Runbook creation</label></li>
+<li><label><input type="checkbox" />Team training</label></li>
+<li><label><input type="checkbox" />Process refinement</label></li>
+<li><label><input type="checkbox" />Documentation
+completion</label></li>
+<li><label><input type="checkbox" />Project closure</label></li>
+</ul>
+<hr />
+<h2 id="industry-considerations">Industry Considerations</h2>
+<h3 id="financial-services">Financial Services</h3>
+<p><strong>Key Requirements:</strong> - Regulatory compliance (SOX,
+PCI-DSS) - Data residency requirements - Real-time transaction
+processing - Disaster recovery (RPO &lt; 1hr) - Encryption
+everywhere</p>
+<p><strong>Recommended Approach:</strong> - Private cloud connectivity -
+Hybrid architecture - Phased migration - Extensive testing - Regulatory
+approval gates</p>
+<h3 id="healthcare">Healthcare</h3>
+<p><strong>Key Requirements:</strong> - HIPAA compliance - PHI data
+protection - High availability (99.99%) - Audit logging - Integration
+with EMR/EHR</p>
+<p><strong>Recommended Approach:</strong> - HIPAA-eligible services only
+- Encryption by default - Dedicated infrastructure - BAA agreements -
+Compliance validation</p>
+<h3 id="retaile-commerce">Retail/E-commerce</h3>
+<p><strong>Key Requirements:</strong> - Seasonal scalability - Global
+distribution - PCI compliance - Omnichannel support - Real-time
+inventory</p>
+<p><strong>Recommended Approach:</strong> - Auto-scaling architecture -
+CDN implementation - Microservices design - Event-driven architecture -
+Multi-region deployment</p>
+<h3 id="manufacturing">Manufacturing</h3>
+<p><strong>Key Requirements:</strong> - IoT integration - Edge computing
+- Predictive maintenance - Supply chain integration - Legacy system
+connectivity</p>
+<p><strong>Recommended Approach:</strong> - Hybrid cloud model - Edge
+deployment - IoT platforms - Data lake architecture - API-first
+integration</p>
+<hr />
+<h2 id="success-metrics">Success Metrics</h2>
+<h3 id="technical-metrics">Technical Metrics</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Baseline</th>
+<th>Target</th>
+<th>Measurement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Application Performance</strong></td>
+<td>500ms</td>
+<td>200ms</td>
+<td>APM tools</td>
+</tr>
+<tr>
+<td><strong>Availability</strong></td>
+<td>99.5%</td>
+<td>99.99%</td>
+<td>Uptime monitoring</td>
+</tr>
+<tr>
+<td><strong>Recovery Time (RTO)</strong></td>
+<td>24 hours</td>
+<td>1 hour</td>
+<td>DR testing</td>
+</tr>
+<tr>
+<td><strong>Recovery Point (RPO)</strong></td>
+<td>24 hours</td>
+<td>15 minutes</td>
+<td>Backup validation</td>
+</tr>
+<tr>
+<td><strong>Deployment Frequency</strong></td>
+<td>Monthly</td>
+<td>Daily</td>
+<td>CI/CD metrics</td>
+</tr>
+<tr>
+<td><strong>Mean Time to Recovery</strong></td>
+<td>4 hours</td>
+<td>30 minutes</td>
+<td>Incident tracking</td>
+</tr>
+<tr>
+<td><strong>Infrastructure Utilization</strong></td>
+<td>30%</td>
+<td>70%</td>
+<td>Cloud monitoring</td>
+</tr>
+</tbody>
+</table>
+<h3 id="business-metrics">Business Metrics</h3>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 25%" />
+<col style="width: 20%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Baseline</th>
+<th>Target</th>
+<th>Measurement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>IT Cost Reduction</strong></td>
+<td>$0</td>
+<td>40%</td>
+<td>Finance reports</td>
+</tr>
+<tr>
+<td><strong>Time to Market</strong></td>
+<td>6 months</td>
+<td>1 month</td>
+<td>Project tracking</td>
+</tr>
+<tr>
+<td><strong>Customer Satisfaction</strong></td>
+<td>7.0</td>
+<td>9.0</td>
+<td>NPS scores</td>
+</tr>
+<tr>
+<td><strong>Innovation Velocity</strong></td>
+<td>2 features/quarter</td>
+<td>10 features/quarter</td>
+<td>Product metrics</td>
+</tr>
+<tr>
+<td><strong>Technical Debt</strong></td>
+<td>40%</td>
+<td>10%</td>
+<td>Code analysis</td>
+</tr>
+<tr>
+<td><strong>Operational Efficiency</strong></td>
+<td>60%</td>
+<td>90%</td>
+<td>Process metrics</td>
+</tr>
+</tbody>
+</table>
+<h3 id="migration-success-criteria">Migration Success Criteria</h3>
+<p>✅ <strong>Successful Migration Indicators:</strong> - All
+applications migrated on schedule - Zero data loss during migration -
+Performance SLAs met or exceeded - Cost savings realized - Team
+successfully operating cloud</p>
+<p>⚠️ <strong>Warning Signs:</strong> - Schedule slippage &gt; 20% -
+Cost overrun &gt; 30% - Performance degradation - Security incidents -
+Team struggling with cloud</p>
+<p>❌ <strong>Failure Indicators:</strong> - Critical data loss -
+Extended unplanned downtime - Compliance violations - Budget exceeded by
+50%+ - Business impact</p>
+<hr />
+<h2 id="appendix-templates-tools">Appendix: Templates &amp; Tools</h2>
+<h3 id="migration-readiness-checklist">Migration Readiness
+Checklist</h3>
+<p><strong>Business Readiness:</strong> - [ ] Executive sponsorship
+secured - [ ] Budget approved - [ ] Success metrics defined - [ ]
+Stakeholders identified - [ ] Communication plan created</p>
+<p><strong>Technical Readiness:</strong> - [ ] Current state documented
+- [ ] Dependencies mapped - [ ] Target architecture designed - [ ]
+Migration tools selected - [ ] Team trained</p>
+<p><strong>Operational Readiness:</strong> - [ ] Runbooks created - [ ]
+Monitoring configured - [ ] Support model defined - [ ] Escalation paths
+established - [ ] Change management process</p>
+<h3 id="cost-estimation-template">Cost Estimation Template</h3>
+<pre class="excel"><code>Migration Cost Estimator
+========================
+One-Time Costs:
+- Discovery &amp; Assessment: $50,000
+- Migration Tools: $25,000
+- Professional Services: $200,000
+- Training: $30,000
+- Contingency (20%): $61,000
+Total One-Time: $366,000
+
+Monthly Costs (Post-Migration):
+- Infrastructure: $75,000
+- Operations: $40,000
+- Support: $15,000
+- Optimization: $10,000
+Total Monthly: $140,000
+
+ROI Calculation:
+- Current Monthly Cost: $320,000
+- New Monthly Cost: $140,000
+- Monthly Savings: $180,000
+- Payback Period: 2.0 months
+- 3-Year ROI: 1,380%</code></pre>
+<hr />
+<p><em>End of Cloud Migration Assessment Framework v2.0</em></p>
+
+<!-- CTA Section -->
+<div style="background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; padding: 3rem 2rem; border-radius: 12px; margin: 3rem 0; text-align: center;">
+    <h2 style="color: white; margin-bottom: 1rem; font-size: 2rem;">Ready to Plan Your Cloud Migration?</h2>
+    <p style="margin-bottom: 2rem; opacity: 0.9; font-size: 1.1rem;">Use our comprehensive Cloud Migration Calculator to assess your applications, plan your migration strategy, and calculate ROI.</p>
+    
+    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="calculator.html" style="display: inline-block; background: white; color: #6366f1; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 1.1rem; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            ☁️ Launch Migration Calculator
+        </a>
+        <a href="/calculators.html" style="display: inline-block; background: rgba(255,255,255,0.2); color: white; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 1.1rem; border: 2px solid white; transition: all 0.3s;" onmouseover="this.style.background='white'; this.style.color='#6366f1'" onmouseout="this.style.background='rgba(255,255,255,0.2)'; this.style.color='white'">
+            📊 View All Tools
+        </a>
+    </div>
+</div>
+
+<div style="background: #f8fafc; padding: 3rem 2rem; border-radius: 12px; margin: 3rem 0;">
+    <h2 style="text-align: center; color: #1e293b; margin-bottom: 2rem;">Explore Other Frameworks</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; width: 100%; box-sizing: border-box; overflow-x: hidden;">
+        <a href="/ai-readiness/index.html" style="background: white; padding: 1.5rem; border-radius: 8px; text-decoration: none; border: 1px solid #e2e8f0; transition: all 0.3s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">
+            <h3 style="color: #6366f1; margin-bottom: 0.5rem;">🤖 AI Readiness</h3>
+            <p style="color: #64748b; font-size: 0.9rem;">Evaluate AI/ML implementation readiness</p>
+        </a>
+        <a href="/mlops-audit/index.html" style="background: white; padding: 1.5rem; border-radius: 8px; text-decoration: none; border: 1px solid #e2e8f0; transition: all 0.3s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">
+            <h3 style="color: #6366f1; margin-bottom: 0.5rem;">🔧 MLOps Audit</h3>
+            <p style="color: #64748b; font-size: 0.9rem;">Machine Learning operations excellence</p>
+        </a>
+        <a href="/llm-framework/index.html" style="background: white; padding: 1.5rem; border-radius: 8px; text-decoration: none; border: 1px solid #e2e8f0; transition: all 0.3s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">
+            <h3 style="color: #6366f1; margin-bottom: 0.5rem;">🧠 LLM Framework</h3>
+            <p style="color: #64748b; font-size: 0.9rem;">Large Language Model implementation guide</p>
+        </a>
+        <a href="/security-audit/index.html" style="background: white; padding: 1.5rem; border-radius: 8px; text-decoration: none; border: 1px solid #e2e8f0; transition: all 0.3s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">
+            <h3 style="color: #6366f1; margin-bottom: 0.5rem;">🔐 Security Audit</h3>
+            <p style="color: #64748b; font-size: 0.9rem;">Comprehensive security assessment framework</p>
+        </a>
+        <a href="/cost-optimization/index.html" style="background: white; padding: 1.5rem; border-radius: 8px; text-decoration: none; border: 1px solid #e2e8f0; transition: all 0.3s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">
+            <h3 style="color: #6366f1; margin-bottom: 0.5rem;">💰 Cost Optimization</h3>
+            <p style="color: #64748b; font-size: 0.9rem;">Cloud cost analysis and optimization</p>
+        </a>
+    </div>
+</div>
+
+            
+            <!-- Old CTA section removed - new CTA section added above -->
+        </div>
+    </div>
+    
+    <script>
+        // Smooth scrolling for TOC links
+        document.querySelectorAll('.toc a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Highlight current section in TOC
+        function updateTOC() {
+            const sections = document.querySelectorAll('.content h1, .content h2, .content h3');
+            const tocLinks = document.querySelectorAll('.toc a');
+            
+            let current = '';
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = '#' + section.id;
+                }
+            });
+            
+            tocLinks.forEach(link => {
+                link.style.color = link.getAttribute('href') === current ? 'var(--primary)' : 'var(--gray)';
+                link.style.borderLeftColor = link.getAttribute('href') === current ? 'var(--primary)' : 'transparent';
+            });
+        }
+        
+        window.addEventListener('scroll', updateTOC);
+        window.addEventListener('load', updateTOC);
+    </script>
+    
+    <!-- Footer -->
+    <footer style="background: #f8fafc; padding: 2rem 0; margin-top: 4rem; text-align: center; border-top: 1px solid #e2e8f0;">
+        <div style="font-size: 1.1rem; color: #059669; font-weight: 500;">
+            Built with ❤️ by architects, for architects! 🚀
+        </div>
+    </footer>
+    
+    <!-- Navigation JavaScript -->
+    <script src="../assets/js/site-navigation.js"></script>
+</body>
+</html>

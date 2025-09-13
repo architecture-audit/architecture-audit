@@ -1,0 +1,776 @@
+/* Cost Optimization Calculator Styles */
+
+/* Variables - Purple Theme (Matching other frameworks) */
+:root {
+    --primary: #6366f1;
+    --primary-dark: #4f46e5;
+    --secondary: #8b5cf6;
+    --accent: #06b6d4;
+    --dark: #1e293b;
+    --light: #f8fafc;
+    --gray: #64748b;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --border: #e2e8f0;
+    --money-green: #16a34a;
+    --money-light: #dcfce7;
+    --money-dark: #14532d;
+    --savings-green: #059669;
+    --cost-red: #dc2626;
+}
+
+/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.6;
+    color: var(--dark);
+    background: var(--light);
+    margin: 0;
+    padding: 0;
+}
+
+/* Header */
+.header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+    padding: 5rem 0 2rem 0;
+    margin-top: 0;
+    box-shadow: 0 2px 10px rgba(99, 102, 241, 0.2);
+}
+
+.header-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.header p {
+    font-size: 1.1rem;
+    opacity: 0.95;
+}
+
+/* Navigation Tabs */
+.nav-tabs {
+    background: white;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 60px; /* Account for fixed site navigation */
+    z-index: 100;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Add subtle shadow for separation */
+}
+
+.nav-tabs-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    gap: 4px; /* Increased gap between tabs */
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+.nav-tabs-container::-webkit-scrollbar {
+    height: 4px;
+}
+
+.nav-tabs-container::-webkit-scrollbar-track {
+    background: var(--light);
+}
+
+.nav-tabs-container::-webkit-scrollbar-thumb {
+    background: var(--money-green);
+    border-radius: 2px;
+}
+
+.nav-tab {
+    background: none;
+    border: none;
+    padding: 1rem 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-bottom: 3px solid transparent;
+    white-space: nowrap;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--gray);
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.nav-tab:hover {
+    background: var(--light);
+    color: var(--primary);
+    transform: translateY(-1px);
+}
+
+.nav-tab.active {
+    background: var(--light);
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+    font-weight: 600;
+    box-shadow: 0 2px 4px rgba(99, 102, 241, 0.1);
+}
+
+.nav-tab span {
+    font-size: 1.2rem;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+/* Container */
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+    margin-top: 1rem; /* Add space below sticky nav tabs */
+}
+
+/* Tabs Content */
+.tab-content {
+    display: none;
+    animation: fadeIn 0.3s ease-in;
+    padding-top: 1rem; /* Ensure content doesn't touch nav tabs */
+    min-height: 200px; /* Prevent content collapse */
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Section */
+.section {
+    background: white;
+    border-radius: 8px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border-left: 4px solid var(--money-green);
+}
+
+.section h2 {
+    color: var(--money-green);
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.section h3 {
+    color: var(--dark);
+    margin: 1.5rem 0 1rem 0;
+    font-size: 1.2rem;
+}
+
+/* Form Elements */
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.25rem;
+    position: relative;
+    z-index: 1; /* Ensure form elements are above background */
+}
+
+.form-group label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: var(--dark);
+}
+
+input, select, textarea {
+    padding: 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--money-green);
+    box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.1);
+}
+
+/* Buttons */
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: var(--money-green);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: var(--gray);
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #475569;
+}
+
+.btn-danger {
+    background: var(--danger);
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #dc2626;
+}
+
+.btn-success {
+    background: var(--success);
+    color: white;
+}
+
+.btn-success:hover {
+    background: var(--savings-green);
+}
+
+/* Button Groups */
+.btn-group {
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0;
+    flex-wrap: wrap;
+}
+
+/* Tables */
+.cost-table, .assessment-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.cost-table th, .assessment-table th {
+    background: var(--money-green);
+    color: white;
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+.cost-table td, .assessment-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.cost-table tr:hover, .assessment-table tr:hover {
+    background: var(--money-light);
+}
+
+.cost-table input, .assessment-table input,
+.cost-table select, .assessment-table select {
+    width: 100%;
+    border: 1px solid var(--border);
+    padding: 0.5rem;
+    margin: 0;
+}
+
+/* Money Display */
+.money {
+    font-weight: 600;
+    color: var(--money-green);
+}
+
+.cost {
+    color: var(--cost-red);
+    font-weight: 600;
+}
+
+.savings {
+    color: var(--savings-green);
+    font-weight: 600;
+}
+
+/* Cards */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.card {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border: 1px solid var(--border);
+    transition: transform 0.2s, box-shadow 0.2s;
+    overflow: visible; /* Ensure dropdowns aren't clipped */
+    position: relative;
+    margin-bottom: 1.5rem; /* Add consistent spacing */
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.card-header h3 {
+    margin: 0;
+    color: var(--money-green);
+    font-size: 1.1rem;
+}
+
+.card-value {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0.5rem 0;
+}
+
+.card-description {
+    color: var(--gray);
+    font-size: 0.9rem;
+}
+
+/* Progress Bars */
+.progress {
+    width: 100%;
+    height: 20px;
+    background: var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 0.5rem 0;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--money-green), var(--secondary));
+    transition: width 0.3s ease;
+    position: relative;
+}
+
+.progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* Alerts */
+.alert {
+    padding: 1rem;
+    border-radius: 4px;
+    margin: 1rem 0;
+    border-left: 4px solid;
+}
+
+.alert-info {
+    background: #dbeafe;
+    border-color: #3b82f6;
+    color: #1e40af;
+}
+
+.alert-success {
+    background: var(--money-light);
+    border-color: var(--money-green);
+    color: var(--money-dark);
+}
+
+.alert-warning {
+    background: #fef3c7;
+    border-color: var(--warning);
+    color: #92400e;
+}
+
+.alert-danger {
+    background: #fee2e2;
+    border-color: var(--danger);
+    color: #991b1b;
+}
+
+/* Metrics Grid */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.metric-card {
+    background: linear-gradient(135deg, var(--money-green), var(--savings-green));
+    color: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(22, 163, 74, 0.2);
+}
+
+.metric-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    display: block;
+}
+
+.metric-label {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    margin-top: 0.5rem;
+}
+
+/* Charts placeholder */
+.chart-container {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 2rem;
+    margin: 1rem 0;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gray);
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Footer */
+.footer {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    text-align: center;
+    padding: 2rem 0;
+    margin-top: 4rem;
+}
+
+.footer-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+        margin-top: 1.5rem; /* More spacing on mobile */
+    }
+    
+    .nav-tab {
+        min-width: 95px;
+        max-width: 110px;
+        font-size: 0.7rem;
+        padding: 0.8rem 0.4rem;
+        gap: 0.2rem;
+    }
+    
+    .nav-tab span {
+        font-size: 1rem;
+    }
+    
+    .header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .card-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .btn-group {
+        flex-direction: column;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-tabs-container {
+        padding: 0 1rem;
+    }
+    
+    .nav-tab {
+        min-width: 85px;
+        max-width: 95px;
+        font-size: 0.6rem;
+        padding: 0.7rem 0.2rem;
+        gap: 0.15rem;
+    }
+    
+    .nav-tab span {
+        font-size: 0.9rem;
+    }
+    
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .metric-value {
+        font-size: 2rem;
+    }
+    
+    .cost-table, .assessment-table {
+        font-size: 0.8rem;
+    }
+    
+    .cost-table th, .assessment-table th,
+    .cost-table td, .assessment-table td {
+        padding: 0.5rem;
+    }
+}
+
+/* Loading States */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.spinner {
+    border: 2px solid var(--border);
+    border-top: 2px solid var(--money-green);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+    margin-right: 0.5rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ROI Indicators */
+.roi-positive {
+    color: var(--savings-green);
+    font-weight: 600;
+}
+
+.roi-negative {
+    color: var(--cost-red);
+    font-weight: 600;
+}
+
+.roi-neutral {
+    color: var(--gray);
+    font-weight: 600;
+}
+
+/* Priority Indicators */
+.priority-high {
+    background: var(--danger);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.priority-medium {
+    background: var(--warning);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.priority-low {
+    background: var(--success);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* Status Indicators */
+.status-active {
+    color: var(--success);
+    font-weight: 600;
+}
+
+.status-inactive {
+    color: var(--danger);
+    font-weight: 600;
+}
+
+.status-pending {
+    color: var(--warning);
+    font-weight: 600;
+}
+
+/* Savings Highlights */
+.savings-highlight {
+    background: linear-gradient(135deg, var(--money-light), #f0fdf4);
+    border: 2px solid var(--money-green);
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 1rem 0;
+}
+
+.savings-amount {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--money-green);
+}
+
+/* Missing styles for maturity assessment */
+.maturity-questions {
+    margin-top: 1rem;
+}
+
+.maturity-questions .form-group {
+    margin-bottom: 1rem;
+}
+
+.maturity-level {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 0.5rem;
+    color: var(--primary);
+}
+
+/* Ensure maturity assessment container styling */
+#maturity-assessment-container {
+    max-width: 1200px;
+    margin: 1rem auto;
+}
+
+#maturity-assessment-container .card {
+    margin-bottom: 1.5rem;
+}
+
+#maturity-assessment-container .dimension-score {
+    text-align: center;
+    padding: 0.75rem;
+    background: var(--light);
+    border-radius: 6px;
+    margin-top: 1rem;
+}
+
+#maturity-assessment-container .dimension-score .money {
+    color: var(--primary);
+    font-weight: bold;
+}
+
+/* Section Styling */
+.section {
+    margin-bottom: 3rem;
+    padding-top: 1rem; /* Add top padding to prevent overlap */
+    position: relative;
+    z-index: 1;
+}
+
+.section h2 {
+    margin-bottom: 1rem;
+    color: var(--primary);
+}
+
+/* Additional responsive fixes */
+@media (max-width: 768px) {
+    body {
+        margin-top: 60px; /* Slightly less margin on mobile */
+    }
+    
+    .nav-tabs {
+        top: 60px; /* Adjust sticky position for mobile */
+    }
+    #maturity-assessment-container .card {
+        margin: 0.5rem 0;
+        padding: 1rem;
+    }
+    
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+    }
+    
+    .form-group select {
+        width: 100%;
+        padding: 0.75rem;
+        font-size: 1rem;
+    }
+    
+    .metric-value {
+        font-size: 1.8rem;
+    }
+    
+    .savings-highlight {
+        text-align: center;
+        padding: 1.5rem;
+    }
+}

@@ -1,0 +1,64 @@
+{
+  "name": "AI Architecture Audit Tools",
+  "short_name": "AI Audit",
+  "description": "Comprehensive enterprise assessment tools for AI readiness, cloud migration, and architecture optimization",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#6366f1",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' fill='%236366f1'/><text x='256' y='320' font-family='system-ui' font-size='320' text-anchor='middle' fill='white'>🏗️</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' fill='%236366f1'/><text x='96' y='130' font-family='system-ui' font-size='120' text-anchor='middle' fill='white'>🏗️</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "productivity", "utilities"],
+  "screenshots": [
+    {
+      "src": "/docs/assets/images/screenshot-desktop.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "label": "Desktop view of AI Architecture Audit tools"
+    },
+    {
+      "src": "/docs/assets/images/screenshot-mobile.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "label": "Mobile view of calculator tools"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "AI Readiness",
+      "short_name": "AI Ready",
+      "description": "AI Readiness Assessment Calculator",
+      "url": "/calculators/ai-readiness/",
+      "icons": [{ "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><text x='48' y='65' font-size='60' text-anchor='middle'>🤖</text></svg>", "sizes": "96x96" }]
+    },
+    {
+      "name": "Cloud Migration",
+      "short_name": "Cloud",
+      "description": "Cloud Migration Assessment",
+      "url": "/calculators/cloud-migration/",
+      "icons": [{ "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><text x='48' y='65' font-size='60' text-anchor='middle'>☁️</text></svg>", "sizes": "96x96" }]
+    },
+    {
+      "name": "Cost Optimization",
+      "short_name": "Cost",
+      "description": "Cost Optimization Calculator",
+      "url": "/calculators/cost-optimization/",
+      "icons": [{ "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><text x='48' y='65' font-size='60' text-anchor='middle'>💰</text></svg>", "sizes": "96x96" }]
+    }
+  ],
+  "prefer_related_applications": false,
+  "related_applications": []
+}

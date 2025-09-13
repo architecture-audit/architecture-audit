@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Save Progress Button</title>
+    <style>
+        body { font-family: system-ui; padding: 40px; background: #1a1a1a; color: white; }
+        button { padding: 15px 30px; font-size: 18px; background: #60a5fa; color: white; border: none; border-radius: 8px; cursor: pointer; margin: 10px; }
+        button:hover { background: #3b82f6; }
+        .result { margin-top: 20px; padding: 20px; background: #2a2a2a; border-radius: 8px; }
+        .success { color: #4ade80; }
+        .error { color: #ef4444; }
+    </style>
+</head>
+<body>
+    <h1>Test Save Progress Button</h1>
+    
+    <button onclick="testDirectSave()">Test Direct Save</button>
+    <button onclick="testAutoSave()">Test Auto-Save</button>
+    <button onclick="checkLocalStorage()">Check LocalStorage</button>
+    <button onclick="clearAll()">Clear All Data</button>
+    
+    <div id="result" class="result"></div>
+    
+    <!-- Load the bundles -->
+    <script src="/docs/assets/js/bundle-utilities.min.js"></script>
+    
+    <script>
+        const result = document.getElementById('result');
+        
+        // Initialize auto-save
+        window.autoSave = new AutoSave('test-calculator', 5000);
+        
+        // Create test data function
+        window.collectAllData = function() {
+            return {
+                test: true,
+                timestamp: new Date().toISOString(),
+                randomValue: Math.random()
+            };
+        };
+        
+        function testDirectSave() {
+            try {
+                const data = window.collectAllData();
+                localStorage.setItem('test-save', JSON.stringify(data));
+                result.innerHTML = '<div class="success">✅ Direct save worked!</div><pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            } catch(e) {
+                result.innerHTML = '<div class="error">❌ Direct save failed: ' + e.message + '</div>';
+            }
+        }
+        
+        function testAutoSave() {
+            try {
+                if (window.autoSave && window.autoSave.manualSave) {
+                    const saved = window.autoSave.manualSave();
+                    if (saved) {
+                        result.innerHTML = '<div class="success">✅ Auto-save worked!</div>';
+                        checkLocalStorage();
+                    } else {
+                        result.innerHTML = '<div class="error">❌ Auto-save returned false</div>';
+                    }
+                } else {
+                    result.innerHTML = '<div class="error">❌ Auto-save not initialized</div>';
+                }
+            } catch(e) {
+                result.innerHTML = '<div class="error">❌ Auto-save error: ' + e.message + '</div>';
+            }
+        }
+        
+        function checkLocalStorage() {
+            const keys = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.includes('test') || key.includes('autosave')) {
+                    const value = localStorage.getItem(key);
+                    keys.push({ key, value: JSON.parse(value) });
+                }
+            }
+            result.innerHTML = '<div class="success">📦 LocalStorage Contents:</div><pre>' + JSON.stringify(keys, null, 2) + '</pre>';
+        }
+        
+        function clearAll() {
+            const keysToRemove = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.includes('test')) {
+                    keysToRemove.push(key);
+                }
+            }
+            keysToRemove.forEach(key => localStorage.removeItem(key));
+            result.innerHTML = '<div class="success">🗑️ Cleared ' + keysToRemove.length + ' test entries</div>';
+        }
+    </script>
+</body>
+</html>

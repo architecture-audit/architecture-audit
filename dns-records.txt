@@ -1,0 +1,48 @@
+# DNS Records to Add for aiarchitectureaudit.com
+
+## Required DNS Records:
+
+### 1. SSL Certificate Verification (MUST ADD FIRST)
+Type: CNAME
+Name: _c5048cc4ce7d504d911fb40929c5c31e.aiarchitectureaudit.com
+Value: _f7d7e1618942e6a9d577ce8bc948ffea.xlfgrmvvlj.acm-validations.aws.
+TTL: 300
+
+### 2. Root Domain
+Type: CNAME (or ALIAS/ANAME if supported)
+Name: @ (or leave blank for root)
+Value: d19kbb25go9gma.cloudfront.net
+TTL: 300
+
+### 3. WWW Subdomain
+Type: CNAME
+Name: www
+Value: d19kbb25go9gma.cloudfront.net
+TTL: 300
+
+## Instructions for Popular Domain Registrars:
+
+### GoDaddy:
+1. Log in to your GoDaddy account
+2. Go to My Products → Domains → aiarchitectureaudit.com → DNS
+3. Add the records above
+
+### Namecheap:
+1. Sign in to Namecheap
+2. Domain List → Manage → Advanced DNS
+3. Add the records above
+
+### Route53 (AWS):
+Run this command if your domain is in Route53:
+aws route53 list-hosted-zones --query "HostedZones[?Name=='aiarchitectureaudit.com.'].Id" --output text
+
+### Cloudflare:
+1. Log in to Cloudflare
+2. Select aiarchitectureaudit.com
+3. Go to DNS
+4. Add records (set Proxy status to "DNS only" - gray cloud)
+
+## Important Notes:
+- Add the SSL verification record FIRST
+- DNS propagation can take 5 minutes to 48 hours (usually 15-30 minutes)
+- The domain status will change from PENDING_VERIFICATION to AVAILABLE once verified

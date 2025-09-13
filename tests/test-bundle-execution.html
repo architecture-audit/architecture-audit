@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Bundle Execution</title>
+    <style>
+        body { font-family: monospace; padding: 20px; background: #000; color: #0f0; }
+        .error { color: #f00; }
+        .success { color: #0f0; }
+    </style>
+</head>
+<body>
+    <h1>Testing Bundle Execution</h1>
+    <div id="log"></div>
+    
+    <script>
+        const log = document.getElementById('log');
+        
+        function addLog(msg, isError = false) {
+            const div = document.createElement('div');
+            div.className = isError ? 'error' : 'success';
+            div.textContent = msg;
+            log.appendChild(div);
+        }
+        
+        // Track script loading
+        addLog('Page loaded, waiting for bundle...');
+        
+        // Override console.error to catch bundle errors
+        const originalError = console.error;
+        console.error = function(...args) {
+            addLog('❌ Console Error: ' + args.join(' '), true);
+            originalError.apply(console, args);
+        };
+    </script>
+    
+    <!-- Load the bundle -->
+    <script src="/docs/assets/js/bundle-utilities.min.js"></script>
+    
+    <script>
+        // Check immediately after bundle loads
+        addLog('Bundle script tag executed');
+        
+        // Check what's available
+        setTimeout(() => {
+            addLog('=== Checking after 0ms ===');
+            addLog('typeof AutoSave: ' + typeof AutoSave);
+            addLog('typeof window.AutoSave: ' + typeof window.AutoSave);
+            addLog('typeof NotificationSystem: ' + typeof NotificationSystem);
+            addLog('typeof window.notify: ' + typeof window.notify);
+            
+            if (typeof window.AutoSave === 'function') {
+                try {
+                    const test = new window.AutoSave('test', 1000);
+                    addLog('✅ Created AutoSave instance successfully!');
+                } catch(e) {
+                    addLog('❌ Error creating AutoSave: ' + e, true);
+                }
+            }
+        }, 0);
+        
+        // Check after DOMContentLoaded
+        document.addEventListener('DOMContentLoaded', function() {
+            addLog('=== DOMContentLoaded fired ===');
+            addLog('typeof AutoSave: ' + typeof AutoSave);
+            addLog('typeof window.AutoSave: ' + typeof window.AutoSave);
+        });
+        
+        // Check after 500ms
+        setTimeout(() => {
+            addLog('=== After 500ms ===');
+            addLog('typeof AutoSave: ' + typeof AutoSave);
+            addLog('typeof window.AutoSave: ' + typeof window.AutoSave);
+        }, 500);
+    </script>
+</body>
+</html>

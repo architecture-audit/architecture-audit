@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Architecture Audit - Enterprise Assessment Tools</title>
+    <meta name="description" content="Comprehensive cloud migration and AI readiness assessment tools. Free enterprise-grade calculators and frameworks.">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#6366f1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="AI Audit">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🏗️</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🏗️</text></svg>">
+    
+    <!-- Navigation CSS -->
+    <link rel="stylesheet" href="docs/assets/css/site-navigation.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --accent: #06b6d4;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --border: #e2e8f0;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: var(--light);
+            margin: 0; /* Remove all margins */
+            padding: 0; /* Remove all padding */
+        }
+        
+        /* Header - Purple section that starts at top of page */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 6rem 0 4rem 0; /* Extra top padding to account for fixed navbar */
+            text-align: center;
+            margin-top: 0; /* Start at very top - navbar overlays */
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Navigation */
+        .nav {
+            background: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .nav-link {
+            color: var(--gray);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary);
+            background: var(--light);
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .hero h2 {
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        /* Tool Cards Grid */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+        
+        .tool-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            border-color: var(--primary);
+        }
+        
+        .tool-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .tool-card .icon {
+            font-size: 2rem;
+        }
+        
+        .tool-card p {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+        
+        .tool-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tool-link {
+            padding: 0.75rem 1.5rem;
+            background: var(--light);
+            color: var(--primary);
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: 1px solid var(--border);
+        }
+        
+        .tool-link:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .tool-link.calculator {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+        }
+        
+        /* Features Section */
+        .features {
+            background: white;
+            padding: 3rem;
+            border-radius: 12px;
+            margin-bottom: 4rem;
+        }
+        
+        .features h2 {
+            font-size: 2rem;
+            color: var(--dark);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature {
+            text-align: center;
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature h3 {
+            font-size: 1.2rem;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .feature p {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+        
+        /* Stats Section */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+            text-align: center;
+        }
+        
+        .stat {
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+            border-radius: 12px;
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: var(--gray);
+            font-size: 1rem;
+        }
+        
+        /* Footer */
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-link:hover {
+            color: white;
+        }
+        
+        .footer-copyright {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+            
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 2rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Site Navigation -->
+    <nav class="site-nav">
+        <div class="site-nav-container">
+            <a href="/" class="site-logo">
+                🏢 AI Architecture Audit
+            </a>
+            
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+            
+            <ul class="site-menu" id="siteMenu">
+                <li class="site-menu-item">
+                    <a href="/">Home</a>
+                </li>
+                
+                <li class="site-menu-item has-dropdown">
+                    <a href="#" onclick="event.preventDefault()">Calculators</a>
+                    <div class="dropdown-menu">
+                        <a href="/calculators/ai-readiness/">🤖 AI Readiness</a>
+                        <a href="/calculators/cloud-migration/">☁️ Cloud Migration</a>
+                        <a href="/calculators/mlops-audit/">🔧 MLOps Audit</a>
+                        <a href="/calculators/llm-framework/">🧠 LLM Framework</a>
+                        <a href="/calculators/security-audit/">🔒 Security Audit</a>
+                        <a href="/calculators/genai-security/">🤖 GenAI Security</a>
+                        <a href="/calculators/cost-optimization/">💰 Cost Optimization</a>
+                    </div>
+                </li>
+                
+                <li class="site-menu-item has-dropdown">
+                    <a href="#" onclick="event.preventDefault()">Documentation</a>
+                    <div class="dropdown-menu">
+                        <a href="/docs/ai-readiness/">📖 AI Readiness Guide</a>
+                        <a href="/docs/cloud-migration/">📖 Cloud Migration Guide</a>
+                        <a href="/docs/mlops-audit/">📖 MLOps Audit Guide</a>
+                        <a href="/docs/llm-framework/">📖 LLM Framework Guide</a>
+                        <a href="/docs/security-audit/">📖 Security Audit Guide</a>
+                        <a href="/docs/genai-security/">📖 GenAI Security Guide</a>
+                        <a href="/docs/cost-optimization/">📖 Cost Optimization Guide</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div class="header">
+        <h1>🏗️ AI Architecture Audit</h1>
+        <p>Enterprise-grade assessment tools for cloud migration and AI transformation</p>
+    </div>
+    
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="#calculators" class="nav-link">🧮 Calculators</a>
+            <a href="#frameworks" class="nav-link">📚 Frameworks</a>
+            <a href="#features" class="nav-link">✨ Features</a>
+            <a href="#about" class="nav-link">ℹ️ About</a>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="hero">
+            <h2>Professional Assessment Tools</h2>
+            <p>Open-source enterprise architecture frameworks created by the community. Six comprehensive assessment tools for cloud transformation, AI/ML adoption, security, and cost optimization.</p>
+            <div class="cta-buttons">
+                <a href="calculators/ai-readiness/" class="btn btn-primary">
+                    🤖 AI Readiness
+                </a>
+                <a href="calculators/cloud-migration/" class="btn btn-primary">
+                    ☁️ Cloud Migration
+                </a>
+                <a href="calculators/mlops-audit/" class="btn btn-primary">
+                    🔧 MLOps Audit
+                </a>
+                <a href="calculators/llm-framework/" class="btn btn-primary">
+                    🧠 LLM Framework
+                </a>
+                <a href="calculators/security-audit/" class="btn btn-primary">
+                    🔒 Security Audit
+                </a>
+                <a href="calculators/genai-security/" class="btn btn-primary">
+                    🤖 GenAI Security
+                </a>
+                <a href="calculators/cost-optimization/" class="btn btn-primary">
+                    💰 Cost Optimization
+                </a>
+            </div>
+        </div>
+        
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-value">7</div>
+                <div class="stat-label">Assessment Frameworks</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">65+</div>
+                <div class="stat-label">Total Worksheets</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">120+</div>
+                <div class="stat-label">Evaluation Dimensions</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">100%</div>
+                <div class="stat-label">Open Source</div>
+            </div>
+        </div>
+        
+        <section id="calculators">
+            <h2 style="text-align: center; margin-bottom: 2rem; font-size: 2rem;">Interactive Assessment Calculators</h2>
+            
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <h3><span class="icon">🤖</span> AI Readiness Assessment</h3>
+                    <p>Comprehensive 24-dimension maturity assessment covering data readiness, infrastructure, skills, governance, and financial planning. Includes ROI calculator, vendor selection matrix, and 16-month implementation roadmap.</p>
+                    <div class="tool-links">
+                        <a href="calculators/ai-readiness/" class="tool-link calculator">
+                            🧮 Calculator
+                        </a>
+                        <a href="docs/ai-readiness/" class="tool-link">
+                            📖 Documentation
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <h3><span class="icon">☁️</span> Cloud Migration Assessment</h3>
+                    <p>Multi-cloud migration planning with infrastructure discovery, cost analysis, risk assessment, and 6R strategy. Compare AWS, Azure, and GCP with detailed service mapping and migration wave planning.</p>
+                    <div class="tool-links">
+                        <a href="calculators/cloud-migration/" class="tool-link calculator">
+                            🧮 Calculator
+                        </a>
+                        <a href="docs/cloud-migration/" class="tool-link">
+                            📖 Documentation
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <h3><span class="icon">🔧</span> MLOps Maturity Audit</h3>
+                    <p>Evaluate your machine learning operations across 8 dimensions including data pipelines, model development, deployment, monitoring, and governance. Platform comparison and implementation roadmap included.</p>
+                    <div class="tool-links">
+                        <a href="calculators/mlops-audit/" class="tool-link calculator">
+                            🧮 Calculator
+                        </a>
+                        <a href="docs/mlops-audit/" class="tool-link">
+                            📖 Documentation
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <h3><span class="icon">🧠</span> LLM Implementation Framework</h3>
+                    <p>Strategic LLM deployment guide with model selection, RAG architecture, prompt engineering, fine-tuning strategies, and cost analysis. Includes hallucination mitigation and production patterns.</p>
+                    <div class="tool-links">
+                        <a href="calculators/llm-framework/" class="tool-link calculator">
+                            🧮 Calculator
+                        </a>
+                        <a href="docs/llm-framework/" class="tool-link">
+                            📖 Documentation
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <h3><span class="icon">🔒</span> Security Audit Framework</h3>
+                    <p>Enterprise security assessment with integrated OWASP Top 10 and Blue Team operations. Covers NIST/ISO frameworks, vulnerability management, and defensive security capabilities.</p>
+                    <div class="tool-links">
+                        <a href="calculators/security-audit/" class="tool-link calculator">
+                            🧮 Calculator
+                        </a>
+                        <a href="docs/security-audit/" class="tool-link">
+                            📖 Documentation
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <h3><span class="icon">🤖</span> GenAI Security Framework</h3>
+                    <p>Comprehensive AI security assessment with integrated OWASP LLM Top 10 and AI Blue Team operations. Covers prompt injection, model integrity, and defensive AI operations.</p>
+                    <div class="tool-links">
+                        <a href="calculators/genai-security/" class="tool-link calculator">
+                            🧮 Calculator
+                        </a>
+                        <a href="docs/genai-security/" class="tool-link">
+                            📖 Documentation
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <h3><span class="icon">💰</span> Cost Optimization Framework</h3>
+                    <p>FinOps maturity assessment with cloud cost analysis, waste identification, budget planning, and vendor management. Includes savings opportunities and optimization roadmap.</p>
+                    <div class="tool-links">
+                        <a href="calculators/cost-optimization/" class="tool-link calculator">
+                            🧮 Calculator
+                        </a>
+                        <a href="docs/cost-optimization/" class="tool-link">
+                            📖 Documentation
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="features" class="features">
+            <h2>Community-Driven Architecture Tools</h2>
+            <div class="features-grid">
+                <div class="feature">
+                    <div class="feature-icon">💰</div>
+                    <h3>Open Source</h3>
+                    <p>Free enterprise frameworks shared by the architecture community</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">📊</div>
+                    <h3>Battle-Tested</h3>
+                    <p>Frameworks refined through real-world implementations</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">📥</div>
+                    <h3>Export Everything</h3>
+                    <p>Download and share your assessments in multiple formats</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Practical Guidance</h3>
+                    <p>Real recommendations from architects who've been there</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Your Data Stays Yours</h3>
+                    <p>Everything runs locally - no tracking, no cloud storage</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🚀</div>
+                    <h3>Instant Feedback</h3>
+                    <p>See your architecture maturity in real-time</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="frameworks">
+            <h2 style="text-align: center; margin-bottom: 2rem; font-size: 2rem;">Comprehensive Frameworks</h2>
+            
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <h3>📋 Assessment Dimensions</h3>
+                    <ul style="list-style: none; padding: 0; color: var(--gray);">
+                        <li>✓ Infrastructure Discovery</li>
+                        <li>✓ Application Portfolio Analysis</li>
+                        <li>✓ Data Readiness Evaluation</li>
+                        <li>✓ Skills Gap Identification</li>
+                        <li>✓ Cost-Benefit Analysis</li>
+                        <li>✓ Risk Assessment & Mitigation</li>
+                        <li>✓ Vendor Selection Criteria</li>
+                        <li>✓ Implementation Roadmaps</li>
+                    </ul>
+                </div>
+                
+                <div class="tool-card">
+                    <h3>🎯 Use Cases</h3>
+                    <ul style="list-style: none; padding: 0; color: var(--gray);">
+                        <li>✓ Cloud Migration Planning</li>
+                        <li>✓ AI/ML Implementation</li>
+                        <li>✓ Digital Transformation</li>
+                        <li>✓ Technology Stack Modernization</li>
+                        <li>✓ Cost Optimization</li>
+                        <li>✓ Compliance & Security</li>
+                        <li>✓ Vendor Evaluation</li>
+                        <li>✓ Budget Justification</li>
+                    </ul>
+                </div>
+                
+                <div class="tool-card">
+                    <h3>📊 Deliverables</h3>
+                    <ul style="list-style: none; padding: 0; color: var(--gray);">
+                        <li>✓ Maturity Score Reports</li>
+                        <li>✓ Gap Analysis</li>
+                        <li>✓ ROI Calculations</li>
+                        <li>✓ Risk Registers</li>
+                        <li>✓ Implementation Timelines</li>
+                        <li>✓ Budget Estimates</li>
+                        <li>✓ Excel Workbooks</li>
+                        <li>✓ Executive Summaries</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <section id="about" style="text-align: center; margin-top: 4rem;">
+            <h2 style="font-size: 2rem; margin-bottom: 1rem;">About AI Architecture Audit</h2>
+            <p style="max-width: 700px; margin: 0 auto; color: var(--gray); line-height: 1.8; margin-bottom: 2rem;">
+                A community initiative by cloud architects who believe enterprise-grade assessment tools should be accessible to everyone. These frameworks come from collective experience across hundreds of cloud transformations and AI implementations.
+            </p>
+            
+            <div style="background: linear-gradient(135deg, #f8fafc 0%, #e5e7eb 100%); padding: 2rem; border-radius: 12px; margin: 2rem auto; max-width: 800px;">
+                <h3 style="color: var(--primary); margin-bottom: 1rem;">Created by Deo Shankar</h3>
+                <p style="color: var(--dark); margin-bottom: 1rem;">
+                    <strong>Multi Cloud Architect</strong> with 13 years of experience building scalable systems
+                </p>
+                <p style="color: var(--gray); line-height: 1.8; margin-bottom: 1rem;">
+                    Solutions Architect at Tiger Analytics | Former Senior Cloud Engineer at Oracle | MS in Data Science (IIM & IIT Indore)
+                </p>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem;">
+                    <span style="background: white; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.9rem;">☁️ AWS | GCP | Oracle Cloud</span>
+                    <span style="background: white; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.9rem;">🤖 GenAI | RAG Architecture</span>
+                    <span style="background: white; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.9rem;">🔧 Kubernetes | Terraform</span>
+                    <span style="background: white; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.9rem;">🔒 Level 9 Clearance</span>
+                </div>
+                <div style="margin-top: 1.5rem;">
+                    <a href="https://linkedin.com/in/deo-shankar" style="color: var(--primary); text-decoration: none; margin: 0 1rem;">💼 LinkedIn</a>
+                    <a href="https://github.com/deosha" style="color: var(--primary); text-decoration: none; margin: 0 1rem;">🐙 GitHub</a>
+                    <a href="https://deos.dev" style="color: var(--primary); text-decoration: none; margin: 0 1rem;">🌐 Portfolio</a>
+                    <a href="mailto:jha.deo1771@gmail.com" style="color: var(--primary); text-decoration: none; margin: 0 1rem;">📧 Email</a>
+                </div>
+                <p style="margin-top: 1.5rem; font-style: italic; color: var(--gray);">
+                    "Boring > Clever" - Building reliable, scalable solutions that prioritize stability over complexity
+                </p>
+            </div>
+        </section>
+    </div>
+    
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="calculators/ai-readiness/" class="footer-link">AI Assessment</a>
+            <a href="calculators/cloud-migration/" class="footer-link">Cloud Assessment</a>
+            <a href="calculators/mlops-audit/" class="footer-link">MLOps Assessment</a>
+            <a href="calculators/llm-framework/" class="footer-link">LLM Assessment</a>
+            <a href="calculators/security-audit/" class="footer-link">Security Assessment</a>
+            <a href="calculators/genai-security/" class="footer-link">GenAI Security</a>
+            <a href="calculators/cost-optimization/" class="footer-link">Cost Assessment</a>
+        </div>
+        <div class="footer-links" style="margin-top: 1rem;">
+            <a href="docs/ai-readiness/" class="footer-link">AI Documentation</a>
+            <a href="docs/cloud-migration/" class="footer-link">Cloud Documentation</a>
+            <a href="docs/mlops-audit/" class="footer-link">MLOps Documentation</a>
+            <a href="docs/llm-framework/" class="footer-link">LLM Documentation</a>
+            <a href="docs/security-audit/" class="footer-link">Security Documentation</a>
+            <a href="docs/genai-security/" class="footer-link">GenAI Documentation</a>
+            <a href="docs/cost-optimization/" class="footer-link">Cost Documentation</a>
+        </div>
+        <div class="footer-copyright">
+            © 2024 AI Architecture Audit. Professional assessment tools for enterprise transformation.
+        </div>
+        <div style="text-align: center; padding: 1rem 0; font-size: 1.1rem; color: #6366f1;">
+            Built with ❤️ by architects, for architects! 🚀
+        </div>
+    </footer>
+    
+    <!-- Navigation JavaScript -->
+    <script src="docs/assets/js/site-navigation.js"></script>
+    
+    <!-- Utility Scripts -->
+    <script src="docs/assets/js/notifications.js"></script>
+    <script src="docs/assets/js/dark-mode.js"></script>
+    
+    <!-- PWA Registration -->
+    <script src="docs/assets/js/pwa-register.js"></script>
+</body>
+</html>

@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenAI Security Framework - Enterprise AI Safety & Governance</title>
+    <meta name="description" content="Comprehensive GenAI security assessment covering prompt injection defense, model security, data privacy, ethical AI, and governance frameworks">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🛡️</text></svg>">
+    
+    <!-- Navigation CSS -->
+    <link rel="stylesheet" href="/docs/assets/css/site-navigation.css">
+    
+    <!-- GenAI Security CSS -->
+    <link rel="stylesheet" href="/docs/assets/css/genai-security.css">
+    
+    <!-- Clean navbar fix -->
+    <style>
+        /* Ensure proper spacing with fixed navbar */
+        body {
+            padding-top: 0;
+            margin: 0;
+        }
+    </style>
+    
+    <!-- SheetJS for Excel export -->
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+    <!-- Site Navigation -->
+    <nav class="site-nav">
+        <div class="site-nav-container">
+            <a href="/" class="site-logo">
+                🏢 AI Architecture Audit
+            </a>
+            
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+            
+            <ul class="site-menu" id="siteMenu">
+                <li class="site-menu-item">
+                    <a href="/">Home</a>
+                </li>
+                
+                <li class="site-menu-item has-dropdown">
+                    <a href="#" onclick="event.preventDefault()">Calculators</a>
+                    <div class="dropdown-menu">
+                        <a href="/calculators/ai-readiness/">🤖 AI Readiness</a>
+                        <a href="/calculators/cloud-migration/">☁️ Cloud Migration</a>
+                        <a href="/calculators/mlops-audit/">🔧 MLOps Audit</a>
+                        <a href="/calculators/llm-framework/">🧠 LLM Framework</a>
+                        <a href="/calculators/security-audit/">🔒 Security Audit</a>
+                        <a href="/calculators/genai-security/">🛡️ GenAI Security</a>
+                        <a href="/calculators/cost-optimization/">💰 Cost Optimization</a>
+                    </div>
+                </li>
+                
+                <li class="site-menu-item has-dropdown">
+                    <a href="#" onclick="event.preventDefault()">Documentation</a>
+                    <div class="dropdown-menu">
+                        <a href="/docs/ai-readiness/">📖 AI Readiness Guide</a>
+                        <a href="/docs/cloud-migration/">📖 Cloud Migration Guide</a>
+                        <a href="/docs/mlops-audit/">📖 MLOps Audit Guide</a>
+                        <a href="/docs/llm-framework/">📖 LLM Framework Guide</a>
+                        <a href="/docs/security-audit/">📖 Security Audit Guide</a>
+                        <a href="/docs/genai-security/">📖 GenAI Security Guide</a>
+                        <a href="/docs/cost-optimization/">📖 Cost Optimization Guide</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1>🛡️ GenAI Security Framework</h1>
+            <p>Enterprise-grade security assessment for Generative AI systems, LLMs, and AI applications</p>
+        </div>
+    </header>
+    
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs">
+        <div class="nav-tabs-container">
+            <button class="nav-tab active" data-tab="prompt-security">
+                <span>🔐</span> Prompt Security
+            </button>
+            <button class="nav-tab" data-tab="model-security">
+                <span>🤖</span> Model Security
+            </button>
+            <button class="nav-tab" data-tab="data-privacy">
+                <span>🔏</span> Data Privacy
+            </button>
+            <button class="nav-tab" data-tab="hallucination">
+                <span>🎭</span> Hallucination Control
+            </button>
+            <button class="nav-tab" data-tab="ethical-ai">
+                <span>⚖️</span> Ethical AI
+            </button>
+            <button class="nav-tab" data-tab="governance">
+                <span>📋</span> AI Governance
+            </button>
+            <button class="nav-tab" data-tab="supply-chain">
+                <span>🔗</span> Supply Chain
+            </button>
+            <button class="nav-tab" data-tab="incident-response">
+                <span>🚨</span> Incident Response
+            </button>
+            <button class="nav-tab" data-tab="owasp-llm">
+                <span>🛡️</span> OWASP LLM Top 10
+            </button>
+            <button class="nav-tab" data-tab="ai-blueteam">
+                <span>🔵</span> AI Blue Team
+            </button>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Prompt Security Tab -->
+        <div class="tab-content active" id="prompt-security">
+            <section class="section">
+                <h2>Prompt Injection & Jailbreak Defense</h2>
+                
+                <div class="alert alert-danger">
+                    <strong>🔐 Critical Security Layer:</strong> Assess and implement defenses against prompt injection, jailbreaking, and adversarial inputs. Monitor and control prompt manipulation attempts.
+                </div>
+                
+                <div class="assessment-grid">
+                    <div class="assessment-card">
+                        <h3>Input Validation</h3>
+                        <div class="form-group">
+                            <label>Prompt Sanitization Level</label>
+                            <select id="prompt-sanitization" onchange="calculatePromptSecurity()">
+                                <option value="0">None</option>
+                                <option value="25">Basic Filtering</option>
+                                <option value="50">Pattern Detection</option>
+                                <option value="75">ML-based Detection</option>
+                                <option value="100" selected>Advanced Multi-layer</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Injection Detection Rate (%)</label>
+                            <input type="number" id="injection-detection" value="95" min="0" max="100" onchange="calculatePromptSecurity()">
+                        </div>
+                        <div class="form-group">
+                            <label>Context Window Protection</label>
+                            <select id="context-protection" onchange="calculatePromptSecurity()">
+                                <option value="0">No Protection</option>
+                                <option value="33">Token Limiting</option>
+                                <option value="66">Context Isolation</option>
+                                <option value="100" selected>Full Sandboxing</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="assessment-card">
+                        <h3>Jailbreak Prevention</h3>
+                        <div class="form-group">
+                            <label>Defense Mechanisms</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" checked onchange="calculatePromptSecurity()"> Instruction Hierarchy</label>
+                                <label><input type="checkbox" checked onchange="calculatePromptSecurity()"> System Prompt Protection</label>
+                                <label><input type="checkbox" checked onchange="calculatePromptSecurity()"> Output Filtering</label>
+                                <label><input type="checkbox" checked onchange="calculatePromptSecurity()"> Behavioral Analysis</label>
+                                <label><input type="checkbox" onchange="calculatePromptSecurity()"> Red Team Testing</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Update Frequency</label>
+                            <select id="defense-updates" onchange="calculatePromptSecurity()">
+                                <option value="0">Never</option>
+                                <option value="25">Quarterly</option>
+                                <option value="50">Monthly</option>
+                                <option value="75">Weekly</option>
+                                <option value="100" selected>Real-time</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="assessment-card">
+                        <h3>Monitoring & Response</h3>
+                        <div class="form-group">
+                            <label>Attack Detection Tools</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" checked onchange="calculatePromptSecurity()"> Anomaly Detection</label>
+                                <label><input type="checkbox" checked onchange="calculatePromptSecurity()"> Pattern Matching</label>
+                                <label><input type="checkbox" checked onchange="calculatePromptSecurity()"> Threat Intelligence</label>
+                                <label><input type="checkbox" onchange="calculatePromptSecurity()"> User Behavior Analytics</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Response Time (minutes)</label>
+                            <input type="number" id="response-time" value="5" min="1" max="1440" onchange="calculatePromptSecurity()">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="score-display">
+                    <div class="score-card">
+                        <div class="score-label">Prompt Security Score</div>
+                        <div class="score-value" id="prompt-security-score">0%</div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-label">Risk Level</div>
+                        <div class="score-value" id="prompt-risk-level">High</div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-label">Compliance Status</div>
+                        <div class="score-value" id="prompt-compliance">Partial</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Model Security Tab -->
+        <div class="tab-content" id="model-security">
+            <section class="section">
+                <h2>Model Security & Integrity</h2>
+                
+                <div class="alert alert-info">
+                    <strong>🤖 Model Protection:</strong> Secure model weights, prevent extraction attacks, implement access controls, and ensure model integrity throughout the lifecycle.
+                </div>
+                
+                <div class="assessment-grid">
+                    <div class="assessment-card">
+                        <h3>Model Protection</h3>
+                        <div class="form-group">
+                            <label>Weight Encryption</label>
+                            <select id="weight-encryption" onchange="calculateModelSecurity()">
+                                <option value="0">None</option>
+                                <option value="50">At Rest</option>
+                                <option value="100" selected>At Rest & In Transit</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Access Control Model</label>
+                            <select id="model-access-control" onchange="calculateModelSecurity()">
+                                <option value="0">Open Access</option>
+                                <option value="33">Basic Auth</option>
+                                <option value="66">RBAC</option>
+                                <option value="100" selected>Zero Trust + MFA</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Model Versioning</label>
+                            <select id="model-versioning" onchange="calculateModelSecurity()">
+                                <option value="0">No Versioning</option>
+                                <option value="50">Manual Tracking</option>
+                                <option value="100" selected>Automated with Rollback</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="assessment-card">
+                        <h3>Extraction Defense</h3>
+                        <div class="form-group">
+                            <label>Anti-Extraction Measures</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" checked onchange="calculateModelSecurity()"> Rate Limiting</label>
+                                <label><input type="checkbox" checked onchange="calculateModelSecurity()"> Query Analysis</label>
+                                <label><input type="checkbox" checked onchange="calculateModelSecurity()"> Output Perturbation</label>
+                                <label><input type="checkbox" onchange="calculateModelSecurity()"> Watermarking</label>
+                                <label><input type="checkbox" onchange="calculateModelSecurity()"> Differential Privacy</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>API Security Level</label>
+                            <select id="api-security" onchange="calculateModelSecurity()">
+                                <option value="0">Basic HTTP</option>
+                                <option value="33">HTTPS Only</option>
+                                <option value="66">API Keys + HTTPS</option>
+                                <option value="100" selected>OAuth 2.0 + mTLS</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="assessment-card">
+                        <h3>Supply Chain Security</h3>
+                        <div class="form-group">
+                            <label>Model Source Verification</label>
+                            <select id="model-verification" onchange="calculateModelSecurity()">
+                                <option value="0">No Verification</option>
+                                <option value="50">Basic Checksums</option>
+                                <option value="100" selected>Cryptographic Signatures</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Dependency Scanning</label>
+                            <select id="dependency-scanning" onchange="calculateModelSecurity()">
+                                <option value="0">Never</option>
+                                <option value="33">On Deploy</option>
+                                <option value="66">Weekly</option>
+                                <option value="100" selected>Continuous</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="score-display">
+                    <div class="score-card">
+                        <div class="score-label">Model Security Score</div>
+                        <div class="score-value" id="model-security-score">0%</div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-label">Vulnerability Count</div>
+                        <div class="score-value" id="model-vulnerabilities">0</div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-label">Protection Level</div>
+                        <div class="score-value" id="model-protection">Strong</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Data Privacy Tab -->
+        <div class="tab-content" id="data-privacy">
+            <section class="section">
+                <h2>Data Privacy & PII Protection</h2>
+                
+                <div class="alert alert-warning">
+                    <strong>🔏 Privacy Compliance:</strong> Implement comprehensive PII detection, redaction, and compliance measures for GDPR, CCPA, and other privacy regulations.
+                </div>
+                
+                <div class="assessment-grid">
+                    <div class="assessment-card">
+                        <h3>PII Detection & Handling</h3>
+                        <div class="form-group">
+                            <label>PII Detection Methods</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" checked onchange="calculateDataPrivacy()"> Pattern Matching</label>
+                                <label><input type="checkbox" checked onchange="calculateDataPrivacy()"> NER Models</label>
+                                <label><input type="checkbox" checked onchange="calculateDataPrivacy()"> ML Classifiers</label>
+                                <label><input type="checkbox" onchange="calculateDataPrivacy()"> Custom Rules</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Redaction Strategy</label>
+                            <select id="redaction-strategy" onchange="calculateDataPrivacy()">
+                                <option value="0">No Redaction</option>
+                                <option value="33">Manual Review</option>
+                                <option value="66">Automated Masking</option>
+                                <option value="100" selected>Smart Tokenization</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Data Retention Policy (days)</label>
+                            <input type="number" id="retention-days" value="30" min="0" max="3650" onchange="calculateDataPrivacy()">
+                        </div>
+                    </div>
+                    
+                    <div class="assessment-card">
+                        <h3>Consent Management</h3>
+                        <div class="form-group">
+                            <label>Consent Mechanisms</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" checked onchange="calculateDataPrivacy()"> Explicit Opt-in</label>
+                                <label><input type="checkbox" checked onchange="calculateDataPrivacy()"> Granular Controls</label>
+                                <label><input type="checkbox" checked onchange="calculateDataPrivacy()"> Withdrawal Options</label>
+                                <label><input type="checkbox" onchange="calculateDataPrivacy()"> Purpose Limitation</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>User Rights Implementation</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" checked onchange="calculateDataPrivacy()"> Right to Access</label>
+                                <label><input type="checkbox" checked onchange="calculateDataPrivacy()"> Right to Delete</label>
+                                <label><input type="checkbox" checked onchange="calculateDataPrivacy()"> Right to Portability</label>
+                                <label><input type="checkbox" onchange="calculateDataPrivacy()"> Right to Correction</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="assessment-card">
+                        <h3>Compliance & Auditing</h3>
+                        <div class="form-group">
+                            <label>Regulatory Compliance</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" checked onchange="calculateDataPrivacy()"> GDPR</label>
+                                <label><input type="checkbox" checked onchange="calculateDataPrivacy()"> CCPA/CPRA</label>
+                                <label><input type="checkbox" onchange="calculateDataPrivacy()"> HIPAA</label>
+                                <label><input type="checkbox" onchange="calculateDataPrivacy()"> SOC 2</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Audit Frequency</label>
+                            <select id="privacy-audit" onchange="calculateDataPrivacy()">
+                                <option value="0">Never</option>
+                                <option value="25">Annually</option>
+                                <option value="50">Quarterly</option>
+                                <option value="75">Monthly</option>
+                                <option value="100" selected>Continuous</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="score-display">
+                    <div class="score-card">
+                        <div class="score-label">Privacy Score</div>
+                        <div class="score-value" id="privacy-score">0%</div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-label">Compliance Level</div>
+                        <div class="score-value" id="privacy-compliance">Full</div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-label">PII Risk</div>
+                        <div class="score-value" id="pii-risk">Low</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Hallucination Control Tab -->
+        <div class="tab-content" id="hallucination">
+            <section class="section">
+                <h2>Hallucination Detection & Mitigation</h2>
+                
+                <div class="alert alert-info">
+                    <strong>🎭 Accuracy Control:</strong> Implement comprehensive strategies to detect, prevent, and mitigate AI hallucinations and ensure factual accuracy.
+                </div>
+                
+                <div class="assessment-grid">
+                    <div class="assessment-card">
+                        <h3>Detection Mechanisms</h3>
+                        <div class="form-group">
+                            <label>Detection Methods</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" checked onchange="calculateHallucination()"> Confidence Scoring</label>
+                                <label><input type="checkbox" checked onchange="calculateHallucination()"> Fact Checking</label>
+                                <label><input type="checkbox" checked onchange="calculateHallucination()"> Source Attribution</label>
+                                <label><input type="checkbox" onchange="calculateHallucination()"> Cross-validation</label>
+                                <label><input type="checkbox" onchange="calculateHallucination()"> Human Review</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Detection Accuracy (%)</label>
+                            <input type="number" id="detection-accuracy" value="85" min="0" max="100" onchange="calculateHallucination()">
+                        </div>
+                    </div>
+                    
+                    <div class="assessment-card">
+                        <h3>Mitigation Strategies</h3>
+                        <div class="form-group">
+                            <label>Grounding Techniques</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" checked onchange="calculateHallucination()"> RAG Implementation</label>
+                                <label><input type="checkbox" checked onchange="calculateHallucination()"> Knowledge Base</label>
+                                <label><input type="checkbox" checked onchange="calculateHallucination()"> Citation Requirements</label>
+                                <label><input type="checkbox" onchange="calculateHallucination()"> Uncertainty Indicators</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Temperature Control</label>
+                            <select id="temperature-control" onchange="calculateHallucination()">
+                                <option value="0">No Control</option>
+                                <option value="50">Manual Settings</option>
+                                <option value="100" selected>Dynamic Adjustment</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="assessment-card">
+                        <h3>Quality Assurance</h3>
+                        <div class="form-group">
+                            <label>Validation Process</label>
+                            <select id="validation-process" onchange="calculateHallucination()">
+                                <option value="0">None</option>
+                                <option value="33">Sampling</option>
+                                <option value="66">Automated Checks</option>
+                                <option value="100" selected>Multi-stage Validation</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Feedback Loop</label>
+                            <select id="feedback-loop" onchange="calculateHallucination()">
+                                <option value="0">No Feedback</option>
+                                <option value="50">Manual Collection</option>
+                                <option value="100" selected>Automated Learning</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="score-display">
+                    <div class="score-card">
+                        <div class="score-label">Accuracy Score</div>
+                        <div class="score-value" id="accuracy-score">0%</div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-label">Hallucination Rate</div>
+                        <div class="score-value" id="hallucination-rate">15%</div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-label">Confidence Level</div>
+                        <div class="score-value" id="confidence-level">High</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Ethical AI Tab -->
+        <div class="tab-content" id="ethical-ai">
+            <section class="section">
+                <h2>Ethical AI & Bias Mitigation</h2>
+                
+                <div class="alert alert-warning">
+                    <strong>⚖️ Responsible AI:</strong> Ensure fairness, transparency, and ethical use of AI systems while actively detecting and mitigating biases.
+                </div>
+                
+                <div class="assessment-grid">
+                    <div class="assessment-card">
+                        <h3>Bias Detection</h3>
+                        <div class="form-group">
+                            <label>Bias Testing Methods</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" checked onchange="calculateEthicalAI()"> Demographic Parity</label>
+                                <label><input type="checkbox" checked onchange="calculateEthicalAI()"> Fairness Metrics</label>
+                                <label><input type="checkbox" checked onchange="calculateEthicalAI()"> Adversarial Testing</label>
+                                <label><input type="checkbox" onchange="calculateEthicalAI()"> Red Team Reviews</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Testing Frequency</label>
+                            <select id="bias-testing-freq" onchange="calculateEthicalAI()">
+                                <option value="0">Never</option>
+                                <option value="33">Quarterly</option>
+                                <option value="66">Monthly</option>
+                                <option value="100" selected>Continuous</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="assessment-card">
+                        <h3>Transparency & Explainability</h3>
+                        <div class="form-group">
+                            <label>Explainability Features</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" checked onchange="calculateEthicalAI()"> Decision Explanations</label>
+                                <label><input type="checkbox" checked onchange="calculateEthicalAI()"> Feature Attribution</label>
+                                <label><input type="checkbox" checked onchange="calculateEthicalAI()"> Model Cards</label>
+                                <label><input type="checkbox" onchange="calculateEthicalAI()"> Interpretability Tools</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Documentation Level</label>
+                            <select id="documentation-level" onchange="calculateEthicalAI()">
+                                <option value="0">None</option>
+                                <option value="33">Basic</option>
+                                <option value="66">Detailed</option>
+                                <option value="100" selected>Comprehensive</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="assessment-card">
+                        <h3>Ethical Guidelines</h3>
+                        <div class="form-group">
+                            <label>Implemented Frameworks</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" checked onchange="calculateEthicalAI()"> AI Ethics Policy</label>
+                                <label><input type="checkbox" checked onchange="calculateEthicalAI()"> Use Case Restrictions</label>
+                                <label><input type="checkbox" checked onchange="calculateEthicalAI()"> Human Oversight</label>
+                                <label><input type="checkbox" onchange="calculateEthicalAI()"> Impact Assessments</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Review Board</label>
+                            <select id="ethics-review" onchange="calculateEthicalAI()">
+                                <option value="0">No Board</option>
+                                <option value="50">Internal Team</option>
+                                <option value="100" selected>Independent Board</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="score-display">
+                    <div class="score-card">
+                        <div class="score-label">Ethics Score</div>
+                        <div class="score-value" id="ethics-score">0%</div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-label">Bias Risk</div>
+                        <div class="score-value" id="bias-risk">Low</div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-label">Transparency Level</div>
+                        <div class="score-value" id="transparency-level">High</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- AI Governance Tab -->
+        <div class="tab-content" id="governance">
+            <section class="section">
+                <h2>AI Governance & Compliance</h2>
+                
+                <div class="alert alert-info">
+                    <strong>📋 Governance Framework:</strong> Establish comprehensive AI governance structures, policies, and compliance mechanisms aligned with regulations.
+                </div>
+                
+                <div class="assessment-grid">
+                    <div class="assessment-card">
+                        <h3>Governance Structure</h3>
+                        <div class="form-group">
+                            <label>Governance Components</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" checked onchange="calculateGovernance()"> AI Council/Board</label>
+                                <label><input type="checkbox" checked onchange="calculateGovernance()"> Risk Management</label>
+                                <label><input type="checkbox" checked onchange="calculateGovernance()"> Policy Framework</label>
+                                <label><input type="checkbox" checked onchange="calculateGovernance()"> Audit Procedures</label>
+                                <label><input type="checkbox" onchange="calculateGovernance()"> External Oversight</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Policy Maturity</label>
+                            <select id="policy-maturity" onchange="calculateGovernance()">
+                                <option value="0">Ad-hoc</option>
+                                <option value="33">Documented</option>
+                                <option value="66">Standardized</option>
+                                <option value="100" selected>Optimized</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="assessment-card">
+                        <h3>Regulatory Compliance</h3>
+                        <div class="form-group">
+                            <label>Compliance Areas</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" checked onchange="calculateGovernance()"> EU AI Act</label>
+                                <label><input type="checkbox" checked onchange="calculateGovernance()"> US AI Guidelines</label>
+                                <label><input type="checkbox" checked onchange="calculateGovernance()"> Industry Standards</label>
+                                <label><input type="checkbox" onchange="calculateGovernance()"> ISO/IEC 23053</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Compliance Monitoring</label>
+                            <select id="compliance-monitoring" onchange="calculateGovernance()">
+                                <option value="0">None</option>
+                                <option value="33">Annual</option>
+                                <option value="66">Quarterly</option>
+                                <option value="100" selected>Continuous</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="assessment-card">
+                        <h3>Risk Management</h3>
+                        <div class="form-group">
+                            <label>Risk Assessment Frequency</label>
+                            <select id="risk-assessment-freq" onchange="calculateGovernance()">
+                                <option value="0">Never</option>
+                                <option value="33">Annually</option>
+                                <option value="66">Quarterly</option>
+                                <option value="100" selected>Per Deployment</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Risk Register Maintained</label>
+                            <select id="risk-register" onchange="calculateGovernance()">
+                                <option value="0">No</option>
+                                <option value="100" selected>Yes</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="score-display">
+                    <div class="score-card">
+                        <div class="score-label">Governance Score</div>
+                        <div class="score-value" id="governance-score">0%</div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-label">Compliance Status</div>
+                        <div class="score-value" id="governance-compliance">Compliant</div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-label">Maturity Level</div>
+                        <div class="score-value" id="governance-maturity">Advanced</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Supply Chain Security Tab -->
+        <div class="tab-content" id="supply-chain">
+            <section class="section">
+                <h2>AI Supply Chain Security</h2>
+                
+                <div class="alert alert-danger">
+                    <strong>🔗 Third-Party Risk:</strong> Secure the entire AI supply chain including models, datasets, libraries, and third-party integrations.
+                </div>
+                
+                <div class="assessment-grid">
+                    <div class="assessment-card">
+                        <h3>Model Provenance</h3>
+                        <div class="form-group">
+                            <label>Source Verification</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" checked onchange="calculateSupplyChain()"> Model Signatures</label>
+                                <label><input type="checkbox" checked onchange="calculateSupplyChain()"> Hash Verification</label>
+                                <label><input type="checkbox" checked onchange="calculateSupplyChain()"> Vendor Assessment</label>
+                                <label><input type="checkbox" onchange="calculateSupplyChain()"> SBOM for AI</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Update Management</label>
+                            <select id="update-management" onchange="calculateSupplyChain()">
+                                <option value="0">Manual</option>
+                                <option value="50">Semi-automated</option>
+                                <option value="100" selected>Fully Automated</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="assessment-card">
+                        <h3>Dataset Security</h3>
+                        <div class="form-group">
+                            <label>Data Source Validation</label>
+                            <select id="data-validation" onchange="calculateSupplyChain()">
+                                <option value="0">No Validation</option>
+                                <option value="33">Basic Checks</option>
+                                <option value="66">Quality Assurance</option>
+                                <option value="100" selected>Full Verification</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Poisoning Detection</label>
+                            <select id="poisoning-detection" onchange="calculateSupplyChain()">
+                                <option value="0">None</option>
+                                <option value="50">Statistical Analysis</option>
+                                <option value="100" selected>ML-based Detection</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="assessment-card">
+                        <h3>Dependency Management</h3>
+                        <div class="form-group">
+                            <label>Vulnerability Scanning</label>
+                            <select id="vuln-scanning" onchange="calculateSupplyChain()">
+                                <option value="0">Never</option>
+                                <option value="33">On Deploy</option>
+                                <option value="66">Weekly</option>
+                                <option value="100" selected>Continuous</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>License Compliance</label>
+                            <select id="license-compliance" onchange="calculateSupplyChain()">
+                                <option value="0">Not Tracked</option>
+                                <option value="50">Manual Review</option>
+                                <option value="100" selected>Automated Checks</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="score-display">
+                    <div class="score-card">
+                        <div class="score-label">Supply Chain Score</div>
+                        <div class="score-value" id="supply-chain-score">0%</div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-label">Risk Exposure</div>
+                        <div class="score-value" id="supply-risk">Low</div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-label">Integrity Level</div>
+                        <div class="score-value" id="integrity-level">High</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Incident Response Tab -->
+        <div class="tab-content" id="incident-response">
+            <section class="section">
+                <h2>AI Incident Response</h2>
+                
+                <div class="alert alert-danger">
+                    <strong>🚨 Incident Management:</strong> Prepare and respond to AI-specific security incidents including adversarial attacks, model failures, and data breaches.
+                </div>
+                
+                <div class="assessment-grid">
+                    <div class="assessment-card">
+                        <h3>Incident Preparedness</h3>
+                        <div class="form-group">
+                            <label>Response Plan Components</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" checked onchange="calculateIncidentResponse()"> AI-specific Playbooks</label>
+                                <label><input type="checkbox" checked onchange="calculateIncidentResponse()"> Escalation Procedures</label>
+                                <label><input type="checkbox" checked onchange="calculateIncidentResponse()"> Communication Plans</label>
+                                <label><input type="checkbox" checked onchange="calculateIncidentResponse()"> Recovery Procedures</label>
+                                <label><input type="checkbox" onchange="calculateIncidentResponse()"> Legal Framework</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Team Training Frequency</label>
+                            <select id="training-frequency" onchange="calculateIncidentResponse()">
+                                <option value="0">Never</option>
+                                <option value="33">Annually</option>
+                                <option value="66">Quarterly</option>
+                                <option value="100" selected>Monthly</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="assessment-card">
+                        <h3>Detection & Response</h3>
+                        <div class="form-group">
+                            <label>Detection Capabilities</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" checked onchange="calculateIncidentResponse()"> Real-time Monitoring</label>
+                                <label><input type="checkbox" checked onchange="calculateIncidentResponse()"> Anomaly Detection</label>
+                                <label><input type="checkbox" checked onchange="calculateIncidentResponse()"> Threat Intelligence</label>
+                                <label><input type="checkbox" onchange="calculateIncidentResponse()"> Behavioral Analysis</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Average Response Time</label>
+                            <select id="response-time-avg" onchange="calculateIncidentResponse()">
+                                <option value="0">> 24 hours</option>
+                                <option value="33">< 24 hours</option>
+                                <option value="66">< 4 hours</option>
+                                <option value="100" selected>< 1 hour</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="assessment-card">
+                        <h3>Recovery & Learning</h3>
+                        <div class="form-group">
+                            <label>Recovery Capabilities</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" checked onchange="calculateIncidentResponse()"> Model Rollback</label>
+                                <label><input type="checkbox" checked onchange="calculateIncidentResponse()"> Data Recovery</label>
+                                <label><input type="checkbox" checked onchange="calculateIncidentResponse()"> Service Restoration</label>
+                                <label><input type="checkbox" onchange="calculateIncidentResponse()"> Forensic Analysis</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Post-Incident Review</label>
+                            <select id="post-incident" onchange="calculateIncidentResponse()">
+                                <option value="0">Never</option>
+                                <option value="50">Sometimes</option>
+                                <option value="100" selected>Always</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="score-display">
+                    <div class="score-card">
+                        <div class="score-label">Readiness Score</div>
+                        <div class="score-value" id="readiness-score">0%</div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-label">Response Capability</div>
+                        <div class="score-value" id="response-capability">Strong</div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-label">Recovery Time</div>
+                        <div class="score-value" id="recovery-time">< 2 hrs</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- OWASP LLM Top 10 Tab -->
+        <div class="tab-content" id="owasp-llm">
+            <section class="section">
+                <h2>OWASP LLM Top 10 Vulnerabilities</h2>
+                
+                <div class="alert alert-danger">
+                    <strong>🛡️ LLM-Specific Threats:</strong> Assess and mitigate the top 10 LLM security vulnerabilities as defined by OWASP including prompt injection, data poisoning, and model theft.
+                </div>
+                
+                <div class="assessment-grid">
+                    <div class="assessment-card">
+                        <h3>LLM01-03: Input & Output Vulnerabilities</h3>
+                        <div class="form-group">
+                            <label>Prompt Injection Defense (LLM01)</label>
+                            <select id="owasp-prompt-injection" onchange="calculateOWASPLLM()">
+                                <option value="0">No Defense</option>
+                                <option value="25">Basic Filtering</option>
+                                <option value="50">Pattern Detection</option>
+                                <option value="75">Advanced Validation</option>
+                                <option value="100" selected>Multi-layer Defense</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Insecure Output Handling (LLM02)</label>
+                            <select id="owasp-output-handling" onchange="calculateOWASPLLM()">
+                                <option value="0">No Validation</option>
+                                <option value="33">Basic Sanitization</option>
+                                <option value="66">Content Filtering</option>
+                                <option value="100" selected>Comprehensive Validation</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Training Data Poisoning (LLM03)</label>
+                            <select id="owasp-data-poisoning" onchange="calculateOWASPLLM()">
+                                <option value="0">No Protection</option>
+                                <option value="33">Source Verification</option>
+                                <option value="66">Quality Checks</option>
+                                <option value="100" selected>Full Data Integrity</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="assessment-card">
+                        <h3>LLM04-06: Availability & Access</h3>
+                        <div class="form-group">
+                            <label>Model Denial of Service (LLM04)</label>
+                            <select id="owasp-dos-protection" onchange="calculateOWASPLLM()">
+                                <option value="0">No Protection</option>
+                                <option value="25">Basic Rate Limiting</option>
+                                <option value="50">Resource Monitoring</option>
+                                <option value="75">Advanced Throttling</option>
+                                <option value="100" selected>DDoS Protection</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Supply Chain Vulnerabilities (LLM05)</label>
+                            <select id="owasp-supply-chain" onchange="calculateOWASPLLM()">
+                                <option value="0">No Verification</option>
+                                <option value="33">Basic Checks</option>
+                                <option value="66">Vendor Assessment</option>
+                                <option value="100" selected>Full Chain Security</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Sensitive Information Disclosure (LLM06)</label>
+                            <select id="owasp-info-disclosure" onchange="calculateOWASPLLM()">
+                                <option value="0">No Controls</option>
+                                <option value="25">Basic Filtering</option>
+                                <option value="50">PII Detection</option>
+                                <option value="75">Data Classification</option>
+                                <option value="100" selected>Zero Data Leakage</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="assessment-card">
+                        <h3>LLM07-10: Design & Implementation</h3>
+                        <div class="form-group">
+                            <label>Insecure Plugin Design (LLM07)</label>
+                            <select id="owasp-plugin-security" onchange="calculateOWASPLLM()">
+                                <option value="0">No Plugin Security</option>
+                                <option value="33">Basic Validation</option>
+                                <option value="66">Sandboxing</option>
+                                <option value="100" selected>Secure Architecture</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Excessive Agency (LLM08)</label>
+                            <select id="owasp-excessive-agency" onchange="calculateOWASPLLM()">
+                                <option value="0">No Restrictions</option>
+                                <option value="25">Basic Permissions</option>
+                                <option value="50">Role-based Access</option>
+                                <option value="75">Principle of Least Privilege</option>
+                                <option value="100" selected>Zero Trust Model</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Overreliance Protection (LLM09)</label>
+                            <select id="owasp-overreliance" onchange="calculateOWASPLLM()">
+                                <option value="0">No Safeguards</option>
+                                <option value="33">User Warnings</option>
+                                <option value="66">Human Oversight</option>
+                                <option value="100" selected>Human-in-the-Loop</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Model Theft Protection (LLM10)</label>
+                            <select id="owasp-model-theft" onchange="calculateOWASPLLM()">
+                                <option value="0">No Protection</option>
+                                <option value="25">Access Logging</option>
+                                <option value="50">Query Monitoring</option>
+                                <option value="75">Behavioral Analysis</option>
+                                <option value="100" selected>Multi-factor Protection</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="score-display">
+                    <div class="score-card">
+                        <div class="score-label">OWASP LLM Score</div>
+                        <div class="score-value" id="owasp-llm-score">0%</div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-label">Vulnerabilities Covered</div>
+                        <div class="score-value" id="owasp-coverage">0/10</div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-label">Risk Level</div>
+                        <div class="score-value" id="owasp-risk-level">Critical</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- AI Blue Team Tab -->
+        <div class="tab-content" id="ai-blueteam">
+            <section class="section">
+                <h2>AI Blue Team Operations</h2>
+                
+                <div class="alert alert-info">
+                    <strong>🔵 AI Defense Operations:</strong> Implement comprehensive AI/ML defensive operations including model monitoring, drift detection, adversarial attack detection, and AI incident response.
+                </div>
+                
+                <div class="assessment-grid">
+                    <div class="assessment-card">
+                        <h3>Model Monitoring & Observability</h3>
+                        <div class="form-group">
+                            <label>Performance Monitoring</label>
+                            <select id="blueteam-performance-monitoring" onchange="calculateAIBlueTeam()">
+                                <option value="0">No Monitoring</option>
+                                <option value="25">Basic Metrics</option>
+                                <option value="50">Real-time Dashboards</option>
+                                <option value="75">Advanced Analytics</option>
+                                <option value="100" selected>AI-driven Insights</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Model Drift Detection</label>
+                            <select id="blueteam-drift-detection" onchange="calculateAIBlueTeam()">
+                                <option value="0">No Detection</option>
+                                <option value="33">Statistical Tests</option>
+                                <option value="66">ML-based Detection</option>
+                                <option value="100" selected>Automated Retraining</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Data Quality Monitoring</label>
+                            <select id="blueteam-data-quality" onchange="calculateAIBlueTeam()">
+                                <option value="0">No Monitoring</option>
+                                <option value="25">Basic Validation</option>
+                                <option value="50">Quality Metrics</option>
+                                <option value="75">Anomaly Detection</option>
+                                <option value="100" selected>Continuous Profiling</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="assessment-card">
+                        <h3>Adversarial Defense</h3>
+                        <div class="form-group">
+                            <label>Adversarial Attack Detection</label>
+                            <select id="blueteam-adversarial-detection" onchange="calculateAIBlueTeam()">
+                                <option value="0">No Detection</option>
+                                <option value="25">Pattern Recognition</option>
+                                <option value="50">Behavioral Analysis</option>
+                                <option value="75">ML Classifiers</option>
+                                <option value="100" selected>Multi-layer Defense</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Evasion Attack Protection</label>
+                            <select id="blueteam-evasion-protection" onchange="calculateAIBlueTeam()">
+                                <option value="0">No Protection</option>
+                                <option value="33">Input Validation</option>
+                                <option value="66">Robustness Testing</option>
+                                <option value="100" selected>Adversarial Training</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Red Team Exercise Frequency</label>
+                            <select id="blueteam-redteam-freq" onchange="calculateAIBlueTeam()">
+                                <option value="0">Never</option>
+                                <option value="25">Annually</option>
+                                <option value="50">Quarterly</option>
+                                <option value="75">Monthly</option>
+                                <option value="100" selected>Continuous</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="assessment-card">
+                        <h3>AI Incident Response & Forensics</h3>
+                        <div class="form-group">
+                            <label>AI Incident Response Capability</label>
+                            <select id="blueteam-incident-response" onchange="calculateAIBlueTeam()">
+                                <option value="0">No Capability</option>
+                                <option value="25">Basic Procedures</option>
+                                <option value="50">Trained Team</option>
+                                <option value="75">AI-specific Playbooks</option>
+                                <option value="100" selected>Automated Response</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Model Forensics Tools</label>
+                            <select id="blueteam-forensics" onchange="calculateAIBlueTeam()">
+                                <option value="0">No Tools</option>
+                                <option value="33">Basic Logging</option>
+                                <option value="66">Audit Trails</option>
+                                <option value="100" selected>Advanced Analytics</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Threat Intelligence Integration</label>
+                            <select id="blueteam-threat-intel" onchange="calculateAIBlueTeam()">
+                                <option value="0">No Integration</option>
+                                <option value="25">Manual Research</option>
+                                <option value="50">Threat Feeds</option>
+                                <option value="75">AI Threat Intel</option>
+                                <option value="100" selected>Automated Integration</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Recovery & Restoration Time</label>
+                            <select id="blueteam-recovery-time" onchange="calculateAIBlueTeam()">
+                                <option value="0">> 24 hours</option>
+                                <option value="25">< 24 hours</option>
+                                <option value="50">< 8 hours</option>
+                                <option value="75">< 4 hours</option>
+                                <option value="100" selected">< 1 hour</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="score-display">
+                    <div class="score-card">
+                        <div class="score-label">Blue Team Score</div>
+                        <div class="score-value" id="blueteam-score">0%</div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-label">Defense Maturity</div>
+                        <div class="score-value" id="blueteam-maturity">Advanced</div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-label">Response Readiness</div>
+                        <div class="score-value" id="blueteam-readiness">High</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Overall Assessment Summary -->
+        <section class="section">
+            <h2>GenAI Security Assessment Summary</h2>
+            
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <h3>Overall Security Posture</h3>
+                    <div class="overall-score" id="overall-score">0%</div>
+                    <div class="score-breakdown">
+                        <div class="breakdown-item">
+                            <span>Prompt Security:</span>
+                            <span id="summary-prompt">0%</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span>Model Security:</span>
+                            <span id="summary-model">0%</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span>Data Privacy:</span>
+                            <span id="summary-privacy">0%</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span>Hallucination Control:</span>
+                            <span id="summary-hallucination">0%</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span>Ethical AI:</span>
+                            <span id="summary-ethical">0%</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span>Governance:</span>
+                            <span id="summary-governance">0%</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span>Supply Chain:</span>
+                            <span id="summary-supply">0%</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span>Incident Response:</span>
+                            <span id="summary-incident">0%</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span>OWASP LLM Top 10:</span>
+                            <span id="summary-owasp">0%</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span>AI Blue Team:</span>
+                            <span id="summary-blueteam">0%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="summary-card">
+                    <h3>Risk Assessment</h3>
+                    <div class="risk-matrix">
+                        <div class="risk-item high-risk">
+                            <span>Critical Risks:</span>
+                            <span id="critical-risks">0</span>
+                        </div>
+                        <div class="risk-item medium-risk">
+                            <span>High Risks:</span>
+                            <span id="high-risks">0</span>
+                        </div>
+                        <div class="risk-item low-risk">
+                            <span>Medium Risks:</span>
+                            <span id="medium-risks">0</span>
+                        </div>
+                        <div class="risk-item minimal-risk">
+                            <span>Low Risks:</span>
+                            <span id="low-risks">0</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="summary-card">
+                    <h3>Recommendations</h3>
+                    <div id="recommendations-list" class="recommendations">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Action Buttons -->
+        <div class="button-group">
+            <button class="btn btn-primary" onclick="exportToExcel()">📥 Export to Excel</button>
+            <button class="btn btn-primary" onclick="saveProgress()">💾 Save Progress</button>
+            <button class="btn btn-secondary" onclick="shareResults()">🔗 Share Link</button>
+            <button class="btn btn-secondary" onclick="generateReport()">📄 Generate Report</button>
+            <button class="btn btn-danger" onclick="resetCalculator()">🔄 Reset All</button>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer style="background: #f8fafc; padding: 2rem 0; margin-top: 4rem; text-align: center; border-top: 1px solid #e2e8f0;">
+        <div style="font-size: 1.1rem; color: #6366f1; font-weight: 500;">
+            Built with ❤️ by architects, for architects! 🚀
+        </div>
+    </footer>
+    
+    <!-- Loading Overlay Fix -->
+    <script src="/docs/assets/js/loading-overlay-fix.js"></script>
+    
+    <!-- Load AutoSave separately to ensure availability -->
+    <script src="/docs/assets/js/auto-save.js"></script>
+
+    <!-- Load Notifications separately -->
+    <script src="/docs/assets/js/notifications.js"></script>
+
+    <!-- Bundled Utilities (lightweight) - COMMENTED OUT FOR PERFORMANCE -->
+    <!-- <script src="/docs/assets/js/bundle-utilities.js"></script> -->
+    
+    <!-- Features Bundle (lightweight) - COMMENTED OUT FOR PERFORMANCE -->
+    <!-- <script src="/docs/assets/js/bundle-features.js"></script> -->
+
+    <!-- Calculator Specific JavaScript -->
+    <script src="/docs/assets/js/genai-security.js"></script>
+    
+    <script>
+    function toggleMobileMenu() {
+        const menu = document.getElementById('siteMenu');
+        if (menu) {
+            menu.classList.toggle('active');
+        }
+    }
+    </script>
+</body>
+</html>

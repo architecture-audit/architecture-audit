@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Readiness Assessment Calculator - Comprehensive Enterprise Tool</title>
+    <meta name="description" content="Complete AI readiness assessment with maturity scoring, skills gap analysis, use case prioritization, and ROI calculation">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🤖</text></svg>">
+    
+    <!-- Navigation CSS -->
+    <link rel="stylesheet" href="/docs/assets/css/site-navigation.css">
+    
+    <!-- AI Readiness CSS -->
+    <link rel="stylesheet" href="/docs/assets/css/ai-readiness.css">
+    
+    <!-- Clean navbar fix -->
+    <style>
+        /* Minimal override to make navbar visible */
+        nav.site-nav {
+            display: block;
+            visibility: visible;
+        }
+        
+        /* Prevent layout shift - ensure consistent spacing from start */
+        body {
+            padding-top: 0;
+            margin: 0;
+        }
+        
+        /* Ensure header starts at correct position immediately to prevent jump */
+        .header {
+            margin-top: 0 !important;
+        }
+        
+        /* Prevent layout shifts during data restoration */
+        body.restoring-data * {
+            transition: none !important;
+            animation: none !important;
+        }
+        
+        /* Keep layout stable during restoration */
+        body.restoring-data .header,
+        body.restoring-data .calculator-container {
+            min-height: 100vh;
+        }
+    </style>
+    
+    <!-- SheetJS for Excel export -->
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+    <!-- Site Navigation -->
+    <nav class="site-nav">
+        <div class="site-nav-container">
+            <a href="/" class="site-logo">
+                🏢 AI Architecture Audit
+            </a>
+            
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+            
+            <ul class="site-menu" id="siteMenu">
+                <li class="site-menu-item">
+                    <a href="/">Home</a>
+                </li>
+                
+                <li class="site-menu-item has-dropdown">
+                    <a href="#" onclick="event.preventDefault()">Calculators</a>
+                    <div class="dropdown-menu">
+                        <a href="/calculators/ai-readiness/">🤖 AI Readiness</a>
+                        <a href="/calculators/cloud-migration/">☁️ Cloud Migration</a>
+                        <a href="/calculators/mlops-audit/">🔧 MLOps Audit</a>
+                        <a href="/calculators/llm-framework/">🧠 LLM Framework</a>
+                        <a href="/calculators/security-audit/">🔒 Security Audit</a>
+                        <a href="/calculators/genai-security/">🛡️ GenAI Security</a>
+                        <a href="/calculators/cost-optimization/">💰 Cost Optimization</a>
+                    </div>
+                </li>
+                
+                <li class="site-menu-item has-dropdown">
+                    <a href="#" onclick="event.preventDefault()">Documentation</a>
+                    <div class="dropdown-menu">
+                        <a href="/docs/ai-readiness/">📖 AI Readiness Guide</a>
+                        <a href="/docs/cloud-migration/">📖 Cloud Migration Guide</a>
+                        <a href="/docs/mlops-audit/">📖 MLOps Audit Guide</a>
+                        <a href="/docs/llm-framework/">📖 LLM Framework Guide</a>
+                        <a href="/docs/security-audit/">📖 Security Audit Guide</a>
+                        <a href="/docs/genai-security/">📖 GenAI Security Guide</a>
+                        <a href="/docs/cost-optimization/">📖 Cost Optimization Guide</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1>🤖 AI Readiness Assessment Calculator</h1>
+            <p>Comprehensive assessment of your organization's AI maturity and readiness</p>
+        </div>
+    </header>
+    
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs">
+        <div class="nav-tabs-container">
+            <button class="nav-tab active" data-tab="maturity">
+                <span>📊</span> Maturity Assessment
+            </button>
+            <button class="nav-tab" data-tab="skills">
+                <span>👥</span> Skills Gap Analysis
+            </button>
+            <button class="nav-tab" data-tab="usecases">
+                <span>🎯</span> Use Case Prioritization
+            </button>
+            <button class="nav-tab" data-tab="data">
+                <span>💾</span> Data Readiness
+            </button>
+            <button class="nav-tab" data-tab="infrastructure">
+                <span>🖥️</span> Infrastructure
+            </button>
+            <button class="nav-tab" data-tab="roi">
+                <span>💰</span> ROI Calculator
+            </button>
+            <button class="nav-tab" data-tab="vendor">
+                <span>🏢</span> Vendor Selection
+            </button>
+            <button class="nav-tab" data-tab="risks">
+                <span>⚠️</span> Risk Assessment
+            </button>
+            <button class="nav-tab" data-tab="roadmap">
+                <span>🗺️</span> Implementation Roadmap
+            </button>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Maturity Assessment Tab -->
+        <div class="tab-content active" id="maturity">
+            <section class="section">
+                <h2>AI Maturity Assessment</h2>
+                
+                <div class="alert alert-info">
+                    Answer questions across 6 dimensions to automatically calculate your AI maturity score. Each dimension has weighted questions that contribute to your overall readiness.
+                </div>
+                
+                <!-- This will be populated by JavaScript -->
+                <div id="maturity-assessment-container"></div>
+            </section>
+        </div>
+        
+        <!-- Skills Gap Analysis Tab -->
+        <div class="tab-content" id="skills">
+            <section class="section">
+                <h2>Skills Gap Analysis</h2>
+                
+                <table class="assessment-table">
+                    <thead>
+                        <tr>
+                            <th>Skill Area</th>
+                            <th>Current Level</th>
+                            <th>Required Level</th>
+                            <th>Gap</th>
+                            <th>Priority</th>
+                            <th>Training Plan</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="skills-tbody">
+                        <tr>
+                            <td><input type="text" placeholder="e.g., Machine Learning" value="Machine Learning"></td>
+                            <td>
+                                <select onchange="updateSkillsGap()">
+                                    <option value="1">Beginner</option>
+                                    <option value="2" selected>Intermediate</option>
+                                    <option value="3">Advanced</option>
+                                    <option value="4">Expert</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select onchange="updateSkillsGap()">
+                                    <option value="1">Beginner</option>
+                                    <option value="2">Intermediate</option>
+                                    <option value="3">Advanced</option>
+                                    <option value="4" selected>Expert</option>
+                                </select>
+                            </td>
+                            <td class="gap-score">2</td>
+                            <td>
+                                <select>
+                                    <option>Low</option>
+                                    <option>Medium</option>
+                                    <option selected>High</option>
+                                    <option>Critical</option>
+                                </select>
+                            </td>
+                            <td><input type="text" placeholder="Training plan" value="Advanced ML course + hands-on projects"></td>
+                            <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <button class="btn btn-secondary" onclick="addSkillRow()">+ Add Skill Area</button>
+                
+                <div class="score-display">
+                    <div class="score-card">
+                        <div class="score-label">Average Skill Gap</div>
+                        <div class="score-value" id="avg-skill-gap">2.0</div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-label">Critical Skills Missing</div>
+                        <div class="score-value" id="critical-skills">3</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Use Case Prioritization Tab -->
+        <div class="tab-content" id="usecases">
+            <section class="section">
+                <h2>AI Use Case Prioritization</h2>
+                
+                <table class="assessment-table">
+                    <thead>
+                        <tr>
+                            <th>Use Case</th>
+                            <th>Department</th>
+                            <th>Business Impact</th>
+                            <th>Technical Feasibility</th>
+                            <th>Implementation Complexity</th>
+                            <th>Priority Score</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usecase-tbody">
+                        <tr>
+                            <td><input type="text" placeholder="Use case name" value="Customer Churn Prediction"></td>
+                            <td>
+                                <select>
+                                    <option selected>Customer Service</option>
+                                    <option>Operations</option>
+                                    <option>Marketing</option>
+                                    <option>Finance</option>
+                                    <option>HR</option>
+                                    <option>Product</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select onchange="calculatePriority(this)">
+                                    <option value="1">Low</option>
+                                    <option value="2">Medium</option>
+                                    <option value="3" selected>High</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select onchange="calculatePriority(this)">
+                                    <option value="1">Low</option>
+                                    <option value="2">Medium</option>
+                                    <option value="3" selected>High</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select onchange="calculatePriority(this)">
+                                    <option value="3">High</option>
+                                    <option value="2" selected>Medium</option>
+                                    <option value="1">Low</option>
+                                </select>
+                            </td>
+                            <td class="priority-score">7</td>
+                            <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <button class="btn btn-secondary" onclick="addUseCaseRow()">+ Add Use Case</button>
+            </section>
+        </div>
+        
+        <!-- Data Readiness Tab -->
+        <div class="tab-content" id="data">
+            <section class="section">
+                <h2>Data Readiness Assessment</h2>
+                
+                <table class="assessment-table">
+                    <thead>
+                        <tr>
+                            <th>Data Source</th>
+                            <th>Type</th>
+                            <th>Volume</th>
+                            <th>Quality</th>
+                            <th>Update Frequency</th>
+                            <th>AI Readiness</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="data-tbody">
+                        <tr>
+                            <td><input type="text" placeholder="Data source name" value="CRM Database"></td>
+                            <td>
+                                <select>
+                                    <option selected>Structured</option>
+                                    <option>Unstructured</option>
+                                    <option>Semi-structured</option>
+                                    <option>Streaming</option>
+                                </select>
+                            </td>
+                            <td><input type="text" placeholder="e.g., 1TB" value="500GB"></td>
+                            <td>
+                                <select>
+                                    <option selected>High</option>
+                                    <option>Medium</option>
+                                    <option>Low</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select>
+                                    <option>Real-time</option>
+                                    <option selected>Daily</option>
+                                    <option>Weekly</option>
+                                    <option>Monthly</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select>
+                                    <option selected>Ready</option>
+                                    <option>Needs Cleaning</option>
+                                    <option>Needs Integration</option>
+                                    <option>Not Ready</option>
+                                </select>
+                            </td>
+                            <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <button class="btn btn-secondary" onclick="addDataSourceRow()">+ Add Data Source</button>
+            </section>
+        </div>
+        
+        <!-- Infrastructure Tab -->
+        <div class="tab-content" id="infrastructure">
+            <section class="section">
+                <h2>Infrastructure Assessment</h2>
+                
+                <table class="assessment-table">
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Type</th>
+                            <th>Current Capacity</th>
+                            <th>AI-Ready</th>
+                            <th>Upgrade Cost ($)</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="infra-tbody">
+                        <tr>
+                            <td><input type="text" placeholder="Component name" value="GPU Cluster"></td>
+                            <td>
+                                <select>
+                                    <option selected>Compute</option>
+                                    <option>Storage</option>
+                                    <option>Network</option>
+                                    <option>Database</option>
+                                    <option>Analytics Platform</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select>
+                                    <option>Adequate</option>
+                                    <option selected>Needs Upgrade</option>
+                                    <option>Insufficient</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select>
+                                    <option>Yes</option>
+                                    <option selected>Partial</option>
+                                    <option>No</option>
+                                </select>
+                            </td>
+                            <td><input type="number" placeholder="0" value="50000" min="0"></td>
+                            <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <button class="btn btn-secondary" onclick="addInfrastructureRow()">+ Add Component</button>
+            </section>
+        </div>
+        
+        <!-- ROI Calculator Tab -->
+        <div class="tab-content" id="roi">
+            <section class="section">
+                <h2>AI Investment ROI Calculator</h2>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Total AI Investment ($)</label>
+                        <input type="number" id="ai-investment" placeholder="500000" value="500000" onchange="calculateROI()">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Expected Annual Cost Savings ($)</label>
+                        <input type="number" id="annual-savings" placeholder="200000" value="200000" onchange="calculateROI()">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Expected Annual Revenue Increase ($)</label>
+                        <input type="number" id="revenue-increase" placeholder="300000" value="300000" onchange="calculateROI()">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Time Horizon (Years)</label>
+                        <input type="number" id="roi-years" placeholder="3" value="3" min="1" max="10" onchange="calculateROI()">
+                    </div>
+                </div>
+                
+                <div class="score-display">
+                    <div class="score-card">
+                        <div class="score-label">ROI</div>
+                        <div class="score-value roi-value" id="roi-percentage">200%</div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-label">Payback Period</div>
+                        <div class="score-value" id="payback-period">1.0 years</div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-label">Net Present Value</div>
+                        <div class="score-value" id="npv">$750,000</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Vendor Selection Tab -->
+        <div class="tab-content" id="vendor">
+            <section class="section">
+                <h2>AI Vendor Evaluation</h2>
+                
+                <table class="assessment-table">
+                    <thead>
+                        <tr>
+                            <th>Vendor</th>
+                            <th>Category</th>
+                            <th>Capabilities (1-5)</th>
+                            <th>Cost (1-5)</th>
+                            <th>Support (1-5)</th>
+                            <th>Overall Score</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="vendor-tbody">
+                        <tr>
+                            <td><input type="text" placeholder="Vendor name" value="AWS SageMaker"></td>
+                            <td>
+                                <select>
+                                    <option selected>AI Platform</option>
+                                    <option>Data Platform</option>
+                                    <option>ML Tools</option>
+                                    <option>Consulting</option>
+                                    <option>Training</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="range" min="1" max="5" value="4" onchange="updateVendorScore(this)">
+                                <span class="range-value">4</span>
+                            </td>
+                            <td>
+                                <input type="range" min="1" max="5" value="3" onchange="updateVendorScore(this)">
+                                <span class="range-value">3</span>
+                            </td>
+                            <td>
+                                <input type="range" min="1" max="5" value="4" onchange="updateVendorScore(this)">
+                                <span class="range-value">4</span>
+                            </td>
+                            <td class="vendor-score">3.7</td>
+                            <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <button class="btn btn-secondary" onclick="addVendorRow()">+ Add Vendor</button>
+            </section>
+        </div>
+        
+        <!-- Risk Assessment Tab -->
+        <div class="tab-content" id="risks">
+            <section class="section">
+                <h2>AI Risk Assessment</h2>
+                
+                <table class="assessment-table">
+                    <thead>
+                        <tr>
+                            <th>Risk</th>
+                            <th>Category</th>
+                            <th>Probability</th>
+                            <th>Impact</th>
+                            <th>Risk Score</th>
+                            <th>Mitigation</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="risk-tbody">
+                        <tr>
+                            <td><input type="text" placeholder="Risk description" value="Data Privacy Concerns"></td>
+                            <td>
+                                <select>
+                                    <option>Technical</option>
+                                    <option>Business</option>
+                                    <option selected>Regulatory</option>
+                                    <option>Security</option>
+                                    <option>Ethical</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select onchange="updateRiskScore(this)">
+                                    <option value="1">Low</option>
+                                    <option value="2" selected>Medium</option>
+                                    <option value="3">High</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select onchange="updateRiskScore(this)">
+                                    <option value="1">Low</option>
+                                    <option value="2">Medium</option>
+                                    <option value="3" selected>High</option>
+                                </select>
+                            </td>
+                            <td class="risk-score">6</td>
+                            <td><input type="text" placeholder="Mitigation strategy" value="Implement data governance framework"></td>
+                            <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <button class="btn btn-secondary" onclick="addRiskRow()">+ Add Risk</button>
+            </section>
+        </div>
+        
+        <!-- Implementation Roadmap Tab -->
+        <div class="tab-content" id="roadmap">
+            <section class="section">
+                <h2>AI Implementation Roadmap</h2>
+                
+                <table class="assessment-table">
+                    <thead>
+                        <tr>
+                            <th>Initiative</th>
+                            <th>Quarter</th>
+                            <th>Duration (months)</th>
+                            <th>Owner</th>
+                            <th>Dependencies</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="roadmap-tbody">
+                        <tr>
+                            <td><input type="text" placeholder="Initiative name" value="Data Lake Implementation"></td>
+                            <td>
+                                <select>
+                                    <option selected>Q1 2024</option>
+                                    <option>Q2 2024</option>
+                                    <option>Q3 2024</option>
+                                    <option>Q4 2024</option>
+                                    <option>Q1 2025</option>
+                                    <option>Q2 2025</option>
+                                </select>
+                            </td>
+                            <td><input type="number" placeholder="3" value="3" min="1" max="12"></td>
+                            <td><input type="text" placeholder="Team/Owner" value="Data Engineering Team"></td>
+                            <td><input type="text" placeholder="Dependencies" value="Cloud infrastructure"></td>
+                            <td>
+                                <select>
+                                    <option>Not Started</option>
+                                    <option selected>Planning</option>
+                                    <option>In Progress</option>
+                                    <option>Completed</option>
+                                </select>
+                            </td>
+                            <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <button class="btn btn-secondary" onclick="addRoadmapRow()">+ Add Initiative</button>
+            </section>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="button-group">
+            <button class="btn btn-primary" onclick="exportToExcel()">📥 Export to Excel</button>
+            <button class="btn btn-primary" onclick="saveProgress()">💾 Save Progress</button>
+            <button class="btn btn-secondary" onclick="shareResults()">🔗 Share Link</button>
+            <button class="btn btn-secondary" onclick="generateReport()">📄 Generate Report</button>
+            <button class="btn btn-secondary" onclick="resetCalculator()">🔄 Reset All</button>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer style="background: #f8fafc; padding: 2rem 0; margin-top: 4rem; text-align: center; border-top: 1px solid #e2e8f0;">
+        <div style="font-size: 1.1rem; color: #6366f1; font-weight: 500;">
+            Built with ❤️ by architects, for architects! 🚀
+        </div>
+    </footer>
+    
+    <!-- Loading Overlay Fix -->
+    <script src="/docs/assets/js/loading-overlay-fix.js"></script>
+    
+    <!-- Load AutoSave separately to ensure availability -->
+    <script src="/docs/assets/js/auto-save.js"></script>
+
+    <!-- Load Notifications separately -->
+    <script src="/docs/assets/js/notifications.js"></script>
+
+    <!-- Bundled Utilities (lightweight) - COMMENTED OUT FOR PERFORMANCE -->
+    <!-- <script src="/docs/assets/js/bundle-utilities.js"></script> -->
+    
+    <!-- Features Bundle (lightweight) - COMMENTED OUT FOR PERFORMANCE -->
+    <!-- <script src="/docs/assets/js/bundle-features.js"></script> -->
+
+    <!-- Calculator Specific JavaScript -->
+    <script src="/docs/assets/js/ai-readiness.js"></script>
+    
+    <script>
+    function toggleMobileMenu() {
+        const menu = document.getElementById('siteMenu');
+        if (menu) {
+            menu.classList.toggle('active');
+        }
+    }
+    </script>
+    
+    <!-- Diagnostic Script (for testing only) -->
+    <!-- <script src="../test/diagnostic.js"></script> -->
+</body>
+</html>

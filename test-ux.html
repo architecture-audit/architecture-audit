@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>UX Features Test</title>
+</head>
+<body style="padding: 50px; font-family: Arial;">
+    <h1>UX Features Test Page</h1>
+    <p>This page tests if UX improvements are working</p>
+    
+    <button onclick="testFeatures()">Test UX Features</button>
+    
+    <div id="results" style="margin-top: 20px; padding: 20px; background: #f0f0f0; border-radius: 10px;">
+        <h3>Test Results:</h3>
+        <div id="test-output"></div>
+    </div>
+
+    <!-- Load the UX improvements -->
+    <script src="/docs/assets/js/ux-improvements.js"></script>
+    
+    <script>
+        function testFeatures() {
+            const output = document.getElementById('test-output');
+            let results = [];
+            
+            // Test 1: Check if UXEnhancements class exists
+            if (typeof UXEnhancements !== 'undefined') {
+                results.push('✅ UXEnhancements class loaded');
+            } else {
+                results.push('❌ UXEnhancements class NOT found');
+            }
+            
+            // Test 2: Check if instance exists
+            if (window.uxEnhancements) {
+                results.push('✅ UX instance initialized');
+            } else {
+                results.push('❌ UX instance NOT initialized');
+            }
+            
+            // Test 3: Check for auto-save indicator
+            const autoSaveIndicator = document.getElementById('auto-save-status');
+            if (autoSaveIndicator) {
+                results.push('✅ Auto-save indicator visible');
+            } else {
+                results.push('❌ Auto-save indicator NOT visible');
+            }
+            
+            // Test 4: Check for feature badges
+            const featureBadges = document.querySelector('.feature-badges');
+            if (featureBadges) {
+                results.push('✅ Feature badges visible');
+            } else {
+                results.push('❌ Feature badges NOT visible');
+            }
+            
+            // Test 5: Check for enhanced styles
+            const styles = document.querySelectorAll('style');
+            let hasUXStyles = false;
+            styles.forEach(style => {
+                if (style.textContent.includes('auto-save-indicator')) {
+                    hasUXStyles = true;
+                }
+            });
+            
+            if (hasUXStyles) {
+                results.push('✅ UX styles loaded');
+            } else {
+                results.push('❌ UX styles NOT loaded');
+            }
+            
+            output.innerHTML = results.join('<br>');
+            
+            // Also log to console
+            console.log('UX Test Results:', results);
+            console.log('Window objects:', {
+                UXEnhancements: typeof UXEnhancements,
+                uxEnhancements: window.uxEnhancements,
+                autoSaveIndicator: document.getElementById('auto-save-status'),
+                featureBadges: document.querySelector('.feature-badges')
+            });
+        }
+        
+        // Auto-run test after page loads
+        window.addEventListener('load', () => {
+            setTimeout(testFeatures, 1000);
+        });
+    </script>
+</body>
+</html>

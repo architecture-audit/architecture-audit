@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenAI Security Framework - Comprehensive AI Security Assessment</title>
+    <meta name="description" content="Complete GenAI security framework covering prompt injection defense, model integrity, data privacy, OWASP LLM Top 10, and AI Blue Team operations.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🤖</text></svg>">
+    
+    <!-- Navigation CSS -->
+    <link rel="stylesheet" href="../assets/css/site-navigation.css">
+    
+    <!-- Base Documentation CSS -->
+    <link rel="stylesheet" href="../assets/css/docs-base.css">
+    
+    <!-- GenAI Security CSS -->
+    <link rel="stylesheet" href="../assets/css/genai-security.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1>🤖 GenAI Security Framework</h1>
+            <h3 style="color: white; margin: 0.5rem 0 1rem 0; font-weight: normal; opacity: 0.8;">Version 1.0 | 2024</h3>
+            <p>Comprehensive AI security assessment framework addressing prompt injection, model integrity, data privacy, OWASP LLM Top 10 vulnerabilities, and AI Blue Team operations. Secure your AI systems against emerging threats and ensure responsible deployment.</p>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="toc">
+            <h3>Table of Contents</h3>
+            <ul>
+                <li><a href="#overview" class="toc-2">GenAI Security Overview</a></li>
+                <li><a href="#framework-structure" class="toc-3">Framework Structure</a></li>
+                <li><a href="#risk-landscape" class="toc-3">AI Risk Landscape</a></li>
+                <li><a href="#prompt-injection" class="toc-2">Prompt Injection & Security</a></li>
+                <li><a href="#injection-types" class="toc-3">Injection Attack Types</a></li>
+                <li><a href="#defense-mechanisms" class="toc-3">Defense Mechanisms</a></li>
+                <li><a href="#detection-strategies" class="toc-3">Detection Strategies</a></li>
+                <li><a href="#model-security" class="toc-2">Model Security & Integrity</a></li>
+                <li><a href="#model-protection" class="toc-3">Model Protection</a></li>
+                <li><a href="#version-management" class="toc-3">Version Management</a></li>
+                <li><a href="#deployment-security" class="toc-3">Deployment Security</a></li>
+                <li><a href="#data-privacy" class="toc-2">Data Privacy & Protection</a></li>
+                <li><a href="#privacy-frameworks" class="toc-3">Privacy Frameworks</a></li>
+                <li><a href="#pii-detection" class="toc-3">PII Detection & Anonymization</a></li>
+                <li><a href="#consent-management" class="toc-3">Consent Management</a></li>
+                <li><a href="#hallucination-control" class="toc-2">Hallucination Control</a></li>
+                <li><a href="#detection-methods" class="toc-3">Detection Methods</a></li>
+                <li><a href="#mitigation-strategies" class="toc-3">Mitigation Strategies</a></li>
+                <li><a href="#validation-frameworks" class="toc-3">Validation Frameworks</a></li>
+                <li><a href="#ethical-ai" class="toc-2">Ethical AI & Bias Mitigation</a></li>
+                <li><a href="#bias-detection" class="toc-3">Bias Detection</a></li>
+                <li><a href="#fairness-metrics" class="toc-3">Fairness Metrics</a></li>
+                <li><a href="#responsible-ai" class="toc-3">Responsible AI Practices</a></li>
+                <li><a href="#ai-governance" class="toc-2">AI Governance & Compliance</a></li>
+                <li><a href="#regulatory-landscape" class="toc-3">Regulatory Landscape</a></li>
+                <li><a href="#governance-frameworks" class="toc-3">Governance Frameworks</a></li>
+                <li><a href="#audit-trails" class="toc-3">Audit Trails & Documentation</a></li>
+                <li><a href="#supply-chain" class="toc-2">Supply Chain Security</a></li>
+                <li><a href="#vendor-assessment" class="toc-3">Vendor Assessment</a></li>
+                <li><a href="#dependency-management" class="toc-3">Dependency Management</a></li>
+                <li><a href="#model-provenance" class="toc-3">Model Provenance</a></li>
+                <li><a href="#incident-response" class="toc-2">Incident Response for AI</a></li>
+                <li><a href="#ai-incident-types" class="toc-3">AI-Specific Incident Types</a></li>
+                <li><a href="#response-procedures" class="toc-3">Response Procedures</a></li>
+                <li><a href="#forensics-analysis" class="toc-3">Forensics & Analysis</a></li>
+                <li><a href="#owasp-llm-top10" class="toc-2">OWASP LLM Top 10</a></li>
+                <li><a href="#llm-01" class="toc-3">LLM01: Prompt Injection</a></li>
+                <li><a href="#llm-02" class="toc-3">LLM02: Insecure Output Handling</a></li>
+                <li><a href="#llm-03" class="toc-3">LLM03: Training Data Poisoning</a></li>
+                <li><a href="#llm-04" class="toc-3">LLM04: Model Denial of Service</a></li>
+                <li><a href="#llm-05" class="toc-3">LLM05: Supply Chain Vulnerabilities</a></li>
+                <li><a href="#llm-06" class="toc-3">LLM06: Sensitive Information Disclosure</a></li>
+                <li><a href="#llm-07" class="toc-3">LLM07: Insecure Plugin Design</a></li>
+                <li><a href="#llm-08" class="toc-3">LLM08: Excessive Agency</a></li>
+                <li><a href="#llm-09" class="toc-3">LLM09: Overreliance</a></li>
+                <li><a href="#llm-10" class="toc-3">LLM10: Model Theft</a></li>
+                <li><a href="#ai-blue-team" class="toc-2">AI Blue Team Operations</a></li>
+                <li><a href="#blue-team-fundamentals" class="toc-3">Blue Team Fundamentals</a></li>
+                <li><a href="#monitoring-detection" class="toc-3">Monitoring & Detection</a></li>
+                <li><a href="#threat-hunting" class="toc-3">AI Threat Hunting</a></li>
+                <li><a href="#defense-automation" class="toc-3">Defense Automation</a></li>
+            </ul>
+        </div>
+        
+        <div class="content">
+            <div class="container">
+        <!-- Quick Navigation -->
+        <div class="nav-grid">
+            <div class="nav-card">
+                <h3><span class="emoji">🤖</span> GenAI Security Calculator</h3>
+                <p>Interactive AI security assessment tool covering 8 critical domains with automated scoring, risk analysis, and compliance mapping.</p>
+                <a href="/calculators/genai-security/" class="btn">🚀 Launch Calculator</a>
+            </div>
+            
+            <div class="nav-card">
+                <h3><span class="emoji">🛡️</span> OWASP LLM Assessment</h3>
+                <p>Comprehensive evaluation based on OWASP LLM Top 10 vulnerabilities with detailed remediation guidance and risk scoring.</p>
+                <a href="/calculators/genai-security/" class="btn">📊 Assess LLM Risks</a>
+            </div>
+            
+            <div class="nav-card">
+                <h3><span class="emoji">👥</span> AI Blue Team Toolkit</h3>
+                <p>Advanced monitoring, detection, and response capabilities specifically designed for AI/ML security operations and threat hunting.</p>
+                <a href="/calculators/genai-security/" class="btn">🔍 Blue Team Tools</a>
+            </div>
+        </div>
+
+        <div style="background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; padding: 2rem; border-radius: 12px; margin: 2rem 0; text-align: center;">
+            <h2 style="color: white; margin-bottom: 1rem;">Ready to Secure Your AI Systems?</h2>
+            <p style="margin-bottom: 1.5rem; opacity: 0.9;">Use our comprehensive GenAI Security Calculator to assess your AI security posture and get actionable recommendations.</p>
+            <a href="/calculators/genai-security/" style="display: inline-block; background: white; color: #6366f1; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 1.1rem; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                🤖 Launch Assessment
+            </a>
+        </div>
+
+        <!-- GenAI Security Overview -->
+        <section class="section" id="overview">
+            <h2>GenAI Security Overview</h2>
+            
+            <div class="alert alert-info">
+                <strong>🎯 AI-First Security:</strong> Our GenAI Security Framework addresses the unique challenges and attack vectors specific to generative AI systems, providing comprehensive coverage across 8 critical security domains.
+            </div>
+
+            <h3 id="framework-structure">Framework Structure</h3>
+            <p>The GenAI Security Framework is built on industry best practices and emerging standards, incorporating insights from OWASP LLM Top 10, NIST AI Risk Management Framework, and real-world AI security incidents.</p>
+            
+            <div class="framework-grid">
+                <div class="framework-card">
+                    <h4>🔐 Prompt Security (20%)</h4>
+                    <p>Defense against injection attacks, jailbreaking, and prompt manipulation with advanced detection and filtering mechanisms.</p>
+                </div>
+                <div class="framework-card">
+                    <h4>🛡️ Model Security (15%)</h4>
+                    <p>Protection of model integrity, secure versioning, access controls, and deployment hardening strategies.</p>
+                </div>
+                <div class="framework-card">
+                    <h4>🔏 Data Privacy (15%)</h4>
+                    <p>PII protection, GDPR/CCPA compliance, data anonymization, and privacy-preserving techniques.</p>
+                </div>
+                <div class="framework-card">
+                    <h4>🎯 Output Validation (15%)</h4>
+                    <p>Hallucination detection, fact-checking, content filtering, and quality assurance mechanisms.</p>
+                </div>
+                <div class="framework-card">
+                    <h4>⚖️ Ethical AI (10%)</h4>
+                    <p>Bias detection and mitigation, fairness metrics, transparency, and responsible AI governance.</p>
+                </div>
+                <div class="framework-card">
+                    <h4>📋 Compliance (10%)</h4>
+                    <p>Regulatory alignment, audit trails, governance frameworks, and risk management processes.</p>
+                </div>
+                <div class="framework-card">
+                    <h4>🔗 Supply Chain (10%)</h4>
+                    <p>Third-party model assessment, dependency security, vendor risk management, and provenance tracking.</p>
+                </div>
+                <div class="framework-card">
+                    <h4>🚨 Incident Response (5%)</h4>
+                    <p>AI-specific incident procedures, forensics capabilities, recovery plans, and lessons learned integration.</p>
+                </div>
+            </div>
+
+            <h3 id="risk-landscape">AI Risk Landscape</h3>
+            <p>The AI threat landscape continues to evolve rapidly, with new attack vectors and vulnerabilities emerging as AI systems become more sophisticated and widely deployed.</p>
+            
+            <h4>Emerging Threats:</h4>
+            <ul>
+                <li><strong>Adversarial AI:</strong> Model extraction, membership inference, and adversarial examples</li>
+                <li><strong>Prompt Engineering Attacks:</strong> Advanced injection techniques and jailbreaking methods</li>
+                <li><strong>Data Poisoning:</strong> Training data contamination and backdoor attacks</li>
+                <li><strong>Model Inversion:</strong> Reverse engineering sensitive training data from model outputs</li>
+                <li><strong>Supply Chain Attacks:</strong> Compromised pre-trained models and malicious dependencies</li>
+            </ul>
+        </section>
+
+        <!-- Prompt Injection & Security -->
+        <section class="section" id="prompt-injection">
+            <h2>Prompt Injection & Security</h2>
+            
+            <div class="alert alert-danger">
+                <strong>⚠️ Critical Threat Vector:</strong> Prompt injection attacks represent one of the most significant security risks in AI systems, capable of bypassing safety measures and extracting sensitive information.
+            </div>
+
+            <h3 id="injection-types">Injection Attack Types</h3>
+            
+            <h4>Direct Prompt Injection</h4>
+            <p>Attacks where malicious instructions are directly embedded in user prompts to manipulate AI behavior.</p>
+            <ul>
+                <li><strong>Command Injection:</strong> Embedding system commands in prompts</li>
+                <li><strong>Role Hijacking:</strong> Convincing the AI to adopt a different persona or role</li>
+                <li><strong>Instruction Override:</strong> Overriding system instructions with user-provided commands</li>
+                <li><strong>Context Manipulation:</strong> Altering the conversation context to influence responses</li>
+            </ul>
+
+            <h4>Indirect Prompt Injection</h4>
+            <p>Attacks delivered through external data sources that the AI system processes, such as documents or web content.</p>
+            <ul>
+                <li><strong>Document-Based Injection:</strong> Malicious instructions embedded in processed documents</li>
+                <li><strong>Web Content Injection:</strong> Exploiting AI systems that browse the internet</li>
+                <li><strong>Data Source Poisoning:</strong> Compromising external data sources</li>
+                <li><strong>Chain-of-Thought Manipulation:</strong> Influencing reasoning processes through crafted inputs</li>
+            </ul>
+
+            <h3 id="defense-mechanisms">Defense Mechanisms</h3>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Defense Layer</th>
+                        <th>Technique</th>
+                        <th>Effectiveness</th>
+                        <th>Implementation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Input Filtering</strong></td>
+                        <td>Pattern-based detection and blocking</td>
+                        <td>Medium</td>
+                        <td>Pre-processing pipeline</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Prompt Isolation</strong></td>
+                        <td>Separate system and user contexts</td>
+                        <td>High</td>
+                        <td>Architecture design</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Output Validation</strong></td>
+                        <td>Response analysis and filtering</td>
+                        <td>High</td>
+                        <td>Post-processing layer</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Rate Limiting</strong></td>
+                        <td>Request throttling and quotas</td>
+                        <td>Medium</td>
+                        <td>API gateway</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Behavioral Analysis</strong></td>
+                        <td>ML-based anomaly detection</td>
+                        <td>High</td>
+                        <td>Security monitoring</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 id="detection-strategies">Detection Strategies</h3>
+            
+            <h4>Real-time Detection</h4>
+            <ul>
+                <li><strong>Entropy Analysis:</strong> Measuring information entropy in prompts</li>
+                <li><strong>Semantic Similarity:</strong> Comparing prompts against known attack patterns</li>
+                <li><strong>Linguistic Analysis:</strong> Detecting unusual language patterns or structures</li>
+                <li><strong>Context Anomalies:</strong> Identifying sudden context changes or contradictions</li>
+            </ul>
+
+            <h4>Post-Processing Analysis</h4>
+            <ul>
+                <li><strong>Response Deviation:</strong> Detecting unusual response patterns</li>
+                <li><strong>Sentiment Analysis:</strong> Monitoring emotional tone and content safety</li>
+                <li><strong>Content Classification:</strong> Categorizing outputs for policy violations</li>
+                <li><strong>Factual Verification:</strong> Cross-referencing outputs with trusted sources</li>
+            </ul>
+        </section>
+
+        <!-- Model Security & Integrity -->
+        <section class="section" id="model-security">
+            <h2>Model Security & Integrity</h2>
+            
+            <div class="alert alert-warning">
+                <strong>🔒 Asset Protection:</strong> AI models represent valuable intellectual property and require comprehensive protection throughout their lifecycle from development to deployment.
+            </div>
+
+            <h3 id="model-protection">Model Protection</h3>
+            
+            <h4>Access Control Mechanisms</h4>
+            <ul>
+                <li><strong>Role-Based Access Control (RBAC):</strong> Granular permissions for model access</li>
+                <li><strong>Attribute-Based Access Control (ABAC):</strong> Context-aware access decisions</li>
+                <li><strong>Multi-Factor Authentication:</strong> Enhanced authentication for sensitive operations</li>
+                <li><strong>API Key Management:</strong> Secure key generation, rotation, and revocation</li>
+                <li><strong>Network Segmentation:</strong> Isolating model infrastructure</li>
+            </ul>
+
+            <h4>Integrity Verification</h4>
+            <ul>
+                <li><strong>Digital Signatures:</strong> Cryptographic verification of model authenticity</li>
+                <li><strong>Hash Verification:</strong> Ensuring model files haven't been tampered with</li>
+                <li><strong>Checksum Validation:</strong> Automated integrity checks during deployment</li>
+                <li><strong>Provenance Tracking:</strong> Maintaining complete model lineage</li>
+            </ul>
+
+            <h3 id="version-management">Version Management</h3>
+            
+            <div class="framework-grid">
+                <div class="framework-card">
+                    <h4>Version Control</h4>
+                    <ul>
+                        <li>Git-based model versioning</li>
+                        <li>Semantic versioning schemes</li>
+                        <li>Branch protection rules</li>
+                        <li>Merge request workflows</li>
+                    </ul>
+                </div>
+                <div class="framework-card">
+                    <h4>Rollback Capabilities</h4>
+                    <ul>
+                        <li>Automated rollback triggers</li>
+                        <li>Blue-green deployments</li>
+                        <li>Canary release strategies</li>
+                        <li>Emergency recovery procedures</li>
+                    </ul>
+                </div>
+                <div class="framework-card">
+                    <h4>Change Management</h4>
+                    <ul>
+                        <li>Approval workflows</li>
+                        <li>Impact assessments</li>
+                        <li>Testing requirements</li>
+                        <li>Documentation standards</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3 id="deployment-security">Deployment Security</h3>
+            
+            <h4>Secure Infrastructure</h4>
+            <ul>
+                <li><strong>Container Security:</strong> Hardened container images and runtime protection</li>
+                <li><strong>Orchestration Security:</strong> Kubernetes security policies and network policies</li>
+                <li><strong>Secrets Management:</strong> Secure storage and injection of sensitive configuration</li>
+                <li><strong>Certificate Management:</strong> TLS/SSL certificate automation and rotation</li>
+                <li><strong>Network Security:</strong> WAF, DDoS protection, and traffic filtering</li>
+            </ul>
+
+            <h4>Runtime Protection</h4>
+            <ul>
+                <li><strong>Resource Monitoring:</strong> CPU, memory, and GPU usage tracking</li>
+                <li><strong>Behavioral Monitoring:</strong> Detecting anomalous model behavior</li>
+                <li><strong>Performance Baselines:</strong> Establishing normal operation parameters</li>
+                <li><strong>Health Checks:</strong> Automated model health and availability monitoring</li>
+            </ul>
+        </section>
+
+        <!-- Data Privacy & Protection -->
+        <section class="section" id="data-privacy">
+            <h2>Data Privacy & Protection</h2>
+            
+            <div class="alert alert-info">
+                <strong>🔐 Privacy by Design:</strong> Implementing comprehensive data protection measures that comply with global privacy regulations while enabling AI innovation.
+            </div>
+
+            <h3 id="privacy-frameworks">Privacy Frameworks</h3>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Regulation</th>
+                        <th>Scope</th>
+                        <th>Key Requirements</th>
+                        <th>AI-Specific Considerations</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>GDPR</strong></td>
+                        <td>EU/EEA</td>
+                        <td>Consent, Right to explanation, Data minimization</td>
+                        <td>Algorithmic transparency, Automated decision-making</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CCPA</strong></td>
+                        <td>California</td>
+                        <td>Right to know, Right to delete, Opt-out rights</td>
+                        <td>AI system disclosures, Data usage transparency</td>
+                    </tr>
+                    <tr>
+                        <td><strong>PIPEDA</strong></td>
+                        <td>Canada</td>
+                        <td>Reasonable purposes, Consent, Accountability</td>
+                        <td>AI decision accountability, Bias prevention</td>
+                    </tr>
+                    <tr>
+                        <td><strong>LGPD</strong></td>
+                        <td>Brazil</td>
+                        <td>Lawful basis, Data subject rights, DPO requirements</td>
+                        <td>Automated processing safeguards</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 id="pii-detection">PII Detection & Anonymization</h3>
+            
+            <h4>Detection Techniques</h4>
+            <ul>
+                <li><strong>Named Entity Recognition (NER):</strong> ML-based identification of personal identifiers</li>
+                <li><strong>Regular Expression Patterns:</strong> Rule-based detection of structured data</li>
+                <li><strong>Contextual Analysis:</strong> Understanding data context and sensitivity</li>
+                <li><strong>Statistical Methods:</strong> Identifying quasi-identifiers through analysis</li>
+                <li><strong>Custom Classifiers:</strong> Domain-specific PII detection models</li>
+            </ul>
+
+            <h4>Anonymization Methods</h4>
+            <div class="framework-grid">
+                <div class="framework-card">
+                    <h4>K-Anonymity</h4>
+                    <p>Ensuring each record is indistinguishable from at least k-1 other records in terms of identifying attributes.</p>
+                </div>
+                <div class="framework-card">
+                    <h4>Differential Privacy</h4>
+                    <p>Adding calibrated noise to datasets to prevent individual identification while preserving statistical utility.</p>
+                </div>
+                <div class="framework-card">
+                    <h4>Synthetic Data Generation</h4>
+                    <p>Creating artificial datasets that preserve statistical properties without containing real personal data.</p>
+                </div>
+                <div class="framework-card">
+                    <h4>Tokenization</h4>
+                    <p>Replacing sensitive data elements with non-sensitive tokens while maintaining referential integrity.</p>
+                </div>
+            </div>
+
+            <h3 id="consent-management">Consent Management</h3>
+            
+            <h4>Consent Collection</h4>
+            <ul>
+                <li><strong>Granular Consent:</strong> Purpose-specific consent for different AI use cases</li>
+                <li><strong>Dynamic Consent:</strong> Real-time consent updates and modifications</li>
+                <li><strong>Consent Proof:</strong> Cryptographic proof of consent collection</li>
+                <li><strong>Withdrawal Mechanisms:</strong> Easy consent revocation processes</li>
+            </ul>
+
+            <h4>Rights Management</h4>
+            <ul>
+                <li><strong>Right to Access:</strong> Providing individuals with their data and processing information</li>
+                <li><strong>Right to Rectification:</strong> Correcting inaccurate personal data</li>
+                <li><strong>Right to Erasure:</strong> Deleting personal data upon request</li>
+                <li><strong>Right to Portability:</strong> Providing data in machine-readable formats</li>
+                <li><strong>Right to Explanation:</strong> Explaining AI decision-making processes</li>
+            </ul>
+        </section>
+
+        <!-- Hallucination Control -->
+        <section class="section" id="hallucination-control">
+            <h2>Hallucination Control</h2>
+            
+            <div class="alert alert-warning">
+                <strong>🎯 Output Reliability:</strong> AI hallucinations pose significant risks to business operations and user trust. Implementing robust detection and mitigation strategies is essential.
+            </div>
+
+            <h3 id="detection-methods">Detection Methods</h3>
+            
+            <h4>Consistency Checking</h4>
+            <ul>
+                <li><strong>Multi-Response Analysis:</strong> Comparing multiple outputs for the same input</li>
+                <li><strong>Temperature Variation:</strong> Testing output stability across different generation parameters</li>
+                <li><strong>Temporal Consistency:</strong> Checking for consistent responses over time</li>
+                <li><strong>Cross-Model Validation:</strong> Comparing outputs from different models</li>
+            </ul>
+
+            <h4>Factual Verification</h4>
+            <ul>
+                <li><strong>Knowledge Base Lookup:</strong> Cross-referencing with trusted knowledge sources</li>
+                <li><strong>Real-time Fact Checking:</strong> API-based verification against current data</li>
+                <li><strong>Citation Requirements:</strong> Mandating sources for factual claims</li>
+                <li><strong>Confidence Scoring:</strong> Model-based confidence assessment</li>
+            </ul>
+
+            <h3 id="mitigation-strategies">Mitigation Strategies</h3>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Strategy</th>
+                        <th>Implementation</th>
+                        <th>Effectiveness</th>
+                        <th>Trade-offs</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Retrieval-Augmented Generation</strong></td>
+                        <td>Grounding responses in retrieved documents</td>
+                        <td>High</td>
+                        <td>Latency, complexity</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Fine-tuning with Factual Data</strong></td>
+                        <td>Training on verified, high-quality datasets</td>
+                        <td>Medium</td>
+                        <td>Resource intensive</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Constitutional AI</strong></td>
+                        <td>Training models to be helpful, harmless, and honest</td>
+                        <td>Medium</td>
+                        <td>Training complexity</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Output Filtering</strong></td>
+                        <td>Post-generation content validation</td>
+                        <td>Low-Medium</td>
+                        <td>User experience impact</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 id="validation-frameworks">Validation Frameworks</h3>
+            
+            <h4>Automated Validation Pipeline</h4>
+            <ul>
+                <li><strong>Content Classification:</strong> Categorizing outputs by type and risk level</li>
+                <li><strong>Fact-checking APIs:</strong> Integrating external verification services</li>
+                <li><strong>Semantic Analysis:</strong> Understanding content meaning and context</li>
+                <li><strong>Quality Scoring:</strong> Automated quality assessment metrics</li>
+                <li><strong>Human-in-the-loop:</strong> Expert review for high-risk outputs</li>
+            </ul>
+
+            <h4>Quality Metrics</h4>
+            <ul>
+                <li><strong>Factual Accuracy:</strong> Percentage of verifiable statements that are correct</li>
+                <li><strong>Relevance Score:</strong> Alignment between input queries and outputs</li>
+                <li><strong>Coherence Rating:</strong> Logical consistency within responses</li>
+                <li><strong>Source Attribution:</strong> Proper citation and reference tracking</li>
+            </ul>
+        </section>
+
+        <!-- Ethical AI & Bias Mitigation -->
+        <section class="section" id="ethical-ai">
+            <h2>Ethical AI & Bias Mitigation</h2>
+            
+            <div class="alert alert-success">
+                <strong>⚖️ Responsible Innovation:</strong> Building fair, transparent, and accountable AI systems that serve all users equitably while respecting human rights and values.
+            </div>
+
+            <h3 id="bias-detection">Bias Detection</h3>
+            
+            <h4>Types of AI Bias</h4>
+            <ul>
+                <li><strong>Historical Bias:</strong> Reflecting past discrimination in training data</li>
+                <li><strong>Representation Bias:</strong> Underrepresenting certain groups in datasets</li>
+                <li><strong>Measurement Bias:</strong> Systematic errors in data collection methods</li>
+                <li><strong>Aggregation Bias:</strong> Assuming one model fits all subgroups equally</li>
+                <li><strong>Confirmation Bias:</strong> Seeking information that confirms preexisting beliefs</li>
+            </ul>
+
+            <h4>Detection Methodologies</h4>
+            <div class="framework-grid">
+                <div class="framework-card">
+                    <h4>Statistical Parity</h4>
+                    <p>Equal positive prediction rates across different demographic groups.</p>
+                </div>
+                <div class="framework-card">
+                    <h4>Equalized Odds</h4>
+                    <p>Equal true positive and false positive rates across groups.</p>
+                </div>
+                <div class="framework-card">
+                    <h4>Demographic Parity</h4>
+                    <p>Equal probability of positive outcomes regardless of sensitive attributes.</p>
+                </div>
+                <div class="framework-card">
+                    <h4>Individual Fairness</h4>
+                    <p>Similar individuals receive similar treatment from the AI system.</p>
+                </div>
+            </div>
+
+            <h3 id="fairness-metrics">Fairness Metrics</h3>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Definition</th>
+                        <th>Use Case</th>
+                        <th>Limitations</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Disparate Impact</strong></td>
+                        <td>Ratio of positive outcomes between groups</td>
+                        <td>Hiring, lending decisions</td>
+                        <td>May ignore legitimate differences</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Equal Opportunity</strong></td>
+                        <td>Equal true positive rates across groups</td>
+                        <td>Medical diagnosis, fraud detection</td>
+                        <td>Ignores false positive rates</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Calibration</strong></td>
+                        <td>Predicted probabilities match actual outcomes</td>
+                        <td>Risk assessment, recommendations</td>
+                        <td>May allow for biased individual decisions</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Counterfactual Fairness</strong></td>
+                        <td>Decisions unchanged in counterfactual world</td>
+                        <td>Criminal justice, college admissions</td>
+                        <td>Difficult to implement and verify</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 id="responsible-ai">Responsible AI Practices</h3>
+            
+            <h4>Governance Framework</h4>
+            <ul>
+                <li><strong>Ethics Committees:</strong> Cross-functional teams overseeing AI ethics</li>
+                <li><strong>Impact Assessments:</strong> Evaluating societal impact before deployment</li>
+                <li><strong>Stakeholder Engagement:</strong> Including affected communities in design processes</li>
+                <li><strong>Continuous Monitoring:</strong> Ongoing fairness and bias assessment</li>
+                <li><strong>Transparency Reports:</strong> Public documentation of AI system capabilities and limitations</li>
+            </ul>
+
+            <h4>Technical Implementation</h4>
+            <ul>
+                <li><strong>Adversarial Debiasing:</strong> Training models to be invariant to sensitive attributes</li>
+                <li><strong>Fair Representation Learning:</strong> Learning representations that encode fairness constraints</li>
+                <li><strong>Post-processing Calibration:</strong> Adjusting outputs to achieve fairness goals</li>
+                <li><strong>Constraint-based Optimization:</strong> Incorporating fairness constraints into training objectives</li>
+            </ul>
+        </section>
+
+        <!-- AI Governance & Compliance -->
+        <section class="section" id="ai-governance">
+            <h2>AI Governance & Compliance</h2>
+            
+            <div class="alert alert-info">
+                <strong>📋 Regulatory Readiness:</strong> The AI regulatory landscape is rapidly evolving. Organizations must establish robust governance frameworks to ensure compliance and manage risk.
+            </div>
+
+            <h3 id="regulatory-landscape">Regulatory Landscape</h3>
+            
+            <h4>Emerging AI Regulations</h4>
+            <ul>
+                <li><strong>EU AI Act:</strong> Comprehensive AI regulation with risk-based approach</li>
+                <li><strong>US Executive Order on AI:</strong> Federal standards for AI safety and security</li>
+                <li><strong>UK AI White Paper:</strong> Principles-based approach to AI regulation</li>
+                <li><strong>China AI Regulations:</strong> Algorithm recommendations and deep synthesis provisions</li>
+                <li><strong>NIST AI Risk Management Framework:</strong> Voluntary guidance for AI risk management</li>
+            </ul>
+
+            <h4>Compliance Requirements</h4>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Regulation</th>
+                        <th>Risk Categories</th>
+                        <th>Key Obligations</th>
+                        <th>Enforcement</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>EU AI Act</strong></td>
+                        <td>Prohibited, High-risk, Limited risk, Minimal risk</td>
+                        <td>Conformity assessment, Risk management, Transparency</td>
+                        <td>Up to 7% global turnover or €35M</td>
+                    </tr>
+                    <tr>
+                        <td><strong>US Executive Order</strong></td>
+                        <td>Dual-use foundation models</td>
+                        <td>Safety testing, Reporting, Impact assessments</td>
+                        <td>Federal enforcement mechanisms</td>
+                    </tr>
+                    <tr>
+                        <td><strong>UK Approach</strong></td>
+                        <td>Sector-specific risk assessment</td>
+                        <td>Innovation, Proportionality, Agility</td>
+                        <td>Existing regulatory bodies</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 id="governance-frameworks">Governance Frameworks</h3>
+            
+            <h4>AI Governance Model</h4>
+            <div class="framework-grid">
+                <div class="framework-card">
+                    <h4>Strategic Level</h4>
+                    <ul>
+                        <li>Board oversight and accountability</li>
+                        <li>AI strategy and risk appetite</li>
+                        <li>Ethics principles and values</li>
+                        <li>Resource allocation decisions</li>
+                    </ul>
+                </div>
+                <div class="framework-card">
+                    <h4>Operational Level</h4>
+                    <ul>
+                        <li>AI governance committee</li>
+                        <li>Cross-functional working groups</li>
+                        <li>Risk assessment processes</li>
+                        <li>Policy implementation</li>
+                    </ul>
+                </div>
+                <div class="framework-card">
+                    <h4>Technical Level</h4>
+                    <ul>
+                        <li>MLOps and model governance</li>
+                        <li>Technical standards and practices</li>
+                        <li>Monitoring and validation</li>
+                        <li>Incident response procedures</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3 id="audit-trails">Audit Trails & Documentation</h3>
+            
+            <h4>Documentation Requirements</h4>
+            <ul>
+                <li><strong>Model Cards:</strong> Standardized documentation of model capabilities and limitations</li>
+                <li><strong>Data Sheets:</strong> Comprehensive documentation of training datasets</li>
+                <li><strong>System Cards:</strong> High-level documentation of AI system behavior</li>
+                <li><strong>Risk Assessments:</strong> Formal evaluation of potential harms and mitigations</li>
+                <li><strong>Testing Reports:</strong> Results of safety, performance, and fairness evaluations</li>
+            </ul>
+
+            <h4>Audit Trail Components</h4>
+            <ul>
+                <li><strong>Decision Logging:</strong> Recording all AI system decisions and rationale</li>
+                <li><strong>Data Lineage:</strong> Tracking data sources and transformations</li>
+                <li><strong>Model Provenance:</strong> Complete history of model development and changes</li>
+                <li><strong>Access Logs:</strong> Recording who accessed the system and when</li>
+                <li><strong>Performance Metrics:</strong> Continuous monitoring of system performance</li>
+            </ul>
+        </section>
+
+        <!-- Supply Chain Security -->
+        <section class="section" id="supply-chain">
+            <h2>Supply Chain Security</h2>
+            
+            <div class="alert alert-warning">
+                <strong>🔗 Third-Party Risk:</strong> AI supply chains introduce unique vulnerabilities through pre-trained models, datasets, and cloud services that require comprehensive risk management.
+            </div>
+
+            <h3 id="vendor-assessment">Vendor Assessment</h3>
+            
+            <h4>AI Vendor Evaluation Criteria</h4>
+            <ul>
+                <li><strong>Security Practices:</strong> Vendor security controls and certifications</li>
+                <li><strong>Model Quality:</strong> Performance, accuracy, and reliability metrics</li>
+                <li><strong>Data Governance:</strong> Data handling and privacy practices</li>
+                <li><strong>Transparency:</strong> Documentation and explainability capabilities</li>
+                <li><strong>Compliance:</strong> Regulatory alignment and audit capabilities</li>
+                <li><strong>Business Continuity:</strong> Vendor stability and support capabilities</li>
+            </ul>
+
+            <h4>Due Diligence Process</h4>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Assessment Area</th>
+                        <th>Key Questions</th>
+                        <th>Documentation Required</th>
+                        <th>Risk Level</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Security</strong></td>
+                        <td>SOC 2 compliance, penetration testing, incident history</td>
+                        <td>Security certifications, audit reports</td>
+                        <td>High</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Data</strong></td>
+                        <td>Data sources, privacy controls, retention policies</td>
+                        <td>Data processing agreements, privacy policies</td>
+                        <td>High</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Model</strong></td>
+                        <td>Training data, bias testing, performance metrics</td>
+                        <td>Model cards, testing reports, benchmarks</td>
+                        <td>Medium</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Legal</strong></td>
+                        <td>IP rights, liability, termination clauses</td>
+                        <td>Terms of service, SLAs, contracts</td>
+                        <td>Medium</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 id="dependency-management">Dependency Management</h3>
+            
+            <h4>Open Source AI Components</h4>
+            <ul>
+                <li><strong>License Compliance:</strong> Tracking and managing open source licenses</li>
+                <li><strong>Vulnerability Scanning:</strong> Automated scanning for known vulnerabilities</li>
+                <li><strong>Update Management:</strong> Systematic updating of dependencies</li>
+                <li><strong>Community Health:</strong> Assessing project maintenance and support</li>
+            </ul>
+
+            <h4>Dependency Security Practices</h4>
+            <ul>
+                <li><strong>Software Bill of Materials (SBOM):</strong> Complete inventory of components</li>
+                <li><strong>Dependency Pinning:</strong> Using specific versions to prevent supply chain attacks</li>
+                <li><strong>Source Verification:</strong> Verifying integrity of downloaded packages</li>
+                <li><strong>Isolation:</strong> Containerizing dependencies to limit blast radius</li>
+            </ul>
+
+            <h3 id="model-provenance">Model Provenance</h3>
+            
+            <h4>Provenance Tracking</h4>
+            <ul>
+                <li><strong>Origin Documentation:</strong> Recording source of pre-trained models</li>
+                <li><strong>Training Data Lineage:</strong> Tracking data sources and preprocessing</li>
+                <li><strong>Modification History:</strong> Logging all changes and fine-tuning</li>
+                <li><strong>Distribution Chain:</strong> Recording how models are shared and deployed</li>
+            </ul>
+
+            <h4>Integrity Verification</h4>
+            <ul>
+                <li><strong>Digital Signatures:</strong> Cryptographic verification of model authenticity</li>
+                <li><strong>Hash Verification:</strong> Ensuring models haven't been tampered with</li>
+                <li><strong>Trusted Repositories:</strong> Using verified sources for model distribution</li>
+                <li><strong>Attestation:</strong> Formal verification of model properties and capabilities</li>
+            </ul>
+        </section>
+
+        <!-- Incident Response for AI -->
+        <section class="section" id="incident-response">
+            <h2>Incident Response for AI</h2>
+            
+            <div class="alert alert-danger">
+                <strong>🚨 Rapid Response:</strong> AI incidents can have unique characteristics requiring specialized response procedures and forensic capabilities.
+            </div>
+
+            <h3 id="ai-incident-types">AI-Specific Incident Types</h3>
+            
+            <h4>Model-Related Incidents</h4>
+            <ul>
+                <li><strong>Model Drift:</strong> Degraded performance due to changing data patterns</li>
+                <li><strong>Adversarial Attacks:</strong> Malicious inputs designed to fool the model</li>
+                <li><strong>Data Poisoning:</strong> Compromised training or inference data</li>
+                <li><strong>Model Extraction:</strong> Unauthorized copying of proprietary models</li>
+                <li><strong>Prompt Injection:</strong> Malicious prompt manipulation attacks</li>
+            </ul>
+
+            <h4>Data-Related Incidents</h4>
+            <ul>
+                <li><strong>Data Leakage:</strong> Exposure of sensitive training or user data</li>
+                <li><strong>Privacy Violations:</strong> Unauthorized processing of personal information</li>
+                <li><strong>Data Corruption:</strong> Integrity issues affecting model performance</li>
+                <li><strong>Consent Violations:</strong> Processing data without proper authorization</li>
+            </ul>
+
+            <h3 id="response-procedures">Response Procedures</h3>
+            
+            <div class="framework-grid">
+                <div class="framework-card">
+                    <h4>1. Detection & Assessment</h4>
+                    <ul>
+                        <li>Automated monitoring alerts</li>
+                        <li>Performance anomaly detection</li>
+                        <li>Security event correlation</li>
+                        <li>Impact assessment</li>
+                    </ul>
+                </div>
+                <div class="framework-card">
+                    <h4>2. Containment</h4>
+                    <ul>
+                        <li>Model service isolation</li>
+                        <li>Traffic redirection</li>
+                        <li>Feature flag disabling</li>
+                        <li>Access revocation</li>
+                    </ul>
+                </div>
+                <div class="framework-card">
+                    <h4>3. Investigation</h4>
+                    <ul>
+                        <li>Log analysis and correlation</li>
+                        <li>Model behavior analysis</li>
+                        <li>Data integrity verification</li>
+                        <li>Timeline reconstruction</li>
+                    </ul>
+                </div>
+                <div class="framework-card">
+                    <h4>4. Recovery</h4>
+                    <ul>
+                        <li>Model rollback procedures</li>
+                        <li>Data restoration</li>
+                        <li>Service verification</li>
+                        <li>Gradual re-enablement</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3 id="forensics-analysis">Forensics & Analysis</h3>
+            
+            <h4>AI-Specific Forensics</h4>
+            <ul>
+                <li><strong>Model State Analysis:</strong> Examining model weights and parameters</li>
+                <li><strong>Input/Output Correlation:</strong> Analyzing relationships between inputs and outputs</li>
+                <li><strong>Training Data Reconstruction:</strong> Attempting to recover training examples</li>
+                <li><strong>Adversarial Example Detection:</strong> Identifying manipulated inputs</li>
+                <li><strong>Behavioral Pattern Analysis:</strong> Understanding model decision patterns</li>
+            </ul>
+
+            <h4>Evidence Collection</h4>
+            <ul>
+                <li><strong>Model Artifacts:</strong> Preserving model files, weights, and configurations</li>
+                <li><strong>Training Data:</strong> Securing datasets and preprocessing pipelines</li>
+                <li><strong>System Logs:</strong> Collecting inference logs and system events</li>
+                <li><strong>Performance Metrics:</strong> Historical performance and monitoring data</li>
+                <li><strong>User Interactions:</strong> Analyzing user inputs and feedback</li>
+            </ul>
+        </section>
+
+        <!-- OWASP LLM Top 10 -->
+        <section class="section" id="owasp-llm-top10">
+            <h2>OWASP LLM Top 10</h2>
+            
+            <div class="alert alert-info">
+                <strong>🛡️ Industry Standard:</strong> The OWASP LLM Top 10 provides a comprehensive framework for understanding and mitigating the most critical vulnerabilities in Large Language Model applications.
+            </div>
+
+            <h3 id="llm-01">LLM01: Prompt Injection</h3>
+            <p><strong>Description:</strong> Manipulating LLMs through crafted inputs that override system instructions or cause unintended behavior.</p>
+            
+            <h4>Attack Scenarios:</h4>
+            <ul>
+                <li><strong>Direct Injection:</strong> User directly embeds malicious instructions in prompts</li>
+                <li><strong>Indirect Injection:</strong> Malicious instructions delivered through external sources</li>
+                <li><strong>Jailbreaking:</strong> Bypassing safety guardrails and content filters</li>
+            </ul>
+
+            <h4>Prevention Strategies:</h4>
+            <ul>
+                <li>Implement robust input validation and sanitization</li>
+                <li>Use prompt isolation techniques to separate system and user contexts</li>
+                <li>Deploy output filtering and content validation</li>
+                <li>Monitor for unusual behavior patterns</li>
+            </ul>
+
+            <h3 id="llm-02">LLM02: Insecure Output Handling</h3>
+            <p><strong>Description:</strong> Insufficient validation and sanitization of LLM outputs before passing them to downstream systems.</p>
+            
+            <h4>Common Vulnerabilities:</h4>
+            <ul>
+                <li>Code injection through LLM-generated code</li>
+                <li>Cross-site scripting (XSS) in web applications</li>
+                <li>SQL injection through database queries</li>
+                <li>Command injection in system operations</li>
+            </ul>
+
+            <h4>Mitigation Approaches:</h4>
+            <ul>
+                <li>Implement comprehensive output validation</li>
+                <li>Use parameterized queries and prepared statements</li>
+                <li>Apply principle of least privilege for downstream systems</li>
+                <li>Sanitize outputs before rendering in user interfaces</li>
+            </ul>
+
+            <h3 id="llm-03">LLM03: Training Data Poisoning</h3>
+            <p><strong>Description:</strong> Manipulation of training data to introduce vulnerabilities, backdoors, or biases into the model.</p>
+            
+            <h4>Attack Types:</h4>
+            <ul>
+                <li><strong>Backdoor Attacks:</strong> Inserting trigger patterns that cause specific behaviors</li>
+                <li><strong>Data Quality Degradation:</strong> Introducing low-quality or incorrect information</li>
+                <li><strong>Bias Injection:</strong> Deliberately skewing model outputs</li>
+            </ul>
+
+            <h4>Defense Mechanisms:</h4>
+            <ul>
+                <li>Implement rigorous data validation and quality checks</li>
+                <li>Use trusted and verified data sources</li>
+                <li>Apply anomaly detection to identify poisoned samples</li>
+                <li>Maintain data provenance and audit trails</li>
+            </ul>
+
+            <h3 id="llm-04">LLM04: Model Denial of Service</h3>
+            <p><strong>Description:</strong> Attacks that cause resource consumption issues, leading to service degradation or unavailability.</p>
+            
+            <h4>Attack Vectors:</h4>
+            <ul>
+                <li>Resource-intensive queries consuming excessive compute</li>
+                <li>Long input sequences causing memory exhaustion</li>
+                <li>High-frequency requests overwhelming the system</li>
+                <li>Complex reasoning tasks requiring extended processing</li>
+            </ul>
+
+            <h4>Protective Measures:</h4>
+            <ul>
+                <li>Implement rate limiting and request throttling</li>
+                <li>Set maximum input length and complexity limits</li>
+                <li>Use resource monitoring and auto-scaling</li>
+                <li>Deploy circuit breakers and graceful degradation</li>
+            </ul>
+
+            <h3 id="llm-05">LLM05: Supply Chain Vulnerabilities</h3>
+            <p><strong>Description:</strong> Risks introduced through compromised components in the AI development and deployment pipeline.</p>
+            
+            <h4>Vulnerability Sources:</h4>
+            <ul>
+                <li>Pre-trained models with unknown provenance</li>
+                <li>Compromised datasets from external sources</li>
+                <li>Vulnerable dependencies and libraries</li>
+                <li>Malicious plugins and extensions</li>
+            </ul>
+
+            <h4>Security Controls:</h4>
+            <ul>
+                <li>Maintain comprehensive software bill of materials (SBOM)</li>
+                <li>Verify integrity of all components using digital signatures</li>
+                <li>Implement dependency scanning and vulnerability management</li>
+                <li>Use trusted repositories and verified sources</li>
+            </ul>
+
+            <h3 id="llm-06">LLM06: Sensitive Information Disclosure</h3>
+            <p><strong>Description:</strong> Unintentional revelation of confidential information through LLM outputs.</p>
+            
+            <h4>Information Types:</h4>
+            <ul>
+                <li>Personal identifiable information (PII)</li>
+                <li>Proprietary business information</li>
+                <li>Training data memorization</li>
+                <li>System configuration details</li>
+            </ul>
+
+            <h4>Prevention Techniques:</h4>
+            <ul>
+                <li>Implement robust data anonymization in training</li>
+                <li>Use differential privacy techniques</li>
+                <li>Deploy output filtering for sensitive information</li>
+                <li>Regular testing for information leakage</li>
+            </ul>
+
+            <h3 id="llm-07">LLM07: Insecure Plugin Design</h3>
+            <p><strong>Description:</strong> Security flaws in LLM plugins that extend model capabilities and interact with external systems.</p>
+            
+            <h4>Common Issues:</h4>
+            <ul>
+                <li>Insufficient input validation in plugins</li>
+                <li>Excessive permissions and capabilities</li>
+                <li>Insecure authentication and authorization</li>
+                <li>Poor error handling revealing system information</li>
+            </ul>
+
+            <h4>Secure Development Practices:</h4>
+            <ul>
+                <li>Follow secure coding standards for plugin development</li>
+                <li>Implement principle of least privilege</li>
+                <li>Use robust input validation and output encoding</li>
+                <li>Regular security testing and code reviews</li>
+            </ul>
+
+            <h3 id="llm-08">LLM08: Excessive Agency</h3>
+            <p><strong>Description:</strong> LLM systems granted excessive permissions or autonomy, leading to unintended or harmful actions.</p>
+            
+            <h4>Risk Scenarios:</h4>
+            <ul>
+                <li>Unauthorized system modifications</li>
+                <li>Unintended data deletion or corruption</li>
+                <li>Excessive resource consumption</li>
+                <li>Inappropriate external communications</li>
+            </ul>
+
+            <h4>Control Mechanisms:</h4>
+            <ul>
+                <li>Implement strict role-based access controls</li>
+                <li>Use human-in-the-loop for critical decisions</li>
+                <li>Deploy comprehensive audit logging</li>
+                <li>Set clear boundaries for autonomous actions</li>
+            </ul>
+
+            <h3 id="llm-09">LLM09: Overreliance</h3>
+            <p><strong>Description:</strong> Excessive dependence on LLMs without adequate oversight, leading to misinformation or poor decision-making.</p>
+            
+            <h4>Contributing Factors:</h4>
+            <ul>
+                <li>Lack of output verification mechanisms</li>
+                <li>Insufficient understanding of model limitations</li>
+                <li>Automation bias and overconfidence</li>
+                <li>Inadequate human oversight processes</li>
+            </ul>
+
+            <h4>Mitigation Strategies:</h4>
+            <ul>
+                <li>Implement multi-source verification for critical decisions</li>
+                <li>Provide clear uncertainty quantification</li>
+                <li>Maintain human oversight for high-stakes applications</li>
+                <li>Regular training on AI limitations and risks</li>
+            </ul>
+
+            <h3 id="llm-10">LLM10: Model Theft</h3>
+            <p><strong>Description:</strong> Unauthorized access, extraction, or replication of proprietary LLM models.</p>
+            
+            <h4>Theft Methods:</h4>
+            <ul>
+                <li>Model extraction through API queries</li>
+                <li>Direct access to model files</li>
+                <li>Knowledge distillation attacks</li>
+                <li>Side-channel information leakage</li>
+            </ul>
+
+            <h4>Protection Measures:</h4>
+            <ul>
+                <li>Implement strong access controls and authentication</li>
+                <li>Use query rate limiting and monitoring</li>
+                <li>Deploy watermarking and fingerprinting techniques</li>
+                <li>Regular security assessments and penetration testing</li>
+            </ul>
+        </section>
+
+        <!-- AI Blue Team Operations -->
+        <section class="section" id="ai-blue-team">
+            <h2>AI Blue Team Operations</h2>
+            
+            <div class="alert alert-success">
+                <strong>🔍 Proactive Defense:</strong> AI Blue Team operations focus on detecting, analyzing, and responding to AI-specific threats through specialized monitoring, hunting, and defense techniques.
+            </div>
+
+            <h3 id="blue-team-fundamentals">Blue Team Fundamentals</h3>
+            
+            <h4>AI Blue Team Capabilities</h4>
+            <ul>
+                <li><strong>AI Threat Intelligence:</strong> Understanding evolving AI attack vectors and techniques</li>
+                <li><strong>Model Behavior Analysis:</strong> Monitoring for anomalous model behavior and outputs</li>
+                <li><strong>Data Flow Security:</strong> Protecting data pipelines and training processes</li>
+                <li><strong>Adversarial Detection:</strong> Identifying adversarial examples and attacks</li>
+                <li><strong>Privacy Monitoring:</strong> Detecting potential privacy violations and data leaks</li>
+            </ul>
+
+            <h4>Specialized Skills Required</h4>
+            <div class="framework-grid">
+                <div class="framework-card">
+                    <h4>Technical Skills</h4>
+                    <ul>
+                        <li>Machine learning and deep learning</li>
+                        <li>Statistical analysis and anomaly detection</li>
+                        <li>Data science and analytics</li>
+                        <li>Cloud security and MLOps</li>
+                    </ul>
+                </div>
+                <div class="framework-card">
+                    <h4>Security Skills</h4>
+                    <ul>
+                        <li>Threat hunting methodologies</li>
+                        <li>Incident response procedures</li>
+                        <li>Digital forensics techniques</li>
+                        <li>Risk assessment and analysis</li>
+                    </ul>
+                </div>
+                <div class="framework-card">
+                    <h4>Domain Knowledge</h4>
+                    <ul>
+                        <li>AI/ML attack techniques</li>
+                        <li>Model architectures and vulnerabilities</li>
+                        <li>Data privacy regulations</li>
+                        <li>Ethics and bias considerations</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3 id="monitoring-detection">Monitoring & Detection</h3>
+            
+            <h4>AI-Specific Monitoring</h4>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Monitoring Area</th>
+                        <th>Key Metrics</th>
+                        <th>Detection Methods</th>
+                        <th>Alert Triggers</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Model Performance</strong></td>
+                        <td>Accuracy, precision, recall, F1-score</td>
+                        <td>Statistical process control</td>
+                        <td>Performance degradation thresholds</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Input Analysis</strong></td>
+                        <td>Input distribution, entropy, patterns</td>
+                        <td>Anomaly detection algorithms</td>
+                        <td>Out-of-distribution inputs</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Output Monitoring</strong></td>
+                        <td>Response patterns, confidence scores</td>
+                        <td>Behavioral analysis</td>
+                        <td>Unusual output characteristics</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Resource Usage</strong></td>
+                        <td>CPU, GPU, memory consumption</td>
+                        <td>Resource monitoring tools</td>
+                        <td>Resource exhaustion attacks</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Detection Technologies</h4>
+            <ul>
+                <li><strong>Statistical Anomaly Detection:</strong> Identifying deviations from normal behavior patterns</li>
+                <li><strong>Machine Learning Detection:</strong> Using ML models to detect AI-specific attacks</li>
+                <li><strong>Rule-based Detection:</strong> Pattern matching for known attack signatures</li>
+                <li><strong>Behavioral Analytics:</strong> User and entity behavior analytics (UEBA) for AI systems</li>
+                <li><strong>Network Analysis:</strong> Monitoring network traffic for AI-related threats</li>
+            </ul>
+
+            <h3 id="threat-hunting">AI Threat Hunting</h3>
+            
+            <h4>Hunting Methodologies</h4>
+            <ul>
+                <li><strong>Hypothesis-Driven Hunting:</strong> Testing specific theories about AI attack techniques</li>
+                <li><strong>Indicator-Based Hunting:</strong> Searching for known indicators of compromise (IoCs)</li>
+                <li><strong>Anomaly-Based Hunting:</strong> Identifying unusual patterns in AI system behavior</li>
+                <li><strong>Intelligence-Driven Hunting:</strong> Leveraging threat intelligence for targeted searches</li>
+            </ul>
+
+            <h4>AI Hunting Techniques</h4>
+            <div class="framework-grid">
+                <div class="framework-card">
+                    <h4>Model Behavior Analysis</h4>
+                    <ul>
+                        <li>Analyzing decision boundaries</li>
+                        <li>Testing edge cases and corner scenarios</li>
+                        <li>Monitoring for drift and degradation</li>
+                        <li>Evaluating explainability outputs</li>
+                    </ul>
+                </div>
+                <div class="framework-card">
+                    <h4>Data Pipeline Investigation</h4>
+                    <ul>
+                        <li>Tracing data lineage and transformations</li>
+                        <li>Identifying data quality issues</li>
+                        <li>Monitoring for data poisoning</li>
+                        <li>Analyzing feature importance changes</li>
+                    </ul>
+                </div>
+                <div class="framework-card">
+                    <h4>User Interaction Analysis</h4>
+                    <ul>
+                        <li>Profiling user query patterns</li>
+                        <li>Identifying suspicious input sequences</li>
+                        <li>Analyzing prompt engineering attempts</li>
+                        <li>Detecting automated attacks</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3 id="defense-automation">Defense Automation</h3>
+            
+            <h4>Automated Response Capabilities</h4>
+            <ul>
+                <li><strong>Automated Containment:</strong> Isolating compromised models or systems</li>
+                <li><strong>Dynamic Filtering:</strong> Real-time blocking of malicious inputs</li>
+                <li><strong>Model Rollback:</strong> Automatic reversion to previous model versions</li>
+                <li><strong>Alert Orchestration:</strong> Coordinating response across multiple security tools</li>
+                <li><strong>Evidence Collection:</strong> Automatic gathering of forensic artifacts</li>
+            </ul>
+
+            <h4>Security Orchestration</h4>
+            <ul>
+                <li><strong>SOAR Integration:</strong> Incorporating AI security into security orchestration platforms</li>
+                <li><strong>Playbook Development:</strong> Creating AI-specific incident response playbooks</li>
+                <li><strong>Tool Integration:</strong> Connecting AI monitoring tools with security platforms</li>
+                <li><strong>Workflow Automation:</strong> Streamlining AI security operations processes</li>
+            </ul>
+
+            <h4>Continuous Improvement</h4>
+            <ul>
+                <li><strong>Threat Modeling Updates:</strong> Regularly updating AI threat models</li>
+                <li><strong>Detection Tuning:</strong> Improving detection accuracy and reducing false positives</li>
+                <li><strong>Capability Assessment:</strong> Regular evaluation of blue team effectiveness</li>
+                <li><strong>Training and Development:</strong> Continuous learning and skill development</li>
+                <li><strong>Lessons Learned:</strong> Incorporating insights from incidents into future operations</li>
+            </ul>
+        </section>
+
+        <!-- Call to Action -->
+        <section class="section">
+            <h2>Get Started with GenAI Security</h2>
+            
+            <div class="alert alert-info">
+                <strong>🚀 Ready to Secure Your AI?</strong> Use our comprehensive GenAI Security Calculator to evaluate your organization's AI security posture across all critical dimensions.
+            </div>
+
+            <!-- CTA Section -->
+            <div style="background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; padding: 3rem 2rem; border-radius: 12px; margin: 3rem 0; text-align: center;">
+                <h2 style="color: white; margin-bottom: 1rem; font-size: 2rem;">Ready to Secure Your AI Systems?</h2>
+                <p style="margin-bottom: 2rem; opacity: 0.9; font-size: 1.1rem;">Use our comprehensive GenAI Security Calculator to assess your AI security posture and get actionable recommendations based on OWASP LLM Top 10 and industry best practices.</p>
+                
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <a href="/calculators/genai-security/" style="display: inline-block; background: white; color: #6366f1; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 1.1rem; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                        🤖 Launch Security Assessment
+                    </a>
+                    <a href="/calculators.html" style="display: inline-block; background: rgba(255,255,255,0.2); color: white; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 1.1rem; border: 2px solid white; transition: all 0.3s;" onmouseover="this.style.background='white'; this.style.color='#6366f1'" onmouseout="this.style.background='rgba(255,255,255,0.2)'; this.style.color='white'">
+                        📊 View All Tools
+                    </a>
+                </div>
+            </div>
+
+            <div style="background: #f8fafc; padding: 3rem 2rem; border-radius: 12px; margin: 3rem 0;">
+                <h2 style="text-align: center; color: #1e293b; margin-bottom: 2rem;">Explore Other Frameworks</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; width: 100%; box-sizing: border-box; overflow-x: hidden;">
+                    <a href="/docs/security-audit/index.html" style="background: white; padding: 1.5rem; border-radius: 8px; text-decoration: none; border: 1px solid #e2e8f0; transition: all 0.3s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">
+                        <h3 style="color: #6366f1; margin-bottom: 0.5rem;">🔒 Security Audit</h3>
+                        <p style="color: #64748b; font-size: 0.9rem;">Comprehensive enterprise security assessment</p>
+                    </a>
+                    <a href="/docs/ai-readiness/index.html" style="background: white; padding: 1.5rem; border-radius: 8px; text-decoration: none; border: 1px solid #e2e8f0; transition: all 0.3s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">
+                        <h3 style="color: #6366f1; margin-bottom: 0.5rem;">🤖 AI Readiness</h3>
+                        <p style="color: #64748b; font-size: 0.9rem;">Evaluate AI/ML implementation readiness</p>
+                    </a>
+                    <a href="/docs/cloud-migration/index.html" style="background: white; padding: 1.5rem; border-radius: 8px; text-decoration: none; border: 1px solid #e2e8f0; transition: all 0.3s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">
+                        <h3 style="color: #6366f1; margin-bottom: 0.5rem;">☁️ Cloud Migration</h3>
+                        <p style="color: #64748b; font-size: 0.9rem;">Comprehensive cloud migration assessment</p>
+                    </a>
+                    <a href="/docs/mlops-audit/index.html" style="background: white; padding: 1.5rem; border-radius: 8px; text-decoration: none; border: 1px solid #e2e8f0; transition: all 0.3s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">
+                        <h3 style="color: #6366f1; margin-bottom: 0.5rem;">🔧 MLOps Audit</h3>
+                        <p style="color: #64748b; font-size: 0.9rem;">Machine Learning operations excellence</p>
+                    </a>
+                    <a href="/docs/llm-framework/index.html" style="background: white; padding: 1.5rem; border-radius: 8px; text-decoration: none; border: 1px solid #e2e8f0; transition: all 0.3s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">
+                        <h3 style="color: #6366f1; margin-bottom: 0.5rem;">🧠 LLM Framework</h3>
+                        <p style="color: #64748b; font-size: 0.9rem;">Large Language Model implementation guide</p>
+                    </a>
+                    <a href="/docs/cost-optimization/index.html" style="background: white; padding: 1.5rem; border-radius: 8px; text-decoration: none; border: 1px solid #e2e8f0; transition: all 0.3s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">
+                        <h3 style="color: #6366f1; margin-bottom: 0.5rem;">💰 Cost Optimization</h3>
+                        <p style="color: #64748b; font-size: 0.9rem;">Cloud cost analysis and optimization</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer style="background: linear-gradient(135deg, #6366f1, #8b5cf6); padding: 2rem 0; margin-top: 4rem; text-align: center; color: white;">
+        <div style="font-size: 1.1rem; font-weight: 500;">
+            Built with ❤️ by architects, for architects! 🚀
+        </div>
+    </footer>
+
+    <!-- Navigation JavaScript -->
+    <script src="../assets/js/site-navigation.js"></script>
+    
+    <script>
+        // Smooth scrolling for TOC links
+        document.querySelectorAll('.toc a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Highlight current section in TOC
+        function updateTOC() {
+            const sections = document.querySelectorAll('.content h1, .content h2, .content h3');
+            const tocLinks = document.querySelectorAll('.toc a');
+            
+            let current = '';
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = '#' + section.id;
+                }
+            });
+            
+            tocLinks.forEach(link => {
+                link.style.color = link.getAttribute('href') === current ? 'var(--primary)' : 'var(--gray)';
+                link.style.borderLeftColor = link.getAttribute('href') === current ? 'var(--primary)' : 'transparent';
+            });
+        }
+        
+        window.addEventListener('scroll', updateTOC);
+        window.addEventListener('load', updateTOC);
+    </script>
+</body>
+</html>

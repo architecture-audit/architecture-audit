@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Save Button Issue</title>
+    <style>
+        body { font-family: monospace; padding: 20px; background: #1a1a1a; color: #0f0; }
+        button { padding: 10px 20px; margin: 5px; background: #333; color: #0f0; border: 1px solid #0f0; cursor: pointer; }
+        button:hover { background: #444; }
+        .error { color: #f00; }
+        .success { color: #0f0; }
+        .warning { color: #ff0; }
+        pre { background: #000; padding: 10px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Debug Save Progress Button</h1>
+    
+    <h2>Step 1: Check what's loaded</h2>
+    <button onclick="checkEnvironment()">Check Environment</button>
+    
+    <h2>Step 2: Test individual components</h2>
+    <button onclick="testNotifications()">Test Notifications</button>
+    <button onclick="testAutoSave()">Test AutoSave Class</button>
+    <button onclick="testCollectData()">Test collectAllData</button>
+    
+    <h2>Step 3: Test save methods</h2>
+    <button onclick="testSaveProgress()">Test saveProgress()</button>
+    <button onclick="testManualSave()">Test manualSave()</button>
+    
+    <h2>Step 4: Check localStorage</h2>
+    <button onclick="checkLocalStorage()">Check localStorage</button>
+    
+    <div id="output"></div>
+    
+    <!-- Load actual calculator page resources -->
+    <script src="/docs/assets/js/bundle-utilities.min.js"></script>
+    <script src="/docs/assets/js/bundle-features.min.js"></script>
+    
+    <script>
+        const output = document.getElementById('output');
+        
+        function log(message, type = '') {
+            const div = document.createElement('div');
+            div.className = type;
+            div.innerHTML = message;
+            output.appendChild(div);
+        }
+        
+        function checkEnvironment() {
+            output.innerHTML = '<h3>Environment Check:</h3>';
+            
+            // Check if key functions exist
+            const checks = [
+                { name: 'window.AutoSave', exists: typeof window.AutoSave !== 'undefined' },
+                { name: 'window.autoSave', exists: typeof window.autoSave !== 'undefined' },
+                { name: 'window.NotificationSystem', exists: typeof window.NotificationSystem !== 'undefined' },
+                { name: 'window.notify', exists: typeof window.notify !== 'undefined' },
+                { name: 'window.collectAllData', exists: typeof window.collectAllData !== 'undefined' },
+                { name: 'window.saveProgress', exists: typeof window.saveProgress !== 'undefined' },
+            ];
+            
+            checks.forEach(check => {
+                log(`${check.name}: ${check.exists ? '✅ EXISTS' : '❌ MISSING'}`, check.exists ? 'success' : 'error');
+            });
+            
+            // Show loaded scripts
+            log('<h4>Loaded Scripts:</h4>');
+            const scripts = document.querySelectorAll('script[src]');
+            scripts.forEach(script => {
+                log(`📄 ${script.src.split('/').pop()}`);
+            });
+        }
+        
+        function testNotifications() {
+            output.innerHTML = '<h3>Testing Notifications:</h3>';
+            
+            try {
+                if (!window.NotificationSystem) {
+                    log('❌ NotificationSystem class not found', 'error');
+                    return;
+                }
+                
+                if (!window.notify) {
+                    log('⚠️ Creating new NotificationSystem instance', 'warning');
+                    window.notify = new NotificationSystem();
+                }
+                
+                log('✅ Notification system ready', 'success');
+                window.notify.show('Test notification!', 'success');
+                log('✅ Test notification sent', 'success');
+                
+            } catch(e) {
+                log(`❌ Error: ${e.message}`, 'error');
+                console.error(e);
+            }
+        }
+        
+        function testAutoSave() {
+            output.innerHTML = '<h3>Testing AutoSave:</h3>';
+            
+            try {
+                if (!window.AutoSave) {
+                    log('❌ AutoSave class not found', 'error');
+                    return;
+                }
+                
+                log('✅ AutoSave class exists', 'success');
+                
+                // Create test instance
+                if (!window.autoSave) {
+                    window.autoSave = new AutoSave('test-debug', 5000);
+                    log('✅ Created AutoSave instance', 'success');
+                } else {
+                    log('✅ AutoSave instance already exists', 'success');
+                }
+                
+                // Check methods
+                const methods = ['save', 'manualSave', 'load', 'clearSaved'];
+                methods.forEach(method => {
+                    const exists = typeof window.autoSave[method] === 'function';
+                    log(`  ${method}(): ${exists ? '✅' : '❌'}`, exists ? 'success' : 'error');
+                });
+                
+            } catch(e) {
+                log(`❌ Error: ${e.message}`, 'error');
+                console.error(e);
+            }
+        }
+        
+        function testCollectData() {
+            output.innerHTML = '<h3>Testing collectAllData:</h3>';
+            
+            try {
+                // Create dummy function if it doesn't exist
+                if (!window.collectAllData) {
+                    window.collectAllData = function() {
+                        return {
+                            test: true,
+                            timestamp: new Date().toISOString(),
+                            data: 'Debug test data'
+                        };
+                    };
+                    log('⚠️ Created dummy collectAllData function', 'warning');
+                }
+                
+                const data = window.collectAllData();
+                log('✅ collectAllData executed successfully', 'success');
+                log('<pre>' + JSON.stringify(data, null, 2) + '</pre>');
+                
+            } catch(e) {
+                log(`❌ Error: ${e.message}`, 'error');
+                console.error(e);
+            }
+        }
+        
+        function testSaveProgress() {
+            output.innerHTML = '<h3>Testing saveProgress():</h3>';
+            
+            try {
+                // Create the function if it doesn't exist
+                if (!window.saveProgress) {
+                    window.saveProgress = function() {
+                        log('📝 saveProgress called', 'warning');
+                        
+                        if (window.autoSave && window.autoSave.manualSave) {
+                            log('  Using autoSave.manualSave()', 'success');
+                            return window.autoSave.manualSave();
+                        } else {
+                            log('  autoSave not available, using fallback', 'warning');
+                            const data = window.collectAllData ? window.collectAllData() : { test: true };
+                            localStorage.setItem('debug-save', JSON.stringify(data));
+                            log('  Data saved to localStorage', 'success');
+                            
+                            if (window.notify) {
+                                window.notify.show('✅ Progress saved!', 'success');
+                            }
+                            return true;
+                        }
+                    };
+                    log('⚠️ Created saveProgress function', 'warning');
+                }
+                
+                const result = window.saveProgress();
+                log(`✅ saveProgress executed, returned: ${result}`, 'success');
+                
+            } catch(e) {
+                log(`❌ Error: ${e.message}`, 'error');
+                console.error(e);
+            }
+        }
+        
+        function testManualSave() {
+            output.innerHTML = '<h3>Testing manualSave():</h3>';
+            
+            try {
+                if (!window.autoSave) {
+                    log('❌ autoSave instance not found', 'error');
+                    log('  Creating new instance...', 'warning');
+                    window.autoSave = new AutoSave('test-debug', 5000);
+                }
+                
+                // Ensure collectAllData exists
+                if (!window.collectAllData) {
+                    window.collectAllData = function() {
+                        return { test: true, timestamp: new Date().toISOString() };
+                    };
+                }
+                
+                const result = window.autoSave.manualSave();
+                log(`✅ manualSave executed, returned: ${result}`, result ? 'success' : 'error');
+                
+            } catch(e) {
+                log(`❌ Error: ${e.message}`, 'error');
+                console.error(e);
+            }
+        }
+        
+        function checkLocalStorage() {
+            output.innerHTML = '<h3>LocalStorage Contents:</h3>';
+            
+            let found = false;
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.includes('save') || key.includes('autosave') || key.includes('debug')) {
+                    found = true;
+                    const value = localStorage.getItem(key);
+                    log(`<strong>${key}:</strong>`);
+                    try {
+                        const parsed = JSON.parse(value);
+                        log('<pre>' + JSON.stringify(parsed, null, 2) + '</pre>');
+                    } catch {
+                        log('<pre>' + value + '</pre>');
+                    }
+                }
+            }
+            
+            if (!found) {
+                log('⚠️ No save-related data found in localStorage', 'warning');
+            }
+        }
+        
+        // Auto-check on load
+        setTimeout(checkEnvironment, 100);
+    </script>
+</body>
+</html>

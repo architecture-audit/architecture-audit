@@ -1,0 +1,181 @@
+/* Enhanced Site Navigation with Categories */
+
+/* Extend the existing site-navigation.css */
+
+/* Mega Menu Styles */
+.mega-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    border-radius: 8px;
+    padding: 1.5rem;
+    min-width: 600px;
+    display: none;
+    z-index: 1001;
+    margin-top: 0.5rem;
+}
+
+.site-menu-item.has-mega-menu:hover .mega-menu {
+    display: block;
+}
+
+.mega-menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+}
+
+.mega-menu-category {
+    min-width: 200px;
+}
+
+.mega-menu-category h4 {
+    color: #1e293b;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.mega-menu-category h4 span {
+    font-size: 1.1rem;
+}
+
+.mega-menu-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.mega-menu-links a {
+    color: #64748b;
+    text-decoration: none;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.mega-menu-links a:hover {
+    background: #f1f5f9;
+    color: #6366f1;
+    transform: translateX(4px);
+}
+
+.mega-menu-links a span {
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
+/* Integrated tag */
+.integrated-tag {
+    font-size: 0.65rem;
+    background: #6366f1;
+    color: white;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    margin-left: auto;
+    font-weight: 600;
+}
+
+/* Compact Navigation Option */
+.compact-nav {
+    display: none;
+}
+
+.compact-nav-toggle {
+    display: none;
+    background: #6366f1;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* Category colors */
+.category-ai { color: #8b5cf6 !important; }
+.category-security { color: #ef4444 !important; }
+.category-cloud { color: #06b6d4 !important; }
+.category-finops { color: #10b981 !important; }
+
+/* Mobile Responsive */
+@media (max-width: 1024px) {
+    .mega-menu {
+        min-width: 90vw;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .mega-menu-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Hide mega menu on mobile, use regular dropdown */
+    .mega-menu {
+        display: none !important;
+    }
+    
+    /* Show regular dropdown on mobile */
+    .site-menu-item.has-mega-menu .dropdown-menu {
+        display: none;
+    }
+    
+    .site-menu-item.has-mega-menu.active .dropdown-menu {
+        display: block;
+    }
+}
+
+/* Search/Filter for long lists */
+.nav-search {
+    padding: 0.5rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    width: 100%;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.nav-search:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+/* Scrollable menu for many items */
+.scrollable-menu {
+    max-height: 70vh;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+.scrollable-menu::-webkit-scrollbar {
+    width: 6px;
+}
+
+.scrollable-menu::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 3px;
+}
+
+.scrollable-menu::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+
+.scrollable-menu::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}

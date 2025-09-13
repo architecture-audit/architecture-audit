@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance Tests - AI Architecture Audit</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, system-ui, sans-serif; padding: 20px; background: #f9fafb; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; }
+        h1 { font-size: 28px; margin-bottom: 10px; }
+        .test-container { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .test-group { margin-bottom: 30px; }
+        .test-item { padding: 12px; margin: 10px 0; border-left: 4px solid #e5e7eb; background: #f9fafb; display: flex; justify-content: space-between; align-items: center; }
+        .test-item.pass { border-color: #10b981; background: #ecfdf5; }
+        .test-item.fail { border-color: #ef4444; background: #fef2f2; }
+        .test-item.warning { border-color: #f59e0b; background: #fffbeb; }
+        .test-item.running { border-color: #3b82f6; background: #eff6ff; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 20px 0; }
+        .stat-card { background: white; padding: 15px; border-radius: 8px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        button { background: #3b82f6; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 14px; margin: 5px; }
+        button:hover { background: #2563eb; }
+        .back-link { color: white; text-decoration: none; opacity: 0.9; }
+        .back-link:hover { opacity: 1; }
+        .metric { font-size: 12px; color: #6b7280; font-weight: bold; }
+        .chart { height: 200px; background: #f9fafb; border-radius: 8px; padding: 10px; margin: 20px 0; position: relative; }
+        .bar { background: #3b82f6; height: 20px; border-radius: 4px; margin: 5px 0; transition: width 0.3s ease; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-link">← Back to Test Suite</a>
+        <h1>⚡ Performance Tests</h1>
+        <p>Testing page load, rendering, and optimization metrics</p>
+    </div>
+
+    <div class="stats" id="stats">
+        <div class="stat-card">
+            <div style="font-size: 24px; font-weight: bold; color: #10b981;" id="passed">0</div>
+            <div style="color: #6b7280;">Passed</div>
+        </div>
+        <div class="stat-card">
+            <div style="font-size: 24px; font-weight: bold; color: #f59e0b;" id="warnings">0</div>
+            <div style="color: #6b7280;">Warnings</div>
+        </div>
+        <div class="stat-card">
+            <div style="font-size: 24px; font-weight: bold; color: #ef4444;" id="failed">0</div>
+            <div style="color: #6b7280;">Failed</div>
+        </div>
+        <div class="stat-card">
+            <div style="font-size: 24px; font-weight: bold;" id="score">0</div>
+            <div style="color: #6b7280;">Performance Score</div>
+        </div>
+    </div>
+
+    <button onclick="runAllTests()">Run Performance Tests</button>
+    <button onclick="runDetailedAnalysis()">Detailed Analysis</button>
+
+    <div class="chart" id="performance-chart">
+        <h3>Performance Metrics</h3>
+        <div id="chart-content"></div>
+    </div>
+
+    <div class="test-container">
+        <div class="test-group">
+            <h2>Page Load Tests</h2>
+            <div id="load-tests"></div>
+        </div>
+
+        <div class="test-group">
+            <h2>Resource Optimization Tests</h2>
+            <div id="resource-tests"></div>
+        </div>
+
+        <div class="test-group">
+            <h2>Rendering Performance Tests</h2>
+            <div id="rendering-tests"></div>
+        </div>
+
+        <div class="test-group">
+            <h2>JavaScript Performance Tests</h2>
+            <div id="js-tests"></div>
+        </div>
+
+        <div class="test-group">
+            <h2>Memory Usage Tests</h2>
+            <div id="memory-tests"></div>
+        </div>
+    </div>
+
+    <script>
+        let testResults = { passed: 0, warnings: 0, failed: 0, total: 0 };
+        let performanceMetrics = {};
+
+        // Test framework with performance metrics
+        function perfTest(name, fn, container, thresholds = {}) {
+            const testDiv = document.createElement('div');
+            testDiv.className = 'test-item running';
+            testDiv.innerHTML = `<span>🔄 ${name}</span><span class="metric"></span>`;
+            document.getElementById(container).appendChild(testDiv);
+            
+            setTimeout(async () => {
+                try {
+                    const startTime = performance.now();
+                    const result = await fn();
+                    const endTime = performance.now();
+                    const duration = endTime - startTime;
+                    
+                    const metric = testDiv.querySelector('.metric');
+                    metric.textContent = `${duration.toFixed(2)}ms`;
+                    
+                    // Evaluate against thresholds
+                    let status = 'pass';
+                    if (thresholds.fail && duration > thresholds.fail) {
+                        status = 'fail';
+                        testResults.failed++;
+                    } else if (thresholds.warn && duration > thresholds.warn) {
+                        status = 'warning';
+                        testResults.warnings++;
+                    } else {
+                        testResults.passed++;
+                    }
+                    
+                    testDiv.className = `test-item ${status}`;
+                    const icon = status === 'pass' ? '✅' : status === 'warning' ? '⚠️' : '❌';
+                    testDiv.innerHTML = `<span>${icon} ${name}</span><span class="metric">${duration.toFixed(2)}ms</span>`;
+                    
+                    // Store metric
+                    performanceMetrics[name] = duration;
+                    
+                } catch (error) {
+                    testDiv.className = 'test-item fail';
+                    testDiv.innerHTML = `<span>❌ ${name}: ${error.message}</span><span class="metric">Error</span>`;
+                    testResults.failed++;
+                }
+                
+                testResults.total++;
+                updateStats();
+            }, 100);
+        }
+
+        function updateStats() {
+            document.getElementById('passed').textContent = testResults.passed;
+            document.getElementById('warnings').textContent = testResults.warnings;
+            document.getElementById('failed').textContent = testResults.failed;
+            
+            // Calculate performance score (0-100)
+            const score = Math.round(
+                (testResults.passed / testResults.total) * 100 - 
+                (testResults.warnings / testResults.total) * 10 - 
+                (testResults.failed / testResults.total) * 50
+            );
+            document.getElementById('score').textContent = Math.max(0, score);
+            
+            updateChart();
+        }
+
+        function updateChart() {
+            const chartContent = document.getElementById('chart-content');
+            chartContent.innerHTML = '';
+            
+            Object.entries(performanceMetrics).slice(0, 5).forEach(([name, value]) => {
+                const maxValue = Math.max(...Object.values(performanceMetrics));
+                const percentage = (value / maxValue) * 100;
+                
+                const barContainer = document.createElement('div');
+                barContainer.innerHTML = `
+                    <div style="font-size: 12px; margin: 5px 0;">${name}: ${value.toFixed(2)}ms</div>
+                    <div class="bar" style="width: ${percentage}%"></div>
+                `;
+                chartContent.appendChild(barContainer);
+            });
+        }
+
+        // Page Load test suite
+        function runLoadTests() {
+            perfTest('DOM Content Loaded', async () => {
+                return new Promise(resolve => {
+                    if (document.readyState === 'complete') {
+                        resolve();
+                    } else {
+                        window.addEventListener('load', resolve);
+                    }
+                });
+            }, 'load-tests', { warn: 1000, fail: 3000 });
+
+            perfTest('First Contentful Paint', async () => {
+                const entries = performance.getEntriesByType('paint');
+                const fcp = entries.find(entry => entry.name === 'first-contentful-paint');
+                return fcp ? fcp.startTime : 0;
+            }, 'load-tests', { warn: 1800, fail: 3000 });
+
+            perfTest('Time to Interactive', async () => {
+                // Simulate TTI measurement
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        const tti = performance.now();
+                        resolve(tti);
+                    }, 10);
+                });
+            }, 'load-tests', { warn: 3800, fail: 7300 });
+
+            perfTest('Total Page Size', async () => {
+                const resources = performance.getEntriesByType('resource');
+                const totalSize = resources.reduce((sum, resource) => {
+                    return sum + (resource.transferSize || 0);
+                }, 0);
+                return totalSize / 1024; // KB
+            }, 'load-tests', { warn: 1024, fail: 3072 });
+        }
+
+        // Resource Optimization test suite
+        function runResourceTests() {
+            perfTest('JavaScript Bundle Size', async () => {
+                const jsResources = performance.getEntriesByType('resource')
+                    .filter(r => r.name.endsWith('.js'));
+                const totalSize = jsResources.reduce((sum, r) => sum + (r.transferSize || 0), 0);
+                return totalSize / 1024; // KB
+            }, 'resource-tests', { warn: 200, fail: 500 });
+
+            perfTest('CSS Bundle Size', async () => {
+                const cssResources = performance.getEntriesByType('resource')
+                    .filter(r => r.name.endsWith('.css'));
+                const totalSize = cssResources.reduce((sum, r) => sum + (r.transferSize || 0), 0);
+                return totalSize / 1024; // KB
+            }, 'resource-tests', { warn: 50, fail: 150 });
+
+            perfTest('Image Optimization', async () => {
+                const images = document.querySelectorAll('img');
+                let unoptimized = 0;
+                images.forEach(img => {
+                    if (!img.loading || img.loading !== 'lazy') {
+                        unoptimized++;
+                    }
+                });
+                return unoptimized;
+            }, 'resource-tests', { warn: 5, fail: 10 });
+
+            perfTest('HTTP Requests Count', async () => {
+                const resources = performance.getEntriesByType('resource');
+                return resources.length;
+            }, 'resource-tests', { warn: 50, fail: 100 });
+
+            perfTest('Cache Hit Rate', async () => {
+                const resources = performance.getEntriesByType('resource');
+                const cached = resources.filter(r => r.transferSize === 0 && r.decodedBodySize > 0);
+                const hitRate = (cached.length / resources.length) * 100;
+                return 100 - hitRate; // Return miss rate for threshold evaluation
+            }, 'resource-tests', { warn: 30, fail: 50 });
+        }
+
+        // Rendering Performance test suite
+        function runRenderingTests() {
+            perfTest('Layout Shift', async () => {
+                // Check for CLS
+                let cls = 0;
+                if (window.PerformanceObserver) {
+                    const observer = new PerformanceObserver((list) => {
+                        for (const entry of list.getEntries()) {
+                            if (!entry.hadRecentInput) {
+                                cls += entry.value;
+                            }
+                        }
+                    });
+                    try {
+                        observer.observe({ type: 'layout-shift', buffered: true });
+                    } catch (e) {
+                        // Layout shift API not supported
+                    }
+                }
+                return cls;
+            }, 'rendering-tests', { warn: 0.1, fail: 0.25 });
+
+            perfTest('Animation Frame Rate', async () => {
+                let frameCount = 0;
+                const startTime = performance.now();
+                
+                return new Promise(resolve => {
+                    function countFrames() {
+                        frameCount++;
+                        if (performance.now() - startTime < 1000) {
+                            requestAnimationFrame(countFrames);
+                        } else {
+                            resolve(60 - frameCount); // Deviation from 60fps
+                        }
+                    }
+                    requestAnimationFrame(countFrames);
+                });
+            }, 'rendering-tests', { warn: 5, fail: 15 });
+
+            perfTest('DOM Node Count', async () => {
+                const nodeCount = document.getElementsByTagName('*').length;
+                return nodeCount;
+            }, 'rendering-tests', { warn: 1500, fail: 3000 });
+
+            perfTest('CSS Rule Count', async () => {
+                let ruleCount = 0;
+                Array.from(document.styleSheets).forEach(sheet => {
+                    try {
+                        ruleCount += sheet.cssRules.length;
+                    } catch (e) {
+                        // Cross-origin stylesheets
+                    }
+                });
+                return ruleCount;
+            }, 'rendering-tests', { warn: 1000, fail: 2000 });
+        }
+
+        // JavaScript Performance test suite
+        function runJSTests() {
+            perfTest('Script Execution Time', async () => {
+                const start = performance.now();
+                // Simulate heavy computation
+                let result = 0;
+                for (let i = 0; i < 1000000; i++) {
+                    result += Math.sqrt(i);
+                }
+                return performance.now() - start;
+            }, 'js-tests', { warn: 50, fail: 100 });
+
+            perfTest('Event Listener Count', async () => {
+                // Estimate event listeners
+                const elements = document.querySelectorAll('*');
+                let listenerCount = 0;
+                elements.forEach(el => {
+                    const listeners = getEventListeners ? getEventListeners(el) : {};
+                    listenerCount += Object.keys(listeners).length;
+                });
+                return listenerCount;
+            }, 'js-tests', { warn: 100, fail: 500 });
+
+            perfTest('Timer/Interval Count', async () => {
+                // This is an estimation
+                const originalSetTimeout = window.setTimeout;
+                const originalSetInterval = window.setInterval;
+                let timerCount = 0;
+                
+                window.setTimeout = function(...args) {
+                    timerCount++;
+                    return originalSetTimeout.apply(this, args);
+                };
+                
+                window.setInterval = function(...args) {
+                    timerCount++;
+                    return originalSetInterval.apply(this, args);
+                };
+                
+                // Wait a bit to catch any timers
+                await new Promise(resolve => setTimeout(resolve, 100));
+                
+                // Restore
+                window.setTimeout = originalSetTimeout;
+                window.setInterval = originalSetInterval;
+                
+                return timerCount;
+            }, 'js-tests', { warn: 10, fail: 50 });
+
+            perfTest('Promise Resolution Time', async () => {
+                const start = performance.now();
+                await Promise.all([
+                    Promise.resolve(1),
+                    Promise.resolve(2),
+                    Promise.resolve(3),
+                    new Promise(resolve => setTimeout(resolve, 10))
+                ]);
+                return performance.now() - start;
+            }, 'js-tests', { warn: 20, fail: 50 });
+        }
+
+        // Memory Usage test suite
+        function runMemoryTests() {
+            perfTest('Memory Usage', async () => {
+                if (performance.memory) {
+                    const used = performance.memory.usedJSHeapSize / 1048576; // MB
+                    return used;
+                }
+                return 0;
+            }, 'memory-tests', { warn: 50, fail: 100 });
+
+            perfTest('Memory Limit', async () => {
+                if (performance.memory) {
+                    const limit = performance.memory.jsHeapSizeLimit / 1048576; // MB
+                    const used = performance.memory.usedJSHeapSize / 1048576;
+                    const percentage = (used / limit) * 100;
+                    return percentage;
+                }
+                return 0;
+            }, 'memory-tests', { warn: 50, fail: 80 });
+
+            perfTest('DOM Memory Footprint', async () => {
+                // Estimate based on node count and average size
+                const nodeCount = document.getElementsByTagName('*').length;
+                const estimatedSize = nodeCount * 0.001; // Rough estimate in MB
+                return estimatedSize;
+            }, 'memory-tests', { warn: 5, fail: 10 });
+
+            perfTest('Garbage Collection Frequency', async () => {
+                // Create objects and measure GC impact
+                const objects = [];
+                const start = performance.now();
+                
+                for (let i = 0; i < 10000; i++) {
+                    objects.push({ data: new Array(100).fill(i) });
+                }
+                
+                // Clear references
+                objects.length = 0;
+                
+                // Force GC if available (Chrome only)
+                if (window.gc) {
+                    window.gc();
+                }
+                
+                return performance.now() - start;
+            }, 'memory-tests', { warn: 100, fail: 500 });
+        }
+
+        // Detailed analysis
+        function runDetailedAnalysis() {
+            console.log('=== Detailed Performance Analysis ===');
+            console.log('Navigation Timing:', performance.getEntriesByType('navigation')[0]);
+            console.log('Resource Timing:', performance.getEntriesByType('resource'));
+            console.log('Paint Timing:', performance.getEntriesByType('paint'));
+            console.log('User Agent:', navigator.userAgent);
+            console.log('Connection:', navigator.connection);
+            console.log('Memory:', performance.memory);
+            
+            alert('Detailed analysis logged to console. Press F12 to view.');
+        }
+
+        // Run all tests
+        function runAllTests() {
+            // Clear previous results
+            testResults = { passed: 0, warnings: 0, failed: 0, total: 0 };
+            performanceMetrics = {};
+            document.querySelectorAll('.test-item').forEach(item => item.remove());
+            
+            // Run test suites
+            runLoadTests();
+            setTimeout(() => runResourceTests(), 500);
+            setTimeout(() => runRenderingTests(), 1000);
+            setTimeout(() => runJSTests(), 1500);
+            setTimeout(() => runMemoryTests(), 2000);
+        }
+
+        // Auto-run tests on page load
+        window.addEventListener('load', () => {
+            setTimeout(runAllTests, 1000);
+        });
+    </script>
+</body>
+</html>

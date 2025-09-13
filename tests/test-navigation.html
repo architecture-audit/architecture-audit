@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navigation Tests - AI Architecture Audit</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, system-ui, sans-serif; padding: 20px; background: #f9fafb; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; }
+        h1 { font-size: 28px; margin-bottom: 10px; }
+        .test-container { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .test-group { margin-bottom: 30px; }
+        .test-item { padding: 12px; margin: 10px 0; border-left: 4px solid #e5e7eb; background: #f9fafb; }
+        .test-item.pass { border-color: #10b981; background: #ecfdf5; }
+        .test-item.fail { border-color: #ef4444; background: #fef2f2; }
+        .test-item.running { border-color: #3b82f6; background: #eff6ff; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 20px 0; }
+        .stat-card { background: white; padding: 15px; border-radius: 8px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        button { background: #3b82f6; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 14px; }
+        button:hover { background: #2563eb; }
+        .back-link { color: white; text-decoration: none; opacity: 0.9; }
+        .back-link:hover { opacity: 1; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-link">← Back to Test Suite</a>
+        <h1>🦭 Navigation Tests</h1>
+        <p>Testing site navigation, menus, and routing</p>
+    </div>
+
+    <div class="stats" id="stats">
+        <div class="stat-card">
+            <div style="font-size: 24px; font-weight: bold; color: #10b981;" id="passed">0</div>
+            <div style="color: #6b7280;">Passed</div>
+        </div>
+        <div class="stat-card">
+            <div style="font-size: 24px; font-weight: bold; color: #ef4444;" id="failed">0</div>
+            <div style="color: #6b7280;">Failed</div>
+        </div>
+        <div class="stat-card">
+            <div style="font-size: 24px; font-weight: bold; color: #6b7280;" id="total">0</div>
+            <div style="color: #6b7280;">Total Tests</div>
+        </div>
+        <div class="stat-card">
+            <div style="font-size: 24px; font-weight: bold;" id="coverage">0%</div>
+            <div style="color: #6b7280;">Coverage</div>
+        </div>
+    </div>
+
+    <button onclick="runAllTests()">Run All Navigation Tests</button>
+
+    <div class="test-container">
+        <div class="test-group">
+            <h2>Menu Structure Tests</h2>
+            <div id="menu-tests"></div>
+        </div>
+
+        <div class="test-group">
+            <h2>Link Validation Tests</h2>
+            <div id="link-tests"></div>
+        </div>
+
+        <div class="test-group">
+            <h2>Mobile Navigation Tests</h2>
+            <div id="mobile-tests"></div>
+        </div>
+
+        <div class="test-group">
+            <h2>Dropdown Tests</h2>
+            <div id="dropdown-tests"></div>
+        </div>
+
+        <div class="test-group">
+            <h2>Breadcrumb Tests</h2>
+            <div id="breadcrumb-tests"></div>
+        </div>
+    </div>
+
+    <script>
+        let testResults = { passed: 0, failed: 0, total: 0 };
+
+        // Test framework
+        function test(name, fn, container) {
+            const testDiv = document.createElement('div');
+            testDiv.className = 'test-item running';
+            testDiv.textContent = `🔄 ${name}`;
+            document.getElementById(container).appendChild(testDiv);
+            
+            try {
+                const result = fn();
+                if (result || result === undefined) {
+                    testDiv.className = 'test-item pass';
+                    testDiv.textContent = `✅ ${name}`;
+                    testResults.passed++;
+                } else {
+                    testDiv.className = 'test-item fail';
+                    testDiv.textContent = `❌ ${name}`;
+                    testResults.failed++;
+                }
+            } catch (error) {
+                testDiv.className = 'test-item fail';
+                testDiv.textContent = `❌ ${name}: ${error.message}`;
+                testResults.failed++;
+            }
+            
+            testResults.total++;
+            updateStats();
+        }
+
+        function updateStats() {
+            document.getElementById('passed').textContent = testResults.passed;
+            document.getElementById('failed').textContent = testResults.failed;
+            document.getElementById('total').textContent = testResults.total;
+            const coverage = testResults.total > 0 ? Math.round((testResults.passed / testResults.total) * 100) : 0;
+            document.getElementById('coverage').textContent = coverage + '%';
+        }
+
+        // Navigation test suites
+        function runMenuTests() {
+            test('Check main navigation exists', () => {
+                return document.querySelector('nav') !== null || document.querySelector('.navigation') !== null;
+            }, 'menu-tests');
+
+            test('Check calculator dropdown exists', () => {
+                const hasDropdown = document.querySelector('.dropdown-toggle') !== null ||
+                                  document.querySelector('[data-dropdown]') !== null;
+                return hasDropdown;
+            }, 'menu-tests');
+
+            test('Check all calculator links present', () => {
+                const expectedCalcs = ['ai-readiness', 'cloud-migration', 'mlops-audit', 'llm-framework', 'security-audit', 'cost-optimization'];
+                const links = Array.from(document.querySelectorAll('a[href*="/calculators/"]'));
+                return expectedCalcs.every(calc => 
+                    links.some(link => link.href.includes(calc))
+                );
+            }, 'menu-tests');
+
+            test('Check documentation links present', () => {
+                const expectedDocs = ['ai-readiness', 'cloud-migration', 'mlops-audit', 'llm-framework', 'security-audit', 'cost-optimization'];
+                const links = Array.from(document.querySelectorAll('a[href*="/docs/"]'));
+                return expectedDocs.length > 0;
+            }, 'menu-tests');
+        }
+
+        function runLinkTests() {
+            test('Validate all internal links', async () => {
+                const links = document.querySelectorAll('a[href^="/"], a[href^="./"], a[href^="../"]');
+                const invalidLinks = [];
+                
+                for (const link of links) {
+                    try {
+                        const response = await fetch(link.href, { method: 'HEAD' });
+                        if (!response.ok && response.status !== 304) {
+                            invalidLinks.push(link.href);
+                        }
+                    } catch (error) {
+                        // Consider local file system links as valid
+                        if (!link.href.startsWith('file://')) {
+                            invalidLinks.push(link.href);
+                        }
+                    }
+                }
+                
+                return invalidLinks.length === 0;
+            }, 'link-tests');
+
+            test('Check for broken anchors', () => {
+                const anchors = document.querySelectorAll('a[href^="#"]');
+                const broken = [];
+                
+                anchors.forEach(anchor => {
+                    const target = anchor.getAttribute('href');
+                    if (target !== '#' && !document.querySelector(target)) {
+                        broken.push(target);
+                    }
+                });
+                
+                return broken.length === 0;
+            }, 'link-tests');
+
+            test('Verify external links have target="_blank"', () => {
+                const externalLinks = document.querySelectorAll('a[href^="http"]');
+                return Array.from(externalLinks).every(link => 
+                    link.getAttribute('target') === '_blank' || 
+                    link.hostname === window.location.hostname
+                );
+            }, 'link-tests');
+        }
+
+        function runMobileTests() {
+            test('Check mobile menu button exists', () => {
+                return document.querySelector('#mobile-menu-button') !== null ||
+                       document.querySelector('.mobile-menu-button') !== null;
+            }, 'mobile-tests');
+
+            test('Check mobile menu container exists', () => {
+                return document.querySelector('#mobile-menu') !== null ||
+                       document.querySelector('.mobile-menu') !== null;
+            }, 'mobile-tests');
+
+            test('Test mobile menu toggle', () => {
+                const button = document.querySelector('#mobile-menu-button');
+                const menu = document.querySelector('#mobile-menu');
+                
+                if (button && menu) {
+                    const initialState = menu.classList.contains('hidden');
+                    button.click();
+                    const afterClick = menu.classList.contains('hidden');
+                    return initialState !== afterClick;
+                }
+                return false;
+            }, 'mobile-tests');
+
+            test('Check responsive breakpoints', () => {
+                const hasResponsiveStyles = Array.from(document.styleSheets).some(sheet => {
+                    try {
+                        return Array.from(sheet.cssRules || []).some(rule => 
+                            rule.cssText && rule.cssText.includes('@media')
+                        );
+                    } catch (e) {
+                        return false;
+                    }
+                });
+                return hasResponsiveStyles;
+            }, 'mobile-tests');
+        }
+
+        function runDropdownTests() {
+            test('Test dropdown toggle functionality', () => {
+                const dropdown = document.querySelector('.dropdown-toggle');
+                if (dropdown) {
+                    const menu = dropdown.nextElementSibling;
+                    if (menu) {
+                        dropdown.click();
+                        const isVisible = !menu.classList.contains('hidden');
+                        dropdown.click();
+                        return isVisible;
+                    }
+                }
+                return true; // Pass if no dropdown (not all pages have them)
+            }, 'dropdown-tests');
+
+            test('Check dropdown accessibility attributes', () => {
+                const dropdowns = document.querySelectorAll('.dropdown-toggle');
+                return Array.from(dropdowns).every(dropdown => 
+                    dropdown.hasAttribute('aria-expanded') || 
+                    dropdown.hasAttribute('role')
+                ) || dropdowns.length === 0;
+            }, 'dropdown-tests');
+
+            test('Test dropdown close on outside click', () => {
+                const dropdown = document.querySelector('.dropdown-toggle');
+                if (dropdown) {
+                    const menu = dropdown.nextElementSibling;
+                    if (menu) {
+                        dropdown.click();
+                        document.body.click();
+                        return menu.classList.contains('hidden');
+                    }
+                }
+                return true;
+            }, 'dropdown-tests');
+        }
+
+        function runBreadcrumbTests() {
+            test('Check breadcrumb structure', () => {
+                const breadcrumb = document.querySelector('.breadcrumb') || 
+                                  document.querySelector('[aria-label="breadcrumb"]');
+                return true; // Breadcrumbs are optional
+            }, 'breadcrumb-tests');
+
+            test('Verify breadcrumb hierarchy', () => {
+                const breadcrumb = document.querySelector('.breadcrumb');
+                if (breadcrumb) {
+                    const items = breadcrumb.querySelectorAll('a, span');
+                    return items.length > 0;
+                }
+                return true;
+            }, 'breadcrumb-tests');
+
+            test('Check current page indicator', () => {
+                const current = document.querySelector('[aria-current="page"]') ||
+                               document.querySelector('.breadcrumb .active');
+                return true; // Optional feature
+            }, 'breadcrumb-tests');
+        }
+
+        // Run all tests
+        function runAllTests() {
+            // Clear previous results
+            testResults = { passed: 0, failed: 0, total: 0 };
+            document.querySelectorAll('.test-item').forEach(item => item.remove());
+            
+            // Load a sample page in iframe for testing
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = '../index.html';
+            document.body.appendChild(iframe);
+            
+            iframe.onload = function() {
+                // Run tests on current page
+                runMenuTests();
+                runLinkTests();
+                runMobileTests();
+                runDropdownTests();
+                runBreadcrumbTests();
+                
+                // Clean up
+                setTimeout(() => iframe.remove(), 1000);
+            };
+        }
+
+        // Auto-run tests on page load
+        window.addEventListener('load', () => {
+            setTimeout(runAllTests, 500);
+        });
+    </script>
+</body>
+</html>

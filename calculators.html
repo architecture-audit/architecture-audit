@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assessment Calculators - AI Architecture Audit</title>
+    <meta name="description" content="Interactive assessment calculators for AI readiness, cloud migration, and MLOps maturity">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🏗️</text></svg>">
+    
+    <!-- Navigation CSS -->
+    <link rel="stylesheet" href="./docs/assets/css/site-navigation.css">
+    
+    <!-- SheetJS for Excel export -->
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --accent: #06b6d4;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --border: #e2e8f0;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.7;
+            color: var(--dark);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            margin-top: 70px; /* Space for fixed navigation */
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+        }
+        
+        /* Tab Navigation */
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .tab-button {
+            padding: 1rem 2rem;
+            background: white;
+            border: none;
+            border-radius: 12px 12px 0 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .tab-button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .tab-button.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Calculator Sections */
+        .calculator-section {
+            margin-bottom: 3rem;
+        }
+        
+        .calculator-section h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .input-group {
+            background: var(--light);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+        
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+        
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        
+        .input-group input:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: var(--border);
+            outline: none;
+            margin: 1rem 0;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+        }
+        
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+        }
+        
+        .slider-value {
+            display: inline-block;
+            margin-left: 1rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        /* Results Section */
+        .results-section {
+            background: linear-gradient(135deg, #e0e7ff 0%, #f0f4ff 100%);
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .result-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .result-label {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+        }
+        
+        .result-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .result-value.danger {
+            color: var(--danger);
+        }
+        
+        .result-value.warning {
+            color: var(--warning);
+        }
+        
+        .result-value.success {
+            color: var(--success);
+        }
+        
+        /* Progress Bar */
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: var(--border);
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success), var(--primary));
+            border-radius: 15px;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        /* Buttons */
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        /* Charts placeholder */
+        .chart-container {
+            height: 300px;
+            background: var(--light);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .input-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧮 Assessment Calculators</h1>
+            <p>Six comprehensive frameworks to evaluate your organization's cloud, AI, security, and cost optimization maturity</p>
+        </div>
+        
+        <!-- Quick Links to Comprehensive Calculators -->
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem; border-radius: 12px; margin: 2rem 0; text-align: center;">
+            <h2 style="color: white; margin-bottom: 1rem;">🚀 Launch Comprehensive Assessment Tools</h2>
+            <p style="margin-bottom: 2rem; opacity: 0.9;">Each calculator includes 9 detailed worksheets with auto-calculations, export capabilities, and shareable links</p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                <a href="calculators/ai-readiness/" style="background: white; color: #667eea; padding: 1rem; border-radius: 8px; text-decoration: none; font-weight: bold; display: block; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    🤖 AI Readiness<br>
+                    <span style="font-size: 0.9rem; font-weight: normal;">24 dimensions</span>
+                </a>
+                <a href="calculators/cloud-migration/" style="background: white; color: #667eea; padding: 1rem; border-radius: 8px; text-decoration: none; font-weight: bold; display: block; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    ☁️ Cloud Migration<br>
+                    <span style="font-size: 0.9rem; font-weight: normal;">Multi-cloud analysis</span>
+                </a>
+                <a href="calculators/mlops-audit/" style="background: white; color: #667eea; padding: 1rem; border-radius: 8px; text-decoration: none; font-weight: bold; display: block; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    🔧 MLOps Audit<br>
+                    <span style="font-size: 0.9rem; font-weight: normal;">8 dimensions</span>
+                </a>
+                <a href="calculators/llm-framework/" style="background: white; color: #667eea; padding: 1rem; border-radius: 8px; text-decoration: none; font-weight: bold; display: block; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    🧠 LLM Framework<br>
+                    <span style="font-size: 0.9rem; font-weight: normal;">RAG & fine-tuning</span>
+                </a>
+                <a href="calculators/security-audit/" style="background: white; color: #667eea; padding: 1rem; border-radius: 8px; text-decoration: none; font-weight: bold; display: block; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    🔒 Security Audit<br>
+                    <span style="font-size: 0.9rem; font-weight: normal;">NIST/ISO frameworks</span>
+                </a>
+                <a href="calculators/cost-optimization/" style="background: white; color: #667eea; padding: 1rem; border-radius: 8px; text-decoration: none; font-weight: bold; display: block; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    💰 Cost Optimization<br>
+                    <span style="font-size: 0.9rem; font-weight: normal;">FinOps maturity</span>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Tab Navigation -->
+        <div class="tabs">
+            <button class="tab-button active" onclick="showTab('ai-readiness')">Quick AI Assessment</button>
+            <button class="tab-button" onclick="showTab('cloud-migration')">Quick Cloud Calculator</button>
+            <button class="tab-button" onclick="showTab('mlops')">Quick MLOps Check</button>
+            <button class="tab-button" onclick="showTab('roi')">Quick ROI Calculator</button>
+        </div>
+        
+        <!-- AI Readiness Tab -->
+        <div id="ai-readiness" class="tab-content active">
+            <div class="calculator-section">
+                <h2>📊 AI Maturity Assessment</h2>
+                
+                <div class="input-grid">
+                    <!-- Data Maturity -->
+                    <div class="input-group">
+                        <label>Data Quality (1-5)</label>
+                        <input type="range" class="slider" id="data-quality" min="1" max="5" value="3" 
+                               oninput="updateSliderValue(this); calculateAIScore()">
+                        <span class="slider-value">3</span>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Data Accessibility (1-5)</label>
+                        <input type="range" class="slider" id="data-accessibility" min="1" max="5" value="3"
+                               oninput="updateSliderValue(this); calculateAIScore()">
+                        <span class="slider-value">3</span>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Data Governance (1-5)</label>
+                        <input type="range" class="slider" id="data-governance" min="1" max="5" value="2"
+                               oninput="updateSliderValue(this); calculateAIScore()">
+                        <span class="slider-value">2</span>
+                    </div>
+                    
+                    <!-- Technology Infrastructure -->
+                    <div class="input-group">
+                        <label>Cloud Infrastructure (1-5)</label>
+                        <input type="range" class="slider" id="cloud-infra" min="1" max="5" value="3"
+                               oninput="updateSliderValue(this); calculateAIScore()">
+                        <span class="slider-value">3</span>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>ML Platform Maturity (1-5)</label>
+                        <input type="range" class="slider" id="ml-platform" min="1" max="5" value="2"
+                               oninput="updateSliderValue(this); calculateAIScore()">
+                        <span class="slider-value">2</span>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Development Tools (1-5)</label>
+                        <input type="range" class="slider" id="dev-tools" min="1" max="5" value="3"
+                               oninput="updateSliderValue(this); calculateAIScore()">
+                        <span class="slider-value">3</span>
+                    </div>
+                    
+                    <!-- Skills & Culture -->
+                    <div class="input-group">
+                        <label>Data Science Skills (1-5)</label>
+                        <input type="range" class="slider" id="ds-skills" min="1" max="5" value="2"
+                               oninput="updateSliderValue(this); calculateAIScore()">
+                        <span class="slider-value">2</span>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Leadership Support (1-5)</label>
+                        <input type="range" class="slider" id="leadership" min="1" max="5" value="3"
+                               oninput="updateSliderValue(this); calculateAIScore()">
+                        <span class="slider-value">3</span>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Innovation Culture (1-5)</label>
+                        <input type="range" class="slider" id="culture" min="1" max="5" value="3"
+                               oninput="updateSliderValue(this); calculateAIScore()">
+                        <span class="slider-value">3</span>
+                    </div>
+                </div>
+                
+                <!-- Results -->
+                <div class="results-section">
+                    <h3>Assessment Results</h3>
+                    <div class="results-grid">
+                        <div class="result-card">
+                            <div class="result-label">Overall Score</div>
+                            <div class="result-value" id="ai-score">60</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">Maturity Level</div>
+                            <div class="result-value" id="ai-level">Level 3</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">Readiness</div>
+                            <div class="result-value" id="ai-readiness">Moderate</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">Time to AI</div>
+                            <div class="result-value" id="ai-timeline">6-9 months</div>
+                        </div>
+                    </div>
+                    
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="ai-progress" style="width: 60%">60%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Cloud Migration Tab -->
+        <div id="cloud-migration" class="tab-content">
+            <div class="calculator-section">
+                <h2>☁️ Cloud Migration Cost Calculator</h2>
+                
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label>Current Infrastructure Cost (Monthly $)</label>
+                        <input type="number" id="current-cost" value="15000" oninput="calculateCloudSavings()">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Number of Servers</label>
+                        <input type="number" id="server-count" value="25" oninput="calculateCloudSavings()">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Data Volume (TB)</label>
+                        <input type="number" id="data-volume" value="10" oninput="calculateCloudSavings()">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Target Cloud Provider</label>
+                        <select id="cloud-provider" onchange="calculateCloudSavings()">
+                            <option value="aws">AWS</option>
+                            <option value="azure">Azure</option>
+                            <option value="gcp">Google Cloud</option>
+                            <option value="multi">Multi-Cloud</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Migration Complexity</label>
+                        <select id="complexity" onchange="calculateCloudSavings()">
+                            <option value="low">Low - Lift & Shift</option>
+                            <option value="medium">Medium - Re-platform</option>
+                            <option value="high">High - Re-architect</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Timeline (Months)</label>
+                        <input type="range" class="slider" id="timeline" min="3" max="18" value="9"
+                               oninput="updateSliderValue(this); calculateCloudSavings()">
+                        <span class="slider-value">9</span>
+                    </div>
+                </div>
+                
+                <div class="results-section">
+                    <h3>Migration Analysis</h3>
+                    <div class="results-grid">
+                        <div class="result-card">
+                            <div class="result-label">Migration Cost</div>
+                            <div class="result-value" id="migration-cost">$45,000</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">New Monthly Cost</div>
+                            <div class="result-value success" id="new-cost">$10,500</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">Monthly Savings</div>
+                            <div class="result-value success" id="monthly-savings">$4,500</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">ROI Period</div>
+                            <div class="result-value" id="roi-period">10 months</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">3-Year Savings</div>
+                            <div class="result-value success" id="total-savings">$162,000</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">Risk Score</div>
+                            <div class="result-value warning" id="risk-score">Medium</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- MLOps Tab -->
+        <div id="mlops" class="tab-content">
+            <div class="calculator-section">
+                <h2>🤖 MLOps Maturity Assessment</h2>
+                
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label>Data Pipeline Automation</label>
+                        <select id="data-pipeline" onchange="calculateMLOpsScore()">
+                            <option value="1">Manual</option>
+                            <option value="2">Scripted</option>
+                            <option value="3">Automated</option>
+                            <option value="4">Orchestrated</option>
+                            <option value="5">Self-service</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Model Development Process</label>
+                        <select id="model-dev" onchange="calculateMLOpsScore()">
+                            <option value="1">Notebooks only</option>
+                            <option value="2">Version controlled</option>
+                            <option value="3">Experiment tracking</option>
+                            <option value="4">Automated training</option>
+                            <option value="5">AutoML enabled</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Deployment & Serving</label>
+                        <select id="deployment" onchange="calculateMLOpsScore()">
+                            <option value="1">Manual deployment</option>
+                            <option value="2">Scripted deployment</option>
+                            <option value="3">Containerized</option>
+                            <option value="4">CI/CD pipeline</option>
+                            <option value="5">GitOps automated</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Monitoring & Observability</label>
+                        <select id="monitoring" onchange="calculateMLOpsScore()">
+                            <option value="1">No monitoring</option>
+                            <option value="2">Basic logging</option>
+                            <option value="3">Performance metrics</option>
+                            <option value="4">Drift detection</option>
+                            <option value="5">Predictive monitoring</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Feature Store</label>
+                        <select id="feature-store" onchange="calculateMLOpsScore()">
+                            <option value="1">No feature store</option>
+                            <option value="2">File-based</option>
+                            <option value="3">Database</option>
+                            <option value="4">Platform feature store</option>
+                            <option value="5">Real-time serving</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Model Governance</label>
+                        <select id="governance" onchange="calculateMLOpsScore()">
+                            <option value="1">No governance</option>
+                            <option value="2">Basic documentation</option>
+                            <option value="3">Model registry</option>
+                            <option value="4">Approval workflows</option>
+                            <option value="5">Automated compliance</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="results-section">
+                    <h3>MLOps Maturity Results</h3>
+                    <div class="results-grid">
+                        <div class="result-card">
+                            <div class="result-label">Maturity Score</div>
+                            <div class="result-value" id="mlops-score">40</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">Maturity Level</div>
+                            <div class="result-value" id="mlops-level">Level 2</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">Deployment Velocity</div>
+                            <div class="result-value" id="deploy-velocity">Weekly</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">Model Count Capacity</div>
+                            <div class="result-value" id="model-capacity">5-10</div>
+                        </div>
+                    </div>
+                    
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="mlops-progress" style="width: 40%">40%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ROI Calculator Tab -->
+        <div id="roi" class="tab-content">
+            <div class="calculator-section">
+                <h2>💰 AI/Cloud ROI Calculator</h2>
+                
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label>Initial Investment ($)</label>
+                        <input type="number" id="investment" value="250000" oninput="calculateROI()">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Expected Annual Revenue Increase (%)</label>
+                        <input type="range" class="slider" id="revenue-increase" min="0" max="50" value="15"
+                               oninput="updateSliderValue(this); calculateROI()">
+                        <span class="slider-value">15%</span>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Expected Cost Reduction (%)</label>
+                        <input type="range" class="slider" id="cost-reduction" min="0" max="40" value="20"
+                               oninput="updateSliderValue(this); calculateROI()">
+                        <span class="slider-value">20%</span>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Current Annual Revenue ($)</label>
+                        <input type="number" id="current-revenue" value="5000000" oninput="calculateROI()">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Current Operating Costs ($)</label>
+                        <input type="number" id="operating-costs" value="3000000" oninput="calculateROI()">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Time to Full Implementation (Months)</label>
+                        <input type="range" class="slider" id="implementation-time" min="3" max="24" value="12"
+                               oninput="updateSliderValue(this); calculateROI()">
+                        <span class="slider-value">12</span>
+                    </div>
+                </div>
+                
+                <div class="results-section">
+                    <h3>ROI Analysis (3-Year Projection)</h3>
+                    <div class="results-grid">
+                        <div class="result-card">
+                            <div class="result-label">Year 1 Return</div>
+                            <div class="result-value" id="year1-return">$450,000</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">Year 2 Return</div>
+                            <div class="result-value success" id="year2-return">$900,000</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">Year 3 Return</div>
+                            <div class="result-value success" id="year3-return">$1,350,000</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">Total ROI</div>
+                            <div class="result-value success" id="total-roi">980%</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">Payback Period</div>
+                            <div class="result-value" id="payback">7 months</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">NPV (10% discount)</div>
+                            <div class="result-value success" id="npv">$2,234,000</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Export Buttons -->
+        <div class="button-group">
+            <button class="btn btn-primary" onclick="calculateAll()">
+                📊 Recalculate All
+            </button>
+            <button class="btn btn-success" onclick="exportToExcel()">
+                📥 Export to Excel
+            </button>
+            <button class="btn btn-secondary" onclick="generateReport()">
+                📄 Generate PDF Report
+            </button>
+        </div>
+    </div>
+    
+    <script>
+        // Tab switching
+        function showTab(tabId) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+        }
+        
+        // Update slider value display
+        function updateSliderValue(slider) {
+            const value = slider.value;
+            const display = slider.nextElementSibling;
+            if (display && display.classList.contains('slider-value')) {
+                if (slider.id === 'revenue-increase' || slider.id === 'cost-reduction') {
+                    display.textContent = value + '%';
+                } else {
+                    display.textContent = value;
+                }
+            }
+        }
+        
+        // AI Readiness Calculator
+        function calculateAIScore() {
+            const scores = [
+                parseInt(document.getElementById('data-quality').value),
+                parseInt(document.getElementById('data-accessibility').value),
+                parseInt(document.getElementById('data-governance').value),
+                parseInt(document.getElementById('cloud-infra').value),
+                parseInt(document.getElementById('ml-platform').value),
+                parseInt(document.getElementById('dev-tools').value),
+                parseInt(document.getElementById('ds-skills').value),
+                parseInt(document.getElementById('leadership').value),
+                parseInt(document.getElementById('culture').value)
+            ];
+            
+            const weights = [0.15, 0.10, 0.10, 0.10, 0.10, 0.10, 0.15, 0.10, 0.10];
+            let weightedScore = 0;
+            
+            for (let i = 0; i < scores.length; i++) {
+                weightedScore += (scores[i] / 5) * weights[i] * 100;
+            }
+            
+            // Update display
+            document.getElementById('ai-score').textContent = Math.round(weightedScore);
+            document.getElementById('ai-progress').style.width = weightedScore + '%';
+            document.getElementById('ai-progress').textContent = Math.round(weightedScore) + '%';
+            
+            // Determine level
+            let level, readiness, timeline;
+            if (weightedScore < 20) {
+                level = "Level 1";
+                readiness = "Not Ready";
+                timeline = "18-24 months";
+                document.getElementById('ai-readiness').className = 'result-value danger';
+            } else if (weightedScore < 40) {
+                level = "Level 2";
+                readiness = "Limited";
+                timeline = "12-18 months";
+                document.getElementById('ai-readiness').className = 'result-value warning';
+            } else if (weightedScore < 60) {
+                level = "Level 3";
+                readiness = "Moderate";
+                timeline = "6-12 months";
+                document.getElementById('ai-readiness').className = 'result-value warning';
+            } else if (weightedScore < 80) {
+                level = "Level 4";
+                readiness = "Ready";
+                timeline = "3-6 months";
+                document.getElementById('ai-readiness').className = 'result-value success';
+            } else {
+                level = "Level 5";
+                readiness = "Advanced";
+                timeline = "< 3 months";
+                document.getElementById('ai-readiness').className = 'result-value success';
+            }
+            
+            document.getElementById('ai-level').textContent = level;
+            document.getElementById('ai-readiness').textContent = readiness;
+            document.getElementById('ai-timeline').textContent = timeline;
+        }
+        
+        // Cloud Migration Calculator
+        function calculateCloudSavings() {
+            const currentCost = parseFloat(document.getElementById('current-cost').value) || 0;
+            const serverCount = parseInt(document.getElementById('server-count').value) || 0;
+            const dataVolume = parseFloat(document.getElementById('data-volume').value) || 0;
+            const complexity = document.getElementById('complexity').value;
+            const timeline = parseInt(document.getElementById('timeline').value) || 9;
+            
+            // Calculate migration cost based on complexity
+            let complexityMultiplier = complexity === 'low' ? 1 : complexity === 'medium' ? 1.5 : 2;
+            const migrationCost = (serverCount * 1000 + dataVolume * 500) * complexityMultiplier;
+            
+            // Calculate new monthly cost (30% savings on average)
+            const newMonthlyCost = currentCost * 0.7;
+            const monthlySavings = currentCost - newMonthlyCost;
+            const roiPeriod = Math.ceil(migrationCost / monthlySavings);
+            const threeYearSavings = (monthlySavings * 36) - migrationCost;
+            
+            // Update display
+            document.getElementById('migration-cost').textContent = '$' + migrationCost.toLocaleString();
+            document.getElementById('new-cost').textContent = '$' + newMonthlyCost.toLocaleString();
+            document.getElementById('monthly-savings').textContent = '$' + monthlySavings.toLocaleString();
+            document.getElementById('roi-period').textContent = roiPeriod + ' months';
+            document.getElementById('total-savings').textContent = '$' + threeYearSavings.toLocaleString();
+            
+            // Risk assessment
+            let risk = 'Low';
+            if (serverCount > 50 || dataVolume > 50 || complexity === 'high') {
+                risk = 'High';
+                document.getElementById('risk-score').className = 'result-value danger';
+            } else if (serverCount > 25 || dataVolume > 25 || complexity === 'medium') {
+                risk = 'Medium';
+                document.getElementById('risk-score').className = 'result-value warning';
+            } else {
+                document.getElementById('risk-score').className = 'result-value success';
+            }
+            document.getElementById('risk-score').textContent = risk;
+        }
+        
+        // MLOps Calculator
+        function calculateMLOpsScore() {
+            const scores = [
+                parseInt(document.getElementById('data-pipeline').value),
+                parseInt(document.getElementById('model-dev').value),
+                parseInt(document.getElementById('deployment').value),
+                parseInt(document.getElementById('monitoring').value),
+                parseInt(document.getElementById('feature-store').value),
+                parseInt(document.getElementById('governance').value)
+            ];
+            
+            const avgScore = scores.reduce((a, b) => a + b, 0) / scores.length;
+            const percentage = (avgScore / 5) * 100;
+            
+            // Update display
+            document.getElementById('mlops-score').textContent = Math.round(percentage);
+            document.getElementById('mlops-progress').style.width = percentage + '%';
+            document.getElementById('mlops-progress').textContent = Math.round(percentage) + '%';
+            
+            // Determine level
+            let level, velocity, capacity;
+            if (percentage < 20) {
+                level = "Level 1";
+                velocity = "Monthly";
+                capacity = "1-5";
+            } else if (percentage < 40) {
+                level = "Level 2";
+                velocity = "Bi-weekly";
+                capacity = "5-10";
+            } else if (percentage < 60) {
+                level = "Level 3";
+                velocity = "Weekly";
+                capacity = "10-50";
+            } else if (percentage < 80) {
+                level = "Level 4";
+                velocity = "Daily";
+                capacity = "50-200";
+            } else {
+                level = "Level 5";
+                velocity = "Continuous";
+                capacity = "200+";
+            }
+            
+            document.getElementById('mlops-level').textContent = level;
+            document.getElementById('deploy-velocity').textContent = velocity;
+            document.getElementById('model-capacity').textContent = capacity;
+        }
+        
+        // ROI Calculator
+        function calculateROI() {
+            const investment = parseFloat(document.getElementById('investment').value) || 0;
+            const revenueIncrease = parseFloat(document.getElementById('revenue-increase').value) / 100;
+            const costReduction = parseFloat(document.getElementById('cost-reduction').value) / 100;
+            const currentRevenue = parseFloat(document.getElementById('current-revenue').value) || 0;
+            const operatingCosts = parseFloat(document.getElementById('operating-costs').value) || 0;
+            const implementationTime = parseInt(document.getElementById('implementation-time').value);
+            
+            // Calculate returns
+            const annualRevenueGain = currentRevenue * revenueIncrease;
+            const annualCostSavings = operatingCosts * costReduction;
+            const annualReturn = annualRevenueGain + annualCostSavings;
+            
+            // Phased implementation
+            const year1Return = annualReturn * (12 - implementationTime/2) / 12;
+            const year2Return = annualReturn;
+            const year3Return = annualReturn * 1.1; // 10% growth
+            
+            const totalReturn = year1Return + year2Return + year3Return;
+            const roi = ((totalReturn - investment) / investment) * 100;
+            const paybackMonths = Math.ceil(investment / (annualReturn / 12));
+            
+            // NPV calculation (10% discount rate)
+            const npv = -investment + year1Return/1.1 + year2Return/1.21 + year3Return/1.331;
+            
+            // Update display
+            document.getElementById('year1-return').textContent = '$' + Math.round(year1Return).toLocaleString();
+            document.getElementById('year2-return').textContent = '$' + Math.round(year2Return).toLocaleString();
+            document.getElementById('year3-return').textContent = '$' + Math.round(year3Return).toLocaleString();
+            document.getElementById('total-roi').textContent = Math.round(roi) + '%';
+            document.getElementById('payback').textContent = paybackMonths + ' months';
+            document.getElementById('npv').textContent = '$' + Math.round(npv).toLocaleString();
+        }
+        
+        // Calculate all on page load
+        function calculateAll() {
+            calculateAIScore();
+            calculateCloudSavings();
+            calculateMLOpsScore();
+            calculateROI();
+        }
+        
+        // Export to Excel
+        function exportToExcel() {
+            // Collect all data
+            const data = {
+                'AI Readiness': {
+                    'Data Quality': document.getElementById('data-quality').value,
+                    'Data Accessibility': document.getElementById('data-accessibility').value,
+                    'Data Governance': document.getElementById('data-governance').value,
+                    'Cloud Infrastructure': document.getElementById('cloud-infra').value,
+                    'ML Platform': document.getElementById('ml-platform').value,
+                    'Development Tools': document.getElementById('dev-tools').value,
+                    'Data Science Skills': document.getElementById('ds-skills').value,
+                    'Leadership Support': document.getElementById('leadership').value,
+                    'Innovation Culture': document.getElementById('culture').value,
+                    'Overall Score': document.getElementById('ai-score').textContent,
+                    'Maturity Level': document.getElementById('ai-level').textContent,
+                    'Readiness Status': document.getElementById('ai-readiness').textContent,
+                    'Timeline': document.getElementById('ai-timeline').textContent
+                },
+                'Cloud Migration': {
+                    'Current Monthly Cost': document.getElementById('current-cost').value,
+                    'Server Count': document.getElementById('server-count').value,
+                    'Data Volume (TB)': document.getElementById('data-volume').value,
+                    'Cloud Provider': document.getElementById('cloud-provider').value,
+                    'Complexity': document.getElementById('complexity').value,
+                    'Timeline (Months)': document.getElementById('timeline').value,
+                    'Migration Cost': document.getElementById('migration-cost').textContent,
+                    'New Monthly Cost': document.getElementById('new-cost').textContent,
+                    'Monthly Savings': document.getElementById('monthly-savings').textContent,
+                    'ROI Period': document.getElementById('roi-period').textContent,
+                    '3-Year Savings': document.getElementById('total-savings').textContent,
+                    'Risk Score': document.getElementById('risk-score').textContent
+                },
+                'MLOps Maturity': {
+                    'Data Pipeline': document.getElementById('data-pipeline').value,
+                    'Model Development': document.getElementById('model-dev').value,
+                    'Deployment': document.getElementById('deployment').value,
+                    'Monitoring': document.getElementById('monitoring').value,
+                    'Feature Store': document.getElementById('feature-store').value,
+                    'Governance': document.getElementById('governance').value,
+                    'Maturity Score': document.getElementById('mlops-score').textContent,
+                    'Maturity Level': document.getElementById('mlops-level').textContent,
+                    'Deployment Velocity': document.getElementById('deploy-velocity').textContent,
+                    'Model Capacity': document.getElementById('model-capacity').textContent
+                },
+                'ROI Analysis': {
+                    'Initial Investment': document.getElementById('investment').value,
+                    'Revenue Increase %': document.getElementById('revenue-increase').value,
+                    'Cost Reduction %': document.getElementById('cost-reduction').value,
+                    'Current Revenue': document.getElementById('current-revenue').value,
+                    'Operating Costs': document.getElementById('operating-costs').value,
+                    'Implementation Time': document.getElementById('implementation-time').value,
+                    'Year 1 Return': document.getElementById('year1-return').textContent,
+                    'Year 2 Return': document.getElementById('year2-return').textContent,
+                    'Year 3 Return': document.getElementById('year3-return').textContent,
+                    'Total ROI': document.getElementById('total-roi').textContent,
+                    'Payback Period': document.getElementById('payback').textContent,
+                    'NPV': document.getElementById('npv').textContent
+                }
+            };
+            
+            // Create workbook
+            const wb = XLSX.utils.book_new();
+            
+            // Add sheets for each assessment
+            for (const [sheetName, sheetData] of Object.entries(data)) {
+                const ws_data = [['Metric', 'Value']];
+                for (const [key, value] of Object.entries(sheetData)) {
+                    ws_data.push([key, value]);
+                }
+                const ws = XLSX.utils.aoa_to_sheet(ws_data);
+                XLSX.utils.book_append_sheet(wb, ws, sheetName);
+            }
+            
+            // Add summary sheet
+            const summary = [
+                ['AI Architecture Audit - Assessment Results'],
+                ['Generated:', new Date().toLocaleString()],
+                [''],
+                ['Assessment', 'Score', 'Status'],
+                ['AI Readiness', document.getElementById('ai-score').textContent, document.getElementById('ai-readiness').textContent],
+                ['Cloud Migration ROI', document.getElementById('roi-period').textContent, document.getElementById('risk-score').textContent],
+                ['MLOps Maturity', document.getElementById('mlops-score').textContent, document.getElementById('mlops-level').textContent],
+                ['Overall ROI', document.getElementById('total-roi').textContent, 'Calculated']
+            ];
+            const ws_summary = XLSX.utils.aoa_to_sheet(summary);
+            XLSX.utils.book_append_sheet(wb, ws_summary, 'Summary', true);
+            
+            // Save file
+            XLSX.writeFile(wb, 'AI_Architecture_Assessment_' + new Date().toISOString().slice(0,10) + '.xlsx');
+        }
+        
+        // Generate PDF Report (placeholder)
+        function generateReport() {
+            alert('PDF report generation will be available soon. For now, please use the Excel export feature.');
+        }
+        
+        // Initialize calculations on load
+        window.onload = function() {
+            calculateAll();
+        };
+    </script>
+    
+    <!-- Footer -->
+    <footer style="background: #f8fafc; padding: 2rem 0; margin-top: 4rem; text-align: center; border-top: 1px solid #e2e8f0;">
+        <div style="font-size: 1.1rem; color: #6366f1; font-weight: 500;">
+            Built with ❤️ by architects, for architects! 🚀
+        </div>
+    </footer>
+    
+    <!-- Navigation JavaScript -->
+    <script src="./docs/assets/js/site-navigation.js"></script>
+</body>
+</html>

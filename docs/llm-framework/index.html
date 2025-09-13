@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Implementation Framework - Comprehensive Guide</title>
+    <meta name="description" content="Complete guide to implementing Large Language Models in enterprise environments - from model selection to production deployment">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🤖</text></svg>">
+    
+    <!-- Navigation CSS -->
+    <link rel="stylesheet" href="../assets/css/site-navigation.css">
+    
+    <!-- Base Documentation CSS -->
+    <link rel="stylesheet" href="../assets/css/docs-base.css">
+    
+    <!-- LLM Framework CSS -->
+    <link rel="stylesheet" href="../assets/css/llm-framework.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1>🤖 LLM Implementation Framework</h1>
+            <h3 style="color: white; margin: 0.5rem 0 1rem 0; font-weight: normal; opacity: 0.8;">Version 1.0 | 2024</h3>
+            <p>Your comprehensive guide to successful Large Language Model deployment</p>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <div class="main-container">
+        <div class="toc">
+            <h3>Table of Contents</h3>
+            <ul>
+                <li><a href="#introduction" class="toc-2">Introduction to LLM Implementation</a></li>
+                <li><a href="#llm-fundamentals" class="toc-2">LLM Fundamentals & Architecture Patterns</a></li>
+                <li><a href="#understanding-llms" class="toc-3">Understanding Large Language Models</a></li>
+                <li><a href="#key-architecture-patterns" class="toc-3">Key Architecture Patterns</a></li>
+                <li><a href="#model-selection" class="toc-2">Model Selection Criteria</a></li>
+                <li><a href="#performance-characteristics" class="toc-3">Performance Characteristics</a></li>
+                <li><a href="#selection-framework" class="toc-3">Selection Framework</a></li>
+                <li><a href="#rag-best-practices" class="toc-2">RAG Best Practices</a></li>
+                <li><a href="#rag-architecture-components" class="toc-3">RAG Architecture Components</a></li>
+                <li><a href="#vector-database-comparison" class="toc-3">Vector Database Comparison</a></li>
+                <li><a href="#rag-optimization-strategies" class="toc-3">RAG Optimization Strategies</a></li>
+                <li><a href="#prompt-engineering" class="toc-2">Prompt Engineering Techniques</a></li>
+                <li><a href="#core-prompt-patterns" class="toc-3">Core Prompt Engineering Patterns</a></li>
+                <li><a href="#advanced-techniques" class="toc-3">Advanced Techniques</a></li>
+                <li><a href="#prompt-optimization-workflow" class="toc-3">Prompt Optimization Workflow</a></li>
+                <li><a href="#fine-tuning" class="toc-2">Fine-tuning Approaches</a></li>
+                <li><a href="#fine-tuning-methods" class="toc-3">Fine-tuning Methods Comparison</a></li>
+                <li><a href="#dataset-requirements" class="toc-3">Dataset Requirements</a></li>
+                <li><a href="#training-best-practices" class="toc-3">Training Best Practices</a></li>
+                <li><a href="#production-deployment" class="toc-2">Production Deployment Patterns</a></li>
+                <li><a href="#deployment-architectures" class="toc-3">Deployment Architectures</a></li>
+                <li><a href="#scalability-strategies" class="toc-3">Scalability Strategies</a></li>
+                <li><a href="#monitoring-observability" class="toc-3">Monitoring & Observability</a></li>
+                <li><a href="#hallucination-mitigation" class="toc-2">Hallucination Mitigation Strategies</a></li>
+                <li><a href="#prevention-techniques" class="toc-3">Prevention Techniques</a></li>
+                <li><a href="#detection-methods" class="toc-3">Detection Methods</a></li>
+                <li><a href="#response-strategies" class="toc-3">Response Strategies</a></li>
+                <li><a href="#cost-optimization" class="toc-2">Cost Optimization Techniques</a></li>
+                <li><a href="#token-usage-optimization" class="toc-3">Token Usage Optimization</a></li>
+                <li><a href="#infrastructure-cost-management" class="toc-3">Infrastructure Cost Management</a></li>
+                <li><a href="#cost-monitoring-alerting" class="toc-3">Cost Monitoring & Alerting</a></li>
+                <li><a href="#security-considerations" class="toc-2">Security Considerations</a></li>
+                <li><a href="#common-security-risks" class="toc-3">Common Security Risks</a></li>
+                <li><a href="#security-implementation-checklist" class="toc-3">Security Implementation Checklist</a></li>
+            </ul>
+        </div>
+        
+        <div class="content">
+            <main class="container">
+        <!-- Introduction -->
+        <section class="section" id="introduction">
+            <h2>Introduction to LLM Implementation</h2>
+            
+            <p>Large Language Models (LLMs) represent one of the most transformative AI technologies in recent history. This comprehensive framework guides enterprises through the complex journey of LLM implementation, from initial assessment to production deployment and optimization.</p>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Readiness Assessment</h3>
+                    <p>Evaluate your organization's technical, cultural, and strategic readiness for LLM adoption</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Model Selection</h3>
+                    <p>Compare and evaluate different LLM options based on your specific use cases and requirements</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🏗️</div>
+                    <h3>Architecture Design</h3>
+                    <p>Design robust RAG systems and infrastructure to support your LLM implementations</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💰</div>
+                    <h3>Cost Optimization</h3>
+                    <p>Understand and optimize the total cost of ownership for your LLM initiatives</p>
+                </div>
+            </div>
+        </section>
+
+        <div style="background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; padding: 2rem; border-radius: 12px; margin: 2rem 0; text-align: center;">
+            <h2 style="color: white; margin-bottom: 1rem;">Ready to Assess Your LLM Implementation?</h2>
+            <p style="margin-bottom: 1.5rem; opacity: 0.9;">Use our comprehensive calculator to evaluate your organization's maturity and get actionable recommendations.</p>
+            <a href="calculator.html" style="display: inline-block; background: white; color: #6366f1; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 1.1rem; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                🧮 Launch Calculator
+            </a>
+        </div>
+
+        <!-- LLM Fundamentals -->
+        <section class="section" id="llm-fundamentals">
+            <h2>LLM Fundamentals & Architecture Patterns</h2>
+            
+            <h3 id="understanding-llms">Understanding Large Language Models</h3>
+            <p>Large Language Models are neural networks trained on vast amounts of text data to understand and generate human-like text. They excel at various natural language tasks including:</p>
+            
+            <ul>
+                <li><strong>Text Generation:</strong> Creating coherent, contextually appropriate text</li>
+                <li><strong>Question Answering:</strong> Providing accurate responses to queries</li>
+                <li><strong>Summarization:</strong> Condensing long documents into key insights</li>
+                <li><strong>Code Generation:</strong> Writing and debugging code in multiple programming languages</li>
+                <li><strong>Translation:</strong> Converting text between different languages</li>
+                <li><strong>Analysis:</strong> Extracting insights from unstructured data</li>
+            </ul>
+
+            <h3 id="key-architecture-patterns">Key Architecture Patterns</h3>
+            
+            <div class="pattern-grid">
+                <div class="pattern-card">
+                    <h4>🔄 API-First Architecture</h4>
+                    <p>Leverage cloud-based LLM APIs (OpenAI, Anthropic, Google) for rapid deployment with minimal infrastructure overhead.</p>
+                    <ul>
+                        <li>Quick time-to-market</li>
+                        <li>Managed scaling and updates</li>
+                        <li>Pay-per-use pricing model</li>
+                        <li>Limited customization</li>
+                    </ul>
+                </div>
+                
+                <div class="pattern-card">
+                    <h4>🏠 Self-Hosted Deployment</h4>
+                    <p>Deploy open-source models like Llama, Mistral, or fine-tuned models in your own infrastructure.</p>
+                    <ul>
+                        <li>Full data control and privacy</li>
+                        <li>Customization flexibility</li>
+                        <li>Predictable costs at scale</li>
+                        <li>Higher operational complexity</li>
+                    </ul>
+                </div>
+                
+                <div class="pattern-card">
+                    <h4>🌐 Hybrid Approach</h4>
+                    <p>Combine API services for general tasks with self-hosted models for sensitive or specialized workloads.</p>
+                    <ul>
+                        <li>Balanced cost and flexibility</li>
+                        <li>Risk mitigation</li>
+                        <li>Optimal performance per use case</li>
+                        <li>Increased system complexity</li>
+                    </ul>
+                </div>
+                
+                <div class="pattern-card">
+                    <h4>🔍 RAG-Enhanced Architecture</h4>
+                    <p>Augment LLMs with external knowledge bases using Retrieval-Augmented Generation.</p>
+                    <ul>
+                        <li>Improved accuracy and relevance</li>
+                        <li>Domain-specific knowledge</li>
+                        <li>Reduced hallucinations</li>
+                        <li>Additional infrastructure complexity</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Model Selection Guide -->
+        <section class="section" id="model-selection">
+            <h2>Model Selection Criteria</h2>
+            
+            <p>Choosing the right LLM is crucial for project success. Consider these key factors:</p>
+
+            <h3 id="performance-characteristics">Performance Characteristics</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Model Family</th>
+                        <th>Strengths</th>
+                        <th>Best Use Cases</th>
+                        <th>Considerations</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>GPT-4 / GPT-4o</strong></td>
+                        <td>
+                            <ul>
+                                <li>Exceptional reasoning</li>
+                                <li>Code generation</li>
+                                <li>Multimodal capabilities</li>
+                                <li>Large context window</li>
+                            </ul>
+                        </td>
+                        <td>Complex analysis, coding, creative tasks</td>
+                        <td>Higher cost, rate limits</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Claude 3.5 Sonnet</strong></td>
+                        <td>
+                            <ul>
+                                <li>Strong reasoning</li>
+                                <li>Excellent instruction following</li>
+                                <li>Long context handling</li>
+                                <li>Safety-focused</li>
+                            </ul>
+                        </td>
+                        <td>Document analysis, research, ethical AI</td>
+                        <td>Limited availability in some regions</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Llama 3.1</strong></td>
+                        <td>
+                            <ul>
+                                <li>Open source</li>
+                                <li>Strong performance</li>
+                                <li>Customizable</li>
+                                <li>Cost-effective at scale</li>
+                            </ul>
+                        </td>
+                        <td>High-volume applications, privacy-critical</td>
+                        <td>Self-hosting complexity</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Mistral Models</strong></td>
+                        <td>
+                            <ul>
+                                <li>Efficient architecture</li>
+                                <li>European privacy compliance</li>
+                                <li>Multilingual capabilities</li>
+                                <li>Competitive pricing</li>
+                            </ul>
+                        </td>
+                        <td>European deployments, multilingual apps</td>
+                        <td>Smaller ecosystem</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 id="selection-framework">Selection Framework</h3>
+            <div class="framework-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Define Requirements</h4>
+                        <p>Identify specific tasks, performance needs, latency requirements, and data sensitivity levels.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Benchmark Performance</h4>
+                        <p>Test candidate models on representative tasks using your actual data and evaluation metrics.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Analyze Total Cost</h4>
+                        <p>Calculate API costs, infrastructure needs, and operational expenses for realistic usage volumes.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>Assess Integration</h4>
+                        <p>Evaluate ease of integration, available SDKs, documentation quality, and vendor support.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RAG Best Practices -->
+        <section class="section" id="rag-best-practices">
+            <h2>RAG (Retrieval Augmented Generation) Best Practices</h2>
+            
+            <p>RAG systems combine the power of LLMs with external knowledge sources to provide more accurate, up-to-date, and domain-specific responses.</p>
+
+            <h3 id="rag-architecture-components">RAG Architecture Components</h3>
+            <div class="architecture-diagram">
+                <div class="component-flow">
+                    <div class="component">
+                        <h4>📄 Document Ingestion</h4>
+                        <p>Process and prepare documents for retrieval</p>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="component">
+                        <h4>✂️ Chunking Strategy</h4>
+                        <p>Split documents into retrievable segments</p>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="component">
+                        <h4>🧠 Embedding Generation</h4>
+                        <p>Convert text chunks to vector representations</p>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="component">
+                        <h4>🗃️ Vector Storage</h4>
+                        <p>Store embeddings in vector database</p>
+                    </div>
+                </div>
+                <div class="retrieval-flow">
+                    <div class="component">
+                        <h4>❓ Query Processing</h4>
+                        <p>Convert user query to embedding</p>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="component">
+                        <h4>🔍 Similarity Search</h4>
+                        <p>Find relevant document chunks</p>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="component">
+                        <h4>📝 Context Assembly</h4>
+                        <p>Combine retrieved content with query</p>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="component">
+                        <h4>🤖 LLM Generation</h4>
+                        <p>Generate response with context</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3 id="vector-database-comparison">Vector Database Comparison</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Database</th>
+                        <th>Deployment</th>
+                        <th>Best For</th>
+                        <th>Pros</th>
+                        <th>Cons</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Pinecone</strong></td>
+                        <td>Managed Cloud</td>
+                        <td>Production RAG systems</td>
+                        <td>Easy setup, high performance, good SDK</td>
+                        <td>Expensive at scale, vendor lock-in</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Weaviate</strong></td>
+                        <td>Cloud & Self-hosted</td>
+                        <td>Hybrid deployments</td>
+                        <td>Rich features, GraphQL API, modules</td>
+                        <td>Learning curve, resource intensive</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Chroma</strong></td>
+                        <td>Self-hosted</td>
+                        <td>Development, prototyping</td>
+                        <td>Lightweight, easy to embed, free</td>
+                        <td>Limited scale, fewer enterprise features</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Qdrant</strong></td>
+                        <td>Cloud & Self-hosted</td>
+                        <td>High-performance applications</td>
+                        <td>Fast, Rust-based, good filtering</td>
+                        <td>Smaller ecosystem</td>
+                    </tr>
+                    <tr>
+                        <td><strong>FAISS + pgvector</strong></td>
+                        <td>Self-hosted</td>
+                        <td>Cost-conscious implementations</td>
+                        <td>Free, integrates with PostgreSQL</td>
+                        <td>More setup complexity, limited features</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 id="rag-optimization-strategies">RAG Optimization Strategies</h3>
+            <ul>
+                <li><strong>Chunking Strategy:</strong> Balance chunk size (typically 500-1500 tokens) with context preservation</li>
+                <li><strong>Embedding Quality:</strong> Use domain-specific embedding models when available</li>
+                <li><strong>Hybrid Search:</strong> Combine semantic and keyword search for better retrieval</li>
+                <li><strong>Reranking:</strong> Use cross-encoder models to improve retrieved context relevance</li>
+                <li><strong>Context Optimization:</strong> Summarize or filter retrieved content to fit within token limits</li>
+                <li><strong>Feedback Loops:</strong> Implement user feedback to continuously improve retrieval quality</li>
+            </ul>
+        </section>
+
+        <!-- Prompt Engineering -->
+        <section class="section" id="prompt-engineering">
+            <h2>Prompt Engineering Techniques</h2>
+            
+            <p>Effective prompt engineering is crucial for maximizing LLM performance and reliability. Master these techniques for better results:</p>
+
+            <h3 id="core-prompt-patterns">Core Prompt Engineering Patterns</h3>
+            
+            <div class="technique-grid">
+                <div class="technique-card">
+                    <h4>🎯 Zero-Shot Prompting</h4>
+                    <p>Direct task description without examples</p>
+                    <div class="example-box">
+                        <strong>Example:</strong><br>
+                        "Summarize the following article in 3 bullet points: [article text]"
+                    </div>
+                    <p><strong>Best for:</strong> Simple, well-defined tasks</p>
+                </div>
+
+                <div class="technique-card">
+                    <h4>📚 Few-Shot Prompting</h4>
+                    <p>Provide examples to guide model behavior</p>
+                    <div class="example-box">
+                        <strong>Example:</strong><br>
+                        "Classify sentiment: Positive/Negative/Neutral<br>
+                        'I love this product!' → Positive<br>
+                        'This is terrible' → Negative<br>
+                        'The weather is cloudy' → Neutral<br>
+                        'This movie was amazing!' → ?"
+                    </div>
+                    <p><strong>Best for:</strong> Pattern recognition, consistent formatting</p>
+                </div>
+
+                <div class="technique-card">
+                    <h4>🧠 Chain-of-Thought</h4>
+                    <p>Ask the model to show its reasoning process</p>
+                    <div class="example-box">
+                        <strong>Example:</strong><br>
+                        "Solve this step by step: A company's revenue increased by 25% to $500M. What was the original revenue?"
+                    </div>
+                    <p><strong>Best for:</strong> Complex reasoning, mathematical problems</p>
+                </div>
+
+                <div class="technique-card">
+                    <h4>🎭 Role-Based Prompting</h4>
+                    <p>Assign a specific role or expertise to the model</p>
+                    <div class="example-box">
+                        <strong>Example:</strong><br>
+                        "You are a senior software architect. Review this code for security vulnerabilities and performance issues: [code]"
+                    </div>
+                    <p><strong>Best for:</strong> Domain-specific expertise, consistent tone</p>
+                </div>
+            </div>
+
+            <h3 id="advanced-techniques">Advanced Techniques</h3>
+            
+            <div class="advanced-techniques">
+                <div class="technique">
+                    <h4>🔧 Template-Based Prompting</h4>
+                    <p>Create reusable templates for common tasks:</p>
+                    <div class="template-example">
+                        <code>
+                        Task: {task_description}<br>
+                        Context: {relevant_context}<br>
+                        Requirements:<br>
+                        - {requirement_1}<br>
+                        - {requirement_2}<br>
+                        Output format: {desired_format}<br>
+                        Input: {user_input}
+                        </code>
+                    </div>
+                </div>
+
+                <div class="technique">
+                    <h4>🎚️ Temperature and Parameter Tuning</h4>
+                    <ul>
+                        <li><strong>Temperature 0-0.3:</strong> Factual, consistent responses</li>
+                        <li><strong>Temperature 0.4-0.7:</strong> Balanced creativity and accuracy</li>
+                        <li><strong>Temperature 0.8-1.0:</strong> Creative, diverse outputs</li>
+                        <li><strong>Top-P:</strong> Alternative to temperature, controls diversity</li>
+                        <li><strong>Max Tokens:</strong> Control response length</li>
+                    </ul>
+                </div>
+
+                <div class="technique">
+                    <h4>🔍 Iterative Refinement</h4>
+                    <p>Use multi-turn conversations to refine outputs:</p>
+                    <ol>
+                        <li>Initial prompt with task description</li>
+                        <li>Request specific improvements</li>
+                        <li>Ask for format adjustments</li>
+                        <li>Validate and finalize output</li>
+                    </ol>
+                </div>
+            </div>
+
+            <h3 id="prompt-optimization-workflow">Prompt Optimization Workflow</h3>
+            <div class="workflow-steps">
+                <div class="workflow-step">
+                    <div class="step-number">1</div>
+                    <h4>Define Success Criteria</h4>
+                    <p>Establish clear metrics for evaluating prompt performance</p>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">2</div>
+                    <h4>Create Test Dataset</h4>
+                    <p>Develop representative examples for consistent testing</p>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">3</div>
+                    <h4>A/B Testing</h4>
+                    <p>Compare different prompt variations systematically</p>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">4</div>
+                    <h4>Measure & Iterate</h4>
+                    <p>Track performance metrics and continuously improve</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Fine-tuning Guide -->
+        <section class="section" id="fine-tuning">
+            <h2>Fine-tuning Approaches</h2>
+            
+            <p>Fine-tuning adapts pre-trained models to your specific domain or tasks. Choose the right approach based on your needs and resources:</p>
+
+            <h3 id="fine-tuning-methods">Fine-tuning Methods Comparison</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>Resource Requirements</th>
+                        <th>Performance Impact</th>
+                        <th>Use Cases</th>
+                        <th>Pros</th>
+                        <th>Cons</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Full Fine-tuning</strong></td>
+                        <td>Very High</td>
+                        <td>Maximum</td>
+                        <td>Domain adaptation, safety alignment</td>
+                        <td>Best performance, full model control</td>
+                        <td>Expensive, requires large datasets</td>
+                    </tr>
+                    <tr>
+                        <td><strong>LoRA (Low-Rank Adaptation)</strong></td>
+                        <td>Medium</td>
+                        <td>High</td>
+                        <td>Task-specific adaptation</td>
+                        <td>Efficient, modular, switchable</td>
+                        <td>Limited by rank parameter</td>
+                    </tr>
+                    <tr>
+                        <td><strong>QLoRA</strong></td>
+                        <td>Low-Medium</td>
+                        <td>High</td>
+                        <td>Resource-constrained environments</td>
+                        <td>Very memory efficient</td>
+                        <td>Quantization trade-offs</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Prefix Tuning</strong></td>
+                        <td>Low</td>
+                        <td>Medium</td>
+                        <td>Task conditioning</td>
+                        <td>Minimal parameters, fast</td>
+                        <td>Limited flexibility</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Adapter Layers</strong></td>
+                        <td>Low-Medium</td>
+                        <td>Medium-High</td>
+                        <td>Multi-task scenarios</td>
+                        <td>Modular, task-specific</td>
+                        <td>Architecture modifications needed</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 id="dataset-requirements">Dataset Requirements</h3>
+            <div class="dataset-guidelines">
+                <div class="guideline">
+                    <h4>📊 Quantity Guidelines</h4>
+                    <ul>
+                        <li><strong>Classification:</strong> 1,000+ examples per class</li>
+                        <li><strong>Question Answering:</strong> 5,000+ Q&A pairs</li>
+                        <li><strong>Text Generation:</strong> 10,000+ examples</li>
+                        <li><strong>Domain Adaptation:</strong> 50,000+ domain documents</li>
+                    </ul>
+                </div>
+                <div class="guideline">
+                    <h4>✅ Quality Checklist</h4>
+                    <ul>
+                        <li>Consistent formatting and structure</li>
+                        <li>Representative of production data</li>
+                        <li>Balanced across categories/tasks</li>
+                        <li>High-quality annotations</li>
+                        <li>Regular quality audits</li>
+                    </ul>
+                </div>
+                <div class="guideline">
+                    <h4>🏗️ Data Pipeline</h4>
+                    <ol>
+                        <li>Data collection and curation</li>
+                        <li>Quality assessment and cleaning</li>
+                        <li>Annotation and validation</li>
+                        <li>Format standardization</li>
+                        <li>Train/validation/test splits</li>
+                    </ol>
+                </div>
+            </div>
+
+            <h3 id="training-best-practices">Training Best Practices</h3>
+            <ul>
+                <li><strong>Start Small:</strong> Begin with a smaller model to validate approach</li>
+                <li><strong>Learning Rate:</strong> Use smaller learning rates (1e-5 to 1e-4) to avoid catastrophic forgetting</li>
+                <li><strong>Epochs:</strong> Typically 1-5 epochs; monitor for overfitting</li>
+                <li><strong>Validation:</strong> Use held-out data for early stopping</li>
+                <li><strong>Regularization:</strong> Apply dropout and weight decay as needed</li>
+                <li><strong>Checkpointing:</strong> Save models frequently during training</li>
+                <li><strong>Evaluation:</strong> Use task-specific metrics and human evaluation</li>
+            </ul>
+        </section>
+
+        <!-- Production Deployment -->
+        <section class="section" id="production-deployment">
+            <h2>Production Deployment Patterns</h2>
+            
+            <p>Deploying LLMs in production requires careful consideration of scalability, reliability, and cost optimization:</p>
+
+            <h3 id="deployment-architectures">Deployment Architectures</h3>
+            
+            <div class="deployment-patterns">
+                <div class="pattern">
+                    <h4>🌐 API Gateway Pattern</h4>
+                    <p>Central API gateway managing multiple LLM endpoints</p>
+                    <div class="pattern-details">
+                        <strong>Components:</strong>
+                        <ul>
+                            <li>Load balancer and API gateway</li>
+                            <li>Authentication and rate limiting</li>
+                            <li>Model routing and failover</li>
+                            <li>Response caching layer</li>
+                        </ul>
+                        <strong>Benefits:</strong> Centralized management, easy model switching, cost optimization
+                    </div>
+                </div>
+
+                <div class="pattern">
+                    <h4>🔄 Microservices Pattern</h4>
+                    <p>Individual services for different LLM tasks</p>
+                    <div class="pattern-details">
+                        <strong>Components:</strong>
+                        <ul>
+                            <li>Task-specific microservices</li>
+                            <li>Service mesh for communication</li>
+                            <li>Container orchestration</li>
+                            <li>Distributed monitoring</li>
+                        </ul>
+                        <strong>Benefits:</strong> Independent scaling, technology diversity, fault isolation
+                    </div>
+                </div>
+
+                <div class="pattern">
+                    <h4>⚡ Serverless Pattern</h4>
+                    <p>Function-as-a-Service for sporadic LLM workloads</p>
+                    <div class="pattern-details">
+                        <strong>Components:</strong>
+                        <ul>
+                            <li>Serverless functions (Lambda, Cloud Functions)</li>
+                            <li>Event-driven triggers</li>
+                            <li>Managed databases</li>
+                            <li>API endpoints</li>
+                        </ul>
+                        <strong>Benefits:</strong> Cost-effective for low volume, automatic scaling, no server management
+                    </div>
+                </div>
+            </div>
+
+            <h3 id="scalability-strategies">Scalability Strategies</h3>
+            
+            <div class="scalability-grid">
+                <div class="strategy">
+                    <h4>🚀 Horizontal Scaling</h4>
+                    <ul>
+                        <li>Multiple model instances</li>
+                        <li>Load balancing across instances</li>
+                        <li>Auto-scaling based on demand</li>
+                        <li>Geographic distribution</li>
+                    </ul>
+                </div>
+                
+                <div class="strategy">
+                    <h4>⚡ Performance Optimization</h4>
+                    <ul>
+                        <li>Model quantization (INT8/INT4)</li>
+                        <li>Response caching strategies</li>
+                        <li>Batch processing optimization</li>
+                        <li>GPU memory management</li>
+                    </ul>
+                </div>
+                
+                <div class="strategy">
+                    <h4>🔧 Operational Excellence</h4>
+                    <ul>
+                        <li>Health checks and monitoring</li>
+                        <li>Circuit breakers for resilience</li>
+                        <li>Graceful degradation</li>
+                        <li>Blue-green deployments</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3 id="monitoring-observability">Monitoring & Observability</h3>
+            <table class="metrics-table">
+                <thead>
+                    <tr>
+                        <th>Metric Category</th>
+                        <th>Key Metrics</th>
+                        <th>Target Ranges</th>
+                        <th>Monitoring Tools</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Performance</strong></td>
+                        <td>Response time, throughput, token/sec</td>
+                        <td>&lt;2s, 100+ req/min</td>
+                        <td>Prometheus, DataDog</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Quality</strong></td>
+                        <td>Accuracy, relevance, hallucination rate</td>
+                        <td>&gt;85%, &lt;5% hallucination</td>
+                        <td>Custom dashboards, A/B testing</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cost</strong></td>
+                        <td>Token usage, compute costs, API spend</td>
+                        <td>Within budget targets</td>
+                        <td>Cloud billing, cost analytics</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Reliability</strong></td>
+                        <td>Uptime, error rate, failover time</td>
+                        <td>&gt;99.9%, &lt;1% errors</td>
+                        <td>Status pages, alerting systems</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Hallucination Mitigation -->
+        <section class="section" id="hallucination-mitigation">
+            <h2>Hallucination Mitigation Strategies</h2>
+            
+            <p>LLM hallucinations—generating plausible but incorrect information—pose significant risks in production systems. Implement these strategies to minimize false outputs:</p>
+
+            <h3 id="prevention-techniques">Prevention Techniques</h3>
+            
+            <div class="mitigation-strategies">
+                <div class="strategy-card">
+                    <h4>📚 Retrieval-Augmented Generation (RAG)</h4>
+                    <p>Ground responses in verified external knowledge</p>
+                    <ul>
+                        <li>Real-time fact-checking against knowledge base</li>
+                        <li>Source attribution and citations</li>
+                        <li>Confidence scoring based on retrieval quality</li>
+                        <li>Fallback to "I don't know" when sources unavailable</li>
+                    </ul>
+                </div>
+
+                <div class="strategy-card">
+                    <h4>🎯 Prompt Engineering</h4>
+                    <p>Design prompts that encourage accuracy</p>
+                    <ul>
+                        <li>Explicit instructions to avoid speculation</li>
+                        <li>Request uncertainty expressions when unsure</li>
+                        <li>Structured output formats with confidence levels</li>
+                        <li>Role-based prompts emphasizing accuracy</li>
+                    </ul>
+                </div>
+
+                <div class="strategy-card">
+                    <h4>🔍 Multi-Model Validation</h4>
+                    <p>Cross-reference outputs across different models</p>
+                    <ul>
+                        <li>Ensemble voting on factual claims</li>
+                        <li>Inconsistency detection and flagging</li>
+                        <li>Specialized fact-checking models</li>
+                        <li>Human-in-the-loop for critical decisions</li>
+                    </ul>
+                </div>
+
+                <div class="strategy-card">
+                    <h4>⚡ Real-time Verification</h4>
+                    <p>Validate claims against live data sources</p>
+                    <ul>
+                        <li>API integration with fact-checking services</li>
+                        <li>Database lookups for verifiable claims</li>
+                        <li>Web search validation for recent events</li>
+                        <li>Automated flagging of unverified information</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3 id="detection-methods">Detection Methods</h3>
+            <ul>
+                <li><strong>Confidence Scoring:</strong> Monitor model confidence levels and flag low-confidence outputs</li>
+                <li><strong>Semantic Consistency:</strong> Check for logical consistency within responses</li>
+                <li><strong>Fact Verification:</strong> Automated fact-checking against reliable sources</li>
+                <li><strong>User Feedback:</strong> Implement feedback loops to identify and learn from errors</li>
+                <li><strong>Expert Review:</strong> Human oversight for high-stakes applications</li>
+            </ul>
+
+            <h3 id="response-strategies">Response Strategies</h3>
+            <div class="response-framework">
+                <div class="response-level">
+                    <h4>🟢 High Confidence (>90%)</h4>
+                    <p>Present information normally with source attribution</p>
+                </div>
+                <div class="response-level">
+                    <h4>🟡 Medium Confidence (70-90%)</h4>
+                    <p>Include uncertainty language and additional context</p>
+                </div>
+                <div class="response-level">
+                    <h4>🟠 Low Confidence (50-70%)</h4>
+                    <p>Explicitly state uncertainty and suggest verification</p>
+                </div>
+                <div class="response-level">
+                    <h4>🔴 Very Low Confidence (<50%)</h4>
+                    <p>Decline to answer or redirect to human experts</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cost Optimization -->
+        <section class="section" id="cost-optimization">
+            <h2>Cost Optimization Techniques</h2>
+            
+            <p>LLM costs can escalate quickly without proper management. Implement these strategies to optimize your LLM spending:</p>
+
+            <h3 id="token-usage-optimization">Token Usage Optimization</h3>
+            <div class="optimization-techniques">
+                <div class="technique-category">
+                    <h4>📝 Prompt Optimization</h4>
+                    <ul>
+                        <li><strong>Concise Prompts:</strong> Remove unnecessary words and formatting</li>
+                        <li><strong>System Messages:</strong> Use system messages for instructions to reduce per-request tokens</li>
+                        <li><strong>Template Reuse:</strong> Standardize prompt templates to minimize variations</li>
+                        <li><strong>Context Management:</strong> Carefully manage conversation history length</li>
+                    </ul>
+                </div>
+
+                <div class="technique-category">
+                    <h4>🎯 Model Selection</h4>
+                    <ul>
+                        <li><strong>Task-Specific Models:</strong> Use smaller, specialized models for simple tasks</li>
+                        <li><strong>Model Routing:</strong> Route requests to the most cost-effective model</li>
+                        <li><strong>Fallback Hierarchy:</strong> Start with cheaper models, escalate only when needed</li>
+                        <li><strong>Performance vs Cost:</strong> Balance quality requirements with cost constraints</li>
+                    </ul>
+                </div>
+
+                <div class="technique-category">
+                    <h4>💾 Caching Strategies</h4>
+                    <ul>
+                        <li><strong>Response Caching:</strong> Cache common responses to avoid re-computation</li>
+                        <li><strong>Semantic Caching:</strong> Cache responses for semantically similar queries</li>
+                        <li><strong>Partial Caching:</strong> Cache intermediate results in multi-step processes</li>
+                        <li><strong>TTL Management:</strong> Set appropriate cache expiration times</li>
+                    </ul>
+                </div>
+
+                <div class="technique-category">
+                    <h4>⚡ Processing Optimization</h4>
+                    <ul>
+                        <li><strong>Batch Processing:</strong> Group similar requests for efficiency</li>
+                        <li><strong>Streaming Responses:</strong> Use streaming to improve perceived performance</li>
+                        <li><strong>Early Stopping:</strong> Stop generation when sufficient quality is reached</li>
+                        <li><strong>Request Deduplication:</strong> Identify and merge duplicate requests</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3 id="infrastructure-cost-management">Infrastructure Cost Management</h3>
+            <table class="cost-strategies-table">
+                <thead>
+                    <tr>
+                        <th>Strategy</th>
+                        <th>Potential Savings</th>
+                        <th>Implementation Complexity</th>
+                        <th>Best For</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Spot Instances</strong></td>
+                        <td>50-90%</td>
+                        <td>Medium</td>
+                        <td>Training, batch processing</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Reserved Instances</strong></td>
+                        <td>30-70%</td>
+                        <td>Low</td>
+                        <td>Predictable workloads</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Auto-scaling</strong></td>
+                        <td>20-60%</td>
+                        <td>Medium</td>
+                        <td>Variable demand patterns</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Model Compression</strong></td>
+                        <td>40-80%</td>
+                        <td>High</td>
+                        <td>Latency-sensitive applications</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Multi-tenancy</strong></td>
+                        <td>30-50%</td>
+                        <td>High</td>
+                        <td>Multiple applications/teams</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 id="cost-monitoring-alerting">Cost Monitoring & Alerting</h3>
+            <ul>
+                <li><strong>Real-time Tracking:</strong> Monitor token usage and costs in real-time</li>
+                <li><strong>Budget Alerts:</strong> Set up alerts when approaching budget thresholds</li>
+                <li><strong>Usage Analytics:</strong> Analyze usage patterns to identify optimization opportunities</li>
+                <li><strong>Cost Attribution:</strong> Track costs by team, project, or application</li>
+                <li><strong>Anomaly Detection:</strong> Identify unusual spending patterns automatically</li>
+            </ul>
+        </section>
+
+        <!-- Security Considerations -->
+        <section class="section" id="security-considerations">
+            <h2>Security Considerations</h2>
+            
+            <p>LLM implementations introduce unique security challenges. Address these critical areas to maintain a secure deployment:</p>
+
+            <h3 id="common-security-risks">Common Security Risks</h3>
+            <div class="security-risks">
+                <div class="risk-card high-risk">
+                    <h4>🚨 Prompt Injection</h4>
+                    <p>Malicious inputs that manipulate model behavior</p>
+                    <div class="mitigation">
+                        <strong>Mitigation:</strong>
+                        <ul>
+                            <li>Input validation and sanitization</li>
+                            <li>Prompt templates with parameter binding</li>
+                            <li>Content filtering systems</li>
+                            <li>Role-based access controls</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="risk-card high-risk">
+                    <h4>📊 Data Leakage</h4>
+                    <p>Unintended exposure of training or context data</p>
+                    <div class="mitigation">
+                        <strong>Mitigation:</strong>
+                        <ul>
+                            <li>Data anonymization and masking</li>
+                            <li>Context window management</li>
+                            <li>Output filtering and scanning</li>
+                            <li>Differential privacy techniques</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="risk-card medium-risk">
+                    <h4>🔐 Model Extraction</h4>
+                    <p>Attempts to reverse-engineer model parameters</p>
+                    <div class="mitigation">
+                        <strong>Mitigation:</strong>
+                        <ul>
+                            <li>Rate limiting and usage monitoring</li>
+                            <li>API authentication and authorization</li>
+                            <li>Query pattern analysis</li>
+                            <li>Response randomization</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="risk-card medium-risk">
+                    <h4>⚡ Denial of Service</h4>
+                    <p>Resource exhaustion through expensive queries</p>
+                    <div class="mitigation">
+                        <strong>Mitigation:</strong>
+                        <ul>
+                            <li>Request size and complexity limits</li>
+                            <li>Rate limiting and throttling</li>
+                            <li>Resource monitoring and alerting</li>
+                            <li>Queue management systems</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <h3 id="security-implementation-checklist">Security Implementation Checklist</h3>
+            <div class="security-checklist">
+                <div class="checklist-section">
+                    <h4>🔐 Authentication & Authorization</h4>
+                    <ul class="checklist">
+                        <li>API key management and rotation</li>
+                        <li>Role-based access control (RBAC)</li>
+                        <li>OAuth 2.0 / SAML integration</li>
+                        <li>Service-to-service authentication</li>
+                    </ul>
+                </div>
+
+                <div class="checklist-section">
+                    <h4>🛡️ Data Protection</h4>
+                    <ul class="checklist">
+                        <li>Encryption at rest and in transit</li>
+                        <li>PII detection and redaction</li>
+                        <li>Data classification and labeling</li>
+                        <li>Backup encryption and access controls</li>
+                    </ul>
+                </div>
+
+                <div class="checklist-section">
+                    <h4>📋 Compliance & Governance</h4>
+                    <ul class="checklist">
+                        <li>GDPR/CCPA compliance measures</li>
+                        <li>Audit logging and retention</li>
+                        <li>Data governance policies</li>
+                        <li>Regular security assessments</li>
+                    </ul>
+                </div>
+
+                <div class="checklist-section">
+                    <h4>🔍 Monitoring & Response</h4>
+                    <ul class="checklist">
+                        <li>Anomaly detection systems</li>
+                        <li>Incident response procedures</li>
+                        <li>Security event correlation</li>
+                        <li>Threat intelligence integration</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Calculator Access -->
+        <section class="section cta-section">
+            <h2>Ready to Start Your LLM Journey?</h2>
+            <p>Use our comprehensive LLM Implementation Framework Calculator to assess your readiness, compare models, plan your RAG architecture, and calculate costs.</p>
+            
+            <div class="cta-buttons">
+                <a href="calculator.html" class="btn btn-primary btn-large">
+                    🚀 Launch LLM Framework Calculator
+                </a>
+                <a href="/calculators.html" class="btn btn-secondary btn-large">
+                    📊 View All Assessment Tools
+                </a>
+            </div>
+        </section>
+
+        <div style="background: #f8fafc; padding: 3rem 2rem; border-radius: 12px; margin: 3rem 0;">
+            <h2 style="text-align: center; color: #1e293b; margin-bottom: 2rem;">Explore Other Frameworks</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; width: 100%; box-sizing: border-box; overflow-x: hidden;">
+                <a href="/ai-readiness/index.html" style="background: white; padding: 1.5rem; border-radius: 8px; text-decoration: none; border: 1px solid #e2e8f0; transition: all 0.3s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">
+                    <h3 style="color: #6366f1; margin-bottom: 0.5rem;">🤖 AI Readiness</h3>
+                    <p style="color: #64748b; font-size: 0.9rem;">Evaluate AI/ML implementation readiness</p>
+                </a>
+                <a href="/cloud-migration/index.html" style="background: white; padding: 1.5rem; border-radius: 8px; text-decoration: none; border: 1px solid #e2e8f0; transition: all 0.3s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">
+                    <h3 style="color: #6366f1; margin-bottom: 0.5rem;">☁️ Cloud Migration</h3>
+                    <p style="color: #64748b; font-size: 0.9rem;">Comprehensive cloud migration assessment</p>
+                </a>
+                <a href="/mlops-audit/index.html" style="background: white; padding: 1.5rem; border-radius: 8px; text-decoration: none; border: 1px solid #e2e8f0; transition: all 0.3s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">
+                    <h3 style="color: #6366f1; margin-bottom: 0.5rem;">🔧 MLOps Audit</h3>
+                    <p style="color: #64748b; font-size: 0.9rem;">Machine Learning operations excellence</p>
+                </a>
+                <a href="/security-audit/index.html" style="background: white; padding: 1.5rem; border-radius: 8px; text-decoration: none; border: 1px solid #e2e8f0; transition: all 0.3s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">
+                    <h3 style="color: #6366f1; margin-bottom: 0.5rem;">🔐 Security Audit</h3>
+                    <p style="color: #64748b; font-size: 0.9rem;">Comprehensive security assessment framework</p>
+                </a>
+                <a href="/cost-optimization/index.html" style="background: white; padding: 1.5rem; border-radius: 8px; text-decoration: none; border: 1px solid #e2e8f0; transition: all 0.3s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">
+                    <h3 style="color: #6366f1; margin-bottom: 0.5rem;">💰 Cost Optimization</h3>
+                    <p style="color: #64748b; font-size: 0.9rem;">Cloud cost analysis and optimization</p>
+                </a>
+            </div>
+        </div>
+            </main>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer style="background: #f8fafc; padding: 2rem 0; margin-top: 4rem; text-align: center; border-top: 1px solid #e2e8f0;">
+        <div style="font-size: 1.1rem; color: #6366f1; font-weight: 500;">
+            Built with ❤️ by architects, for architects! 🚀
+        </div>
+    </footer>
+    
+    <!-- Navigation JavaScript -->
+    <script src="../assets/js/site-navigation.js"></script>
+    
+    <script>
+        // Smooth scrolling for TOC links
+        document.querySelectorAll('.toc a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Highlight current section in TOC
+        function updateTOC() {
+            const sections = document.querySelectorAll('.content h1, .content h2, .content h3');
+            const tocLinks = document.querySelectorAll('.toc a');
+            
+            let current = '';
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = '#' + section.id;
+                }
+            });
+            
+            tocLinks.forEach(link => {
+                link.style.color = link.getAttribute('href') === current ? 'var(--primary)' : 'var(--gray)';
+                link.style.borderLeftColor = link.getAttribute('href') === current ? 'var(--primary)' : 'transparent';
+            });
+        }
+        
+        window.addEventListener('scroll', updateTOC);
+        window.addEventListener('load', updateTOC);
+    </script>
+</body>
+</html>

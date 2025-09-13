@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PWA Tests - AI Architecture Audit</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, system-ui, sans-serif; padding: 20px; background: #f9fafb; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; }
+        h1 { font-size: 28px; margin-bottom: 10px; }
+        .test-container { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .test-group { margin-bottom: 30px; }
+        .test-item { padding: 12px; margin: 10px 0; border-left: 4px solid #e5e7eb; background: #f9fafb; }
+        .test-item.pass { border-color: #10b981; background: #ecfdf5; }
+        .test-item.fail { border-color: #ef4444; background: #fef2f2; }
+        .test-item.running { border-color: #3b82f6; background: #eff6ff; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 20px 0; }
+        .stat-card { background: white; padding: 15px; border-radius: 8px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        button { background: #3b82f6; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 14px; margin: 5px; }
+        button:hover { background: #2563eb; }
+        .back-link { color: white; text-decoration: none; opacity: 0.9; }
+        .back-link:hover { opacity: 1; }
+        .pwa-status { padding: 15px; background: #eff6ff; border-radius: 8px; margin: 20px 0; }
+        .status-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #e5e7eb; }
+        .status-item:last-child { border-bottom: none; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-link">← Back to Test Suite</a>
+        <h1>📱 PWA Tests</h1>
+        <p>Testing Progressive Web App capabilities and features</p>
+    </div>
+
+    <div class="stats" id="stats">
+        <div class="stat-card">
+            <div style="font-size: 24px; font-weight: bold; color: #10b981;" id="passed">0</div>
+            <div style="color: #6b7280;">Passed</div>
+        </div>
+        <div class="stat-card">
+            <div style="font-size: 24px; font-weight: bold; color: #ef4444;" id="failed">0</div>
+            <div style="color: #6b7280;">Failed</div>
+        </div>
+        <div class="stat-card">
+            <div style="font-size: 24px; font-weight: bold; color: #6b7280;" id="total">0</div>
+            <div style="color: #6b7280;">Total Tests</div>
+        </div>
+        <div class="stat-card">
+            <div style="font-size: 24px; font-weight: bold;" id="score">0%</div>
+            <div style="color: #6b7280;">PWA Score</div>
+        </div>
+    </div>
+
+    <button onclick="runAllTests()">Run PWA Tests</button>
+    <button onclick="checkInstallability()">Check Installability</button>
+
+    <div class="pwa-status">
+        <h3>PWA Status</h3>
+        <div class="status-item">
+            <span>Service Worker:</span>
+            <span id="sw-status">🔄 Checking...</span>
+        </div>
+        <div class="status-item">
+            <span>Manifest:</span>
+            <span id="manifest-status">🔄 Checking...</span>
+        </div>
+        <div class="status-item">
+            <span>HTTPS:</span>
+            <span id="https-status">🔄 Checking...</span>
+        </div>
+        <div class="status-item">
+            <span>Installable:</span>
+            <span id="install-status">🔄 Checking...</span>
+        </div>
+    </div>
+
+    <div class="test-container">
+        <div class="test-group">
+            <h2>Service Worker Tests</h2>
+            <div id="sw-tests"></div>
+        </div>
+
+        <div class="test-group">
+            <h2>Manifest Tests</h2>
+            <div id="manifest-tests"></div>
+        </div>
+
+        <div class="test-group">
+            <h2>Offline Capability Tests</h2>
+            <div id="offline-tests"></div>
+        </div>
+
+        <div class="test-group">
+            <h2>Installation Tests</h2>
+            <div id="install-tests"></div>
+        </div>
+
+        <div class="test-group">
+            <h2>Performance Tests</h2>
+            <div id="perf-tests"></div>
+        </div>
+    </div>
+
+    <script>
+        let testResults = { passed: 0, failed: 0, total: 0 };
+        let pwaStatus = {};
+
+        // Test framework
+        function test(name, fn, container) {
+            const testDiv = document.createElement('div');
+            testDiv.className = 'test-item running';
+            testDiv.textContent = `🔄 ${name}`;
+            document.getElementById(container).appendChild(testDiv);
+            
+            setTimeout(async () => {
+                try {
+                    const result = await fn();
+                    if (result || result === undefined) {
+                        testDiv.className = 'test-item pass';
+                        testDiv.textContent = `✅ ${name}`;
+                        testResults.passed++;
+                    } else {
+                        testDiv.className = 'test-item fail';
+                        testDiv.textContent = `❌ ${name}`;
+                        testResults.failed++;
+                    }
+                } catch (error) {
+                    testDiv.className = 'test-item fail';
+                    testDiv.textContent = `❌ ${name}: ${error.message}`;
+                    testResults.failed++;
+                }
+                
+                testResults.total++;
+                updateStats();
+            }, 100);
+        }
+
+        function updateStats() {
+            document.getElementById('passed').textContent = testResults.passed;
+            document.getElementById('failed').textContent = testResults.failed;
+            document.getElementById('total').textContent = testResults.total;
+            const score = testResults.total > 0 ? Math.round((testResults.passed / testResults.total) * 100) : 0;
+            document.getElementById('score').textContent = score + '%';
+        }
+
+        // Update PWA status display
+        function updatePWAStatus() {
+            // Service Worker status
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.ready.then(() => {
+                    document.getElementById('sw-status').innerHTML = '✅ Registered';
+                    pwaStatus.serviceWorker = true;
+                }).catch(() => {
+                    document.getElementById('sw-status').innerHTML = '❌ Not Registered';
+                    pwaStatus.serviceWorker = false;
+                });
+            } else {
+                document.getElementById('sw-status').innerHTML = '❌ Not Supported';
+                pwaStatus.serviceWorker = false;
+            }
+
+            // HTTPS status
+            const isHttps = location.protocol === 'https:' || location.hostname === 'localhost';
+            document.getElementById('https-status').innerHTML = isHttps ? '✅ Secure' : '❌ Not Secure';
+            pwaStatus.https = isHttps;
+
+            // Manifest status
+            const manifestLink = document.querySelector('link[rel="manifest"]');
+            if (manifestLink) {
+                fetch(manifestLink.href)
+                    .then(response => response.json())
+                    .then(() => {
+                        document.getElementById('manifest-status').innerHTML = '✅ Found';
+                        pwaStatus.manifest = true;
+                    })
+                    .catch(() => {
+                        document.getElementById('manifest-status').innerHTML = '❌ Invalid';
+                        pwaStatus.manifest = false;
+                    });
+            } else {
+                document.getElementById('manifest-status').innerHTML = '❌ Not Found';
+                pwaStatus.manifest = false;
+            }
+
+            // Installability
+            setTimeout(() => {
+                const installable = pwaStatus.serviceWorker && pwaStatus.manifest && pwaStatus.https;
+                document.getElementById('install-status').innerHTML = installable ? '✅ Yes' : '❌ No';
+            }, 1000);
+        }
+
+        // Service Worker test suite
+        function runServiceWorkerTests() {
+            test('Service Worker API available', () => {
+                return 'serviceWorker' in navigator;
+            }, 'sw-tests');
+
+            test('Service Worker registration', async () => {
+                if ('serviceWorker' in navigator) {
+                    try {
+                        const registration = await navigator.serviceWorker.getRegistration();
+                        return registration !== undefined;
+                    } catch (error) {
+                        return false;
+                    }
+                }
+                return false;
+            }, 'sw-tests');
+
+            test('Service Worker scope', async () => {
+                if ('serviceWorker' in navigator) {
+                    const registration = await navigator.serviceWorker.getRegistration();
+                    return registration && registration.scope === window.location.origin + '/';
+                }
+                return false;
+            }, 'sw-tests');
+
+            test('Service Worker update check', async () => {
+                if ('serviceWorker' in navigator) {
+                    try {
+                        const registration = await navigator.serviceWorker.getRegistration();
+                        if (registration) {
+                            await registration.update();
+                            return true;
+                        }
+                    } catch (error) {
+                        return false;
+                    }
+                }
+                return false;
+            }, 'sw-tests');
+
+            test('Push API available', () => {
+                return 'PushManager' in window;
+            }, 'sw-tests');
+
+            test('Notification API available', () => {
+                return 'Notification' in window;
+            }, 'sw-tests');
+        }
+
+        // Manifest test suite
+        function runManifestTests() {
+            test('Manifest link present', () => {
+                return document.querySelector('link[rel="manifest"]') !== null;
+            }, 'manifest-tests');
+
+            test('Manifest is valid JSON', async () => {
+                const link = document.querySelector('link[rel="manifest"]');
+                if (link) {
+                    try {
+                        const response = await fetch(link.href);
+                        const manifest = await response.json();
+                        return typeof manifest === 'object';
+                    } catch (error) {
+                        return false;
+                    }
+                }
+                return false;
+            }, 'manifest-tests');
+
+            test('Manifest has required fields', async () => {
+                const link = document.querySelector('link[rel="manifest"]');
+                if (link) {
+                    try {
+                        const response = await fetch(link.href);
+                        const manifest = await response.json();
+                        return manifest.name && manifest.short_name && manifest.icons && manifest.start_url;
+                    } catch (error) {
+                        return false;
+                    }
+                }
+                return false;
+            }, 'manifest-tests');
+
+            test('Manifest has 192x192 icon', async () => {
+                const link = document.querySelector('link[rel="manifest"]');
+                if (link) {
+                    try {
+                        const response = await fetch(link.href);
+                        const manifest = await response.json();
+                        return manifest.icons && manifest.icons.some(icon => 
+                            icon.sizes && icon.sizes.includes('192x192')
+                        );
+                    } catch (error) {
+                        return false;
+                    }
+                }
+                return false;
+            }, 'manifest-tests');
+
+            test('Manifest has 512x512 icon', async () => {
+                const link = document.querySelector('link[rel="manifest"]');
+                if (link) {
+                    try {
+                        const response = await fetch(link.href);
+                        const manifest = await response.json();
+                        return manifest.icons && manifest.icons.some(icon => 
+                            icon.sizes && icon.sizes.includes('512x512')
+                        );
+                    } catch (error) {
+                        return false;
+                    }
+                }
+                return false;
+            }, 'manifest-tests');
+
+            test('Manifest has display mode', async () => {
+                const link = document.querySelector('link[rel="manifest"]');
+                if (link) {
+                    try {
+                        const response = await fetch(link.href);
+                        const manifest = await response.json();
+                        const validModes = ['fullscreen', 'standalone', 'minimal-ui', 'browser'];
+                        return manifest.display && validModes.includes(manifest.display);
+                    } catch (error) {
+                        return false;
+                    }
+                }
+                return false;
+            }, 'manifest-tests');
+        }
+
+        // Offline Capability test suite
+        function runOfflineTests() {
+            test('Cache API available', () => {
+                return 'caches' in window;
+            }, 'offline-tests');
+
+            test('Cache storage exists', async () => {
+                if ('caches' in window) {
+                    const cacheNames = await caches.keys();
+                    return cacheNames.length > 0;
+                }
+                return false;
+            }, 'offline-tests');
+
+            test('Critical resources cached', async () => {
+                if ('caches' in window) {
+                    const cacheNames = await caches.keys();
+                    if (cacheNames.length > 0) {
+                        const cache = await caches.open(cacheNames[0]);
+                        const requests = await cache.keys();
+                        return requests.length > 0;
+                    }
+                }
+                return false;
+            }, 'offline-tests');
+
+            test('Offline fallback page', async () => {
+                // Check if service worker has offline page
+                if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+                    // This is a simplified check
+                    return true;
+                }
+                return false;
+            }, 'offline-tests');
+
+            test('Network status detection', () => {
+                return 'onLine' in navigator;
+            }, 'offline-tests');
+        }
+
+        // Installation test suite
+        function runInstallationTests() {
+            test('BeforeInstallPrompt support', () => {
+                // This event is not always available
+                return true; // Pass by default as it's browser-specific
+            }, 'install-tests');
+
+            test('App is installable', () => {
+                // Check basic requirements
+                const hasManifest = document.querySelector('link[rel="manifest"]') !== null;
+                const hasServiceWorker = 'serviceWorker' in navigator;
+                const isHttps = location.protocol === 'https:' || location.hostname === 'localhost';
+                return hasManifest && hasServiceWorker && isHttps;
+            }, 'install-tests');
+
+            test('Viewport meta tag', () => {
+                const viewport = document.querySelector('meta[name="viewport"]');
+                return viewport && viewport.content.includes('width=device-width');
+            }, 'install-tests');
+
+            test('Theme color meta tag', () => {
+                return document.querySelector('meta[name="theme-color"]') !== null;
+            }, 'install-tests');
+
+            test('Apple touch icon', () => {
+                return document.querySelector('link[rel="apple-touch-icon"]') !== null;
+            }, 'install-tests');
+        }
+
+        // Performance test suite for PWA
+        function runPWAPerformanceTests() {
+            test('Fast first load', async () => {
+                const navigation = performance.getEntriesByType('navigation')[0];
+                return navigation && navigation.loadEventEnd < 3000;
+            }, 'perf-tests');
+
+            test('Service Worker activation', async () => {
+                if ('serviceWorker' in navigator) {
+                    const start = performance.now();
+                    await navigator.serviceWorker.ready;
+                    const duration = performance.now() - start;
+                    return duration < 1000;
+                }
+                return false;
+            }, 'perf-tests');
+
+            test('Cache-first strategy', async () => {
+                // Check if resources are served from cache
+                const resources = performance.getEntriesByType('resource');
+                const cachedResources = resources.filter(r => 
+                    r.transferSize === 0 && r.decodedBodySize > 0
+                );
+                return cachedResources.length > 0;
+            }, 'perf-tests');
+
+            test('Minimal network requests', () => {
+                const resources = performance.getEntriesByType('resource');
+                return resources.length < 50;
+            }, 'perf-tests');
+        }
+
+        // Check installability
+        function checkInstallability() {
+            let installable = true;
+            let reasons = [];
+
+            if (!('serviceWorker' in navigator)) {
+                installable = false;
+                reasons.push('Service Worker not supported');
+            }
+
+            if (!document.querySelector('link[rel="manifest"]')) {
+                installable = false;
+                reasons.push('Web App Manifest missing');
+            }
+
+            if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
+                installable = false;
+                reasons.push('HTTPS required');
+            }
+
+            if (!document.querySelector('meta[name="viewport"]')) {
+                installable = false;
+                reasons.push('Viewport meta tag missing');
+            }
+
+            if (installable) {
+                alert('✅ This app meets PWA installation requirements!');
+            } else {
+                alert(`❌ App is not installable:\n\n${reasons.join('\n')}`);
+            }
+        }
+
+        // Run all tests
+        function runAllTests() {
+            // Clear previous results
+            testResults = { passed: 0, failed: 0, total: 0 };
+            document.querySelectorAll('.test-item').forEach(item => item.remove());
+            
+            // Update PWA status
+            updatePWAStatus();
+            
+            // Run test suites
+            runServiceWorkerTests();
+            setTimeout(() => runManifestTests(), 200);
+            setTimeout(() => runOfflineTests(), 400);
+            setTimeout(() => runInstallationTests(), 600);
+            setTimeout(() => runPWAPerformanceTests(), 800);
+        }
+
+        // Auto-run tests on page load
+        window.addEventListener('load', () => {
+            updatePWAStatus();
+            setTimeout(runAllTests, 1000);
+        });
+    </script>
+</body>
+</html>

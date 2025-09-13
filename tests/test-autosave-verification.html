@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>🔍 Auto-Save Verification Test</title>
+    <style>
+        body {
+            font-family: -apple-system, system-ui, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #fff;
+        }
+        h1 { 
+            color: #60a5fa; 
+            text-align: center;
+            border-bottom: 2px solid #60a5fa;
+            padding-bottom: 20px;
+        }
+        .test-section {
+            background: #2a2a2a;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border-left: 4px solid #60a5fa;
+        }
+        .pass {
+            color: #4ade80;
+            font-weight: bold;
+        }
+        .fail {
+            color: #ef4444;
+            font-weight: bold;
+        }
+        .warning {
+            color: #fbbf24;
+            font-weight: bold;
+        }
+        .info {
+            color: #60a5fa;
+        }
+        pre {
+            background: #000;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+        button {
+            background: #60a5fa;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #3b82f6;
+        }
+        .verdict {
+            font-size: 2em;
+            text-align: center;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        .verdict.pass {
+            background: rgba(74, 222, 128, 0.1);
+            border: 2px solid #4ade80;
+        }
+        .verdict.fail {
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid #ef4444;
+        }
+        input {
+            padding: 8px;
+            margin: 5px;
+            border-radius: 4px;
+            border: 1px solid #444;
+            background: #333;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Auto-Save Verification Test</h1>
+    
+    <div class="test-section">
+        <h2>Test Configuration</h2>
+        <p>This test will verify if auto-save is actually working in the AI Readiness Calculator.</p>
+        <button onclick="runTest()">🚀 Run Complete Test</button>
+        <button onclick="clearResults()">🗑️ Clear Results</button>
+    </div>
+
+    <div id="results"></div>
+
+    <!-- Load the actual calculator files -->
+    <script src="/docs/assets/js/bundle-utilities.min.js"></script>
+    <script src="/docs/assets/js/bundle-features.min.js"></script>
+    <script src="/docs/assets/js/ai-readiness.js"></script>
+
+    <script>
+        const results = document.getElementById('results');
+        let testResults = {
+            autoSaveClass: false,
+            autoSaveInstance: false,
+            initialization: false,
+            saving: false,
+            loading: false,
+            interval: false
+        };
+
+        function log(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = type;
+            div.innerHTML = message;
+            results.appendChild(div);
+        }
+
+        function clearResults() {
+            results.innerHTML = '';
+            localStorage.removeItem('ai-readiness_autosave');
+            localStorage.removeItem('ai-readiness_lastSave');
+            location.reload();
+        }
+
+        async function runTest() {
+            results.innerHTML = '<div class="test-section"><h2>🧪 Test Results</h2></div>';
+            const section = results.querySelector('.test-section');
+            
+            // Test 1: Check if AutoSave class exists
+            log('Testing AutoSave class availability...', 'info');
+            if (window.AutoSave) {
+                testResults.autoSaveClass = true;
+                log('✅ AutoSave class is available', 'pass');
+                
+                // Show class definition
+                const classStr = window.AutoSave.toString().substring(0, 200);
+                log(`<pre>Class found: ${classStr}...</pre>`, 'info');
+            } else {
+                log('❌ AutoSave class NOT found in window', 'fail');
+                log('This means bundle-utilities.min.js did not load properly', 'warning');
+            }
+
+            // Test 2: Check if auto-save instance exists
+            log('<br>Testing auto-save instance...', 'info');
+            
+            // Wait a bit for DOMContentLoaded to fire
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            if (window.autoSave) {
+                testResults.autoSaveInstance = true;
+                log('✅ Auto-save instance exists', 'pass');
+                log(`Calculator: ${window.autoSave.calculatorName}`, 'info');
+                log(`Interval: ${window.autoSave.interval}ms`, 'info');
+                log(`Has changes: ${window.autoSave.hasChanges}`, 'info');
+                log(`Last save: ${window.autoSave.lastSave || 'Never'}`, 'info');
+            } else {
+                log('❌ Auto-save instance NOT created', 'fail');
+                log('window.autoSave is undefined', 'warning');
+                
+                // Try to create it manually
+                log('<br>Attempting manual initialization...', 'warning');
+                if (window.AutoSave) {
+                    try {
+                        window.autoSave = new AutoSave('ai-readiness', 5000);
+                        log('✅ Manual initialization successful!', 'pass');
+                        testResults.initialization = true;
+                    } catch(e) {
+                        log(`❌ Manual initialization failed: ${e}`, 'fail');
+                    }
+                }
+            }
+
+            // Test 3: Test saving functionality
+            if (window.autoSave) {
+                log('<br>Testing save functionality...', 'info');
+                
+                // Create test data
+                window.collectAllData = function() {
+                    return {
+                        test: true,
+                        timestamp: new Date().toISOString(),
+                        data: 'Test data from auto-save test'
+                    };
+                };
+                
+                try {
+                    const saved = window.autoSave.save();
+                    if (saved) {
+                        testResults.saving = true;
+                        log('✅ Save function executed successfully', 'pass');
+                        
+                        // Check localStorage
+                        const savedData = localStorage.getItem('ai-readiness_autosave');
+                        if (savedData) {
+                            const parsed = JSON.parse(savedData);
+                            log(`✅ Data saved to localStorage`, 'pass');
+                            log(`<pre>${JSON.stringify(parsed, null, 2)}</pre>`, 'info');
+                        }
+                    } else {
+                        log('❌ Save function returned false', 'fail');
+                    }
+                } catch(e) {
+                    log(`❌ Save error: ${e}`, 'fail');
+                }
+            }
+
+            // Test 4: Check if auto-save interval is working
+            if (window.autoSave && window.autoSave.saveTimer) {
+                testResults.interval = true;
+                log('<br>✅ Auto-save interval timer is active', 'pass');
+            } else {
+                log('<br>❌ Auto-save interval timer NOT active', 'fail');
+            }
+
+            // Final Verdict
+            const passCount = Object.values(testResults).filter(v => v).length;
+            const totalTests = Object.keys(testResults).length;
+            const percentage = Math.round((passCount / totalTests) * 100);
+            
+            const verdictDiv = document.createElement('div');
+            verdictDiv.className = percentage >= 50 ? 'verdict pass' : 'verdict fail';
+            
+            if (percentage === 100) {
+                verdictDiv.innerHTML = `
+                    <div class="pass">✅ AUTO-SAVE IS FULLY WORKING!</div>
+                    <div>All ${totalTests} tests passed (${percentage}%)</div>
+                `;
+            } else if (percentage >= 50) {
+                verdictDiv.innerHTML = `
+                    <div class="warning">⚠️ AUTO-SAVE PARTIALLY WORKING</div>
+                    <div>${passCount}/${totalTests} tests passed (${percentage}%)</div>
+                    <div>Issue: Auto-save exists but may not initialize automatically</div>
+                `;
+            } else {
+                verdictDiv.innerHTML = `
+                    <div class="fail">❌ AUTO-SAVE IS BROKEN!</div>
+                    <div>Only ${passCount}/${totalTests} tests passed (${percentage}%)</div>
+                    <div>The evaluation was correct - auto-save doesn't work properly</div>
+                `;
+            }
+            
+            results.appendChild(verdictDiv);
+            
+            // Detailed Summary
+            const summary = document.createElement('div');
+            summary.className = 'test-section';
+            summary.innerHTML = `
+                <h3>📊 Detailed Results:</h3>
+                <ul>
+                    <li>AutoSave Class Available: ${testResults.autoSaveClass ? '✅' : '❌'}</li>
+                    <li>AutoSave Instance Created: ${testResults.autoSaveInstance ? '✅' : '❌'}</li>
+                    <li>Manual Initialization Works: ${testResults.initialization ? '✅' : '❌'}</li>
+                    <li>Save Function Works: ${testResults.saving ? '✅' : '❌'}</li>
+                    <li>Auto Interval Active: ${testResults.interval ? '✅' : '❌'}</li>
+                </ul>
+                <h3>🔍 Diagnosis:</h3>
+                ${!testResults.autoSaveInstance ? '<p class="fail">The main issue is that auto-save is not initializing automatically when the page loads. The code exists but something prevents it from running.</p>' : ''}
+                ${testResults.initialization && !testResults.autoSaveInstance ? '<p class="warning">Manual initialization works, suggesting a timing or loading order issue.</p>' : ''}
+                ${testResults.autoSaveClass && !testResults.saving ? '<p class="fail">The AutoSave class exists but saving functionality is broken.</p>' : ''}
+            `;
+            results.appendChild(summary);
+        }
+
+        // Also check on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('DOMContentLoaded fired');
+            console.log('AutoSave class:', window.AutoSave ? 'Found' : 'Not found');
+            console.log('autoSave instance:', window.autoSave ? 'Found' : 'Not found');
+            
+            // Add a delayed check
+            setTimeout(() => {
+                console.log('After 2 seconds:');
+                console.log('autoSave instance:', window.autoSave ? 'Found' : 'Not found');
+                if (window.autoSave) {
+                    console.log('Calculator:', window.autoSave.calculatorName);
+                    console.log('Interval:', window.autoSave.interval);
+                }
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

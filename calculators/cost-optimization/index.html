@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cost Optimization Framework Calculator - Comprehensive FinOps Tool</title>
+    <meta name="description" content="Complete cost optimization assessment with FinOps maturity scoring, cloud cost analysis, resource optimization, and savings tracking">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>💰</text></svg>">
+    
+    <!-- Navigation CSS -->
+    <link rel="stylesheet" href="/docs/assets/css/site-navigation.css">
+    
+    <!-- Cost Optimization CSS -->
+    <link rel="stylesheet" href="/docs/assets/css/cost-optimization.css">
+    
+    <!-- Clean navbar fix -->
+    <style>
+        /* Minimal override to make navbar visible */
+        nav.site-nav {
+            display: block;
+            visibility: visible;
+        }
+        
+        /* Remove duplicate spacing - calculator CSS already has margin-top: 70px */
+        body {
+            padding-top: 0;
+        }
+    </style>
+    
+    <!-- SheetJS for Excel export -->
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+    <!-- Site Navigation -->
+    <nav class="site-nav">
+        <div class="site-nav-container">
+            <a href="/" class="site-logo">
+                🏢 AI Architecture Audit
+            </a>
+            
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+            
+            <ul class="site-menu" id="siteMenu">
+                <li class="site-menu-item">
+                    <a href="/">Home</a>
+                </li>
+                
+                <li class="site-menu-item has-dropdown">
+                    <a href="#" onclick="event.preventDefault()">Calculators</a>
+                    <div class="dropdown-menu">
+                        <a href="/calculators/ai-readiness/">🤖 AI Readiness</a>
+                        <a href="/calculators/cloud-migration/">☁️ Cloud Migration</a>
+                        <a href="/calculators/mlops-audit/">🔧 MLOps Audit</a>
+                        <a href="/calculators/llm-framework/">🧠 LLM Framework</a>
+                        <a href="/calculators/security-audit/">🔒 Security Audit</a>
+                        <a href="/calculators/genai-security/">🛡️ GenAI Security</a>
+                        <a href="/calculators/cost-optimization/">💰 Cost Optimization</a>
+                    </div>
+                </li>
+                
+                <li class="site-menu-item has-dropdown">
+                    <a href="#" onclick="event.preventDefault()">Documentation</a>
+                    <div class="dropdown-menu">
+                        <a href="/docs/ai-readiness/">📖 AI Readiness Guide</a>
+                        <a href="/docs/cloud-migration/">📖 Cloud Migration Guide</a>
+                        <a href="/docs/mlops-audit/">📖 MLOps Audit Guide</a>
+                        <a href="/docs/llm-framework/">📖 LLM Framework Guide</a>
+                        <a href="/docs/security-audit/">📖 Security Audit Guide</a>
+                        <a href="/docs/genai-security/">📖 GenAI Security Guide</a>
+                        <a href="/docs/cost-optimization/">📖 Cost Optimization Guide</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1>💰 Cost Optimization Framework Calculator</h1>
+            <p>Comprehensive assessment and optimization of your cloud financial operations</p>
+        </div>
+    </header>
+    
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs">
+        <div class="nav-tabs-container">
+            <button class="nav-tab active" data-tab="maturity">
+                <span>📊</span> Cost Maturity
+            </button>
+            <button class="nav-tab" data-tab="cloud-costs">
+                <span>☁️</span> Cloud Cost Analysis
+            </button>
+            <button class="nav-tab" data-tab="resources">
+                <span>🖥️</span> Resource Optimization
+            </button>
+            <button class="nav-tab" data-tab="waste">
+                <span>🗑️</span> Waste Identification
+            </button>
+            <button class="nav-tab" data-tab="budgets">
+                <span>💳</span> Budget Planning
+            </button>
+            <button class="nav-tab" data-tab="savings">
+                <span>💎</span> Savings Opportunities
+            </button>
+            <button class="nav-tab" data-tab="tagging">
+                <span>🏷️</span> Tagging & Governance
+            </button>
+            <button class="nav-tab" data-tab="vendors">
+                <span>🏢</span> Vendor Management
+            </button>
+            <button class="nav-tab" data-tab="roadmap">
+                <span>🗺️</span> Optimization Roadmap
+            </button>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Cost Maturity Assessment Tab -->
+        <div class="tab-content active" id="maturity">
+            <section class="section">
+                <h2>💰 FinOps Maturity Assessment</h2>
+                
+                <div class="alert alert-info">
+                    Evaluate your organization's financial operations maturity across 6 key dimensions. Each question contributes to your overall FinOps readiness score.
+                </div>
+                
+                <!-- This will be populated by JavaScript -->
+                <div id="maturity-assessment-container"></div>
+            </section>
+        </div>
+        
+        <!-- Cloud Cost Analysis Tab -->
+        <div class="tab-content" id="cloud-costs">
+            <section class="section">
+                <h2>☁️ Cloud Cost Analysis</h2>
+                
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <span class="metric-value" id="cloud-total-spend">$0</span>
+                        <div class="metric-label">Monthly Spend</div>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-value" id="cloud-potential-savings">$0</span>
+                        <div class="metric-label">Potential Savings</div>
+                    </div>
+                </div>
+                
+                <table class="cost-table">
+                    <thead>
+                        <tr>
+                            <th>Cloud Provider</th>
+                            <th>Service</th>
+                            <th>Monthly Spend</th>
+                            <th>Trend</th>
+                            <th>Optimization %</th>
+                            <th>Potential Savings</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cloud-costs-tbody">
+                        <!-- Populated by JavaScript -->
+                    </tbody>
+                </table>
+                
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="addCloudCost()">➕ Add Service</button>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Resource Optimization Tab -->
+        <div class="tab-content" id="resources">
+            <section class="section">
+                <h2>🖥️ Resource Optimization</h2>
+                
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <span class="metric-value" id="resource-total-count">0</span>
+                        <div class="metric-label">Total Resources</div>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-value" id="resource-potential-savings">$0</span>
+                        <div class="metric-label">Optimization Savings</div>
+                    </div>
+                </div>
+                
+                <table class="cost-table">
+                    <thead>
+                        <tr>
+                            <th>Resource Type</th>
+                            <th>Total Count</th>
+                            <th>Optimized/Right-sized</th>
+                            <th>Monthly Savings</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resources-tbody">
+                        <!-- Populated by JavaScript -->
+                    </tbody>
+                </table>
+                
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="addResource()">➕ Add Resource</button>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Waste Identification Tab -->
+        <div class="tab-content" id="waste">
+            <section class="section">
+                <h2>🗑️ Waste Identification</h2>
+                
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <span class="metric-value" id="waste-monthly-total">$0</span>
+                        <div class="metric-label">Monthly Waste</div>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-value" id="waste-high-priority">0</span>
+                        <div class="metric-label">High Priority Items</div>
+                    </div>
+                </div>
+                
+                <table class="cost-table">
+                    <thead>
+                        <tr>
+                            <th>Waste Category</th>
+                            <th>Count/Volume</th>
+                            <th>Monthly Cost</th>
+                            <th>Priority</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="waste-tbody">
+                        <!-- Populated by JavaScript -->
+                    </tbody>
+                </table>
+                
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="addWaste()">➕ Add Waste Item</button>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Budget Planning Tab -->
+        <div class="tab-content" id="budgets">
+            <section class="section">
+                <h2>💳 Budget Planning & Allocation</h2>
+                
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <span class="metric-value" id="budget-total-budget">$0</span>
+                        <div class="metric-label">Total Budget</div>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-value" id="budget-total-spent">$0</span>
+                        <div class="metric-label">Total Spent</div>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-value" id="budget-total-variance">$0</span>
+                        <div class="metric-label">Budget Variance</div>
+                    </div>
+                </div>
+                
+                <table class="cost-table">
+                    <thead>
+                        <tr>
+                            <th>Department/Project</th>
+                            <th>Budget</th>
+                            <th>Spent</th>
+                            <th>Forecast</th>
+                            <th>Variance</th>
+                            <th>Utilization</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="budgets-tbody">
+                        <!-- Populated by JavaScript -->
+                    </tbody>
+                </table>
+                
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="addBudget()">➕ Add Budget</button>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Savings Opportunities Tab -->
+        <div class="tab-content" id="savings">
+            <section class="section">
+                <h2>💎 Savings Opportunities</h2>
+                
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <span class="metric-value" id="savings-monthly-total">$0</span>
+                        <div class="metric-label">Monthly Savings</div>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-value" id="savings-annual-total">$0</span>
+                        <div class="metric-label">Annual Savings</div>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-value" id="savings-quick-wins">0</span>
+                        <div class="metric-label">Quick Wins</div>
+                    </div>
+                </div>
+                
+                <table class="cost-table">
+                    <thead>
+                        <tr>
+                            <th>Opportunity</th>
+                            <th>Category</th>
+                            <th>Monthly Savings</th>
+                            <th>Effort</th>
+                            <th>Timeframe</th>
+                            <th>ROI</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="savings-tbody">
+                        <!-- Populated by JavaScript -->
+                    </tbody>
+                </table>
+                
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="addSaving()">➕ Add Opportunity</button>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Tagging & Governance Tab -->
+        <div class="tab-content" id="tagging">
+            <section class="section">
+                <h2>🏷️ Tagging & Governance</h2>
+                
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <span class="metric-value" id="tagging-compliance-rate">0%</span>
+                        <div class="metric-label">Tagging Compliance</div>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-value" id="tagging-avg-compliance">0%</span>
+                        <div class="metric-label">Avg Cost Allocation</div>
+                    </div>
+                </div>
+                
+                <table class="cost-table">
+                    <thead>
+                        <tr>
+                            <th>Resource Type</th>
+                            <th>Total Resources</th>
+                            <th>Tagged Resources</th>
+                            <th>Compliance Rate</th>
+                            <th>Governance Score</th>
+                            <th>Cost Allocation</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tagging-tbody">
+                        <!-- Populated by JavaScript -->
+                    </tbody>
+                </table>
+                
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="addTagging()">➕ Add Resource Type</button>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Vendor Management Tab -->
+        <div class="tab-content" id="vendors">
+            <section class="section">
+                <h2>🏢 Vendor Management</h2>
+                
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <span class="metric-value" id="vendor-total-spend">$0</span>
+                        <div class="metric-label">Total Vendor Spend</div>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-value" id="vendor-potential-savings">$0</span>
+                        <div class="metric-label">Contract Optimization</div>
+                    </div>
+                </div>
+                
+                <table class="cost-table">
+                    <thead>
+                        <tr>
+                            <th>Vendor</th>
+                            <th>Annual Spend</th>
+                            <th>Commitment</th>
+                            <th>Discount %</th>
+                            <th>Renewal Date</th>
+                            <th>Savings Potential</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="vendors-tbody">
+                        <!-- Populated by JavaScript -->
+                    </tbody>
+                </table>
+                
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="addVendor()">➕ Add Vendor</button>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Optimization Roadmap Tab -->
+        <div class="tab-content" id="roadmap">
+            <section class="section">
+                <h2>🗺️ Optimization Roadmap</h2>
+                
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <span class="metric-value" id="roadmap-total-savings">$0</span>
+                        <div class="metric-label">Total Projected Savings</div>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-value" id="roadmap-completion-rate">0%</span>
+                        <div class="metric-label">Completion Rate</div>
+                    </div>
+                </div>
+                
+                <table class="cost-table">
+                    <thead>
+                        <tr>
+                            <th>Initiative</th>
+                            <th>Phase</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Savings</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="roadmap-tbody">
+                        <!-- Populated by JavaScript -->
+                    </tbody>
+                </table>
+                
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="addRoadmapItem()">➕ Add Initiative</button>
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+        <button class="btn btn-success" id="save-progress">💾 Save Progress</button>
+        <button class="btn btn-primary" onclick="exportToExcel()">📥 Export to Excel</button>
+        <button class="btn btn-secondary" id="share-report">🔗 Share Report</button>
+        <button class="btn btn-secondary" id="print-report">🖨️ Print Report</button>
+    </div>
+    
+    <!-- Footer -->
+    <footer style="background: #f8fafc; padding: 2rem 0; margin-top: 4rem; text-align: center; border-top: 1px solid #e2e8f0;">
+        <div style="font-size: 1.1rem; color: #6366f1; font-weight: 500;">
+            Built with ❤️ by architects, for architects! 🚀
+        </div>
+    </footer>
+    
+    <!-- Loading Overlay Fix -->
+    <script src="/docs/assets/js/loading-overlay-fix.js"></script>
+    
+    <!-- Load AutoSave separately to ensure availability -->
+    <script src="/docs/assets/js/auto-save.js"></script>
+
+    <!-- Load Notifications separately -->
+    <script src="/docs/assets/js/notifications.js"></script>
+
+    <!-- Bundled Utilities (lightweight) - COMMENTED OUT FOR PERFORMANCE -->
+    <!-- <script src="/docs/assets/js/bundle-utilities.js"></script> -->
+    
+    <!-- Features Bundle (lightweight) - COMMENTED OUT FOR PERFORMANCE -->
+    <!-- <script src="/docs/assets/js/bundle-features.js"></script> -->
+
+    <!-- Calculator Specific JavaScript -->
+    <script src="/docs/assets/js/cost-optimization.js"></script>
+    
+    <!-- Additional Functions -->
+    <script>
+        // Additional functions for the remaining CRUD operations
+        function addWaste() {
+            CostOptimization.data.waste.push({
+                category: 'New Waste Category',
+                instances: 1,
+                monthlyWaste: 100,
+                priority: 'medium'
+            });
+            CostOptimization.renderWaste();
+        }
+        
+        function removeWaste(index) {
+            CostOptimization.data.waste.splice(index, 1);
+            CostOptimization.renderWaste();
+        }
+        
+        function updateWaste(index, field, value) {
+            CostOptimization.data.waste[index][field] = value;
+            CostOptimization.updateWasteSummary();
+        }
+        
+        function updateWasteCount(index, value) {
+            const count = parseInt(value) || 0;
+            const waste = CostOptimization.data.waste[index];
+            if (waste.instances !== undefined) waste.instances = count;
+            else if (waste.volumes !== undefined) waste.volumes = count;
+            else waste.count = count;
+            CostOptimization.updateWasteSummary();
+        }
+        
+        function addBudget() {
+            CostOptimization.data.budgets.push({
+                department: 'New Department',
+                budget: 10000,
+                spent: 8000,
+                forecast: 9500,
+                variance: -500
+            });
+            CostOptimization.renderBudgets();
+        }
+        
+        function removeBudget(index) {
+            CostOptimization.data.budgets.splice(index, 1);
+            CostOptimization.renderBudgets();
+        }
+        
+        function updateBudget(index, field, value) {
+            if (['budget', 'spent', 'forecast'].includes(field)) {
+                value = parseFloat(value) || 0;
+            }
+            CostOptimization.data.budgets[index][field] = value;
+            
+            // Recalculate variance
+            const budget = CostOptimization.data.budgets[index];
+            budget.variance = budget.forecast - budget.budget;
+            
+            CostOptimization.renderBudgets();
+        }
+        
+        function addSaving() {
+            CostOptimization.data.savings.push({
+                opportunity: 'New Savings Opportunity',
+                category: 'Quick Win',
+                monthlySaving: 1000,
+                effort: 'Low',
+                timeframe: '1 month',
+                roi: 100
+            });
+            CostOptimization.renderSavings();
+        }
+        
+        function removeSaving(index) {
+            CostOptimization.data.savings.splice(index, 1);
+            CostOptimization.renderSavings();
+        }
+        
+        function updateSaving(index, field, value) {
+            if (field === 'monthlySaving' || field === 'roi') {
+                value = parseFloat(value) || 0;
+            }
+            CostOptimization.data.savings[index][field] = value;
+            CostOptimization.updateSavingsSummary();
+        }
+        
+        function addTagging() {
+            CostOptimization.data.tagging.push({
+                resource: 'New Resource Type',
+                total: 10,
+                tagged: 8,
+                compliance: 80,
+                costAllocation: 85
+            });
+            CostOptimization.renderTagging();
+        }
+        
+        function removeTagging(index) {
+            CostOptimization.data.tagging.splice(index, 1);
+            CostOptimization.renderTagging();
+        }
+        
+        function updateTagging(index, field, value) {
+            if (['total', 'tagged', 'compliance', 'costAllocation'].includes(field)) {
+                value = parseInt(value) || 0;
+            }
+            CostOptimization.data.tagging[index][field] = value;
+            CostOptimization.updateTaggingSummary();
+        }
+        
+        function addVendor() {
+            CostOptimization.data.vendors.push({
+                vendor: 'New Vendor',
+                spend: 10000,
+                commitment: 8000,
+                discount: 5,
+                renewalDate: '2024-12-31',
+                savingsPotential: 500
+            });
+            CostOptimization.renderVendors();
+        }
+        
+        function removeVendor(index) {
+            CostOptimization.data.vendors.splice(index, 1);
+            CostOptimization.renderVendors();
+        }
+        
+        function updateVendor(index, field, value) {
+            if (['spend', 'commitment', 'discount', 'savingsPotential'].includes(field)) {
+                value = parseFloat(value) || 0;
+            }
+            CostOptimization.data.vendors[index][field] = value;
+            CostOptimization.updateVendorSummary();
+        }
+        
+        function addRoadmapItem() {
+            CostOptimization.data.roadmap.push({
+                initiative: 'New Initiative',
+                phase: 'Phase 1',
+                startDate: '2024-01-01',
+                endDate: '2024-03-31',
+                savings: 5000,
+                status: 'Planned'
+            });
+            CostOptimization.renderRoadmap();
+        }
+        
+        function removeRoadmap(index) {
+            CostOptimization.data.roadmap.splice(index, 1);
+            CostOptimization.renderRoadmap();
+        }
+        
+        function updateRoadmap(index, field, value) {
+            if (field === 'savings') {
+                value = parseFloat(value) || 0;
+            }
+            CostOptimization.data.roadmap[index][field] = value;
+            CostOptimization.updateRoadmapSummary();
+        }
+        
+        // Mobile menu toggle function
+        function toggleMobileMenu() {
+            const menu = document.getElementById('siteMenu');
+            if (menu) {
+                menu.classList.toggle('active');
+            }
+        }
+    </script>
+</body>
+</html>

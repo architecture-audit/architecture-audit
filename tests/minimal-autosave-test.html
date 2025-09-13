@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Minimal AutoSave Test</title>
+</head>
+<body>
+    <h1>Minimal AutoSave Test</h1>
+    <pre id="log"></pre>
+    
+    <script>
+        const log = document.getElementById('log');
+        function addLog(msg) {
+            log.textContent += msg + '\n';
+            console.log(msg);
+        }
+        
+        addLog('1. Page loaded');
+        
+        // Test defining a class directly
+        class TestClass {
+            constructor() {
+                this.name = 'test';
+            }
+        }
+        window.TestClass = TestClass;
+        addLog('2. TestClass defined: ' + (typeof window.TestClass));
+    </script>
+    
+    <!-- Now load just the auto-save.js file directly -->
+    <script src="/docs/assets/js/auto-save.js"></script>
+    
+    <script>
+        addLog('3. After auto-save.js loaded');
+        addLog('4. typeof AutoSave: ' + (typeof AutoSave));
+        addLog('5. typeof window.AutoSave: ' + (typeof window.AutoSave));
+        
+        // Try to use it
+        if (window.AutoSave) {
+            try {
+                const test = new window.AutoSave('test', 5000);
+                addLog('6. ✅ AutoSave instance created!');
+            } catch(e) {
+                addLog('6. ❌ Error: ' + e);
+            }
+        } else {
+            addLog('6. ❌ window.AutoSave is undefined');
+        }
+    </script>
+</body>
+</html>

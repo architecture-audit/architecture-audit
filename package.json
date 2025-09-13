@@ -1,0 +1,37 @@
+{
+  "name": "aiarchitectureaudit.com",
+  "version": "1.0.0",
+  "description": "🏗️ **Enterprise-grade assessment tools for cloud transformation and AI adoption**",
+  "main": "service-worker.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/architecture-audit/frameworks.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/architecture-audit/frameworks/issues"
+  },
+  "homepage": "https://github.com/architecture-audit/frameworks#readme",
+  "dependencies": {
+    "@aws-amplify/cli": "^14.0.0",
+    "aws-amplify": "^6.15.6",
+    "uglify-js": "^3.19.3"
+  },
+  "devDependencies": {
+    "@aws-amplify/backend": "^1.16.1",
+    "@aws-amplify/backend-cli": "^1.8.0",
+    "aws-cdk-lib": "^2.204.0",
+    "constructs": "^10.4.2",
+    "esbuild": "^0.25.9",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2"
+  }
+}

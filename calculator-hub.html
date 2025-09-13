@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assessment Calculators Hub - AI Architecture Audit</title>
+    <meta name="description" content="Choose your assessment calculator - Full-featured or Quick versions available">
+    
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🏗️</text></svg>">
+    <link rel="stylesheet" href="./docs/assets/css/site-navigation.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding-top: 70px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+        }
+        
+        .choice-banner {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .choice-banner h2 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .choice-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .choice-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #e5e7eb 100%);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .choice-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.2);
+        }
+        
+        .choice-card.recommended {
+            background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+            border-color: var(--primary);
+            position: relative;
+        }
+        
+        .recommended-badge {
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .choice-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .features-list {
+            text-align: left;
+            margin: 1rem 0;
+        }
+        
+        .features-list li {
+            list-style: none;
+            padding: 0.5rem 0;
+            color: #64748b;
+        }
+        
+        .features-list li.included::before {
+            content: "✅ ";
+        }
+        
+        .features-list li.not-included::before {
+            content: "❌ ";
+            opacity: 0.5;
+        }
+        
+        .choice-btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        
+        .choice-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+        }
+        
+        .calculators-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        
+        .calculator-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .calculator-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.15);
+        }
+        
+        .calculator-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .calculator-title {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .calculator-description {
+            color: #64748b;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .calculator-features {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-tag {
+            background: #f3f4f6;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            color: #64748b;
+        }
+        
+        .calculator-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 10px 20px;
+            border-radius: 20px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: #f3f4f6;
+            color: var(--primary);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        @media (max-width: 768px) {
+            .choice-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .calculators-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation will be loaded by site-navigation.js -->
+    
+    <div class="container">
+        <div class="header">
+            <h1>🏗️ Assessment Calculators</h1>
+            <p>Choose your preferred experience for enterprise assessments</p>
+        </div>
+        
+        <div class="choice-banner">
+            <h2>🎯 Which Version Should I Use?</h2>
+            <p>We offer two versions of each calculator to suit your needs</p>
+            
+            <div class="choice-options">
+                <div class="choice-card">
+                    <h3>⚡ Quick Version</h3>
+                    <p>All calculators in one page with tabs</p>
+                    <ul class="features-list">
+                        <li class="included">Fast switching between tools</li>
+                        <li class="included">Basic calculations</li>
+                        <li class="included">Excel export</li>
+                        <li class="not-included">Auto-save</li>
+                        <li class="not-included">Progress tracking</li>
+                        <li class="not-included">Advanced features</li>
+                    </ul>
+                    <a href="/calculators.html" class="choice-btn">Use Quick Version</a>
+                </div>
+                
+                <div class="choice-card recommended">
+                    <span class="recommended-badge">RECOMMENDED</span>
+                    <h3>🚀 Full Featured</h3>
+                    <p>Individual calculator with all features</p>
+                    <ul class="features-list">
+                        <li class="included">Auto-save every 30 seconds</li>
+                        <li class="included">Visual progress tracking</li>
+                        <li class="included">Advanced calculations</li>
+                        <li class="included">Excel export</li>
+                        <li class="included">Shareable URLs</li>
+                        <li class="included">Keyboard shortcuts</li>
+                    </ul>
+                    <p style="color: var(--success); font-weight: 600;">Choose a calculator below ↓</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="calculators-grid">
+            <!-- AI Readiness -->
+            <div class="calculator-card">
+                <div class="calculator-icon">🤖</div>
+                <h2 class="calculator-title">AI Readiness Assessment</h2>
+                <p class="calculator-description">
+                    Evaluate your organization's preparedness for AI adoption across data, technology, skills, and strategy dimensions.
+                </p>
+                <div class="calculator-features">
+                    <span class="feature-tag">24 Dimensions</span>
+                    <span class="feature-tag">Maturity Scoring</span>
+                    <span class="feature-tag">ROI Calculator</span>
+                    <span class="feature-tag">Auto-Save</span>
+                </div>
+                <div class="calculator-actions">
+                    <a href="/calculators/ai-readiness/" class="btn btn-primary">Full Version</a>
+                    <a href="/calculators.html#ai-readiness" class="btn btn-secondary">Quick</a>
+                </div>
+            </div>
+            
+            <!-- Cloud Migration -->
+            <div class="calculator-card">
+                <div class="calculator-icon">☁️</div>
+                <h2 class="calculator-title">Cloud Migration Calculator</h2>
+                <p class="calculator-description">
+                    Calculate migration costs, timeline, and complexity for moving to AWS, Azure, or Google Cloud Platform.
+                </p>
+                <div class="calculator-features">
+                    <span class="feature-tag">Cost Analysis</span>
+                    <span class="feature-tag">6R Strategy</span>
+                    <span class="feature-tag">Risk Assessment</span>
+                    <span class="feature-tag">Progress Track</span>
+                </div>
+                <div class="calculator-actions">
+                    <a href="/calculators/cloud-migration/" class="btn btn-primary">Full Version</a>
+                    <a href="/calculators.html#cloud-migration" class="btn btn-secondary">Quick</a>
+                </div>
+            </div>
+            
+            <!-- MLOps Audit -->
+            <div class="calculator-card">
+                <div class="calculator-icon">🔧</div>
+                <h2 class="calculator-title">MLOps Maturity Audit</h2>
+                <p class="calculator-description">
+                    Assess your ML operations maturity from experimentation to production-ready automated pipelines.
+                </p>
+                <div class="calculator-features">
+                    <span class="feature-tag">Pipeline Analysis</span>
+                    <span class="feature-tag">Deployment Metrics</span>
+                    <span class="feature-tag">Governance</span>
+                    <span class="feature-tag">Roadmap</span>
+                </div>
+                <div class="calculator-actions">
+                    <a href="/calculators/mlops-audit/" class="btn btn-primary">Full Version</a>
+                    <a href="/calculators.html#mlops-audit" class="btn btn-secondary">Quick</a>
+                </div>
+            </div>
+            
+            <!-- LLM Framework -->
+            <div class="calculator-card">
+                <div class="calculator-icon">🧠</div>
+                <h2 class="calculator-title">LLM Framework Selector</h2>
+                <p class="calculator-description">
+                    Choose the right large language model and framework for your use case - GPT, Claude, Llama, or others.
+                </p>
+                <div class="calculator-features">
+                    <span class="feature-tag">Model Comparison</span>
+                    <span class="feature-tag">Cost Calculator</span>
+                    <span class="feature-tag">RAG Design</span>
+                    <span class="feature-tag">Fine-tuning</span>
+                </div>
+                <div class="calculator-actions">
+                    <a href="/calculators/llm-framework/" class="btn btn-primary">Full Version</a>
+                    <a href="/calculators.html#llm-framework" class="btn btn-secondary">Quick</a>
+                </div>
+            </div>
+            
+            <!-- Security Audit -->
+            <div class="calculator-card">
+                <div class="calculator-icon">🔒</div>
+                <h2 class="calculator-title">Security Audit Framework</h2>
+                <p class="calculator-description">
+                    Comprehensive security assessment covering NIST, ISO 27001, and cloud security best practices.
+                </p>
+                <div class="calculator-features">
+                    <span class="feature-tag">Compliance Check</span>
+                    <span class="feature-tag">Risk Matrix</span>
+                    <span class="feature-tag">Zero Trust</span>
+                    <span class="feature-tag">Remediation</span>
+                </div>
+                <div class="calculator-actions">
+                    <a href="/calculators/security-audit/" class="btn btn-primary">Full Version</a>
+                    <a href="/calculators.html#security-audit" class="btn btn-secondary">Quick</a>
+                </div>
+            </div>
+            
+            <!-- Cost Optimization -->
+            <div class="calculator-card">
+                <div class="calculator-icon">💰</div>
+                <h2 class="calculator-title">Cost Optimization Tool</h2>
+                <p class="calculator-description">
+                    Identify cost savings opportunities across cloud infrastructure, licenses, and operational expenses.
+                </p>
+                <div class="calculator-features">
+                    <span class="feature-tag">FinOps Analysis</span>
+                    <span class="feature-tag">Waste Detection</span>
+                    <span class="feature-tag">Savings Plan</span>
+                    <span class="feature-tag">Benchmarks</span>
+                </div>
+                <div class="calculator-actions">
+                    <a href="/calculators/cost-optimization/" class="btn btn-primary">Full Version</a>
+                    <a href="/calculators.html#cost-optimization" class="btn btn-secondary">Quick</a>
+                </div>
+            </div>
+        </div>
+        
+        <div style="background: white; border-radius: 20px; padding: 2rem; margin-top: 3rem; text-align: center;">
+            <h2 style="color: var(--primary); margin-bottom: 1rem;">💡 Pro Tip</h2>
+            <p style="color: #64748b; font-size: 1.1rem; line-height: 1.8;">
+                Start with the <strong>Full Featured version</strong> for the best experience. 
+                Your work is automatically saved every 30 seconds, and you can track your progress in real-time. 
+                Switch to the Quick version if you just need rapid calculations without saving.
+            </p>
+        </div>
+    </div>
+    
+    <footer style="background: rgba(255,255,255,0.1); padding: 2rem 0; margin-top: 4rem; text-align: center;">
+        <div style="font-size: 1.1rem; color: white; font-weight: 500;">
+            Built by an Architect, Built for Architects 🏗️
+        </div>
+    </footer>
+    
+    <script src="./docs/assets/js/site-navigation.js"></script>
+</body>
+</html>

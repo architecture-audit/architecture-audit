@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MLOps Audit Calculator - Enterprise ML Operations Assessment</title>
+    <meta name="description" content="Comprehensive MLOps maturity assessment covering model lifecycle, deployment, monitoring, and governance">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🔧</text></svg>">
+    
+    <!-- Navigation CSS -->
+    <link rel="stylesheet" href="/docs/assets/css/site-navigation.css">
+    
+    <!-- MLOps CSS -->
+    <link rel="stylesheet" href="/docs/assets/css/mlops-audit.css">
+    
+    <!-- Clean navbar fix -->
+    <style>
+        /* Minimal override to make navbar visible */
+        nav.site-nav {
+            display: block;
+            visibility: visible;
+        }
+        
+        /* Remove duplicate spacing - calculator CSS already has margin-top: 70px */
+        body {
+            padding-top: 0;
+        }
+    </style>
+    
+    <!-- SheetJS for Excel export -->
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+    <!-- Site Navigation -->
+    <nav class="site-nav">
+        <div class="site-nav-container">
+            <a href="/" class="site-logo">
+                🏢 AI Architecture Audit
+            </a>
+            
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+            
+            <ul class="site-menu" id="siteMenu">
+                <li class="site-menu-item">
+                    <a href="/">Home</a>
+                </li>
+                
+                <li class="site-menu-item has-dropdown">
+                    <a href="#" onclick="event.preventDefault()">Calculators</a>
+                    <div class="dropdown-menu">
+                        <a href="/calculators/ai-readiness/">🤖 AI Readiness</a>
+                        <a href="/calculators/cloud-migration/">☁️ Cloud Migration</a>
+                        <a href="/calculators/mlops-audit/">🔧 MLOps Audit</a>
+                        <a href="/calculators/llm-framework/">🧠 LLM Framework</a>
+                        <a href="/calculators/security-audit/">🔒 Security Audit</a>
+                        <a href="/calculators/genai-security/">🛡️ GenAI Security</a>
+                        <a href="/calculators/cost-optimization/">💰 Cost Optimization</a>
+                    </div>
+                </li>
+                
+                <li class="site-menu-item has-dropdown">
+                    <a href="#" onclick="event.preventDefault()">Documentation</a>
+                    <div class="dropdown-menu">
+                        <a href="/docs/ai-readiness/">📖 AI Readiness Guide</a>
+                        <a href="/docs/cloud-migration/">📖 Cloud Migration Guide</a>
+                        <a href="/docs/mlops-audit/">📖 MLOps Audit Guide</a>
+                        <a href="/docs/llm-framework/">📖 LLM Framework Guide</a>
+                        <a href="/docs/security-audit/">📖 Security Audit Guide</a>
+                        <a href="/docs/genai-security/">📖 GenAI Security Guide</a>
+                        <a href="/docs/cost-optimization/">📖 Cost Optimization Guide</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1>🔧 MLOps Audit Calculator</h1>
+            <p>Comprehensive assessment of your ML operations maturity and practices</p>
+        </div>
+    </header>
+    
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs">
+        <div class="nav-tabs-container">
+            <button class="nav-tab active" data-tab="maturity">
+                <span>📊</span> MLOps Maturity
+            </button>
+            <button class="nav-tab" data-tab="lifecycle">
+                <span>🔄</span> Model Lifecycle
+            </button>
+            <button class="nav-tab" data-tab="deployment">
+                <span>🚀</span> Deployment & Serving
+            </button>
+            <button class="nav-tab" data-tab="monitoring">
+                <span>📈</span> Monitoring & Observability
+            </button>
+            <button class="nav-tab" data-tab="governance">
+                <span>🏛️</span> Governance & Compliance
+            </button>
+            <button class="nav-tab" data-tab="infrastructure">
+                <span>🖥️</span> Infrastructure & Tools
+            </button>
+            <button class="nav-tab" data-tab="team">
+                <span>👥</span> Team & Culture
+            </button>
+            <button class="nav-tab" data-tab="metrics">
+                <span>📉</span> Performance Metrics
+            </button>
+            <button class="nav-tab" data-tab="roadmap">
+                <span>🗺️</span> Improvement Roadmap
+            </button>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="container">
+        <!-- MLOps Maturity Tab -->
+        <div class="tab-content active" id="maturity">
+            <section class="section">
+                <h2>MLOps Maturity Assessment</h2>
+                
+                <div class="alert alert-info">
+                    Evaluate your MLOps practices across key dimensions. Answer questions to automatically calculate your maturity score.
+                </div>
+                
+                <!-- This will be populated by JavaScript -->
+                <div id="mlops-maturity-container"></div>
+            </section>
+        </div>
+        
+        <!-- Model Lifecycle Tab -->
+        <div class="tab-content" id="lifecycle">
+            <section class="section">
+                <h2>Model Lifecycle Management</h2>
+                
+                <table class="assessment-table">
+                    <thead>
+                        <tr>
+                            <th>Model Name</th>
+                            <th>Type</th>
+                            <th>Version</th>
+                            <th>Stage</th>
+                            <th>Performance</th>
+                            <th>Last Updated</th>
+                            <th>Owner</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lifecycle-tbody">
+                        <tr>
+                            <td><input type="text" placeholder="Model name" value="Customer Churn Model"></td>
+                            <td>
+                                <select>
+                                    <option selected>Classification</option>
+                                    <option>Regression</option>
+                                    <option>Clustering</option>
+                                    <option>NLP</option>
+                                    <option>Computer Vision</option>
+                                    <option>Time Series</option>
+                                </select>
+                            </td>
+                            <td><input type="text" placeholder="v1.0.0" value="v2.3.1"></td>
+                            <td>
+                                <select>
+                                    <option>Development</option>
+                                    <option>Staging</option>
+                                    <option selected>Production</option>
+                                    <option>Archived</option>
+                                </select>
+                            </td>
+                            <td><input type="text" placeholder="95% accuracy" value="92% accuracy"></td>
+                            <td><input type="date" value="2024-01-15"></td>
+                            <td><input type="text" placeholder="Team/Owner" value="Data Science Team"></td>
+                            <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <button class="btn btn-secondary" onclick="addLifecycleRow()">+ Add Model</button>
+                
+                <div class="score-display">
+                    <div class="score-card">
+                        <div class="score-label">Total Models</div>
+                        <div class="score-value" id="total-models">1</div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-label">Production Models</div>
+                        <div class="score-value" id="prod-models">1</div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-label">Average Age (days)</div>
+                        <div class="score-value" id="avg-age">240</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Deployment & Serving Tab -->
+        <div class="tab-content" id="deployment">
+            <section class="section">
+                <h2>Model Deployment & Serving</h2>
+                
+                <h3>Deployment Pipeline</h3>
+                <table class="assessment-table">
+                    <thead>
+                        <tr>
+                            <th>Pipeline Stage</th>
+                            <th>Automation Level</th>
+                            <th>Tools Used</th>
+                            <th>SLA (minutes)</th>
+                            <th>Success Rate</th>
+                            <th>Last Deployment</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="deployment-tbody">
+                        <tr>
+                            <td><input type="text" placeholder="Stage name" value="Model Training"></td>
+                            <td>
+                                <select>
+                                    <option>Manual</option>
+                                    <option>Semi-Automated</option>
+                                    <option selected>Fully Automated</option>
+                                </select>
+                            </td>
+                            <td><input type="text" placeholder="Tools" value="Kubeflow, MLflow"></td>
+                            <td><input type="number" placeholder="30" value="45" min="0"></td>
+                            <td><input type="text" placeholder="95%" value="98%"></td>
+                            <td><input type="date" value="2024-01-20"></td>
+                            <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <button class="btn btn-secondary" onclick="addDeploymentRow()">+ Add Pipeline Stage</button>
+                
+                <h3>Serving Infrastructure</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Serving Platform</label>
+                        <select id="serving-platform">
+                            <option>REST API</option>
+                            <option>gRPC</option>
+                            <option>Batch Processing</option>
+                            <option selected>Real-time Streaming</option>
+                            <option>Edge Deployment</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Average Latency (ms)</label>
+                        <input type="number" id="avg-latency" value="50" min="0">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Throughput (req/sec)</label>
+                        <input type="number" id="throughput" value="1000" min="0">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Availability (%)</label>
+                        <input type="number" id="availability" value="99.9" min="0" max="100" step="0.1">
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Monitoring & Observability Tab -->
+        <div class="tab-content" id="monitoring">
+            <section class="section">
+                <h2>Model Monitoring & Observability</h2>
+                
+                <h3>Monitoring Metrics</h3>
+                <table class="assessment-table">
+                    <thead>
+                        <tr>
+                            <th>Metric Type</th>
+                            <th>Metric Name</th>
+                            <th>Current Value</th>
+                            <th>Threshold</th>
+                            <th>Status</th>
+                            <th>Alert Configured</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="monitoring-tbody">
+                        <tr>
+                            <td>
+                                <select>
+                                    <option selected>Data Drift</option>
+                                    <option>Model Performance</option>
+                                    <option>System Performance</option>
+                                    <option>Business Metrics</option>
+                                </select>
+                            </td>
+                            <td><input type="text" placeholder="Metric name" value="Feature Drift Score"></td>
+                            <td><input type="text" placeholder="Current value" value="0.15"></td>
+                            <td><input type="text" placeholder="Threshold" value="0.3"></td>
+                            <td>
+                                <select>
+                                    <option selected>Healthy</option>
+                                    <option>Warning</option>
+                                    <option>Critical</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select>
+                                    <option selected>Yes</option>
+                                    <option>No</option>
+                                </select>
+                            </td>
+                            <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <button class="btn btn-secondary" onclick="addMonitoringRow()">+ Add Metric</button>
+                
+                <h3>Observability Tools</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Logging Solution</label>
+                        <input type="text" id="logging-solution" placeholder="e.g., ELK Stack" value="ELK Stack">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Monitoring Platform</label>
+                        <input type="text" id="monitoring-platform" placeholder="e.g., Prometheus" value="Prometheus + Grafana">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Experiment Tracking</label>
+                        <input type="text" id="experiment-tracking" placeholder="e.g., MLflow" value="MLflow">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Model Registry</label>
+                        <input type="text" id="model-registry" placeholder="e.g., Model Registry" value="MLflow Model Registry">
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Governance & Compliance Tab -->
+        <div class="tab-content" id="governance">
+            <section class="section">
+                <h2>ML Governance & Compliance</h2>
+                
+                <table class="assessment-table">
+                    <thead>
+                        <tr>
+                            <th>Governance Area</th>
+                            <th>Requirement</th>
+                            <th>Status</th>
+                            <th>Documentation</th>
+                            <th>Audit Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="governance-tbody">
+                        <tr>
+                            <td>
+                                <select>
+                                    <option selected>Model Bias</option>
+                                    <option>Data Privacy</option>
+                                    <option>Explainability</option>
+                                    <option>Reproducibility</option>
+                                    <option>Security</option>
+                                    <option>Compliance</option>
+                                </select>
+                            </td>
+                            <td><input type="text" placeholder="Requirement" value="Fairness metrics tracked"></td>
+                            <td>
+                                <select>
+                                    <option selected>Compliant</option>
+                                    <option>Partial</option>
+                                    <option>Non-Compliant</option>
+                                    <option>N/A</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select>
+                                    <option selected>Complete</option>
+                                    <option>In Progress</option>
+                                    <option>Missing</option>
+                                </select>
+                            </td>
+                            <td><input type="date" value="2024-01-10"></td>
+                            <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <button class="btn btn-secondary" onclick="addGovernanceRow()">+ Add Governance Item</button>
+                
+                <div class="alert alert-warning">
+                    <strong>Note:</strong> Ensure all ML models comply with regulatory requirements and ethical guidelines.
+                </div>
+            </section>
+        </div>
+        
+        <!-- Infrastructure & Tools Tab -->
+        <div class="tab-content" id="infrastructure">
+            <section class="section">
+                <h2>ML Infrastructure & Tools</h2>
+                
+                <table class="assessment-table">
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Category</th>
+                            <th>Tool/Platform</th>
+                            <th>Version</th>
+                            <th>License</th>
+                            <th>Cost/Month ($)</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="infra-tbody">
+                        <tr>
+                            <td><input type="text" placeholder="Component" value="Training Platform"></td>
+                            <td>
+                                <select>
+                                    <option selected>Compute</option>
+                                    <option>Storage</option>
+                                    <option>Orchestration</option>
+                                    <option>Feature Store</option>
+                                    <option>Model Registry</option>
+                                    <option>Monitoring</option>
+                                </select>
+                            </td>
+                            <td><input type="text" placeholder="Tool/Platform" value="AWS SageMaker"></td>
+                            <td><input type="text" placeholder="Version" value="Latest"></td>
+                            <td>
+                                <select>
+                                    <option>Open Source</option>
+                                    <option selected>Commercial</option>
+                                    <option>Enterprise</option>
+                                </select>
+                            </td>
+                            <td><input type="number" placeholder="1000" value="5000" min="0"></td>
+                            <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <button class="btn btn-secondary" onclick="addInfraRow()">+ Add Component</button>
+                
+                <div class="score-display">
+                    <div class="score-card">
+                        <div class="score-label">Total Monthly Cost</div>
+                        <div class="score-value" id="total-cost">$5,000</div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-label">Open Source %</div>
+                        <div class="score-value" id="opensource-percent">40%</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Team & Culture Tab -->
+        <div class="tab-content" id="team">
+            <section class="section">
+                <h2>MLOps Team & Culture</h2>
+                
+                <h3>Team Skills Assessment</h3>
+                <table class="assessment-table">
+                    <thead>
+                        <tr>
+                            <th>Role</th>
+                            <th>Skill Area</th>
+                            <th>Current Level</th>
+                            <th>Required Level</th>
+                            <th>Gap</th>
+                            <th>Training Plan</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="team-tbody">
+                        <tr>
+                            <td>
+                                <select>
+                                    <option selected>ML Engineer</option>
+                                    <option>Data Scientist</option>
+                                    <option>DevOps Engineer</option>
+                                    <option>Data Engineer</option>
+                                    <option>Platform Engineer</option>
+                                </select>
+                            </td>
+                            <td><input type="text" placeholder="Skill area" value="Kubernetes"></td>
+                            <td>
+                                <select onchange="updateTeamGap(this)">
+                                    <option value="1">Beginner</option>
+                                    <option value="2" selected>Intermediate</option>
+                                    <option value="3">Advanced</option>
+                                    <option value="4">Expert</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select onchange="updateTeamGap(this)">
+                                    <option value="1">Beginner</option>
+                                    <option value="2">Intermediate</option>
+                                    <option value="3" selected>Advanced</option>
+                                    <option value="4">Expert</option>
+                                </select>
+                            </td>
+                            <td class="gap-score">1</td>
+                            <td><input type="text" placeholder="Training plan" value="K8s certification course"></td>
+                            <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <button class="btn btn-secondary" onclick="addTeamRow()">+ Add Skill Assessment</button>
+                
+                <h3>Culture & Practices</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Collaboration Level</label>
+                        <select id="collaboration">
+                            <option>Siloed</option>
+                            <option>Limited</option>
+                            <option selected>Good</option>
+                            <option>Excellent</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Documentation Quality</label>
+                        <select id="documentation">
+                            <option>Poor</option>
+                            <option>Basic</option>
+                            <option selected>Good</option>
+                            <option>Excellent</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Knowledge Sharing</label>
+                        <select id="knowledge-sharing">
+                            <option>None</option>
+                            <option>Occasional</option>
+                            <option selected>Regular</option>
+                            <option>Systematic</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Innovation Culture</label>
+                        <select id="innovation">
+                            <option>Low</option>
+                            <option>Moderate</option>
+                            <option selected>High</option>
+                            <option>Very High</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Performance Metrics Tab -->
+        <div class="tab-content" id="metrics">
+            <section class="section">
+                <h2>MLOps Performance Metrics</h2>
+                
+                <h3>Key Performance Indicators</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Model Deployment Frequency (per month)</label>
+                        <input type="number" id="deployment-freq" value="12" min="0">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Average Time to Production (days)</label>
+                        <input type="number" id="time-to-prod" value="14" min="0">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Model Failure Rate (%)</label>
+                        <input type="number" id="failure-rate" value="2" min="0" max="100">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Rollback Frequency (per month)</label>
+                        <input type="number" id="rollback-freq" value="1" min="0">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Experiment to Production Ratio</label>
+                        <input type="text" id="exp-prod-ratio" value="10:1">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Model Retraining Frequency (days)</label>
+                        <input type="number" id="retrain-freq" value="30" min="0">
+                    </div>
+                </div>
+                
+                <div class="score-display">
+                    <div class="score-card">
+                        <div class="score-label">MLOps Velocity Score</div>
+                        <div class="score-value" id="velocity-score">85%</div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-label">Reliability Score</div>
+                        <div class="score-value" id="reliability-score">98%</div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-label">Efficiency Score</div>
+                        <div class="score-value" id="efficiency-score">75%</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Improvement Roadmap Tab -->
+        <div class="tab-content" id="roadmap">
+            <section class="section">
+                <h2>MLOps Improvement Roadmap</h2>
+                
+                <table class="assessment-table">
+                    <thead>
+                        <tr>
+                            <th>Initiative</th>
+                            <th>Priority</th>
+                            <th>Impact Area</th>
+                            <th>Effort (Weeks)</th>
+                            <th>Quarter</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="roadmap-tbody">
+                        <tr>
+                            <td><input type="text" placeholder="Initiative" value="Implement Feature Store"></td>
+                            <td>
+                                <select>
+                                    <option>Low</option>
+                                    <option>Medium</option>
+                                    <option selected>High</option>
+                                    <option>Critical</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select>
+                                    <option selected>Data Management</option>
+                                    <option>Model Development</option>
+                                    <option>Deployment</option>
+                                    <option>Monitoring</option>
+                                    <option>Governance</option>
+                                </select>
+                            </td>
+                            <td><input type="number" placeholder="4" value="8" min="1"></td>
+                            <td>
+                                <select>
+                                    <option selected>Q1 2024</option>
+                                    <option>Q2 2024</option>
+                                    <option>Q3 2024</option>
+                                    <option>Q4 2024</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select>
+                                    <option>Not Started</option>
+                                    <option selected>Planning</option>
+                                    <option>In Progress</option>
+                                    <option>Completed</option>
+                                </select>
+                            </td>
+                            <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <button class="btn btn-secondary" onclick="addRoadmapRow()">+ Add Initiative</button>
+            </section>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="button-group">
+            <button class="btn btn-primary" onclick="exportToExcel()">📥 Export to Excel</button>
+            <button class="btn btn-primary" onclick="saveProgress()">💾 Save Progress</button>
+            <button class="btn btn-secondary" onclick="shareResults()">🔗 Share Link</button>
+            <button class="btn btn-secondary" onclick="generateReport()">📄 Generate Report</button>
+            <button class="btn btn-secondary" onclick="resetCalculator()">🔄 Reset All</button>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer style="background: #f8fafc; padding: 2rem 0; margin-top: 4rem; text-align: center; border-top: 1px solid #e2e8f0;">
+        <div style="font-size: 1.1rem; color: #6366f1; font-weight: 500;">
+            Built with ❤️ by architects, for architects! 🚀
+        </div>
+    </footer>
+    
+    <!-- Loading Overlay Fix -->
+    <script src="/docs/assets/js/loading-overlay-fix.js"></script>
+    
+    <!-- Load AutoSave separately to ensure availability -->
+    <script src="/docs/assets/js/auto-save.js"></script>
+
+    <!-- Load Notifications separately -->
+    <script src="/docs/assets/js/notifications.js"></script>
+
+    <!-- Bundled Utilities (lightweight) - COMMENTED OUT FOR PERFORMANCE -->
+    <!-- <script src="/docs/assets/js/bundle-utilities.js"></script> -->
+    
+    <!-- Features Bundle (lightweight) - COMMENTED OUT FOR PERFORMANCE -->
+    <!-- <script src="/docs/assets/js/bundle-features.js"></script> -->
+
+    <!-- Calculator Specific JavaScript -->
+    <script src="/docs/assets/js/mlops-audit.js"></script>
+    
+    <script>
+    function toggleMobileMenu() {
+        const menu = document.getElementById('siteMenu');
+        if (menu) {
+            menu.classList.toggle('active');
+        }
+    }
+    </script>
+</body>
+</html>

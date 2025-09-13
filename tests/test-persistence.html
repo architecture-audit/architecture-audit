@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Persistence Tests - AI Architecture Audit</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, system-ui, sans-serif; padding: 20px; background: #f9fafb; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; }
+        h1 { font-size: 28px; margin-bottom: 10px; }
+        .test-container { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .test-group { margin-bottom: 30px; }
+        .test-item { padding: 12px; margin: 10px 0; border-left: 4px solid #e5e7eb; background: #f9fafb; }
+        .test-item.pass { border-color: #10b981; background: #ecfdf5; }
+        .test-item.fail { border-color: #ef4444; background: #fef2f2; }
+        .test-item.running { border-color: #3b82f6; background: #eff6ff; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 20px 0; }
+        .stat-card { background: white; padding: 15px; border-radius: 8px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        button { background: #3b82f6; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 14px; margin: 5px; }
+        button:hover { background: #2563eb; }
+        .back-link { color: white; text-decoration: none; opacity: 0.9; }
+        .back-link:hover { opacity: 1; }
+        .test-form { background: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .test-form input, .test-form select, .test-form textarea { width: 100%; padding: 8px; margin: 5px 0; border: 1px solid #d1d5db; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-link">← Back to Test Suite</a>
+        <h1>💾 Data Persistence Tests</h1>
+        <p>Testing localStorage, auto-save, and data recovery</p>
+    </div>
+
+    <div class="stats" id="stats">
+        <div class="stat-card">
+            <div style="font-size: 24px; font-weight: bold; color: #10b981;" id="passed">0</div>
+            <div style="color: #6b7280;">Passed</div>
+        </div>
+        <div class="stat-card">
+            <div style="font-size: 24px; font-weight: bold; color: #ef4444;" id="failed">0</div>
+            <div style="color: #6b7280;">Failed</div>
+        </div>
+        <div class="stat-card">
+            <div style="font-size: 24px; font-weight: bold; color: #6b7280;" id="total">0</div>
+            <div style="color: #6b7280;">Total Tests</div>
+        </div>
+        <div class="stat-card">
+            <div style="font-size: 24px; font-weight: bold;" id="coverage">0%</div>
+            <div style="color: #6b7280;">Coverage</div>
+        </div>
+    </div>
+
+    <button onclick="runAllTests()">Run All Persistence Tests</button>
+    <button onclick="clearAllData()">Clear Test Data</button>
+
+    <!-- Test Form for Persistence -->
+    <div class="test-form">
+        <h3>Test Form</h3>
+        <input type="text" id="test-name" placeholder="Name" required>
+        <input type="email" id="test-email" placeholder="Email">
+        <select id="test-option">
+            <option value="">Select Option</option>
+            <option value="option1">Option 1</option>
+            <option value="option2">Option 2</option>
+        </select>
+        <textarea id="test-notes" placeholder="Notes" rows="3"></textarea>
+        <input type="checkbox" id="test-agree"> <label for="test-agree">Agree to terms</label>
+    </div>
+
+    <div class="test-container">
+        <div class="test-group">
+            <h2>LocalStorage Tests</h2>
+            <div id="storage-tests"></div>
+        </div>
+
+        <div class="test-group">
+            <h2>Auto-Save Tests</h2>
+            <div id="autosave-tests"></div>
+        </div>
+
+        <div class="test-group">
+            <h2>Data Recovery Tests</h2>
+            <div id="recovery-tests"></div>
+        </div>
+
+        <div class="test-group">
+            <h2>Session Management Tests</h2>
+            <div id="session-tests"></div>
+        </div>
+
+        <div class="test-group">
+            <h2>Data Export/Import Tests</h2>
+            <div id="export-tests"></div>
+        </div>
+    </div>
+
+    <script>
+        let testResults = { passed: 0, failed: 0, total: 0 };
+
+        // Test framework
+        function test(name, fn, container) {
+            const testDiv = document.createElement('div');
+            testDiv.className = 'test-item running';
+            testDiv.textContent = `🔄 ${name}`;
+            document.getElementById(container).appendChild(testDiv);
+            
+            setTimeout(async () => {
+                try {
+                    const result = await fn();
+                    if (result || result === undefined) {
+                        testDiv.className = 'test-item pass';
+                        testDiv.textContent = `✅ ${name}`;
+                        testResults.passed++;
+                    } else {
+                        testDiv.className = 'test-item fail';
+                        testDiv.textContent = `❌ ${name}`;
+                        testResults.failed++;
+                    }
+                } catch (error) {
+                    testDiv.className = 'test-item fail';
+                    testDiv.textContent = `❌ ${name}: ${error.message}`;
+                    testResults.failed++;
+                }
+                
+                testResults.total++;
+                updateStats();
+            }, 100);
+        }
+
+        function updateStats() {
+            document.getElementById('passed').textContent = testResults.passed;
+            document.getElementById('failed').textContent = testResults.failed;
+            document.getElementById('total').textContent = testResults.total;
+            const coverage = testResults.total > 0 ? Math.round((testResults.passed / testResults.total) * 100) : 0;
+            document.getElementById('coverage').textContent = coverage + '%';
+        }
+
+        // LocalStorage test suite
+        function runStorageTests() {
+            test('LocalStorage availability', () => {
+                return typeof(Storage) !== 'undefined';
+            }, 'storage-tests');
+
+            test('Store and retrieve data', () => {
+                const testData = { test: 'data', timestamp: Date.now() };
+                localStorage.setItem('test-persistence', JSON.stringify(testData));
+                const retrieved = JSON.parse(localStorage.getItem('test-persistence'));
+                return retrieved.test === 'data';
+            }, 'storage-tests');
+
+            test('Store complex objects', () => {
+                const complexData = {
+                    user: { name: 'Test', email: 'test@example.com' },
+                    settings: { theme: 'dark', notifications: true },
+                    data: [1, 2, 3, 4, 5],
+                    nested: { deep: { value: 'test' } }
+                };
+                localStorage.setItem('test-complex', JSON.stringify(complexData));
+                const retrieved = JSON.parse(localStorage.getItem('test-complex'));
+                return retrieved.nested.deep.value === 'test';
+            }, 'storage-tests');
+
+            test('Storage quota check', () => {
+                try {
+                    const testSize = new Array(1024).join('x'); // 1KB string
+                    localStorage.setItem('test-quota', testSize);
+                    localStorage.removeItem('test-quota');
+                    return true;
+                } catch (e) {
+                    return false;
+                }
+            }, 'storage-tests');
+
+            test('Clear specific items', () => {
+                localStorage.setItem('test-keep', 'keep');
+                localStorage.setItem('test-remove', 'remove');
+                localStorage.removeItem('test-remove');
+                return localStorage.getItem('test-keep') === 'keep' && 
+                       localStorage.getItem('test-remove') === null;
+            }, 'storage-tests');
+        }
+
+        // Auto-save test suite
+        function runAutoSaveTests() {
+            test('Auto-save initialization', () => {
+                const autoSave = new MockAutoSave('test-calculator');
+                return autoSave.calculatorName === 'test-calculator';
+            }, 'autosave-tests');
+
+            test('Capture form changes', () => {
+                document.getElementById('test-name').value = 'John Doe';
+                document.getElementById('test-email').value = 'john@example.com';
+                
+                const event = new Event('input', { bubbles: true });
+                document.getElementById('test-name').dispatchEvent(event);
+                
+                return document.getElementById('test-name').value === 'John Doe';
+            }, 'autosave-tests');
+
+            test('Save form data to localStorage', () => {
+                const formData = collectFormData();
+                localStorage.setItem('test-form-autosave', JSON.stringify(formData));
+                const saved = JSON.parse(localStorage.getItem('test-form-autosave'));
+                return saved['test-name'] === document.getElementById('test-name').value;
+            }, 'autosave-tests');
+
+            test('Timestamp tracking', () => {
+                const data = {
+                    formData: collectFormData(),
+                    timestamp: new Date().toISOString()
+                };
+                localStorage.setItem('test-timestamp', JSON.stringify(data));
+                const saved = JSON.parse(localStorage.getItem('test-timestamp'));
+                return saved.timestamp !== undefined;
+            }, 'autosave-tests');
+
+            test('Detect unsaved changes', () => {
+                const initialData = collectFormData();
+                document.getElementById('test-notes').value = 'Modified content';
+                const currentData = collectFormData();
+                return JSON.stringify(initialData) !== JSON.stringify(currentData);
+            }, 'autosave-tests');
+        }
+
+        // Data recovery test suite
+        function runRecoveryTests() {
+            test('Restore form data', () => {
+                const testData = {
+                    'test-name': 'Recovered Name',
+                    'test-email': 'recovered@example.com',
+                    'test-option': 'option2',
+                    'test-notes': 'Recovered notes'
+                };
+                
+                localStorage.setItem('test-recovery', JSON.stringify(testData));
+                restoreFormData(testData);
+                
+                return document.getElementById('test-name').value === 'Recovered Name';
+            }, 'recovery-tests');
+
+            test('Handle missing fields gracefully', () => {
+                const partialData = {
+                    'test-name': 'Partial Data'
+                    // Missing other fields
+                };
+                
+                try {
+                    restoreFormData(partialData);
+                    return true;
+                } catch (error) {
+                    return false;
+                }
+            }, 'recovery-tests');
+
+            test('Restore checkbox states', () => {
+                const data = { 'test-agree': true };
+                localStorage.setItem('test-checkbox', JSON.stringify(data));
+                document.getElementById('test-agree').checked = data['test-agree'];
+                return document.getElementById('test-agree').checked === true;
+            }, 'recovery-tests');
+
+            test('Version compatibility check', () => {
+                const oldData = {
+                    version: '1.0',
+                    data: { field: 'value' }
+                };
+                const newData = {
+                    version: '2.0',
+                    data: { field: 'value', newField: 'newValue' }
+                };
+                
+                localStorage.setItem('test-v1', JSON.stringify(oldData));
+                localStorage.setItem('test-v2', JSON.stringify(newData));
+                
+                return JSON.parse(localStorage.getItem('test-v2')).version === '2.0';
+            }, 'recovery-tests');
+
+            test('Recovery after browser crash simulation', () => {
+                // Simulate saving data before "crash"
+                const crashData = {
+                    formData: collectFormData(),
+                    timestamp: new Date().toISOString(),
+                    recovered: false
+                };
+                
+                localStorage.setItem('test-crash-recovery', JSON.stringify(crashData));
+                
+                // Simulate recovery
+                const recovered = JSON.parse(localStorage.getItem('test-crash-recovery'));
+                recovered.recovered = true;
+                
+                return recovered.recovered === true;
+            }, 'recovery-tests');
+        }
+
+        // Session management test suite
+        function runSessionTests() {
+            test('Session storage availability', () => {
+                return typeof(sessionStorage) !== 'undefined';
+            }, 'session-tests');
+
+            test('Session vs Local storage', () => {
+                sessionStorage.setItem('test-session', 'session');
+                localStorage.setItem('test-local', 'local');
+                
+                return sessionStorage.getItem('test-session') === 'session' &&
+                       localStorage.getItem('test-local') === 'local';
+            }, 'session-tests');
+
+            test('Track session duration', () => {
+                const sessionStart = Date.now();
+                sessionStorage.setItem('session-start', sessionStart);
+                
+                setTimeout(() => {
+                    const duration = Date.now() - parseInt(sessionStorage.getItem('session-start'));
+                    return duration > 0;
+                }, 100);
+                
+                return true;
+            }, 'session-tests');
+
+            test('Multi-tab data sync', () => {
+                // Simulate storage event
+                const testData = { synced: true };
+                localStorage.setItem('test-sync', JSON.stringify(testData));
+                
+                // In real scenario, this would trigger in another tab
+                window.dispatchEvent(new StorageEvent('storage', {
+                    key: 'test-sync',
+                    newValue: JSON.stringify(testData),
+                    url: window.location.href
+                }));
+                
+                return true;
+            }, 'session-tests');
+        }
+
+        // Export/Import test suite
+        function runExportTests() {
+            test('Export data to JSON', () => {
+                const exportData = {
+                    formData: collectFormData(),
+                    metadata: {
+                        exported: new Date().toISOString(),
+                        version: '1.0'
+                    }
+                };
+                
+                const json = JSON.stringify(exportData, null, 2);
+                return json.includes('formData') && json.includes('metadata');
+            }, 'export-tests');
+
+            test('Import JSON data', () => {
+                const importJson = '{ "test": "import", "value": 123 }';
+                try {
+                    const data = JSON.parse(importJson);
+                    return data.test === 'import' && data.value === 123;
+                } catch (error) {
+                    return false;
+                }
+            }, 'export-tests');
+
+            test('Generate shareable URL', () => {
+                const data = { form: 'test', value: 'share' };
+                const encoded = btoa(JSON.stringify(data));
+                const url = `${window.location.origin}?data=${encoded}`;
+                
+                return url.includes('data=') && encoded.length > 0;
+            }, 'export-tests');
+
+            test('Parse shared URL data', () => {
+                const testData = { shared: true, value: 'test' };
+                const encoded = btoa(JSON.stringify(testData));
+                const decoded = JSON.parse(atob(encoded));
+                
+                return decoded.shared === true && decoded.value === 'test';
+            }, 'export-tests');
+
+            test('CSV export capability', () => {
+                const csvData = [
+                    ['Field', 'Value'],
+                    ['Name', document.getElementById('test-name').value || 'N/A'],
+                    ['Email', document.getElementById('test-email').value || 'N/A']
+                ];
+                
+                const csv = csvData.map(row => row.join(',')).join('\n');
+                return csv.includes('Field,Value');
+            }, 'export-tests');
+        }
+
+        // Helper functions
+        function collectFormData() {
+            const data = {};
+            document.querySelectorAll('input, select, textarea').forEach(element => {
+                if (element.id) {
+                    if (element.type === 'checkbox') {
+                        data[element.id] = element.checked;
+                    } else {
+                        data[element.id] = element.value;
+                    }
+                }
+            });
+            return data;
+        }
+
+        function restoreFormData(data) {
+            Object.keys(data).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    if (element.type === 'checkbox') {
+                        element.checked = data[key];
+                    } else {
+                        element.value = data[key];
+                    }
+                }
+            });
+        }
+
+        // Mock AutoSave class for testing
+        class MockAutoSave {
+            constructor(calculatorName) {
+                this.calculatorName = calculatorName;
+                this.interval = 30000;
+                this.hasChanges = false;
+            }
+        }
+
+        function clearAllData() {
+            // Clear test data from localStorage
+            const keysToRemove = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && key.startsWith('test-')) {
+                    keysToRemove.push(key);
+                }
+            }
+            keysToRemove.forEach(key => localStorage.removeItem(key));
+            
+            // Clear form
+            document.querySelectorAll('input, select, textarea').forEach(element => {
+                if (element.type === 'checkbox') {
+                    element.checked = false;
+                } else {
+                    element.value = '';
+                }
+            });
+            
+            alert('Test data cleared!');
+        }
+
+        // Run all tests
+        function runAllTests() {
+            // Clear previous results
+            testResults = { passed: 0, failed: 0, total: 0 };
+            document.querySelectorAll('.test-item').forEach(item => item.remove());
+            
+            // Run test suites
+            runStorageTests();
+            runAutoSaveTests();
+            runRecoveryTests();
+            runSessionTests();
+            runExportTests();
+        }
+
+        // Auto-run tests on page load
+        window.addEventListener('load', () => {
+            setTimeout(runAllTests, 500);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator Tests - AI Architecture Audit</title>
+    
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #f3f4f6;
+            padding: 20px;
+            margin: 0;
+        }
+        
+        .header {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            margin: 0;
+            color: #1f2937;
+            font-size: 24px;
+        }
+        
+        .test-container {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .test-item {
+            padding: 12px;
+            border-left: 4px solid #e5e7eb;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .test-item.pass {
+            border-left-color: #10b981;
+            background: #f0fdf4;
+        }
+        
+        .test-item.fail {
+            border-left-color: #ef4444;
+            background: #fef2f2;
+        }
+        
+        .test-item.running {
+            border-left-color: #3b82f6;
+            background: #eff6ff;
+        }
+        
+        .status {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status.pass { background: #10b981; color: white; }
+        .status.fail { background: #ef4444; color: white; }
+        .status.pending { background: #6b7280; color: white; }
+        .status.running { background: #3b82f6; color: white; }
+        
+        button {
+            background: #6366f1;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+        
+        button:hover {
+            background: #4f46e5;
+        }
+        
+        .results {
+            background: #f9fafb;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        
+        .calculator-section {
+            margin-bottom: 30px;
+        }
+        
+        .calculator-section h2 {
+            color: #4b5563;
+            font-size: 18px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📊 Calculator Test Suite</h1>
+        <p style="color: #6b7280; margin-top: 10px;">Testing all 6 calculator tools for functionality and integration</p>
+        <div style="margin-top: 20px;">
+            <button onclick="runAllTests()">🚀 Run All Tests</button>
+            <button onclick="clearResults()">🔄 Clear Results</button>
+            <button onclick="window.location.href='index.html'" style="background: #6b7280;">← Back to Dashboard</button>
+        </div>
+    </div>
+    
+    <div class="test-container">
+        <!-- AI Readiness Calculator -->
+        <div class="calculator-section">
+            <h2>🤖 AI Readiness Calculator</h2>
+            <div class="test-item" id="ai-load">
+                <span>Page loads successfully</span>
+                <span class="status pending">PENDING</span>
+            </div>
+            <div class="test-item" id="ai-utilities">
+                <span>Utility scripts loaded</span>
+                <span class="status pending">PENDING</span>
+            </div>
+            <div class="test-item" id="ai-save">
+                <span>Save/Share buttons present</span>
+                <span class="status pending">PENDING</span>
+            </div>
+        </div>
+        
+        <!-- Cloud Migration Calculator -->
+        <div class="calculator-section">
+            <h2>☁️ Cloud Migration Calculator</h2>
+            <div class="test-item" id="cloud-load">
+                <span>Page loads successfully</span>
+                <span class="status pending">PENDING</span>
+            </div>
+            <div class="test-item" id="cloud-utilities">
+                <span>Utility scripts loaded</span>
+                <span class="status pending">PENDING</span>
+            </div>
+            <div class="test-item" id="cloud-integration">
+                <span>LoadingOverlay integration</span>
+                <span class="status pending">PENDING</span>
+            </div>
+        </div>
+        
+        <!-- MLOps Audit Calculator -->
+        <div class="calculator-section">
+            <h2>🔧 MLOps Audit Calculator</h2>
+            <div class="test-item" id="mlops-load">
+                <span>Page loads successfully</span>
+                <span class="status pending">PENDING</span>
+            </div>
+            <div class="test-item" id="mlops-utilities">
+                <span>Utility scripts loaded</span>
+                <span class="status pending">PENDING</span>
+            </div>
+            <div class="test-item" id="mlops-save">
+                <span>Save/Share buttons present</span>
+                <span class="status pending">PENDING</span>
+            </div>
+        </div>
+        
+        <!-- LLM Framework Calculator -->
+        <div class="calculator-section">
+            <h2>🧠 LLM Framework Calculator</h2>
+            <div class="test-item" id="llm-load">
+                <span>Page loads successfully</span>
+                <span class="status pending">PENDING</span>
+            </div>
+            <div class="test-item" id="llm-utilities">
+                <span>Utility scripts loaded</span>
+                <span class="status pending">PENDING</span>
+            </div>
+            <div class="test-item" id="llm-save">
+                <span>Save/Share buttons present</span>
+                <span class="status pending">PENDING</span>
+            </div>
+        </div>
+        
+        <!-- Security Audit Calculator -->
+        <div class="calculator-section">
+            <h2>🔒 Security Audit Calculator</h2>
+            <div class="test-item" id="security-load">
+                <span>Page loads successfully</span>
+                <span class="status pending">PENDING</span>
+            </div>
+            <div class="test-item" id="security-utilities">
+                <span>Utility scripts loaded</span>
+                <span class="status pending">PENDING</span>
+            </div>
+            <div class="test-item" id="security-save">
+                <span>Save/Share buttons present</span>
+                <span class="status pending">PENDING</span>
+            </div>
+        </div>
+        
+        <!-- Cost Optimization Calculator -->
+        <div class="calculator-section">
+            <h2>💰 Cost Optimization Calculator</h2>
+            <div class="test-item" id="cost-load">
+                <span>Page loads successfully</span>
+                <span class="status pending">PENDING</span>
+            </div>
+            <div class="test-item" id="cost-utilities">
+                <span>Utility scripts loaded</span>
+                <span class="status pending">PENDING</span>
+            </div>
+            <div class="test-item" id="cost-integration">
+                <span>LoadingOverlay integration</span>
+                <span class="status pending">PENDING</span>
+            </div>
+        </div>
+        
+        <div class="results">
+            <h3>Test Results</h3>
+            <p id="results-summary">Click "Run All Tests" to begin testing...</p>
+        </div>
+    </div>
+    
+    <script>
+        let testResults = { total: 0, passed: 0, failed: 0 };
+        
+        function updateTest(id, status, message) {
+            const testItem = document.getElementById(id);
+            if (!testItem) return;
+            
+            testItem.className = `test-item ${status}`;
+            const statusEl = testItem.querySelector('.status');
+            statusEl.className = `status ${status}`;
+            statusEl.textContent = status.toUpperCase();
+            
+            if (status === 'pass') testResults.passed++;
+            else if (status === 'fail') testResults.failed++;
+            
+            updateSummary();
+        }
+        
+        function updateSummary() {
+            const summary = document.getElementById('results-summary');
+            const percentage = testResults.total > 0 
+                ? Math.round((testResults.passed / testResults.total) * 100) 
+                : 0;
+            
+            summary.innerHTML = `
+                <strong>Results:</strong> ${testResults.passed}/${testResults.total} passed (${percentage}%)<br>
+                <strong>Status:</strong> ${testResults.failed === 0 ? '✅ All tests passed!' : `❌ ${testResults.failed} tests failed`}
+            `;
+        }
+        
+        async function testCalculator(prefix, url, name) {
+            // Test page load
+            updateTest(`${prefix}-load`, 'running');
+            try {
+                const response = await fetch(url);
+                if (response.ok) {
+                    updateTest(`${prefix}-load`, 'pass');
+                    const html = await response.text();
+                    
+                    // Test utilities
+                    if (html.includes('notifications.js')) {
+                        updateTest(`${prefix}-utilities`, 'pass');
+                    } else {
+                        updateTest(`${prefix}-utilities`, 'fail');
+                    }
+                    
+                    // Test save/share or integration
+                    if (prefix === 'cloud' || prefix === 'cost') {
+                        // Check for LoadingOverlay integration
+                        const hasIntegration = html.includes('LoadingOverlay') || 
+                                               html.includes('window.notify');
+                        updateTest(`${prefix}-integration`, hasIntegration ? 'pass' : 'fail');
+                    } else {
+                        // Check for save/share buttons
+                        const hasSave = html.includes('saveProgress');
+                        const hasShare = html.includes('shareResults') || html.includes('shareReport');
+                        updateTest(`${prefix}-save`, hasSave && hasShare ? 'pass' : 
+                                  hasSave ? 'warning' : 'fail');
+                    }
+                } else {
+                    updateTest(`${prefix}-load`, 'fail');
+                    updateTest(`${prefix}-utilities`, 'fail');
+                    if (document.getElementById(`${prefix}-save`)) {
+                        updateTest(`${prefix}-save`, 'fail');
+                    }
+                    if (document.getElementById(`${prefix}-integration`)) {
+                        updateTest(`${prefix}-integration`, 'fail');
+                    }
+                }
+            } catch (error) {
+                updateTest(`${prefix}-load`, 'fail');
+            }
+        }
+        
+        async function runAllTests() {
+            testResults = { total: 18, passed: 0, failed: 0 };
+            
+            // Reset all tests to running
+            document.querySelectorAll('.test-item').forEach(item => {
+                item.className = 'test-item running';
+                item.querySelector('.status').className = 'status running';
+                item.querySelector('.status').textContent = 'RUNNING';
+            });
+            
+            // Test all calculators
+            await testCalculator('ai', '../ai-readiness/calculator.html', 'AI Readiness');
+            await testCalculator('cloud', '../cloud-migration/calculator.html', 'Cloud Migration');
+            await testCalculator('mlops', '../mlops-audit/calculator.html', 'MLOps Audit');
+            await testCalculator('llm', '../llm-framework/calculator.html', 'LLM Framework');
+            await testCalculator('security', '../security-audit/calculator.html', 'Security Audit');
+            await testCalculator('cost', '../cost-optimization/calculator.html', 'Cost Optimization');
+            
+            updateSummary();
+        }
+        
+        function clearResults() {
+            testResults = { total: 0, passed: 0, failed: 0 };
+            document.querySelectorAll('.test-item').forEach(item => {
+                item.className = 'test-item';
+                item.querySelector('.status').className = 'status pending';
+                item.querySelector('.status').textContent = 'PENDING';
+            });
+            document.getElementById('results-summary').textContent = 'Click "Run All Tests" to begin testing...';
+        }
+    </script>
+</body>
+</html>

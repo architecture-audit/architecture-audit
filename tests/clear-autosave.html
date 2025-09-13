@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Clear Auto-Save Data</title>
+    <style>
+        body { font-family: system-ui; padding: 40px; background: #1a1a1a; color: white; }
+        button { padding: 15px 30px; font-size: 18px; background: #60a5fa; color: white; border: none; border-radius: 8px; cursor: pointer; margin: 10px; }
+        button:hover { background: #3b82f6; }
+        .success { color: #4ade80; margin-top: 20px; font-size: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Clear Auto-Save Data</h1>
+    <button onclick="clearAutoSave()">🗑️ Clear All Auto-Save Data</button>
+    <button onclick="clearSpecific('ai-readiness')">Clear AI Readiness Only</button>
+    <div id="result"></div>
+    
+    <script>
+        function clearAutoSave() {
+            const keys = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.includes('autosave') || key.includes('lastSave') || key.includes('sessionId')) {
+                    keys.push(key);
+                }
+            }
+            keys.forEach(key => localStorage.removeItem(key));
+            document.getElementById('result').innerHTML = '<div class="success">✅ Cleared ' + keys.length + ' auto-save entries</div>';
+        }
+        
+        function clearSpecific(calculator) {
+            localStorage.removeItem(calculator + '_autosave');
+            localStorage.removeItem(calculator + '_lastSave');
+            localStorage.removeItem(calculator + '_sessionId');
+            document.getElementById('result').innerHTML = '<div class="success">✅ Cleared ' + calculator + ' auto-save data</div>';
+        }
+    </script>
+</body>
+</html>

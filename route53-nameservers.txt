@@ -1,0 +1,13 @@
+ROUTE53 NAMESERVERS FOR AIARCHITECTUREAUDIT.COM
+================================================
+
+Add these nameservers in GoDaddy:
+
+1. ns-1137.awsdns-14.org
+2. ns-874.awsdns-45.net
+3. ns-1629.awsdns-11.co.uk
+4. ns-173.awsdns-21.com
+
+Hosted Zone ID: Z00754358WOW33I58K8D
+
+Once nameservers are updated in GoDaddy, Route53 will handle all DNS records.

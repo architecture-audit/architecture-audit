@@ -1,0 +1,1572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Implementation Framework Calculator - Comprehensive Enterprise Tool</title>
+    <meta name="description" content="Complete LLM implementation assessment with readiness scoring, model selection, RAG architecture, and cost analysis">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🤖</text></svg>">
+    
+    <!-- Navigation CSS -->
+    <link rel="stylesheet" href="/docs/assets/css/site-navigation.css">
+    
+    <!-- LLM Framework CSS -->
+    <link rel="stylesheet" href="/docs/assets/css/llm-framework.css">
+    
+    <!-- Clean navbar fix -->
+    <style>
+        /* Minimal override to make navbar visible */
+        nav.site-nav {
+            display: block;
+            visibility: visible;
+        }
+        
+        /* Remove duplicate spacing - calculator CSS already has margin-top: 70px */
+        body {
+            padding-top: 0;
+        }
+    </style>
+    
+    <!-- SheetJS for Excel export -->
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+    <!-- Site Navigation -->
+    <nav class="site-nav">
+        <div class="site-nav-container">
+            <a href="/" class="site-logo">
+                🏢 AI Architecture Audit
+            </a>
+            
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+            
+            <ul class="site-menu" id="siteMenu">
+                <li class="site-menu-item">
+                    <a href="/">Home</a>
+                </li>
+                
+                <li class="site-menu-item has-dropdown">
+                    <a href="#" onclick="event.preventDefault()">Calculators</a>
+                    <div class="dropdown-menu">
+                        <a href="/calculators/ai-readiness/">🤖 AI Readiness</a>
+                        <a href="/calculators/cloud-migration/">☁️ Cloud Migration</a>
+                        <a href="/calculators/mlops-audit/">🔧 MLOps Audit</a>
+                        <a href="/calculators/llm-framework/">🧠 LLM Framework</a>
+                        <a href="/calculators/security-audit/">🔒 Security Audit</a>
+                        <a href="/calculators/genai-security/">🛡️ GenAI Security</a>
+                        <a href="/calculators/cost-optimization/">💰 Cost Optimization</a>
+                    </div>
+                </li>
+                
+                <li class="site-menu-item has-dropdown">
+                    <a href="#" onclick="event.preventDefault()">Documentation</a>
+                    <div class="dropdown-menu">
+                        <a href="/docs/ai-readiness/">📖 AI Readiness Guide</a>
+                        <a href="/docs/cloud-migration/">📖 Cloud Migration Guide</a>
+                        <a href="/docs/mlops-audit/">📖 MLOps Audit Guide</a>
+                        <a href="/docs/llm-framework/">📖 LLM Framework Guide</a>
+                        <a href="/docs/security-audit/">📖 Security Audit Guide</a>
+                        <a href="/docs/genai-security/">📖 GenAI Security Guide</a>
+                        <a href="/docs/cost-optimization/">📖 Cost Optimization Guide</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1>🤖 LLM Implementation Framework</h1>
+            <p>Comprehensive assessment and planning tool for Large Language Model deployment</p>
+        </div>
+    </header>
+    
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs">
+        <div class="nav-tabs-container">
+            <button class="nav-tab active" data-tab="readiness">
+                <span>📊</span> LLM Readiness
+            </button>
+            <button class="nav-tab" data-tab="models">
+                <span>🎯</span> Model Selection
+            </button>
+            <button class="nav-tab" data-tab="rag">
+                <span>📚</span> RAG Architecture
+            </button>
+            <button class="nav-tab" data-tab="prompts">
+                <span>✍️</span> Prompt Engineering
+            </button>
+            <button class="nav-tab" data-tab="infrastructure">
+                <span>🖥️</span> Infrastructure
+            </button>
+            <button class="nav-tab" data-tab="finetuning">
+                <span>⚙️</span> Fine-tuning
+            </button>
+            <button class="nav-tab" data-tab="security">
+                <span>🔒</span> Security & Compliance
+            </button>
+            <button class="nav-tab" data-tab="cost">
+                <span>💰</span> Cost Analysis
+            </button>
+            <button class="nav-tab" data-tab="roadmap">
+                <span>🗺️</span> Implementation Roadmap
+            </button>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="container">
+        <!-- LLM Readiness Assessment Tab -->
+        <div class="tab-content active" id="readiness">
+            <section class="section">
+                <h2>LLM Readiness Assessment</h2>
+                
+                <div class="alert alert-info">
+                    Answer questions across 6 dimensions to automatically calculate your LLM implementation readiness score. Each dimension has weighted questions that contribute to your overall readiness.
+                </div>
+                
+                <!-- This will be populated by JavaScript -->
+                <div id="llm-readiness-container"></div>
+            </section>
+        </div>
+        
+        <!-- Model Selection Matrix Tab -->
+        <div class="tab-content" id="models">
+            <section class="section">
+                <h2>LLM Model Selection Matrix</h2>
+                
+                <table class="assessment-table">
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>Provider</th>
+                            <th>Use Case Fit</th>
+                            <th>Performance</th>
+                            <th>Cost/1M Tokens</th>
+                            <th>Latency</th>
+                            <th>Context Length</th>
+                            <th>Overall Score</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="models-tbody">
+                        <tr>
+                            <td><input type="text" placeholder="Model name" value="GPT-4o"></td>
+                            <td>
+                                <select>
+                                    <option selected>OpenAI</option>
+                                    <option>Anthropic</option>
+                                    <option>Google</option>
+                                    <option>Meta</option>
+                                    <option>Mistral</option>
+                                    <option>Other</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select onchange="calculateModelScore(this)">
+                                    <option value="1">Poor</option>
+                                    <option value="2">Fair</option>
+                                    <option value="3">Good</option>
+                                    <option value="4" selected>Very Good</option>
+                                    <option value="5">Excellent</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select onchange="calculateModelScore(this)">
+                                    <option value="1">Poor</option>
+                                    <option value="2">Fair</option>
+                                    <option value="3">Good</option>
+                                    <option value="4" selected>Very Good</option>
+                                    <option value="5">Excellent</option>
+                                </select>
+                            </td>
+                            <td><input type="number" placeholder="15.00" value="15.00" min="0" step="0.01" onchange="calculateModelScore(this)"></td>
+                            <td>
+                                <select onchange="calculateModelScore(this)">
+                                    <option value="1">Very Slow (>5s)</option>
+                                    <option value="2">Slow (3-5s)</option>
+                                    <option value="3" selected>Medium (1-3s)</option>
+                                    <option value="4">Fast (0.5-1s)</option>
+                                    <option value="5">Very Fast (<0.5s)</option>
+                                </select>
+                            </td>
+                            <td><input type="number" placeholder="128000" value="128000" min="0" onchange="calculateModelScore(this)"></td>
+                            <td class="model-score">4.0</td>
+                            <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" placeholder="Model name" value="Claude 3.5 Sonnet"></td>
+                            <td>
+                                <select>
+                                    <option>OpenAI</option>
+                                    <option selected>Anthropic</option>
+                                    <option>Google</option>
+                                    <option>Meta</option>
+                                    <option>Mistral</option>
+                                    <option>Other</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select onchange="calculateModelScore(this)">
+                                    <option value="1">Poor</option>
+                                    <option value="2">Fair</option>
+                                    <option value="3">Good</option>
+                                    <option value="4">Very Good</option>
+                                    <option value="5" selected>Excellent</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select onchange="calculateModelScore(this)">
+                                    <option value="1">Poor</option>
+                                    <option value="2">Fair</option>
+                                    <option value="3">Good</option>
+                                    <option value="4">Very Good</option>
+                                    <option value="5" selected>Excellent</option>
+                                </select>
+                            </td>
+                            <td><input type="number" placeholder="15.00" value="15.00" min="0" step="0.01" onchange="calculateModelScore(this)"></td>
+                            <td>
+                                <select onchange="calculateModelScore(this)">
+                                    <option value="1">Very Slow (>5s)</option>
+                                    <option value="2">Slow (3-5s)</option>
+                                    <option value="3">Medium (1-3s)</option>
+                                    <option value="4" selected>Fast (0.5-1s)</option>
+                                    <option value="5">Very Fast (<0.5s)</option>
+                                </select>
+                            </td>
+                            <td><input type="number" placeholder="200000" value="200000" min="0" onchange="calculateModelScore(this)"></td>
+                            <td class="model-score">4.5</td>
+                            <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" placeholder="Model name" value="Llama 3.1 70B"></td>
+                            <td>
+                                <select>
+                                    <option>OpenAI</option>
+                                    <option>Anthropic</option>
+                                    <option>Google</option>
+                                    <option selected>Meta</option>
+                                    <option>Mistral</option>
+                                    <option>Other</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select onchange="calculateModelScore(this)">
+                                    <option value="1">Poor</option>
+                                    <option value="2">Fair</option>
+                                    <option value="3" selected>Good</option>
+                                    <option value="4">Very Good</option>
+                                    <option value="5">Excellent</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select onchange="calculateModelScore(this)">
+                                    <option value="1">Poor</option>
+                                    <option value="2">Fair</option>
+                                    <option value="3">Good</option>
+                                    <option value="4" selected>Very Good</option>
+                                    <option value="5">Excellent</option>
+                                </select>
+                            </td>
+                            <td><input type="number" placeholder="0.90" value="0.90" min="0" step="0.01" onchange="calculateModelScore(this)"></td>
+                            <td>
+                                <select onchange="calculateModelScore(this)">
+                                    <option value="1">Very Slow (>5s)</option>
+                                    <option value="2" selected>Slow (3-5s)</option>
+                                    <option value="3">Medium (1-3s)</option>
+                                    <option value="4">Fast (0.5-1s)</option>
+                                    <option value="5">Very Fast (<0.5s)</option>
+                                </select>
+                            </td>
+                            <td><input type="number" placeholder="128000" value="128000" min="0" onchange="calculateModelScore(this)"></td>
+                            <td class="model-score">3.25</td>
+                            <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <button class="btn btn-secondary" onclick="addModelRow()">+ Add Model</button>
+            </section>
+        </div>
+        
+        <!-- RAG Architecture Planning Tab -->
+        <div class="tab-content" id="rag">
+            <section class="section">
+                <h2>RAG Architecture Planning</h2>
+                
+                <div class="subsection">
+                    <h3>Vector Database Comparison</h3>
+                    <table class="assessment-table">
+                        <thead>
+                            <tr>
+                                <th>Vector DB</th>
+                                <th>Deployment Type</th>
+                                <th>Performance</th>
+                                <th>Scalability</th>
+                                <th>Cost Rating</th>
+                                <th>Ease of Use</th>
+                                <th>Overall Score</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="vectordb-tbody">
+                            <tr>
+                                <td><input type="text" placeholder="Vector database" value="Pinecone"></td>
+                                <td>
+                                    <select>
+                                        <option selected>Cloud</option>
+                                        <option>Self-hosted</option>
+                                        <option>Hybrid</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select onchange="calculateVectorDBScore(this)">
+                                        <option value="1">Poor</option>
+                                        <option value="2">Fair</option>
+                                        <option value="3">Good</option>
+                                        <option value="4" selected>Very Good</option>
+                                        <option value="5">Excellent</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select onchange="calculateVectorDBScore(this)">
+                                        <option value="1">Poor</option>
+                                        <option value="2">Fair</option>
+                                        <option value="3">Good</option>
+                                        <option value="4">Very Good</option>
+                                        <option value="5" selected>Excellent</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select onchange="calculateVectorDBScore(this)">
+                                        <option value="1">Very Expensive</option>
+                                        <option value="2" selected>Expensive</option>
+                                        <option value="3">Moderate</option>
+                                        <option value="4">Affordable</option>
+                                        <option value="5">Very Affordable</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select onchange="calculateVectorDBScore(this)">
+                                        <option value="1">Very Difficult</option>
+                                        <option value="2">Difficult</option>
+                                        <option value="3">Moderate</option>
+                                        <option value="4">Easy</option>
+                                        <option value="5" selected>Very Easy</option>
+                                    </select>
+                                </td>
+                                <td class="vectordb-score">4.0</td>
+                                <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="btn btn-secondary" onclick="addVectorDBRow()">+ Add Vector Database</button>
+                </div>
+
+                <div class="subsection">
+                    <h3>Document Processing Pipeline</h3>
+                    <table class="assessment-table">
+                        <thead>
+                            <tr>
+                                <th>Document Type</th>
+                                <th>Volume (GB)</th>
+                                <th>Processing Tool</th>
+                                <th>Chunking Strategy</th>
+                                <th>Embedding Model</th>
+                                <th>Processing Time</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="docprocessing-tbody">
+                            <tr>
+                                <td>
+                                    <select>
+                                        <option selected>PDF</option>
+                                        <option>Word Documents</option>
+                                        <option>Web Pages</option>
+                                        <option>Code Files</option>
+                                        <option>Spreadsheets</option>
+                                        <option>Presentations</option>
+                                        <option>Email</option>
+                                    </select>
+                                </td>
+                                <td><input type="number" placeholder="100" value="100" min="0" step="0.1"></td>
+                                <td>
+                                    <select>
+                                        <option>PyPDF2</option>
+                                        <option>Unstructured</option>
+                                        <option selected>LangChain</option>
+                                        <option>LlamaIndex</option>
+                                        <option>Azure Document Intelligence</option>
+                                        <option>AWS Textract</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select>
+                                        <option>Fixed size (512 tokens)</option>
+                                        <option selected>Semantic chunking</option>
+                                        <option>Recursive character splitting</option>
+                                        <option>Document structure based</option>
+                                        <option>Sentence-based</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select>
+                                        <option>text-embedding-ada-002</option>
+                                        <option selected>text-embedding-3-large</option>
+                                        <option>sentence-transformers</option>
+                                        <option>instructor-xl</option>
+                                        <option>e5-large-v2</option>
+                                    </select>
+                                </td>
+                                <td><input type="text" placeholder="e.g., 2 hours" value="2 hours"></td>
+                                <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="btn btn-secondary" onclick="addDocProcessingRow()">+ Add Document Type</button>
+                </div>
+
+                <div class="subsection">
+                    <h3>Retrieval Strategy Configuration</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Retrieval Method</label>
+                            <select id="retrieval-method">
+                                <option>Semantic Search</option>
+                                <option selected>Hybrid (Semantic + Keyword)</option>
+                                <option>Dense Retrieval</option>
+                                <option>Multi-vector</option>
+                                <option>Parent-Child</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Top-K Results</label>
+                            <input type="number" id="top-k" placeholder="5" value="5" min="1" max="50">
+                        </div>
+                        <div class="form-group">
+                            <label>Similarity Threshold</label>
+                            <input type="number" id="similarity-threshold" placeholder="0.8" value="0.8" min="0" max="1" step="0.1">
+                        </div>
+                        <div class="form-group">
+                            <label>Re-ranking Model</label>
+                            <select id="reranking-model">
+                                <option>None</option>
+                                <option selected>Cross-encoder</option>
+                                <option>Cohere Rerank</option>
+                                <option>BGE Reranker</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Prompt Engineering Toolkit Tab -->
+        <div class="tab-content" id="prompts">
+            <section class="section">
+                <h2>Prompt Engineering Toolkit</h2>
+                
+                <div class="subsection">
+                    <h3>Prompt Templates Library</h3>
+                    <table class="assessment-table">
+                        <thead>
+                            <tr>
+                                <th>Template Name</th>
+                                <th>Use Case</th>
+                                <th>Pattern Type</th>
+                                <th>Performance Score</th>
+                                <th>Template</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="prompts-tbody">
+                            <tr>
+                                <td><input type="text" placeholder="Template name" value="Code Review Assistant"></td>
+                                <td>
+                                    <select>
+                                        <option>Question Answering</option>
+                                        <option>Summarization</option>
+                                        <option selected>Code Analysis</option>
+                                        <option>Creative Writing</option>
+                                        <option>Data Extraction</option>
+                                        <option>Classification</option>
+                                        <option>Translation</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select>
+                                        <option>Zero-shot</option>
+                                        <option>Few-shot</option>
+                                        <option selected>Chain-of-Thought</option>
+                                        <option>Role-based</option>
+                                        <option>Template-based</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="range" min="1" max="10" value="8" onchange="updatePromptScore(this)">
+                                    <span class="range-value">8</span>
+                                </td>
+                                <td><textarea placeholder="Enter prompt template" rows="2">You are an expert code reviewer. Analyze the following code for security vulnerabilities, performance issues, and best practices. Provide specific recommendations with examples.</textarea></td>
+                                <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="btn btn-secondary" onclick="addPromptRow()">+ Add Template</button>
+                </div>
+
+                <div class="subsection">
+                    <h3>Prompt Testing Framework</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Test Dataset Size</label>
+                            <input type="number" id="test-dataset-size" placeholder="100" value="100" min="10">
+                        </div>
+                        <div class="form-group">
+                            <label>Evaluation Metrics</label>
+                            <select id="eval-metrics" multiple>
+                                <option selected>Accuracy</option>
+                                <option selected>Relevance</option>
+                                <option>Coherence</option>
+                                <option>Completeness</option>
+                                <option>Factuality</option>
+                                <option>Hallucination Rate</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>A/B Testing Framework</label>
+                            <select id="ab-testing">
+                                <option>Manual Testing</option>
+                                <option selected>Automated A/B</option>
+                                <option>Multi-variant</option>
+                                <option>Champion/Challenger</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Success Threshold (%)</label>
+                            <input type="number" id="success-threshold" placeholder="85" value="85" min="0" max="100">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>Prompt Optimization Strategies</h3>
+                    <table class="assessment-table">
+                        <thead>
+                            <tr>
+                                <th>Strategy</th>
+                                <th>Priority</th>
+                                <th>Implementation Status</th>
+                                <th>Expected Improvement</th>
+                                <th>Notes</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="optimization-tbody">
+                            <tr>
+                                <td>
+                                    <select>
+                                        <option selected>Chain-of-Thought</option>
+                                        <option>Few-shot Examples</option>
+                                        <option>Role Specification</option>
+                                        <option>Output Format Control</option>
+                                        <option>Constraint Addition</option>
+                                        <option>Context Optimization</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select>
+                                        <option>Low</option>
+                                        <option>Medium</option>
+                                        <option selected>High</option>
+                                        <option>Critical</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select>
+                                        <option>Not Started</option>
+                                        <option selected>Planning</option>
+                                        <option>In Progress</option>
+                                        <option>Testing</option>
+                                        <option>Deployed</option>
+                                    </select>
+                                </td>
+                                <td><input type="text" placeholder="e.g., +15% accuracy" value="+15% accuracy"></td>
+                                <td><input type="text" placeholder="Implementation notes" value="Implement step-by-step reasoning"></td>
+                                <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="btn btn-secondary" onclick="addOptimizationRow()">+ Add Strategy</button>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Infrastructure Requirements Tab -->
+        <div class="tab-content" id="infrastructure">
+            <section class="section">
+                <h2>Infrastructure Requirements</h2>
+                
+                <div class="subsection">
+                    <h3>Compute Resources</h3>
+                    <table class="assessment-table">
+                        <thead>
+                            <tr>
+                                <th>Resource Type</th>
+                                <th>Current Capacity</th>
+                                <th>Required Capacity</th>
+                                <th>Cost/Hour ($)</th>
+                                <th>Provider</th>
+                                <th>Total Monthly Cost</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="compute-tbody">
+                            <tr>
+                                <td>
+                                    <select>
+                                        <option selected>GPU (A100)</option>
+                                        <option>GPU (H100)</option>
+                                        <option>GPU (V100)</option>
+                                        <option>CPU (High-memory)</option>
+                                        <option>Inference Endpoints</option>
+                                        <option>Serverless</option>
+                                    </select>
+                                </td>
+                                <td><input type="text" placeholder="e.g., 4 instances" value="2 instances"></td>
+                                <td><input type="text" placeholder="e.g., 8 instances" value="8 instances"></td>
+                                <td><input type="number" placeholder="3.06" value="3.06" min="0" step="0.01" onchange="calculateInfraCost(this)"></td>
+                                <td>
+                                    <select>
+                                        <option selected>AWS</option>
+                                        <option>Azure</option>
+                                        <option>Google Cloud</option>
+                                        <option>On-premise</option>
+                                        <option>Other</option>
+                                    </select>
+                                </td>
+                                <td class="monthly-cost">$17,740</td>
+                                <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="btn btn-secondary" onclick="addComputeRow()">+ Add Resource</button>
+                </div>
+
+                <div class="subsection">
+                    <h3>API Cost Estimation</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Monthly Request Volume</label>
+                            <input type="number" id="monthly-requests" placeholder="1000000" value="1000000" min="0" onchange="calculateAPICost()">
+                        </div>
+                        <div class="form-group">
+                            <label>Average Input Tokens</label>
+                            <input type="number" id="avg-input-tokens" placeholder="1500" value="1500" min="0" onchange="calculateAPICost()">
+                        </div>
+                        <div class="form-group">
+                            <label>Average Output Tokens</label>
+                            <input type="number" id="avg-output-tokens" placeholder="500" value="500" min="0" onchange="calculateAPICost()">
+                        </div>
+                        <div class="form-group">
+                            <label>Cost per 1M Input Tokens ($)</label>
+                            <input type="number" id="input-token-cost" placeholder="15.00" value="15.00" min="0" step="0.01" onchange="calculateAPICost()">
+                        </div>
+                        <div class="form-group">
+                            <label>Cost per 1M Output Tokens ($)</label>
+                            <input type="number" id="output-token-cost" placeholder="60.00" value="60.00" min="0" step="0.01" onchange="calculateAPICost()">
+                        </div>
+                    </div>
+                    <div class="score-display">
+                        <div class="score-card">
+                            <div class="score-label">Monthly API Cost</div>
+                            <div class="score-value" id="monthly-api-cost">$52,500</div>
+                        </div>
+                        <div class="score-card">
+                            <div class="score-label">Annual API Cost</div>
+                            <div class="score-value" id="annual-api-cost">$630,000</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>Latency Requirements</h3>
+                    <table class="assessment-table">
+                        <thead>
+                            <tr>
+                                <th>Use Case</th>
+                                <th>Required Latency</th>
+                                <th>Current Latency</th>
+                                <th>SLA Target</th>
+                                <th>Optimization Needed</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="latency-tbody">
+                            <tr>
+                                <td><input type="text" placeholder="Use case" value="Real-time Chat"></td>
+                                <td>
+                                    <select>
+                                        <option>< 100ms</option>
+                                        <option>< 500ms</option>
+                                        <option selected>< 1s</option>
+                                        <option>< 3s</option>
+                                        <option>< 5s</option>
+                                        <option>> 5s</option>
+                                    </select>
+                                </td>
+                                <td><input type="text" placeholder="e.g., 2.5s" value="2.5s"></td>
+                                <td><input type="number" placeholder="99.9" value="99.9" min="0" max="100" step="0.1">%</td>
+                                <td>
+                                    <select>
+                                        <option>No</option>
+                                        <option selected>Yes - Minor</option>
+                                        <option>Yes - Major</option>
+                                        <option>Yes - Critical</option>
+                                    </select>
+                                </td>
+                                <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="btn btn-secondary" onclick="addLatencyRow()">+ Add Use Case</button>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Fine-tuning Strategy Tab -->
+        <div class="tab-content" id="finetuning">
+            <section class="section">
+                <h2>Fine-tuning Strategy</h2>
+                
+                <div class="subsection">
+                    <h3>Dataset Requirements</h3>
+                    <table class="assessment-table">
+                        <thead>
+                            <tr>
+                                <th>Task Type</th>
+                                <th>Dataset Size</th>
+                                <th>Data Quality</th>
+                                <th>Annotation Status</th>
+                                <th>Collection Cost ($)</th>
+                                <th>Timeline</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dataset-tbody">
+                            <tr>
+                                <td>
+                                    <select>
+                                        <option>Classification</option>
+                                        <option selected>Question Answering</option>
+                                        <option>Summarization</option>
+                                        <option>Code Generation</option>
+                                        <option>Domain Adaptation</option>
+                                        <option>Instruction Following</option>
+                                    </select>
+                                </td>
+                                <td><input type="number" placeholder="10000" value="10000" min="0"></td>
+                                <td>
+                                    <select>
+                                        <option>Poor</option>
+                                        <option>Fair</option>
+                                        <option selected>Good</option>
+                                        <option>Very Good</option>
+                                        <option>Excellent</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select>
+                                        <option>Not Started</option>
+                                        <option selected>In Progress</option>
+                                        <option>Completed</option>
+                                        <option>Needs Review</option>
+                                    </select>
+                                </td>
+                                <td><input type="number" placeholder="25000" value="25000" min="0"></td>
+                                <td><input type="text" placeholder="e.g., 8 weeks" value="8 weeks"></td>
+                                <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="btn btn-secondary" onclick="addDatasetRow()">+ Add Dataset</button>
+                </div>
+
+                <div class="subsection">
+                    <h3>Training Configuration</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Base Model</label>
+                            <select id="base-model">
+                                <option>GPT-3.5 Turbo</option>
+                                <option selected>GPT-4</option>
+                                <option>Claude 3</option>
+                                <option>Llama 3.1 70B</option>
+                                <option>Mistral 7B</option>
+                                <option>Custom</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Training Method</label>
+                            <select id="training-method">
+                                <option selected>Full Fine-tuning</option>
+                                <option>LoRA (Low-Rank Adaptation)</option>
+                                <option>QLoRA</option>
+                                <option>Prefix Tuning</option>
+                                <option>Adapter Tuning</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Training Epochs</label>
+                            <input type="number" id="training-epochs" placeholder="3" value="3" min="1" max="20">
+                        </div>
+                        <div class="form-group">
+                            <label>Batch Size</label>
+                            <input type="number" id="batch-size" placeholder="32" value="32" min="1">
+                        </div>
+                        <div class="form-group">
+                            <label>Learning Rate</label>
+                            <input type="number" id="learning-rate" placeholder="0.0001" value="0.0001" min="0" step="0.0001">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>Evaluation Metrics</h3>
+                    <table class="assessment-table">
+                        <thead>
+                            <tr>
+                                <th>Metric</th>
+                                <th>Baseline Score</th>
+                                <th>Target Score</th>
+                                <th>Current Score</th>
+                                <th>Priority</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="metrics-tbody">
+                            <tr>
+                                <td>
+                                    <select>
+                                        <option selected>BLEU Score</option>
+                                        <option>ROUGE Score</option>
+                                        <option>Accuracy</option>
+                                        <option>F1 Score</option>
+                                        <option>Perplexity</option>
+                                        <option>Human Evaluation</option>
+                                        <option>Task-specific Metric</option>
+                                    </select>
+                                </td>
+                                <td><input type="number" placeholder="0.65" value="0.65" min="0" max="1" step="0.01"></td>
+                                <td><input type="number" placeholder="0.85" value="0.85" min="0" max="1" step="0.01"></td>
+                                <td><input type="number" placeholder="0.78" value="0.78" min="0" max="1" step="0.01"></td>
+                                <td>
+                                    <select>
+                                        <option>Low</option>
+                                        <option>Medium</option>
+                                        <option selected>High</option>
+                                        <option>Critical</option>
+                                    </select>
+                                </td>
+                                <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="btn btn-secondary" onclick="addMetricRow()">+ Add Metric</button>
+                </div>
+
+                <div class="subsection">
+                    <h3>Training Cost Estimation</h3>
+                    <div class="score-display">
+                        <div class="score-card">
+                            <div class="score-label">Estimated Training Cost</div>
+                            <div class="score-value" id="training-cost">$15,000</div>
+                        </div>
+                        <div class="score-card">
+                            <div class="score-label">Training Duration</div>
+                            <div class="score-value" id="training-duration">24 hours</div>
+                        </div>
+                        <div class="score-card">
+                            <div class="score-label">GPU Hours Required</div>
+                            <div class="score-value" id="gpu-hours">192</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Security & Compliance Tab -->
+        <div class="tab-content" id="security">
+            <section class="section">
+                <h2>Security & Compliance</h2>
+                
+                <div class="subsection">
+                    <h3>Data Privacy Assessment</h3>
+                    <table class="assessment-table">
+                        <thead>
+                            <tr>
+                                <th>Privacy Concern</th>
+                                <th>Risk Level</th>
+                                <th>Current Controls</th>
+                                <th>Compliance Requirement</th>
+                                <th>Mitigation Strategy</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="privacy-tbody">
+                            <tr>
+                                <td>
+                                    <select>
+                                        <option selected>PII in Training Data</option>
+                                        <option>Customer Data Leakage</option>
+                                        <option>Model Memorization</option>
+                                        <option>Data Residency</option>
+                                        <option>Third-party Access</option>
+                                        <option>Audit Trail Gaps</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select>
+                                        <option>Low</option>
+                                        <option>Medium</option>
+                                        <option selected>High</option>
+                                        <option>Critical</option>
+                                    </select>
+                                </td>
+                                <td><input type="text" placeholder="Current controls" value="Data anonymization pipeline"></td>
+                                <td>
+                                    <select>
+                                        <option>GDPR</option>
+                                        <option>CCPA</option>
+                                        <option selected>HIPAA</option>
+                                        <option>SOC 2</option>
+                                        <option>ISO 27001</option>
+                                        <option>Internal Policy</option>
+                                    </select>
+                                </td>
+                                <td><input type="text" placeholder="Mitigation strategy" value="Implement differential privacy techniques"></td>
+                                <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="btn btn-secondary" onclick="addPrivacyRow()">+ Add Privacy Concern</button>
+                </div>
+
+                <div class="subsection">
+                    <h3>Model Security Controls</h3>
+                    <table class="assessment-table">
+                        <thead>
+                            <tr>
+                                <th>Security Control</th>
+                                <th>Implementation Status</th>
+                                <th>Effectiveness</th>
+                                <th>Cost ($)</th>
+                                <th>Timeline</th>
+                                <th>Owner</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="security-tbody">
+                            <tr>
+                                <td>
+                                    <select>
+                                        <option selected>Input Validation</option>
+                                        <option>Output Filtering</option>
+                                        <option>Rate Limiting</option>
+                                        <option>Authentication</option>
+                                        <option>Encryption at Rest</option>
+                                        <option>Encryption in Transit</option>
+                                        <option>Prompt Injection Protection</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select>
+                                        <option>Not Started</option>
+                                        <option selected>In Progress</option>
+                                        <option>Implemented</option>
+                                        <option>Needs Update</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select>
+                                        <option>Low</option>
+                                        <option>Medium</option>
+                                        <option selected>High</option>
+                                        <option>Very High</option>
+                                    </select>
+                                </td>
+                                <td><input type="number" placeholder="5000" value="5000" min="0"></td>
+                                <td><input type="text" placeholder="Timeline" value="4 weeks"></td>
+                                <td><input type="text" placeholder="Owner" value="Security Team"></td>
+                                <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="btn btn-secondary" onclick="addSecurityRow()">+ Add Control</button>
+                </div>
+
+                <div class="subsection">
+                    <h3>Audit & Monitoring</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Logging Level</label>
+                            <select id="logging-level">
+                                <option>Basic</option>
+                                <option selected>Detailed</option>
+                                <option>Comprehensive</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Retention Period (days)</label>
+                            <input type="number" id="retention-period" placeholder="365" value="365" min="30">
+                        </div>
+                        <div class="form-group">
+                            <label>Monitoring Tools</label>
+                            <select id="monitoring-tools" multiple>
+                                <option selected>CloudWatch</option>
+                                <option>Splunk</option>
+                                <option>Datadog</option>
+                                <option>Custom Solution</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Alerting Threshold</label>
+                            <select id="alerting-threshold">
+                                <option>Low</option>
+                                <option selected>Medium</option>
+                                <option>High</option>
+                                <option>Critical Only</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>Compliance Checklist</h3>
+                    <div class="checklist-grid">
+                        <label class="checkbox-item">
+                            <input type="checkbox" checked> Data governance policies defined
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" checked> Privacy impact assessment completed
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox"> Legal review completed
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" checked> Security controls implemented
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox"> Third-party vendor assessments completed
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" checked> Incident response plan defined
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox"> Regular security audits scheduled
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox"> Staff training on AI security completed
+                        </label>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Cost Analysis Tab -->
+        <div class="tab-content" id="cost">
+            <section class="section">
+                <h2>LLM Cost Analysis & ROI</h2>
+                
+                <div class="subsection">
+                    <h3>Implementation Costs</h3>
+                    <table class="assessment-table">
+                        <thead>
+                            <tr>
+                                <th>Cost Category</th>
+                                <th>One-time Cost ($)</th>
+                                <th>Monthly Cost ($)</th>
+                                <th>Annual Cost ($)</th>
+                                <th>Notes</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="costs-tbody">
+                            <tr>
+                                <td>
+                                    <select>
+                                        <option selected>Infrastructure</option>
+                                        <option>Model Licensing</option>
+                                        <option>API Costs</option>
+                                        <option>Development</option>
+                                        <option>Training/Fine-tuning</option>
+                                        <option>Security & Compliance</option>
+                                        <option>Operations & Support</option>
+                                    </select>
+                                </td>
+                                <td><input type="number" placeholder="100000" value="100000" min="0" onchange="calculateTotalCosts()"></td>
+                                <td><input type="number" placeholder="15000" value="15000" min="0" onchange="calculateTotalCosts()"></td>
+                                <td class="annual-cost">$180,000</td>
+                                <td><input type="text" placeholder="Additional notes" value="GPU instances and storage"></td>
+                                <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select>
+                                        <option>Infrastructure</option>
+                                        <option>Model Licensing</option>
+                                        <option selected>API Costs</option>
+                                        <option>Development</option>
+                                        <option>Training/Fine-tuning</option>
+                                        <option>Security & Compliance</option>
+                                        <option>Operations & Support</option>
+                                    </select>
+                                </td>
+                                <td><input type="number" placeholder="0" value="0" min="0" onchange="calculateTotalCosts()"></td>
+                                <td><input type="number" placeholder="45000" value="45000" min="0" onchange="calculateTotalCosts()"></td>
+                                <td class="annual-cost">$540,000</td>
+                                <td><input type="text" placeholder="Additional notes" value="OpenAI/Anthropic API usage"></td>
+                                <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select>
+                                        <option>Infrastructure</option>
+                                        <option>Model Licensing</option>
+                                        <option>API Costs</option>
+                                        <option selected>Development</option>
+                                        <option>Training/Fine-tuning</option>
+                                        <option>Security & Compliance</option>
+                                        <option>Operations & Support</option>
+                                    </select>
+                                </td>
+                                <td><input type="number" placeholder="200000" value="200000" min="0" onchange="calculateTotalCosts()"></td>
+                                <td><input type="number" placeholder="25000" value="25000" min="0" onchange="calculateTotalCosts()"></td>
+                                <td class="annual-cost">$300,000</td>
+                                <td><input type="text" placeholder="Additional notes" value="Development team and tools"></td>
+                                <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="btn btn-secondary" onclick="addCostRow()">+ Add Cost Category</button>
+                    
+                    <div class="score-display">
+                        <div class="score-card">
+                            <div class="score-label">Total One-time Costs</div>
+                            <div class="score-value" id="total-onetime">$300,000</div>
+                        </div>
+                        <div class="score-card">
+                            <div class="score-label">Total Monthly Costs</div>
+                            <div class="score-value" id="total-monthly">$85,000</div>
+                        </div>
+                        <div class="score-card">
+                            <div class="score-label">Total Annual Costs</div>
+                            <div class="score-value" id="total-annual">$1,020,000</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>ROI Analysis</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Expected Annual Cost Savings ($)</label>
+                            <input type="number" id="llm-cost-savings" placeholder="500000" value="500000" onchange="calculateLLMROI()">
+                        </div>
+                        <div class="form-group">
+                            <label>Expected Annual Revenue Increase ($)</label>
+                            <input type="number" id="llm-revenue-increase" placeholder="800000" value="800000" onchange="calculateLLMROI()">
+                        </div>
+                        <div class="form-group">
+                            <label>Productivity Improvement (%)</label>
+                            <input type="number" id="productivity-improvement" placeholder="25" value="25" min="0" max="100" onchange="calculateLLMROI()">
+                        </div>
+                        <div class="form-group">
+                            <label>Risk Mitigation Value ($)</label>
+                            <input type="number" id="risk-mitigation" placeholder="200000" value="200000" onchange="calculateLLMROI()">
+                        </div>
+                        <div class="form-group">
+                            <label>Implementation Timeline (months)</label>
+                            <input type="number" id="llm-timeline" placeholder="12" value="12" min="1" max="60" onchange="calculateLLMROI()">
+                        </div>
+                    </div>
+                    
+                    <div class="score-display">
+                        <div class="score-card">
+                            <div class="score-label">Total Annual Benefits</div>
+                            <div class="score-value" id="total-benefits">$1,500,000</div>
+                        </div>
+                        <div class="score-card">
+                            <div class="score-label">Net Annual Value</div>
+                            <div class="score-value roi-positive" id="net-value">$480,000</div>
+                        </div>
+                        <div class="score-card">
+                            <div class="score-label">ROI Percentage</div>
+                            <div class="score-value roi-positive" id="llm-roi">47%</div>
+                        </div>
+                        <div class="score-card">
+                            <div class="score-label">Payback Period</div>
+                            <div class="score-value" id="llm-payback">0.9 years</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>Cost Optimization Opportunities</h3>
+                    <table class="assessment-table">
+                        <thead>
+                            <tr>
+                                <th>Optimization</th>
+                                <th>Potential Savings ($)</th>
+                                <th>Implementation Effort</th>
+                                <th>Timeline</th>
+                                <th>Risk Level</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="optimization-costs-tbody">
+                            <tr>
+                                <td>
+                                    <select>
+                                        <option selected>Model Size Optimization</option>
+                                        <option>Caching Strategy</option>
+                                        <option>Batch Processing</option>
+                                        <option>Alternative Model Provider</option>
+                                        <option>Self-hosted Deployment</option>
+                                        <option>Fine-tune Smaller Model</option>
+                                    </select>
+                                </td>
+                                <td><input type="number" placeholder="120000" value="120000" min="0"></td>
+                                <td>
+                                    <select>
+                                        <option>Low</option>
+                                        <option selected>Medium</option>
+                                        <option>High</option>
+                                    </select>
+                                </td>
+                                <td><input type="text" placeholder="Timeline" value="6 weeks"></td>
+                                <td>
+                                    <select>
+                                        <option selected>Low</option>
+                                        <option>Medium</option>
+                                        <option>High</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select>
+                                        <option>Not Started</option>
+                                        <option selected>Evaluating</option>
+                                        <option>In Progress</option>
+                                        <option>Completed</option>
+                                    </select>
+                                </td>
+                                <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="btn btn-secondary" onclick="addOptimizationCostRow()">+ Add Optimization</button>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Implementation Roadmap Tab -->
+        <div class="tab-content" id="roadmap">
+            <section class="section">
+                <h2>LLM Implementation Roadmap</h2>
+                
+                <div class="subsection">
+                    <h3>Phase-based Implementation Plan</h3>
+                    <table class="assessment-table">
+                        <thead>
+                            <tr>
+                                <th>Phase</th>
+                                <th>Initiative</th>
+                                <th>Duration (weeks)</th>
+                                <th>Dependencies</th>
+                                <th>Owner</th>
+                                <th>Success Criteria</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="phases-tbody">
+                            <tr>
+                                <td>
+                                    <select>
+                                        <option selected>Phase 1 - Foundation</option>
+                                        <option>Phase 2 - Pilot</option>
+                                        <option>Phase 3 - Scale</option>
+                                        <option>Phase 4 - Optimize</option>
+                                        <option>Phase 5 - Enterprise</option>
+                                    </select>
+                                </td>
+                                <td><input type="text" placeholder="Initiative" value="Infrastructure Setup & Security"></td>
+                                <td><input type="number" placeholder="8" value="8" min="1" max="52"></td>
+                                <td><input type="text" placeholder="Dependencies" value="Cloud account setup"></td>
+                                <td><input type="text" placeholder="Owner" value="Infrastructure Team"></td>
+                                <td><input type="text" placeholder="Success criteria" value="Secure LLM environment deployed"></td>
+                                <td>
+                                    <select>
+                                        <option>Not Started</option>
+                                        <option selected>Planning</option>
+                                        <option>In Progress</option>
+                                        <option>Testing</option>
+                                        <option>Completed</option>
+                                    </select>
+                                </td>
+                                <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select>
+                                        <option>Phase 1 - Foundation</option>
+                                        <option selected>Phase 2 - Pilot</option>
+                                        <option>Phase 3 - Scale</option>
+                                        <option>Phase 4 - Optimize</option>
+                                        <option>Phase 5 - Enterprise</option>
+                                    </select>
+                                </td>
+                                <td><input type="text" placeholder="Initiative" value="First Use Case Implementation"></td>
+                                <td><input type="number" placeholder="12" value="12" min="1" max="52"></td>
+                                <td><input type="text" placeholder="Dependencies" value="Phase 1 completion, dataset ready"></td>
+                                <td><input type="text" placeholder="Owner" value="AI/ML Team"></td>
+                                <td><input type="text" placeholder="Success criteria" value="80% accuracy on pilot use case"></td>
+                                <td>
+                                    <select>
+                                        <option selected>Not Started</option>
+                                        <option>Planning</option>
+                                        <option>In Progress</option>
+                                        <option>Testing</option>
+                                        <option>Completed</option>
+                                    </select>
+                                </td>
+                                <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select>
+                                        <option>Phase 1 - Foundation</option>
+                                        <option>Phase 2 - Pilot</option>
+                                        <option selected>Phase 3 - Scale</option>
+                                        <option>Phase 4 - Optimize</option>
+                                        <option>Phase 5 - Enterprise</option>
+                                    </select>
+                                </td>
+                                <td><input type="text" placeholder="Initiative" value="Multi-Use Case Deployment"></td>
+                                <td><input type="number" placeholder="16" value="16" min="1" max="52"></td>
+                                <td><input type="text" placeholder="Dependencies" value="Phase 2 success, additional resources"></td>
+                                <td><input type="text" placeholder="Owner" value="Product Team"></td>
+                                <td><input type="text" placeholder="Success criteria" value="3 use cases in production"></td>
+                                <td>
+                                    <select>
+                                        <option selected>Not Started</option>
+                                        <option>Planning</option>
+                                        <option>In Progress</option>
+                                        <option>Testing</option>
+                                        <option>Completed</option>
+                                    </select>
+                                </td>
+                                <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="btn btn-secondary" onclick="addPhaseRow()">+ Add Phase</button>
+                </div>
+
+                <div class="subsection">
+                    <h3>Key Milestones</h3>
+                    <table class="assessment-table">
+                        <thead>
+                            <tr>
+                                <th>Milestone</th>
+                                <th>Target Date</th>
+                                <th>Deliverables</th>
+                                <th>Success Metrics</th>
+                                <th>Risk Level</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="milestones-tbody">
+                            <tr>
+                                <td><input type="text" placeholder="Milestone" value="MVP Launch"></td>
+                                <td><input type="date" value="2024-06-15"></td>
+                                <td><input type="text" placeholder="Deliverables" value="Working LLM API endpoint"></td>
+                                <td><input type="text" placeholder="Success metrics" value="99% uptime, <2s response time"></td>
+                                <td>
+                                    <select>
+                                        <option>Low</option>
+                                        <option selected>Medium</option>
+                                        <option>High</option>
+                                        <option>Critical</option>
+                                    </select>
+                                </td>
+                                <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="btn btn-secondary" onclick="addMilestoneRow()">+ Add Milestone</button>
+                </div>
+
+                <div class="subsection">
+                    <h3>Resource Allocation</h3>
+                    <table class="assessment-table">
+                        <thead>
+                            <tr>
+                                <th>Resource Type</th>
+                                <th>Quantity Needed</th>
+                                <th>Availability</th>
+                                <th>Cost per Month ($)</th>
+                                <th>Allocation Period</th>
+                                <th>Total Cost ($)</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resources-tbody">
+                            <tr>
+                                <td>
+                                    <select>
+                                        <option selected>ML Engineers</option>
+                                        <option>Data Scientists</option>
+                                        <option>Software Engineers</option>
+                                        <option>DevOps Engineers</option>
+                                        <option>Product Managers</option>
+                                        <option>Data Engineers</option>
+                                        <option>Security Specialists</option>
+                                    </select>
+                                </td>
+                                <td><input type="number" placeholder="3" value="3" min="0" onchange="calculateResourceCost(this)"></td>
+                                <td>
+                                    <select>
+                                        <option>Available</option>
+                                        <option selected>Partial</option>
+                                        <option>Need to Hire</option>
+                                        <option>Contractor</option>
+                                    </select>
+                                </td>
+                                <td><input type="number" placeholder="15000" value="15000" min="0" onchange="calculateResourceCost(this)"></td>
+                                <td><input type="number" placeholder="12" value="12" min="1" onchange="calculateResourceCost(this)"> months</td>
+                                <td class="resource-total-cost">$540,000</td>
+                                <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="btn btn-secondary" onclick="addResourceRow()">+ Add Resource</button>
+                    
+                    <div class="score-display">
+                        <div class="score-card">
+                            <div class="score-label">Total Resource Cost</div>
+                            <div class="score-value" id="total-resource-cost">$540,000</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>Risk Mitigation Plan</h3>
+                    <table class="assessment-table">
+                        <thead>
+                            <tr>
+                                <th>Risk</th>
+                                <th>Impact</th>
+                                <th>Probability</th>
+                                <th>Mitigation Strategy</th>
+                                <th>Owner</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="roadmap-risks-tbody">
+                            <tr>
+                                <td>
+                                    <select>
+                                        <option selected>Model Performance Below Expectations</option>
+                                        <option>Data Quality Issues</option>
+                                        <option>Technical Team Unavailable</option>
+                                        <option>Budget Overrun</option>
+                                        <option>Timeline Delays</option>
+                                        <option>Security Vulnerabilities</option>
+                                        <option>Stakeholder Resistance</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select>
+                                        <option>Low</option>
+                                        <option>Medium</option>
+                                        <option selected>High</option>
+                                        <option>Critical</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select>
+                                        <option>Low</option>
+                                        <option selected>Medium</option>
+                                        <option>High</option>
+                                    </select>
+                                </td>
+                                <td><input type="text" placeholder="Mitigation strategy" value="Implement thorough testing phase with fallback models"></td>
+                                <td><input type="text" placeholder="Owner" value="AI Lead"></td>
+                                <td>
+                                    <select>
+                                        <option>Identified</option>
+                                        <option selected>Planned</option>
+                                        <option>In Progress</option>
+                                        <option>Mitigated</option>
+                                    </select>
+                                </td>
+                                <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="btn btn-secondary" onclick="addRoadmapRiskRow()">+ Add Risk</button>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="button-group">
+            <button class="btn btn-primary" onclick="exportToExcel()">📥 Export to Excel</button>
+            <button class="btn btn-primary" onclick="saveProgress()">💾 Save Progress</button>
+            <button class="btn btn-secondary" onclick="generateShareableLink()">🔗 Share Results</button>
+            <button class="btn btn-secondary" onclick="generateReport()">📄 Generate Report</button>
+            <button class="btn btn-secondary" onclick="resetCalculator()">🔄 Reset All</button>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer style="background: #f8fafc; padding: 2rem 0; margin-top: 4rem; text-align: center; border-top: 1px solid #e2e8f0;">
+        <div style="font-size: 1.1rem; color: #6366f1; font-weight: 500;">
+            Built with ❤️ by architects, for architects! 🚀
+        </div>
+    </footer>
+    
+    <!-- Loading Overlay Fix -->
+    <script src="/docs/assets/js/loading-overlay-fix.js"></script>
+    
+    <!-- Load AutoSave separately to ensure availability -->
+    <script src="/docs/assets/js/auto-save.js"></script>
+
+    <!-- Load Notifications separately -->
+    <script src="/docs/assets/js/notifications.js"></script>
+
+    <!-- Bundled Utilities (lightweight) - COMMENTED OUT FOR PERFORMANCE -->
+    <!-- <script src="/docs/assets/js/bundle-utilities.js"></script> -->
+    
+    <!-- Features Bundle (lightweight) - COMMENTED OUT FOR PERFORMANCE -->
+    <!-- <script src="/docs/assets/js/bundle-features.js"></script> -->
+
+    <!-- Calculator Specific JavaScript -->
+    <script src="/docs/assets/js/llm-framework.js"></script>
+    
+    <script>
+    function toggleMobileMenu() {
+        const menu = document.getElementById('siteMenu');
+        if (menu) {
+            menu.classList.toggle('active');
+        }
+    }
+    </script>
+</body>
+</html>

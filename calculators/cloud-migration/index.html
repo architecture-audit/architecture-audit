@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Migration Assessment Calculator - Enterprise Migration Planning</title>
+    <meta name="description" content="Comprehensive cloud migration assessment with cost analysis, risk scoring, and multi-cloud comparison">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>☁️</text></svg>">
+    
+    <!-- Navigation CSS -->
+    <link rel="stylesheet" href="/docs/assets/css/site-navigation.css">
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="/docs/assets/css/cloud-migration.css">
+    
+    <!-- Clean navbar fix -->
+    <style>
+        /* Minimal override to make navbar visible */
+        nav.site-nav {
+            display: block;
+            visibility: visible;
+        }
+        
+        /* Remove duplicate spacing - calculator CSS already has margin-top: 70px */
+        body {
+            padding-top: 0;
+        }
+    </style>
+    
+    <!-- SheetJS for Excel export -->
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+    <!-- Site Navigation -->
+    <nav class="site-nav">
+        <div class="site-nav-container">
+            <a href="/" class="site-logo">
+                🏢 AI Architecture Audit
+            </a>
+            
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+            
+            <ul class="site-menu" id="siteMenu">
+                <li class="site-menu-item">
+                    <a href="/">Home</a>
+                </li>
+                
+                <li class="site-menu-item has-dropdown">
+                    <a href="#" onclick="event.preventDefault()">Calculators</a>
+                    <div class="dropdown-menu">
+                        <a href="/calculators/ai-readiness/">🤖 AI Readiness</a>
+                        <a href="/calculators/cloud-migration/">☁️ Cloud Migration</a>
+                        <a href="/calculators/mlops-audit/">🔧 MLOps Audit</a>
+                        <a href="/calculators/llm-framework/">🧠 LLM Framework</a>
+                        <a href="/calculators/security-audit/">🔒 Security Audit</a>
+                        <a href="/calculators/genai-security/">🛡️ GenAI Security</a>
+                        <a href="/calculators/cost-optimization/">💰 Cost Optimization</a>
+                    </div>
+                </li>
+                
+                <li class="site-menu-item has-dropdown">
+                    <a href="#" onclick="event.preventDefault()">Documentation</a>
+                    <div class="dropdown-menu">
+                        <a href="/docs/ai-readiness/">📖 AI Readiness Guide</a>
+                        <a href="/docs/cloud-migration/">📖 Cloud Migration Guide</a>
+                        <a href="/docs/mlops-audit/">📖 MLOps Audit Guide</a>
+                        <a href="/docs/llm-framework/">📖 LLM Framework Guide</a>
+                        <a href="/docs/security-audit/">📖 Security Audit Guide</a>
+                        <a href="/docs/genai-security/">📖 GenAI Security Guide</a>
+                        <a href="/docs/cost-optimization/">📖 Cost Optimization Guide</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1>☁️ Cloud Migration Assessment Calculator</h1>
+            <p>Comprehensive enterprise cloud migration planning and assessment tool</p>
+        </div>
+    </header>
+    
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs">
+        <div class="nav-tabs-container">
+            <button class="nav-tab active" data-tab="inventory">
+                <span>📦</span> Application Inventory
+            </button>
+            <button class="nav-tab" data-tab="assessment">
+                <span>🔍</span> Technical Assessment
+            </button>
+            <button class="nav-tab" data-tab="costs">
+                <span>💰</span> Cost Analysis
+            </button>
+            <button class="nav-tab" data-tab="risks">
+                <span>⚠️</span> Risk Assessment
+            </button>
+            <button class="nav-tab" data-tab="timeline">
+                <span>📅</span> Migration Timeline
+            </button>
+            <button class="nav-tab" data-tab="business-case">
+                <span>📊</span> Business Case
+            </button>
+            <button class="nav-tab" data-tab="compliance">
+                <span>🔒</span> Compliance Check
+            </button>
+            <button class="nav-tab" data-tab="vendor">
+                <span>🏢</span> Vendor Selection
+            </button>
+            <button class="nav-tab" data-tab="service-mapping">
+                <span>🔄</span> Service Mapping
+            </button>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Application Inventory Tab -->
+        <div class="tab-content active" id="inventory">
+            <section class="section">
+                <h2>Application Inventory & 6R Strategy</h2>
+                
+                <div class="alert alert-info">
+                    Map your applications to the 6R migration strategies: Rehost, Replatform, Refactor, Repurchase, Retire, and Retain.
+                </div>
+                
+                <table class="assessment-table">
+                    <thead>
+                        <tr>
+                            <th>Application Name</th>
+                            <th>Type</th>
+                            <th>Technology Stack</th>
+                            <th>Complexity (1-5)</th>
+                            <th>Migration Strategy</th>
+                            <th>Dependencies</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inventory-tbody">
+                        <tr>
+                            <td><input type="text" placeholder="App Name"></td>
+                            <td>
+                                <select>
+                                    <option>Web Application</option>
+                                    <option>API Service</option>
+                                    <option>Database</option>
+                                    <option>Batch Processing</option>
+                                    <option>Microservice</option>
+                                </select>
+                            </td>
+                            <td><input type="text" placeholder="Java, Python, etc."></td>
+                            <td><input type="number" placeholder="1-5" min="1" max="5"></td>
+                            <td>
+                                <select>
+                                    <option>Rehost</option>
+                                    <option>Replatform</option>
+                                    <option>Refactor</option>
+                                    <option>Repurchase</option>
+                                    <option>Retire</option>
+                                    <option>Retain</option>
+                                </select>
+                            </td>
+                            <td><input type="number" placeholder="0" min="0"></td>
+                            <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <button class="btn btn-secondary" onclick="addInventoryRow()">+ Add Application</button>
+                
+                <div id="inventory-summary" class="score-display"></div>
+            </section>
+        </div>
+        
+        <!-- Technical Assessment Tab -->
+        <div class="tab-content" id="assessment">
+            <section class="section">
+                <h2>Technical Readiness Assessment</h2>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Architecture Modernization Level</label>
+                        <select id="arch-level">
+                            <option value="1">Monolithic</option>
+                            <option value="2">Service-Oriented</option>
+                            <option value="3">Microservices</option>
+                            <option value="4">Cloud-Native</option>
+                            <option value="5">Serverless</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Containerization Status</label>
+                        <select id="container-status">
+                            <option value="1">None</option>
+                            <option value="2">Partial</option>
+                            <option value="3">Most Applications</option>
+                            <option value="4">Full Containerization</option>
+                            <option value="5">Kubernetes/Orchestrated</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Data Architecture</label>
+                        <select id="data-arch">
+                            <option value="1">Monolithic Database</option>
+                            <option value="2">Master-Slave</option>
+                            <option value="3">Sharded</option>
+                            <option value="4">Distributed</option>
+                            <option value="5">Cloud-Native Data Services</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>DevOps Maturity</label>
+                        <select id="devops-maturity">
+                            <option value="1">Manual Deployments</option>
+                            <option value="2">Basic CI/CD</option>
+                            <option value="3">Automated Testing</option>
+                            <option value="4">Full Pipeline Automation</option>
+                            <option value="5">GitOps/IaC</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Security Posture</label>
+                        <select id="security-posture">
+                            <option value="1">Basic</option>
+                            <option value="2">Compliance-Driven</option>
+                            <option value="3">Proactive</option>
+                            <option value="4">DevSecOps</option>
+                            <option value="5">Zero Trust</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Team Cloud Skills</label>
+                        <select id="team-skills">
+                            <option value="1">Beginner</option>
+                            <option value="2">Basic</option>
+                            <option value="3">Intermediate</option>
+                            <option value="4">Advanced</option>
+                            <option value="5">Expert</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="score-display">
+                    <div class="score-card">
+                        <div class="score-label">Readiness Score</div>
+                        <div class="score-value" id="readiness-score">0%</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Cost Analysis Tab -->
+        <div class="tab-content" id="costs">
+            <section class="section">
+                <h2>Cloud Cost Estimation</h2>
+                
+                <h3>Select Target Cloud Provider</h3>
+                <div class="cloud-cards">
+                    <div class="cloud-card" data-provider="aws">
+                        <h4><span class="aws-badge">🟠</span> Amazon Web Services</h4>
+                        <p>Comprehensive cloud platform with 200+ services</p>
+                    </div>
+                    <div class="cloud-card" data-provider="azure">
+                        <h4><span class="azure-badge">🔵</span> Microsoft Azure</h4>
+                        <p>Enterprise-focused cloud with hybrid capabilities</p>
+                    </div>
+                    <div class="cloud-card" data-provider="gcp">
+                        <h4><span class="gcp-badge">🔴</span> Google Cloud Platform</h4>
+                        <p>Data analytics and ML-optimized cloud</p>
+                    </div>
+                </div>
+                
+                <h3>Resource Requirements</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Compute Hours (monthly)</label>
+                        <input type="number" id="compute-hours" placeholder="0" min="0">
+                        <span class="help-text">Total compute hours across all instances</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Storage (GB)</label>
+                        <input type="number" id="storage-gb" placeholder="0" min="0">
+                        <span class="help-text">Total storage requirements</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Data Transfer (GB)</label>
+                        <input type="number" id="transfer-gb" placeholder="0" min="0">
+                        <span class="help-text">Monthly data transfer</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Database Instances</label>
+                        <input type="number" id="db-instances" placeholder="0" min="0">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Load Balancers</label>
+                        <input type="number" id="load-balancers" placeholder="0" min="0">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>VPN Connections</label>
+                        <input type="number" id="vpn-connections" placeholder="0" min="0">
+                    </div>
+                </div>
+                
+                <div class="score-display">
+                    <div class="score-card">
+                        <div class="score-label">Estimated Monthly Cost</div>
+                        <div class="score-value" id="monthly-cost">$0</div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-label">Annual Cost</div>
+                        <div class="score-value" id="annual-cost">$0</div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-label">3-Year TCO</div>
+                        <div class="score-value" id="tco">$0</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Risk Assessment Tab -->
+        <div class="tab-content" id="risks">
+            <section class="section">
+                <h2>Risk Assessment Matrix</h2>
+                
+                <table class="assessment-table">
+                    <thead>
+                        <tr>
+                            <th>Risk Description</th>
+                            <th>Category</th>
+                            <th>Probability (1-5)</th>
+                            <th>Impact (1-5)</th>
+                            <th>Risk Score</th>
+                            <th>Mitigation Strategy</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="risk-tbody">
+                        <tr>
+                            <td><input type="text" placeholder="Risk description"></td>
+                            <td>
+                                <select>
+                                    <option>Technical</option>
+                                    <option>Business</option>
+                                    <option>Security</option>
+                                    <option>Compliance</option>
+                                    <option>Operational</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select onchange="updateRiskScore(this)">
+                                    <option value="1">Very Low</option>
+                                    <option value="2">Low</option>
+                                    <option value="3">Medium</option>
+                                    <option value="4">High</option>
+                                    <option value="5">Very High</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select onchange="updateRiskScore(this)">
+                                    <option value="1">Very Low</option>
+                                    <option value="2">Low</option>
+                                    <option value="3">Medium</option>
+                                    <option value="4">High</option>
+                                    <option value="5">Very High</option>
+                                </select>
+                            </td>
+                            <td class="risk-score">1</td>
+                            <td><input type="text" placeholder="Mitigation strategy"></td>
+                            <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <button class="btn btn-secondary" onclick="addRiskRow()">+ Add Risk</button>
+                
+                <h3>Risk Distribution</h3>
+                <div class="risk-matrix" id="risk-matrix">
+                    <div class="risk-cell risk-low">Low: 0</div>
+                    <div class="risk-cell risk-medium">Medium: 0</div>
+                    <div class="risk-cell risk-high">High: 0</div>
+                    <div class="risk-cell risk-critical">Critical: 0</div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Migration Timeline Tab -->
+        <div class="tab-content" id="timeline">
+            <section class="section">
+                <h2>Migration Timeline & Phases</h2>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Project Start Date</label>
+                        <input type="date" id="start-date">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Target Completion Date</label>
+                        <input type="date" id="end-date">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Migration Waves</label>
+                        <input type="number" id="migration-waves" placeholder="3" min="1" max="10">
+                        <span class="help-text">Number of migration phases</span>
+                    </div>
+                </div>
+                
+                <h3>Migration Phases</h3>
+                <table class="assessment-table">
+                    <thead>
+                        <tr>
+                            <th>Phase</th>
+                            <th>Applications</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Resources Required</th>
+                            <th>Dependencies</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Phase 1: Foundation</td>
+                            <td><input type="text" placeholder="Infrastructure setup"></td>
+                            <td><input type="date"></td>
+                            <td><input type="date"></td>
+                            <td><input type="number" placeholder="5" min="1"></td>
+                            <td><input type="text" placeholder="None"></td>
+                        </tr>
+                        <tr>
+                            <td>Phase 2: Pilot</td>
+                            <td><input type="text" placeholder="Non-critical apps"></td>
+                            <td><input type="date"></td>
+                            <td><input type="date"></td>
+                            <td><input type="number" placeholder="8" min="1"></td>
+                            <td><input type="text" placeholder="Phase 1"></td>
+                        </tr>
+                        <tr>
+                            <td>Phase 3: Production</td>
+                            <td><input type="text" placeholder="Critical apps"></td>
+                            <td><input type="date"></td>
+                            <td><input type="date"></td>
+                            <td><input type="number" placeholder="12" min="1"></td>
+                            <td><input type="text" placeholder="Phase 2"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <canvas id="timeline-canvas" width="1200" height="400"></canvas>
+            </section>
+        </div>
+        
+        <!-- Business Case Tab -->
+        <div class="tab-content" id="business-case">
+            <section class="section">
+                <h2>Business Case & ROI Calculator</h2>
+                
+                <h3>Migration Benefits</h3>
+                <table class="assessment-table">
+                    <thead>
+                        <tr>
+                            <th>Benefit/Use Case</th>
+                            <th>Description</th>
+                            <th>Investment ($)</th>
+                            <th>Monthly Savings ($)</th>
+                            <th>Payback Period (months)</th>
+                            <th>ROI</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usecase-tbody">
+                        <tr>
+                            <td><input type="text" placeholder="Cost Optimization"></td>
+                            <td><input type="text" placeholder="Reduce infrastructure costs"></td>
+                            <td><input type="number" placeholder="50000" min="0" onchange="calculateROI()"></td>
+                            <td><input type="number" placeholder="5000" min="0" onchange="calculateROI()"></td>
+                            <td><input type="number" placeholder="12" min="1" onchange="calculateROI()"></td>
+                            <td class="roi">0%</td>
+                            <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <button class="btn btn-secondary" onclick="addUseCaseRow()">+ Add Benefit</button>
+                
+                <div class="score-display">
+                    <div class="score-card">
+                        <div class="score-label">Total Investment</div>
+                        <div class="score-value" id="total-investment">$0</div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-label">Annual Savings</div>
+                        <div class="score-value" id="annual-savings">$0</div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-label">Average ROI</div>
+                        <div class="score-value" id="average-roi">0%</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Compliance Check Tab -->
+        <div class="tab-content" id="compliance">
+            <section class="section">
+                <h2>Compliance & Regulatory Requirements</h2>
+                
+                <table class="assessment-table">
+                    <thead>
+                        <tr>
+                            <th>Requirement</th>
+                            <th>Standard/Regulation</th>
+                            <th>Current Status</th>
+                            <th>Action Required</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="compliance-tbody">
+                        <tr>
+                            <td><input type="text" placeholder="Data residency"></td>
+                            <td>
+                                <select>
+                                    <option>GDPR</option>
+                                    <option>HIPAA</option>
+                                    <option>PCI-DSS</option>
+                                    <option>SOC 2</option>
+                                    <option>ISO 27001</option>
+                                    <option>Custom</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select>
+                                    <option>Compliant</option>
+                                    <option>Partial</option>
+                                    <option>Non-Compliant</option>
+                                    <option>N/A</option>
+                                </select>
+                            </td>
+                            <td><input type="text" placeholder="Ensure data stays in EU"></td>
+                            <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <button class="btn btn-secondary" onclick="addComplianceRow()">+ Add Requirement</button>
+                
+                <div class="alert alert-warning">
+                    <strong>Note:</strong> Ensure all compliance requirements are addressed before migration. Consult with legal and compliance teams.
+                </div>
+            </section>
+        </div>
+        
+        <!-- Vendor Selection Tab -->
+        <div class="tab-content" id="vendor">
+            <section class="section">
+                <h2>Multi-Cloud Vendor Comparison</h2>
+                
+                <table class="assessment-table">
+                    <thead>
+                        <tr>
+                            <th>Service Category</th>
+                            <th>AWS Option</th>
+                            <th>Azure Option</th>
+                            <th>GCP Option</th>
+                            <th>Recommended</th>
+                            <th>Justification</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="vendor-tbody">
+                        <tr>
+                            <td><input type="text" placeholder="Compute"></td>
+                            <td><input type="text" placeholder="EC2"></td>
+                            <td><input type="text" placeholder="Virtual Machines"></td>
+                            <td><input type="text" placeholder="Compute Engine"></td>
+                            <td>
+                                <select>
+                                    <option>AWS</option>
+                                    <option>Azure</option>
+                                    <option>GCP</option>
+                                    <option>Multi-Cloud</option>
+                                </select>
+                            </td>
+                            <td><input type="text" placeholder="Best pricing and features"></td>
+                            <td><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <button class="btn btn-secondary" onclick="addVendorRow()">+ Add Service</button>
+            </section>
+        </div>
+        
+        <!-- Service Mapping Tab -->
+        <div class="tab-content" id="service-mapping">
+            <section class="section">
+                <h2>Cloud Service Mapping</h2>
+                
+                <div class="alert alert-info">
+                    Map your current services to equivalent cloud services. Select source and target cloud providers to see service mappings.
+                </div>
+                
+                <div id="service-mapping-container"></div>
+                <div id="service-mapping-table"></div>
+            </section>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="button-group">
+            <button class="btn btn-primary" onclick="exportToExcel()">📥 Export to Excel</button>
+            <button class="btn btn-success" onclick="saveProgress()">💾 Save Progress</button>
+            <button class="btn btn-secondary" onclick="shareResults()">🔗 Share Link</button>
+            <button class="btn btn-secondary" onclick="generateReport()">📄 Generate Report</button>
+            <button class="btn btn-danger" onclick="resetCalculator()">🔄 Reset All</button>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer style="background: #f8fafc; padding: 2rem 0; margin-top: 4rem; text-align: center; border-top: 1px solid #e2e8f0;">
+        <div style="font-size: 1.1rem; color: #6366f1; font-weight: 500;">
+            Built with ❤️ by architects, for architects! 🚀
+        </div>
+    </footer>
+    
+    <!-- Loading Overlay Fix -->
+    <script src="/docs/assets/js/loading-overlay-fix.js"></script>
+    
+    <!-- Load AutoSave separately to ensure availability -->
+    <script src="/docs/assets/js/auto-save.js"></script>
+
+    <!-- Load Notifications separately -->
+    <script src="/docs/assets/js/notifications.js"></script>
+
+    <!-- Bundled Utilities (lightweight) - COMMENTED OUT FOR PERFORMANCE -->
+    <!-- <script src="/docs/assets/js/bundle-utilities.js"></script> -->
+    
+    <!-- Features Bundle (lightweight) - COMMENTED OUT FOR PERFORMANCE -->
+    <!-- <script src="/docs/assets/js/bundle-features.js"></script> -->
+
+    <!-- Calculator Specific JavaScript -->
+    <script src="/docs/assets/js/cloud-migration.js"></script>
+    
+    <script>
+    function toggleMobileMenu() {
+        const menu = document.getElementById('siteMenu');
+        if (menu) {
+            menu.classList.toggle('active');
+        }
+    }
+    </script>
+</body>
+</html>
