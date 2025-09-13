@@ -34,23 +34,24 @@
         content: ' ▲' !important;
     }
     
-    /* Dropdown menu container */
+    /* Dropdown menu container - use scale for smooth transition */
     .dropdown-menu {
-        display: none !important;
         background: rgba(30, 41, 59, 0.95) !important;
-        padding: 0 !important;
+        padding: 0.5rem 0 !important;
         margin: 0 !important;
         width: 100% !important;
         position: static !important;
-        opacity: 1 !important;
-        max-height: none !important;
-        overflow: visible !important;
-        transition: none !important;
+        transform-origin: top center !important;
+        transform: scaleY(0) !important;
+        opacity: 0 !important;
+        height: auto !important;
+        transition: transform 0.15s ease-out,
+                    opacity 0.15s ease-out !important;
     }
     
     .site-menu-item.expanded .dropdown-menu {
-        display: block !important;
-        animation: slideDown 0.2s ease-out;
+        transform: scaleY(1) !important;
+        opacity: 1 !important;
     }
     
     /* Dropdown menu items */
