@@ -33,6 +33,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     <a href="${origin}/#calculators" onclick="closeMobileMenu()">🧮 Calculators</a>
                 </li>
                 
+                <li class="site-menu-item mobile-only">
+                    <a href="${origin}/#about" onclick="closeMobileMenu()">📖 About</a>
+                </li>
+                
                 <!-- Desktop-only dropdown items -->
                 <li class="site-menu-item has-dropdown desktop-only">
                     <a href="#" onclick="event.preventDefault()">Calculators</a>
@@ -92,6 +96,9 @@ document.addEventListener('DOMContentLoaded', function() {
     if (nav) {
         const navHeight = nav.offsetHeight;
         document.body.style.paddingTop = navHeight + 'px';
+        
+        // Add scroll padding to prevent headings from hiding under fixed nav
+        document.documentElement.style.scrollPaddingTop = navHeight + 'px';
     }
     
     // Highlight current page in navigation
@@ -99,6 +106,34 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Dispatch event for mobile navigation handler
     document.dispatchEvent(new Event('navigationInjected'));
+    
+    // Handle anchor link clicks with offset for fixed header
+    document.querySelectorAll('a[href*="#"]').forEach(link => {
+        link.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href && href.includes('#') && !href.startsWith('#')) {
+                const hash = href.substring(href.indexOf('#'));
+                const target = document.querySelector(hash);
+                if (target) {
+                    e.preventDefault();
+                    const nav = document.querySelector('.site-nav');
+                    const offset = nav ? nav.offsetHeight + 20 : 80;
+                    const targetPosition = target.offsetTop - offset;
+                    
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Update URL
+                    history.pushState(null, null, href);
+                    
+                    // Close mobile menu if open
+                    closeMobileMenu();
+                }
+            }
+        });
+    });
 });
 
 // Toggle mobile menu
