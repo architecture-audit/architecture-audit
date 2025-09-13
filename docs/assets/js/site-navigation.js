@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 <!-- Mobile-only menu items -->
                 <li class="site-menu-item mobile-only">
-                    <a href="${origin}/#frameworks" onclick="closeMobileMenu()">🚀 Frameworks</a>
+                    <a href="${origin}/#calculators" onclick="closeMobileMenu()">🧮 Calculators</a>
                 </li>
                 
                 <!-- Desktop-only dropdown items -->
