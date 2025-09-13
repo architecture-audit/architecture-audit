@@ -42,16 +42,44 @@
         
         if (!dropdown) return;
         
-        // Toggle expanded class
-        menuItem.classList.toggle('expanded');
+        const isExpanded = menuItem.classList.contains('expanded');
         
-        // Close other dropdowns
+        // Close other dropdowns smoothly
         const otherItems = document.querySelectorAll('.site-menu-item.has-dropdown');
         otherItems.forEach(other => {
-            if (other !== menuItem) {
+            if (other !== menuItem && other.classList.contains('expanded')) {
+                const otherDropdown = other.querySelector('.dropdown-menu');
+                if (otherDropdown) {
+                    otherDropdown.style.height = otherDropdown.scrollHeight + 'px';
+                    otherDropdown.offsetHeight; // Force reflow
+                    otherDropdown.style.height = '0px';
+                }
                 other.classList.remove('expanded');
             }
         });
+        
+        // Toggle current dropdown with smooth animation
+        if (isExpanded) {
+            // Closing
+            dropdown.style.height = dropdown.scrollHeight + 'px';
+            dropdown.offsetHeight; // Force reflow
+            dropdown.style.height = '0px';
+            menuItem.classList.remove('expanded');
+        } else {
+            // Opening
+            menuItem.classList.add('expanded');
+            const height = dropdown.scrollHeight;
+            dropdown.style.height = '0px';
+            dropdown.offsetHeight; // Force reflow
+            dropdown.style.height = height + 'px';
+            
+            // After animation, set to auto for dynamic content
+            setTimeout(() => {
+                if (menuItem.classList.contains('expanded')) {
+                    dropdown.style.height = 'auto';
+                }
+            }, 300);
+        }
     }
     
     // Close mobile menu when clicking outside
@@ -64,6 +92,10 @@
             
             // Also close all dropdowns
             document.querySelectorAll('.site-menu-item.expanded').forEach(item => {
+                const dropdown = item.querySelector('.dropdown-menu');
+                if (dropdown) {
+                    dropdown.style.height = '0px';
+                }
                 item.classList.remove('expanded');
             });
         }
@@ -83,6 +115,10 @@
                 
                 // Remove expanded state from all items
                 document.querySelectorAll('.site-menu-item.expanded').forEach(item => {
+                    const dropdown = item.querySelector('.dropdown-menu');
+                    if (dropdown) {
+                        dropdown.style.height = '';
+                    }
                     item.classList.remove('expanded');
                 });
             }

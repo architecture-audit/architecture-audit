@@ -30,18 +30,15 @@
     }
     
     .dropdown-menu {
-        max-height: 0;
+        display: block;
         overflow: hidden;
-        opacity: 1;
-        visibility: visible;
-        transform: none;
+        height: 0;
         padding-left: 1rem;
-        transition: max-height 0.3s ease-out;
+        transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
     .site-menu-item.expanded .dropdown-menu {
-        max-height: 500px;
-        transition: max-height 0.3s ease-in;
+        /* Height will be set by JavaScript for smooth animation */
     }
     
     /* Add chevron indicator for dropdowns */
