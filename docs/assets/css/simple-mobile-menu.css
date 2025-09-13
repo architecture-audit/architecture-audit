@@ -1,0 +1,57 @@
+/* Simple Mobile Menu - No Dropdowns */
+
+/* Desktop styles - hide mobile-only items */
+@media screen and (min-width: 769px) {
+    .site-menu-item.mobile-only {
+        display: none !important;
+    }
+    
+    /* Show desktop dropdowns */
+    .site-menu-item.desktop-only {
+        display: block !important;
+    }
+}
+
+/* Mobile styles - show mobile-only, hide desktop-only */
+@media screen and (max-width: 768px) {
+    /* Show mobile-only items */
+    .site-menu-item.mobile-only {
+        display: block !important;
+    }
+    
+    /* Hide desktop-only items (dropdowns) */
+    .site-menu-item.desktop-only {
+        display: none !important;
+    }
+    
+    /* Hide dropdown menus completely on mobile */
+    .site-menu-item.has-dropdown .dropdown-menu {
+        display: none !important;
+    }
+    
+    /* Remove dropdown indicators on mobile */
+    .site-menu-item.has-dropdown > a::after {
+        display: none !important;
+    }
+    
+    /* Simple menu items */
+    .site-menu-item > a {
+        display: block !important;
+        padding: 1rem 1.5rem !important;
+        color: white !important;
+        text-decoration: none !important;
+        border-bottom: 1px solid rgba(255,255,255,0.1) !important;
+        width: 100% !important;
+    }
+    
+    .site-menu-item > a:hover,
+    .site-menu-item > a:active {
+        background: rgba(16, 185, 129, 0.1) !important;
+        color: #10b981 !important;
+    }
+    
+    /* Hide Calculators and Documentation items on mobile */
+    .site-menu-item.has-dropdown {
+        display: none !important;
+    }
+}

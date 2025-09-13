@@ -28,7 +28,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     <a href="${origin}/">Home</a>
                 </li>
                 
-                <li class="site-menu-item has-dropdown">
+                <!-- Mobile-only menu items -->
+                <li class="site-menu-item mobile-only">
+                    <a href="${origin}/#frameworks" onclick="closeMobileMenu()">🚀 Frameworks</a>
+                </li>
+                
+                <!-- Desktop-only dropdown items -->
+                <li class="site-menu-item has-dropdown desktop-only">
                     <a href="#" onclick="event.preventDefault()">Calculators</a>
                     <div class="dropdown-menu">
                         <a href="${origin}/calculators/ai-readiness/" onclick="console.log('Navigating to:', this.href)">🤖 AI Readiness</a>
@@ -41,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 </li>
                 
-                <li class="site-menu-item has-dropdown">
+                <li class="site-menu-item has-dropdown desktop-only">
                     <a href="#" onclick="event.preventDefault()">Documentation</a>
                     <div class="dropdown-menu">
                         <a href="${origin}/docs/ai-readiness/">📖 AI Readiness Guide</a>
@@ -99,6 +105,14 @@ document.addEventListener('DOMContentLoaded', function() {
 function toggleMobileMenu() {
     const menu = document.getElementById('siteMenu');
     menu.classList.toggle('active');
+}
+
+// Close mobile menu
+function closeMobileMenu() {
+    const menu = document.getElementById('siteMenu');
+    if (menu) {
+        menu.classList.remove('active');
+    }
 }
 
 // Highlight current page in navigation
