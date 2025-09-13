@@ -1,7 +1,7 @@
 /* Mobile Navigation Fixes */
 
 /* Site Navigation Mobile Improvements */
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) {
     /* Fix mobile menu container */
     .site-nav-container {
         padding: 0 1rem;
@@ -33,30 +33,55 @@
         display: block;
         overflow: hidden;
         height: 0;
-        padding-left: 1rem;
         transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        background: rgba(45, 55, 72, 0.5); /* Semi-transparent darker background */
+        margin: 0;
+        padding: 0;
     }
     
     .site-menu-item.expanded .dropdown-menu {
         /* Height will be set by JavaScript for smooth animation */
+        padding: 0.5rem 0;
     }
     
     /* Add chevron indicator for dropdowns */
+    .site-menu-item.has-dropdown > a {
+        position: relative;
+        padding-right: 2rem;
+    }
+    
     .site-menu-item.has-dropdown > a::after {
         content: '▼';
-        float: right;
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
         font-size: 0.8rem;
         transition: transform 0.3s;
+        color: rgba(255, 255, 255, 0.7);
     }
     
     .site-menu-item.expanded > a::after {
-        transform: rotate(180deg);
+        transform: translateY(-50%) rotate(180deg);
     }
     
     .dropdown-menu a {
-        padding: 0.75rem 1rem;
-        font-size: 0.9rem;
-        border-left: 2px solid rgba(255,255,255,0.2);
+        display: block !important;
+        padding: 0.75rem 1rem 0.75rem 2rem !important;
+        font-size: 0.9rem !important;
+        color: rgba(255, 255, 255, 0.9) !important;
+        text-decoration: none !important;
+        border-left: 3px solid transparent !important;
+        transition: all 0.2s;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    
+    .dropdown-menu a:hover,
+    .dropdown-menu a:focus {
+        background: rgba(16, 185, 129, 0.1) !important;
+        border-left-color: #10b981 !important;
+        color: white !important;
     }
     
     /* Better mobile menu toggle button */

@@ -152,12 +152,15 @@
     .dropdown-menu {
         position: static;
         box-shadow: none;
-        background: #2d3748;
-        margin-top: 0.5rem;
+        background: rgba(45, 55, 72, 0.8);
+        margin-top: 0;
+        border-radius: 0;
+        width: 100%;
     }
     
     .dropdown-menu a {
-        color: white;
+        color: rgba(255, 255, 255, 0.9) !important;
+        display: block !important;
     }
     
     .site-menu-item.has-dropdown::after {
