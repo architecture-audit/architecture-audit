@@ -30,15 +30,30 @@
     }
     
     .dropdown-menu {
-        display: none;
+        max-height: 0;
+        overflow: hidden;
         opacity: 1;
         visibility: visible;
         transform: none;
         padding-left: 1rem;
+        transition: max-height 0.3s ease-out;
     }
     
     .site-menu-item.expanded .dropdown-menu {
-        display: block;
+        max-height: 500px;
+        transition: max-height 0.3s ease-in;
+    }
+    
+    /* Add chevron indicator for dropdowns */
+    .site-menu-item.has-dropdown > a::after {
+        content: '▼';
+        float: right;
+        font-size: 0.8rem;
+        transition: transform 0.3s;
+    }
+    
+    .site-menu-item.expanded > a::after {
+        transform: rotate(180deg);
     }
     
     .dropdown-menu a {
