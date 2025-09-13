@@ -21,10 +21,15 @@
     .site-menu-item {
         width: 100%;
         border-bottom: 1px solid rgba(255,255,255,0.1);
+        margin-bottom: 0.5rem; /* Space between menu items */
+    }
+    
+    .site-menu-item:last-child {
+        margin-bottom: 0;
     }
     
     .site-menu-item > a {
-        padding: 1rem;
+        padding: 1rem 1.5rem;
         display: block;
         width: 100%;
     }
@@ -50,23 +55,28 @@
         max-height: 500px !important;
         opacity: 1;
         padding: 0.5rem 0 !important;
+        margin-top: 0.5rem !important; /* Space between arrow and dropdown items */
     }
     
     /* Add chevron indicator for dropdowns */
     .site-menu-item.has-dropdown > a {
         position: relative;
-        padding-right: 2rem;
+        padding-right: 3rem; /* More space for arrow */
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
     }
     
     .site-menu-item.has-dropdown > a::after {
         content: '▼';
         position: absolute;
-        right: 1rem;
+        right: 1.5rem; /* Move arrow more to the right */
         top: 50%;
         transform: translateY(-50%);
-        font-size: 0.8rem;
+        font-size: 0.7rem;
         transition: transform 0.3s;
         color: rgba(255, 255, 255, 0.7);
+        margin-left: auto;
     }
     
     .site-menu-item.expanded > a::after {
