@@ -1,0 +1,99 @@
+/* Final Mobile Dropdown Fix - Absolute Positioning Approach */
+
+@media screen and (max-width: 768px) {
+    /* Make menu item relative for absolute dropdown */
+    .site-menu-item.has-dropdown {
+        position: relative !important;
+    }
+    
+    /* Keep trigger link simple */
+    .site-menu-item.has-dropdown > a {
+        display: block !important;
+        padding: 1rem 2.5rem 1rem 1.5rem !important;
+        position: relative !important;
+    }
+    
+    /* Simple inline arrow */
+    .site-menu-item.has-dropdown > a::after {
+        content: '▼' !important;
+        position: absolute !important;
+        right: 1.5rem !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        font-size: 0.7rem !important;
+        color: rgba(255, 255, 255, 0.7) !important;
+        transition: transform 0.2s !important;
+    }
+    
+    .site-menu-item.expanded > a::after {
+        transform: translateY(-50%) rotate(180deg) !important;
+    }
+    
+    /* Dropdown positioned absolutely to not affect layout */
+    .dropdown-menu {
+        position: absolute !important;
+        top: 100% !important;
+        left: 0 !important;
+        right: 0 !important;
+        z-index: 100 !important;
+        background: rgba(30, 41, 59, 0.98) !important;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+        border-radius: 0 0 8px 8px !important;
+        
+        /* Hidden by default */
+        pointer-events: none !important;
+        opacity: 0 !important;
+        transform: translateY(-10px) !important;
+        
+        /* Smooth transition */
+        transition: opacity 0.2s ease-out,
+                    transform 0.2s ease-out !important;
+    }
+    
+    /* Show dropdown when expanded */
+    .site-menu-item.expanded .dropdown-menu {
+        pointer-events: auto !important;
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+    }
+    
+    /* Dropdown items */
+    .dropdown-menu a {
+        display: block !important;
+        padding: 0.75rem 1.5rem 0.75rem 2.5rem !important;
+        color: rgba(255, 255, 255, 0.9) !important;
+        text-decoration: none !important;
+        border-left: 3px solid transparent !important;
+        transition: all 0.15s !important;
+    }
+    
+    .dropdown-menu a:hover {
+        background: rgba(16, 185, 129, 0.1) !important;
+        border-left-color: #10b981 !important;
+        color: white !important;
+    }
+    
+    /* Add spacing after expanded items */
+    .site-menu-item.expanded {
+        margin-bottom: 200px !important; /* Space for absolute dropdown */
+    }
+    
+    /* Adjust spacing when dropdown is closed */
+    .site-menu-item:not(.expanded) {
+        margin-bottom: 0.5rem !important;
+    }
+}
+
+/* Ensure highest specificity */
+@media screen and (max-width: 768px) {
+    .site-nav .site-menu .dropdown-menu {
+        position: absolute !important;
+        display: block !important;
+        visibility: visible !important;
+        max-height: none !important;
+        height: auto !important;
+        overflow: visible !important;
+        clip-path: none !important;
+        contain: none !important;
+    }
+}

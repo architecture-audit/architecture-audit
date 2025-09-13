@@ -34,24 +34,18 @@
         content: ' ▲' !important;
     }
     
-    /* Dropdown menu container - use scale for smooth transition */
+    /* Dropdown menu container - NO transitions to prevent jumping */
     .dropdown-menu {
         background: rgba(30, 41, 59, 0.95) !important;
         padding: 0.5rem 0 !important;
         margin: 0 !important;
         width: 100% !important;
         position: static !important;
-        transform-origin: top center !important;
-        transform: scaleY(0) !important;
-        opacity: 0 !important;
-        height: auto !important;
-        transition: transform 0.15s ease-out,
-                    opacity 0.15s ease-out !important;
+        display: none !important;
     }
     
     .site-menu-item.expanded .dropdown-menu {
-        transform: scaleY(1) !important;
-        opacity: 1 !important;
+        display: block !important;
     }
     
     /* Dropdown menu items */
