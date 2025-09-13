@@ -40,41 +40,19 @@
     function handleDropdownToggle(menuItem, dropdown) {
         const isExpanded = menuItem.classList.contains('expanded');
         
-        // Close other dropdowns smoothly
+        // Close other dropdowns
         const otherItems = document.querySelectorAll('.site-menu-item.has-dropdown');
         otherItems.forEach(other => {
-            if (other !== menuItem && other.classList.contains('expanded')) {
-                const otherDropdown = other.querySelector('.dropdown-menu');
-                if (otherDropdown) {
-                    otherDropdown.style.height = otherDropdown.scrollHeight + 'px';
-                    otherDropdown.offsetHeight; // Force reflow
-                    otherDropdown.style.height = '0px';
-                }
+            if (other !== menuItem) {
                 other.classList.remove('expanded');
             }
         });
         
-        // Toggle current dropdown with smooth animation
+        // Toggle current dropdown
         if (isExpanded) {
-            // Closing
-            dropdown.style.height = dropdown.scrollHeight + 'px';
-            dropdown.offsetHeight; // Force reflow
-            dropdown.style.height = '0px';
             menuItem.classList.remove('expanded');
         } else {
-            // Opening
             menuItem.classList.add('expanded');
-            const height = dropdown.scrollHeight;
-            dropdown.style.height = '0px';
-            dropdown.offsetHeight; // Force reflow
-            dropdown.style.height = height + 'px';
-            
-            // After animation, set to auto for dynamic content
-            setTimeout(() => {
-                if (menuItem.classList.contains('expanded')) {
-                    dropdown.style.height = 'auto';
-                }
-            }, 300);
         }
     }
     
@@ -88,10 +66,6 @@
             
             // Also close all dropdowns
             document.querySelectorAll('.site-menu-item.expanded').forEach(item => {
-                const dropdown = item.querySelector('.dropdown-menu');
-                if (dropdown) {
-                    dropdown.style.height = '0px';
-                }
                 item.classList.remove('expanded');
             });
         }
@@ -111,10 +85,6 @@
                 
                 // Remove expanded state from all items
                 document.querySelectorAll('.site-menu-item.expanded').forEach(item => {
-                    const dropdown = item.querySelector('.dropdown-menu');
-                    if (dropdown) {
-                        dropdown.style.height = '';
-                    }
                     item.classList.remove('expanded');
                 });
             }

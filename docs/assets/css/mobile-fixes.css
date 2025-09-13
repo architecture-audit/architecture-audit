@@ -31,16 +31,24 @@
     
     .dropdown-menu {
         display: block;
+        max-height: 0;
         overflow: hidden;
-        height: 0;
-        transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        opacity: 0;
+        transform: scaleY(0);
+        transform-origin: top;
+        transition: max-height 0.4s ease-out,
+                    opacity 0.3s ease-out,
+                    transform 0.3s ease-out,
+                    padding 0.3s ease-out;
         background: rgba(45, 55, 72, 0.5); /* Semi-transparent darker background */
         margin: 0;
         padding: 0;
     }
     
     .site-menu-item.expanded .dropdown-menu {
-        /* Height will be set by JavaScript for smooth animation */
+        max-height: 400px; /* Enough for all items */
+        opacity: 1;
+        transform: scaleY(1);
         padding: 0.5rem 0;
     }
     
