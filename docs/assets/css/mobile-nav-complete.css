@@ -312,7 +312,12 @@ html {
 
 /* Scroll offset for anchors */
 html {
-    scroll-padding-top: 80px;
+    scroll-padding-top: 100px; /* Increased to ensure headings are visible */
+}
+
+/* Additional padding for section headings */
+section[id] {
+    scroll-margin-top: 20px;
 }
 
 /* High contrast mode support */

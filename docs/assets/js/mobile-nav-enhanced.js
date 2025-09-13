@@ -53,13 +53,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     <li class="site-menu-item mobile-only" role="menuitem">
                         <a href="${origin}/#calculators" onclick="handleMenuClick(event, '#calculators')">
-                            <span>🧮</span> Calculators
+                            <span>🧮</span> Frameworks
                         </a>
                     </li>
                     
                     <li class="site-menu-item mobile-only" role="menuitem">
-                        <a href="${origin}/#frameworks" onclick="handleMenuClick(event, '#frameworks')">
-                            <span>🚀</span> Frameworks
+                        <a href="${origin}/#features" onclick="handleMenuClick(event, '#features')">
+                            <span>🚀</span> Features
                         </a>
                     </li>
                     
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <li class="site-menu-item divider mobile-only"></li>
                     
                     <li class="site-menu-item mobile-only" role="menuitem">
-                        <a href="${origin}/docs/" onclick="handleMenuClick(event, '/docs/')">
+                        <a href="${origin}/docs/">
                             <span>📚</span> Documentation
                         </a>
                     </li>
@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const element = document.querySelector(target);
             if (element) {
                 const offset = document.querySelector('.site-nav')?.offsetHeight || config.scrollOffset;
-                const targetPosition = element.offsetTop - offset;
+                const targetPosition = element.offsetTop - offset - 20; // Extra 20px padding above heading
                 
                 window.scrollTo({
                     top: targetPosition,
