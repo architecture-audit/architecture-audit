@@ -34,18 +34,28 @@
         content: ' ▲' !important;
     }
     
-    /* Dropdown menu container - NO transitions to prevent jumping */
+    /* Dropdown menu container - iOS-friendly approach */
     .dropdown-menu {
         background: rgba(30, 41, 59, 0.95) !important;
-        padding: 0.5rem 0 !important;
         margin: 0 !important;
         width: 100% !important;
         position: static !important;
-        display: none !important;
+        
+        /* Use visibility and height instead of display for iOS */
+        visibility: hidden !important;
+        height: 0 !important;
+        overflow: hidden !important;
+        padding: 0 !important;
+        
+        /* Disable all transitions */
+        transition: none !important;
+        -webkit-transition: none !important;
     }
     
     .site-menu-item.expanded .dropdown-menu {
-        display: block !important;
+        visibility: visible !important;
+        height: auto !important;
+        padding: 0.5rem 0 !important;
     }
     
     /* Dropdown menu items */
@@ -95,5 +105,28 @@
         contain: none !important;
         clip-path: none !important;
         flex-direction: column !important;
+    }
+}
+
+/* iOS-specific fixes */
+@supports (-webkit-touch-callout: none) {
+    @media screen and (max-width: 768px) {
+        .dropdown-menu {
+            /* iOS needs explicit positioning */
+            position: relative !important;
+            -webkit-transform: translateZ(0) !important; /* Force GPU acceleration */
+            -webkit-backface-visibility: hidden !important; /* Prevent flickering */
+        }
+        
+        .site-menu-item.expanded .dropdown-menu {
+            /* Ensure smooth rendering on iOS */
+            will-change: auto !important;
+        }
+        
+        /* Prevent iOS bounce effect */
+        .site-menu {
+            -webkit-overflow-scrolling: touch !important;
+            overflow-y: scroll !important;
+        }
     }
 }

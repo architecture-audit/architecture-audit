@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Dropdown Behavior</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: system-ui;
+            background: #1e293b;
+            color: white;
+        }
+        
+        .test-info {
+            background: #374151;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .dropdown-container {
+            margin: 20px 0;
+        }
+        
+        .dropdown-trigger {
+            background: #4b5563;
+            padding: 15px;
+            cursor: pointer;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .dropdown-content {
+            display: none;
+            background: #374151;
+            margin-top: 5px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        
+        .dropdown-content.show {
+            display: block;
+        }
+        
+        .dropdown-item {
+            padding: 10px;
+            border-left: 3px solid transparent;
+        }
+        
+        .dropdown-item:hover {
+            background: rgba(16, 185, 129, 0.1);
+            border-left-color: #10b981;
+        }
+        
+        /* Test different approaches */
+        .approach-1 .dropdown-content {
+            /* Simple display toggle */
+            display: none;
+        }
+        
+        .approach-1 .dropdown-content.show {
+            display: block;
+        }
+        
+        .approach-2 .dropdown-content {
+            /* Height animation */
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s;
+        }
+        
+        .approach-2 .dropdown-content.show {
+            max-height: 500px;
+        }
+        
+        .approach-3 .dropdown-content {
+            /* Scale transform */
+            transform: scaleY(0);
+            transform-origin: top;
+            transition: transform 0.3s;
+            display: block;
+        }
+        
+        .approach-3 .dropdown-content.show {
+            transform: scaleY(1);
+        }
+    </style>
+</head>
+<body>
+    <div class="test-info">
+        <h2>Testing Dropdown Approaches</h2>
+        <p>Click each dropdown to see different behaviors:</p>
+    </div>
+    
+    <div class="dropdown-container approach-1">
+        <div class="dropdown-trigger" onclick="toggleDropdown(this)">
+            <span>Approach 1: Simple Display Toggle</span>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="dropdown-content">
+            <div class="dropdown-item">🤖 AI Readiness</div>
+            <div class="dropdown-item">☁️ Cloud Migration</div>
+            <div class="dropdown-item">🔧 MLOps Audit</div>
+        </div>
+    </div>
+    
+    <div class="dropdown-container approach-2">
+        <div class="dropdown-trigger" onclick="toggleDropdown(this)">
+            <span>Approach 2: Max-Height Animation</span>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="dropdown-content">
+            <div class="dropdown-item">🤖 AI Readiness</div>
+            <div class="dropdown-item">☁️ Cloud Migration</div>
+            <div class="dropdown-item">🔧 MLOps Audit</div>
+        </div>
+    </div>
+    
+    <div class="dropdown-container approach-3">
+        <div class="dropdown-trigger" onclick="toggleDropdown(this)">
+            <span>Approach 3: Scale Transform</span>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="dropdown-content">
+            <div class="dropdown-item">🤖 AI Readiness</div>
+            <div class="dropdown-item">☁️ Cloud Migration</div>
+            <div class="dropdown-item">🔧 MLOps Audit</div>
+        </div>
+    </div>
+    
+    <script>
+        function toggleDropdown(trigger) {
+            const content = trigger.nextElementSibling;
+            const arrow = trigger.querySelector('.arrow');
+            
+            content.classList.toggle('show');
+            arrow.textContent = content.classList.contains('show') ? '▲' : '▼';
+            
+            // Log behavior
+            const approach = trigger.parentElement.className.match(/approach-\d/)[0];
+            console.log(`${approach}: ${content.classList.contains('show') ? 'opened' : 'closed'}`);
+        }
+    </script>
+</body>
+</html>
