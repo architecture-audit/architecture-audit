@@ -6,490 +6,118 @@
     <title>Well-Architected Framework Assessment - Enterprise Architecture Tool</title>
     <meta name="description" content="Comprehensive Well-Architected Framework assessment covering Security, Reliability, Performance, Cost Optimization, Operational Excellence, and Sustainability">
     
-    <!-- Core Styles -->
-    <link rel="stylesheet" href="../../docs/assets/css/calculator-framework.css">
-    <link rel="stylesheet" href="../../docs/assets/css/site-navigation.css">
-    <link rel="stylesheet" href="../../docs/assets/css/bottom-nav.css">
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🏗️</text></svg>">
     
+    <!-- Navigation CSS -->
+    <link rel="stylesheet" href="/docs/assets/css/site-navigation.css">
+    <link rel="stylesheet" href="/docs/assets/css/mobile-fixes.css">    
+    <link rel="stylesheet" href="/docs/assets/css/mobile-dropdown-fix.css">
+    <link rel="stylesheet" href="/docs/assets/css/bottom-nav.css">
+    
+    <!-- Well-Architected CSS -->
+    <link rel="stylesheet" href="/docs/assets/css/well-architected.css">
+    
+    <!-- Clean navbar fix -->
     <style>
-        :root {
-            --primary: #10b981;
-            --primary-dark: #059669;
-            --secondary: #3b82f6;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-            --success: #10b981;
-            --dark: #1e293b;
-            --gray: #64748b;
-            --light: #f1f5f9;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: #f8fafc;
-            color: #1e293b;
-            min-height: 100vh;
-            padding-top: 60px;
-            margin: 0;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 3rem;
-            padding: 3rem 2rem;
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-            color: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: white;
-        }
-
-        .header p {
-            font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.95);
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        /* Pillar Cards */
-        .pillars-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .pillar-card {
-            background: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 2px solid #e2e8f0;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        .pillar-card:hover {
-            transform: translateY(-2px);
-            border-color: var(--primary);
-        }
-
-        .pillar-card.active {
-            background: #f0f9ff;
-            border-color: #6366f1;
-            box-shadow: 0 4px 6px rgba(99, 102, 241, 0.1);
-        }
-
-        .pillar-icon {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .pillar-name {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: #1e293b;
-        }
-
-        .pillar-score {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--primary);
-        }
-
-        /* Tab Navigation */
-        .tabs-container {
-            background: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            padding: 0;
-            margin-bottom: 2rem;
-            border-radius: 12px;
-            overflow: hidden;
-        }
-
-        .tabs {
-            display: flex;
-            gap: 0;
-            overflow-x: auto;
-            padding: 0;
-        }
-
-        .tab {
-            padding: 1rem 1.5rem;
-            background: none;
-            border: none;
-            border-bottom: 3px solid transparent;
-            color: #64748b;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-            font-weight: 600;
-        }
-
-        .tab:hover {
-            color: #6366f1;
-            background: rgba(99, 102, 241, 0.05);
-        }
-
-        .tab.active {
-            color: #6366f1;
-            border-bottom-color: #6366f1;
-            background: rgba(99, 102, 241, 0.05);
-        }
-
-        /* Tab Content */
-        .tab-content {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .tab-content.active {
+        /* Minimal override to make navbar visible */
+        nav.site-nav {
             display: block;
+            visibility: visible;
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        
+        /* Prevent layout shift */
+        body {
+            padding-top: 0;
+            margin: 0;
         }
-
-        /* Assessment Questions */
-        .assessment-section {
-            background: white;
-            border-radius: 12px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        .question-group {
-            margin-bottom: 2rem;
-        }
-
-        .question {
-            background: #f8fafc;
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            border: 1px solid #e2e8f0;
-        }
-
-        .question-text {
-            font-size: 1.05rem;
-            margin-bottom: 1rem;
-            color: #1e293b;
-            font-weight: 500;
-        }
-
-        .rating-group {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        .rating-btn {
-            padding: 0.5rem 1rem;
-            background: white;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            color: #64748b;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .rating-btn:hover {
-            background: #f0f9ff;
-            border-color: #6366f1;
-            color: #6366f1;
-        }
-
-        .rating-btn.selected {
-            background: #6366f1;
-            color: white;
-            border-color: #6366f1;
-        }
-
-        /* Dashboard */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .dashboard-card {
-            background: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        .dashboard-card h3 {
-            margin-bottom: 1rem;
-            color: #6366f1;
-        }
-
-        /* Score Visualization */
-        .score-chart {
-            width: 100%;
-            height: 300px;
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-around;
-            padding: 1rem;
-            background: #f8fafc;
-            border-radius: 12px;
-            margin-bottom: 1rem;
-            border: 1px solid #e2e8f0;
-        }
-
-        .score-bar {
-            width: 60px;
-            background: linear-gradient(to top, var(--primary), var(--secondary));
-            border-radius: 8px 8px 0 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-end;
-            padding: 0.5rem;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .score-bar:hover {
-            transform: translateY(-5px);
-        }
-
-        .score-value {
-            position: absolute;
-            top: -30px;
-            font-weight: bold;
-            color: var(--primary);
-        }
-
-        .score-label {
-            font-size: 0.75rem;
-            margin-top: 0.5rem;
-            text-align: center;
-        }
-
-        /* Maturity Levels */
-        .maturity-scale {
-            display: flex;
-            justify-content: space-between;
-            margin: 2rem 0;
-            padding: 1rem;
-            background: #f8fafc;
-            border-radius: 12px;
-            border: 1px solid #e2e8f0;
-        }
-
-        .maturity-level {
-            flex: 1;
-            text-align: center;
-            padding: 1rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            background: white;
-            border: 1px solid #e2e8f0;
-            margin: 0 0.25rem;
-        }
-
-        .maturity-level.active {
-            background: #6366f1;
-            transform: scale(1.05);
-            color: white;
-            border-color: #6366f1;
-        }
-
-        .maturity-level h4 {
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .maturity-level .score-range {
-            font-size: 0.8rem;
-            color: #94a3b8;
-        }
-
-        /* Roadmap */
-        .roadmap-timeline {
-            position: relative;
-            padding: 2rem 0;
-        }
-
-        .roadmap-line {
-            position: absolute;
-            left: 30px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: var(--primary);
-        }
-
-        .roadmap-item {
-            position: relative;
-            padding-left: 60px;
-            margin-bottom: 2rem;
-        }
-
-        .roadmap-marker {
-            position: absolute;
-            left: 20px;
-            top: 0;
-            width: 20px;
-            height: 20px;
-            background: var(--primary);
-            border-radius: 50%;
-            border: 3px solid #1e293b;
-        }
-
-        .roadmap-content {
-            background: #f8fafc;
-            border-radius: 12px;
-            padding: 1.5rem;
-            border: 1px solid #e2e8f0;
-        }
-
-        .roadmap-content h4 {
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .roadmap-content .timeline {
-            font-size: 0.9rem;
-            color: #94a3b8;
-            margin-bottom: 0.5rem;
-        }
-
-        /* Best Practices */
-        .best-practices {
-            background: white;
-            border-radius: 12px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        .practice-item {
-            background: #f8fafc;
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            border-left: 4px solid #10b981;
-        }
-
-        .practice-item h4 {
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .practice-item ul {
-            margin-left: 1.5rem;
-            color: #64748b;
-        }
-
-        /* Results */
-        .results-summary {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(139, 92, 246, 0.05));
-            border-radius: 12px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            border: 2px solid #6366f1;
-        }
-
-        .overall-score {
-            font-size: 3rem;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .score-interpretation {
-            text-align: center;
-            font-size: 1.2rem;
-            color: #64748b;
-        }
-
-        /* Export Options */
-        .export-section {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin: 2rem 0;
-        }
-
-        .export-btn {
-            padding: 0.75rem 2rem;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .export-btn:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-
-            .header h1 {
-                font-size: 1.8rem;
-            }
-
-            .pillars-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .tabs {
-                flex-wrap: nowrap;
-                overflow-x: auto;
-            }
-
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-            }
+        
+        /* Ensure header starts at correct position */
+        .header {
+            margin-top: 0 !important;
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <div id="site-navigation"></div>
-
-    <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <h1>🏗️ Well-Architected Framework Assessment</h1>
-            <p>Evaluate your architecture across six pillars of excellence: Security, Reliability, Performance Efficiency, Cost Optimization, Operational Excellence, and Sustainability</p>
+    <!-- Site Navigation -->
+    <nav class="site-nav">
+        <div class="site-nav-container">
+            <a href="/" class="site-logo">
+                🏢 AI Architecture Audit
+            </a>
+            
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+            
+            <ul class="site-menu" id="siteMenu">
+                <li class="site-menu-item">
+                    <a href="/">Home</a>
+                </li>
+                
+                <li class="site-menu-item has-dropdown">
+                    <a href="#" onclick="event.preventDefault()">Calculators</a>
+                    <div class="dropdown-menu">
+                        <a href="/calculators/ai-readiness/">🤖 AI Readiness</a>
+                        <a href="/calculators/cloud-migration/">☁️ Cloud Migration</a>
+                        <a href="/calculators/mlops-audit/">🔧 MLOps Audit</a>
+                        <a href="/calculators/llm-framework/">🧠 LLM Framework</a>
+                        <a href="/calculators/security-audit/">🔒 Security Audit</a>
+                        <a href="/calculators/genai-security/">🛡️ GenAI Security</a>
+                        <a href="/calculators/cost-optimization/">💰 Cost Optimization</a>
+                        <a href="/calculators/well-architected/">🏗️ Well-Architected</a>
+                    </div>
+                </li>
+                
+                <li class="site-menu-item has-dropdown">
+                    <a href="#" onclick="event.preventDefault()">Documentation</a>
+                    <div class="dropdown-menu">
+                        <a href="/docs/ai-readiness/">📖 AI Readiness Guide</a>
+                        <a href="/docs/cloud-migration/">📖 Cloud Migration Guide</a>
+                        <a href="/docs/mlops-audit/">📖 MLOps Audit Guide</a>
+                        <a href="/docs/llm-framework/">📖 LLM Framework Guide</a>
+                        <a href="/docs/security-audit/">📖 Security Audit Guide</a>
+                        <a href="/docs/genai-security/">📖 GenAI Security Guide</a>
+                        <a href="/docs/cost-optimization/">📖 Cost Optimization Guide</a>
+                        <a href="/docs/well-architected/">📖 Well-Architected Guide</a>
+                    </div>
+                </li>
+            </ul>
         </div>
-
+    </nav>
+    
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1>🏗️ Well-Architected Framework Assessment</h1>
+            <p>Evaluate your architecture across six pillars of excellence</p>
+        </div>
+    </header>
+    
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs">
+        <div class="nav-tabs-container">
+            <button class="nav-tab active" data-tab="assessment">
+                <span>📋</span> Assessment
+            </button>
+            <button class="nav-tab" data-tab="dashboard">
+                <span>📊</span> Dashboard
+            </button>
+            <button class="nav-tab" data-tab="maturity">
+                <span>📈</span> Maturity
+            </button>
+            <button class="nav-tab" data-tab="roadmap">
+                <span>🗺️</span> Roadmap
+            </button>
+            <button class="nav-tab" data-tab="practices">
+                <span>📚</span> Best Practices
+            </button>
+            <button class="nav-tab" data-tab="results">
+                <span>🎯</span> Results
+            </button>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="container">
         <!-- Pillar Overview Cards -->
         <div class="pillars-grid">
             <div class="pillar-card active" data-pillar="security">
@@ -524,22 +152,15 @@
             </div>
         </div>
 
-        <!-- Tab Navigation -->
-        <div class="tabs-container">
-            <div class="tabs">
-                <button class="tab active" data-tab="assessment">📋 Assessment</button>
-                <button class="tab" data-tab="dashboard">📊 Dashboard</button>
-                <button class="tab" data-tab="maturity">📈 Maturity Model</button>
-                <button class="tab" data-tab="roadmap">🗺️ Roadmap</button>
-                <button class="tab" data-tab="practices">📚 Best Practices</button>
-                <button class="tab" data-tab="results">🎯 Results</button>
-            </div>
-        </div>
-
-        <!-- Tab Content -->
+        <!-- Assessment Tab -->
         <div class="tab-content active" id="assessment">
-            <div class="assessment-section">
+            <section class="section">
                 <h2>Security Pillar Assessment</h2>
+                
+                <div class="alert alert-info">
+                    Answer questions for each pillar to calculate your Well-Architected maturity score. Select the pillar above to assess different areas.
+                </div>
+                
                 <div class="question-group">
                     <div class="question">
                         <div class="question-text">1. How mature is your identity and access management (IAM) implementation?</div>
@@ -592,62 +213,66 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
         </div>
 
+        <!-- Dashboard Tab -->
         <div class="tab-content" id="dashboard">
-            <div class="dashboard-grid">
-                <div class="dashboard-card">
-                    <h3>📊 Overall Maturity Score</h3>
-                    <div class="overall-score">0%</div>
-                    <div class="score-interpretation">Not Yet Assessed</div>
-                </div>
-                <div class="dashboard-card">
-                    <h3>📈 Pillar Scores</h3>
-                    <div class="score-chart">
-                        <div class="score-bar" style="height: 20%">
-                            <span class="score-value">0%</span>
-                            <span class="score-label">Security</span>
-                        </div>
-                        <div class="score-bar" style="height: 20%">
-                            <span class="score-value">0%</span>
-                            <span class="score-label">Reliability</span>
-                        </div>
-                        <div class="score-bar" style="height: 20%">
-                            <span class="score-value">0%</span>
-                            <span class="score-label">Performance</span>
-                        </div>
-                        <div class="score-bar" style="height: 20%">
-                            <span class="score-value">0%</span>
-                            <span class="score-label">Cost</span>
-                        </div>
-                        <div class="score-bar" style="height: 20%">
-                            <span class="score-value">0%</span>
-                            <span class="score-label">Operations</span>
-                        </div>
-                        <div class="score-bar" style="height: 20%">
-                            <span class="score-value">0%</span>
-                            <span class="score-label">Sustainability</span>
+            <section class="section">
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <h3>📊 Overall Maturity Score</h3>
+                        <div class="overall-score">0%</div>
+                        <div class="score-interpretation">Not Yet Assessed</div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3>📈 Pillar Scores</h3>
+                        <div class="score-chart">
+                            <div class="score-bar" style="height: 20%">
+                                <span class="score-value">0%</span>
+                                <span class="score-label">Security</span>
+                            </div>
+                            <div class="score-bar" style="height: 20%">
+                                <span class="score-value">0%</span>
+                                <span class="score-label">Reliability</span>
+                            </div>
+                            <div class="score-bar" style="height: 20%">
+                                <span class="score-value">0%</span>
+                                <span class="score-label">Performance</span>
+                            </div>
+                            <div class="score-bar" style="height: 20%">
+                                <span class="score-value">0%</span>
+                                <span class="score-label">Cost</span>
+                            </div>
+                            <div class="score-bar" style="height: 20%">
+                                <span class="score-value">0%</span>
+                                <span class="score-label">Operations</span>
+                            </div>
+                            <div class="score-bar" style="height: 20%">
+                                <span class="score-value">0%</span>
+                                <span class="score-label">Sustainability</span>
+                            </div>
                         </div>
                     </div>
+                    <div class="dashboard-card">
+                        <h3>🎯 Top Risks</h3>
+                        <ul id="top-risks">
+                            <li>Complete assessment to identify risks</li>
+                        </ul>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3>✅ Quick Wins</h3>
+                        <ul id="quick-wins">
+                            <li>Complete assessment to identify opportunities</li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="dashboard-card">
-                    <h3>🎯 Top Risks</h3>
-                    <ul id="top-risks">
-                        <li>Complete assessment to identify risks</li>
-                    </ul>
-                </div>
-                <div class="dashboard-card">
-                    <h3>✅ Quick Wins</h3>
-                    <ul id="quick-wins">
-                        <li>Complete assessment to identify opportunities</li>
-                    </ul>
-                </div>
-            </div>
+            </section>
         </div>
 
+        <!-- Maturity Tab -->
         <div class="tab-content" id="maturity">
-            <div class="assessment-section">
+            <section class="section">
                 <h2>Maturity Model</h2>
                 <div class="maturity-scale">
                     <div class="maturity-level" data-level="1">
@@ -682,11 +307,12 @@
                         <p>Complete the assessment to see your maturity analysis</p>
                     </div>
                 </div>
-            </div>
+            </section>
         </div>
 
+        <!-- Roadmap Tab -->
         <div class="tab-content" id="roadmap">
-            <div class="assessment-section">
+            <section class="section">
                 <h2>Implementation Roadmap</h2>
                 <div class="roadmap-timeline">
                     <div class="roadmap-line"></div>
@@ -739,11 +365,12 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
         </div>
 
+        <!-- Best Practices Tab -->
         <div class="tab-content" id="practices">
-            <div class="best-practices">
+            <section class="best-practices">
                 <h2>Best Practices Guide</h2>
                 <div class="practice-item">
                     <h4>🔒 Security Best Practices</h4>
@@ -805,47 +432,50 @@
                         <li>Monitor and reduce carbon footprint</li>
                     </ul>
                 </div>
-            </div>
+            </section>
         </div>
 
+        <!-- Results Tab -->
         <div class="tab-content" id="results">
-            <div class="results-summary">
-                <h2>Assessment Results</h2>
-                <div class="overall-score" id="final-score">0%</div>
-                <div class="score-interpretation" id="score-interpretation">Complete the assessment to see your results</div>
-            </div>
+            <section class="section">
+                <div class="results-summary">
+                    <h2>Assessment Results</h2>
+                    <div class="overall-score" id="final-score">0%</div>
+                    <div class="score-interpretation" id="score-interpretation">Complete the assessment to see your results</div>
+                </div>
 
-            <div class="dashboard-grid">
-                <div class="dashboard-card">
-                    <h3>📊 Detailed Scores</h3>
-                    <div id="detailed-scores">
-                        <p>Assessment not yet completed</p>
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <h3>📊 Detailed Scores</h3>
+                        <div id="detailed-scores">
+                            <p>Assessment not yet completed</p>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3>🎯 Priority Actions</h3>
+                        <ol id="priority-actions">
+                            <li>Complete the assessment</li>
+                        </ol>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3>💡 Recommendations</h3>
+                        <ul id="recommendations">
+                            <li>Start with the assessment</li>
+                        </ul>
                     </div>
                 </div>
-                <div class="dashboard-card">
-                    <h3>🎯 Priority Actions</h3>
-                    <ol id="priority-actions">
-                        <li>Complete the assessment</li>
-                    </ol>
-                </div>
-                <div class="dashboard-card">
-                    <h3>💡 Recommendations</h3>
-                    <ul id="recommendations">
-                        <li>Start with the assessment</li>
-                    </ul>
-                </div>
-            </div>
 
-            <div class="export-section">
-                <button class="export-btn" onclick="exportPDF()">📄 Export PDF</button>
-                <button class="export-btn" onclick="exportCSV()">📊 Export CSV</button>
-                <button class="export-btn" onclick="shareResults()">🔗 Share Results</button>
-            </div>
+                <div class="export-section">
+                    <button class="export-btn" onclick="exportPDF()">📄 Export PDF</button>
+                    <button class="export-btn" onclick="exportCSV()">📊 Export CSV</button>
+                    <button class="export-btn" onclick="shareResults()">🔗 Share Results</button>
+                </div>
+            </section>
         </div>
-    </div>
+    </main>
 
     <!-- Scripts -->
-    <script src="../../docs/assets/js/bottom-nav.js"></script>
+    <script src="/docs/assets/js/bottom-nav.js"></script>
     <script>
         // State management
         const assessmentData = {
@@ -914,9 +544,9 @@
         // Event listeners
         function setupEventListeners() {
             // Tab navigation
-            document.querySelectorAll('.tab').forEach(tab => {
+            document.querySelectorAll('.nav-tab').forEach(tab => {
                 tab.addEventListener('click', function() {
-                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
                     document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
                     
                     this.classList.add('active');
