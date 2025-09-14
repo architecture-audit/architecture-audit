@@ -15,13 +15,20 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Create navigation HTML with fully qualified absolute URLs
     const navHTML = `
-    <nav class="site-nav">
+    <!-- Skip to main content link for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <nav class="site-nav" role="navigation" aria-label="Main navigation">
         <div class="site-nav-container">
-            <a href="${origin}/" class="site-logo">
+            <a href="${origin}/" class="site-logo" aria-label="AI Architecture Audit - Home">
                 🏢 AI Architecture Audit
             </a>
-            
-            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+
+            <button class="mobile-menu-toggle"
+                    onclick="toggleMobileMenu()"
+                    aria-label="Toggle navigation menu"
+                    aria-expanded="false"
+                    aria-controls="siteMenu">☰</button>
             
             <ul class="site-menu" id="siteMenu">
                 <li class="site-menu-item">
@@ -39,8 +46,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 <!-- Desktop-only dropdown items -->
                 <li class="site-menu-item has-dropdown desktop-only">
-                    <a href="#" onclick="event.preventDefault()">Calculators</a>
-                    <div class="dropdown-menu">
+                    <button class="dropdown-toggle"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                            onclick="event.preventDefault()">
+                        Calculators
+                        <span class="dropdown-arrow" aria-hidden="true">▼</span>
+                    </button>
+                    <div class="dropdown-menu" role="menu">
+                        <a href="${origin}/calculators/" style="font-weight: 600; border-bottom: 1px solid #e2e8f0; margin-bottom: 0.5rem;">🧮 View All Calculators</a>
                         <a href="${origin}/calculators/ai-readiness/" onclick="console.log('Navigating to:', this.href)">🤖 AI Readiness</a>
                         <a href="${origin}/calculators/cloud-migration/" onclick="console.log('Navigating to:', this.href)">☁️ Cloud Migration</a>
                         <a href="${origin}/calculators/mlops-audit/" onclick="console.log('Navigating to:', this.href)">🔧 MLOps Audit</a>
@@ -48,12 +62,17 @@ document.addEventListener('DOMContentLoaded', function() {
                         <a href="${origin}/calculators/security-audit/" onclick="console.log('Navigating to:', this.href)">🔒 Security Audit</a>
                         <a href="${origin}/calculators/genai-security/" onclick="console.log('Navigating to:', this.href)">🛡️ GenAI Security</a>
                         <a href="${origin}/calculators/cost-optimization/" onclick="console.log('Navigating to:', this.href)">💰 Cost Optimization</a>
+                        <a href="${origin}/calculators/well-architected/" onclick="console.log('Navigating to:', this.href)">🏗️ Well-Architected</a>
                     </div>
                 </li>
                 
                 <li class="site-menu-item has-dropdown desktop-only">
-                    <a href="#" onclick="event.preventDefault()">Documentation</a>
-                    <div class="dropdown-menu">
+                    <a href="${origin}/docs/"
+                       aria-haspopup="true"
+                       aria-expanded="false">Documentation</a>
+                    <div class="dropdown-menu" role="menu">
+                        <a href="${origin}/docs/">📚 All Documentation</a>
+                        <hr style="margin: 0.5rem 0; border: none; border-top: 1px solid #e2e8f0;">
                         <a href="${origin}/docs/ai-readiness/">📖 AI Readiness Guide</a>
                         <a href="${origin}/docs/cloud-migration/">📖 Cloud Migration Guide</a>
                         <a href="${origin}/docs/mlops-audit/">📖 MLOps Audit Guide</a>
@@ -136,10 +155,25 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Toggle mobile menu
+// Toggle mobile menu with accessibility
 function toggleMobileMenu() {
     const menu = document.getElementById('siteMenu');
+    const toggle = document.querySelector('.mobile-menu-toggle');
+    const isOpen = menu.classList.contains('active');
+
     menu.classList.toggle('active');
+
+    // Update ARIA attributes
+    if (toggle) {
+        toggle.setAttribute('aria-expanded', !isOpen);
+        toggle.innerHTML = !isOpen ? '✕' : '☰';
+    }
+
+    // Trap focus in mobile menu when open
+    if (!isOpen) {
+        menu.setAttribute('tabindex', '-1');
+        menu.focus();
+    }
 }
 
 // Close mobile menu
@@ -150,15 +184,16 @@ function closeMobileMenu() {
     }
 }
 
-// Highlight current page in navigation
+// Highlight current page in navigation with ARIA
 function highlightCurrentPage() {
     const currentPath = window.location.pathname;
     const menuItems = document.querySelectorAll('.site-menu-item a');
-    
+
     menuItems.forEach(item => {
         const href = item.getAttribute('href');
         if (href && currentPath.includes(href.replace('.html', ''))) {
             item.style.color = '#10b981';
+            item.setAttribute('aria-current', 'page');
         }
     });
 }

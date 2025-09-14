@@ -1,0 +1,325 @@
+{
+  "frameworks": {
+    "ai-readiness": {
+      "name": "AI Readiness Assessment",
+      "icon": "🤖",
+      "calculatorTabs": [
+        { "id": "maturity", "label": "📊 AI Maturity Assessment", "description": "24-dimension organizational readiness" },
+        { "id": "skills", "label": "👥 Skills Gap Analysis", "description": "AI/ML talent assessment" },
+        { "id": "usecases", "label": "🎯 Use Case Prioritization", "description": "AI opportunity identification" },
+        { "id": "data", "label": "💾 Data Readiness", "description": "Data quality and governance" },
+        { "id": "infrastructure", "label": "🏗️ ML Infrastructure", "description": "Platform and tools assessment" },
+        { "id": "roi", "label": "💰 AI ROI Calculator", "description": "Business case development" },
+        { "id": "vendors", "label": "🏢 AI Platform Selection", "description": "Compare ML platforms" },
+        { "id": "risks", "label": "⚠️ AI Risk Assessment", "description": "Ethics and bias evaluation" },
+        { "id": "roadmap", "label": "🗓️ AI Adoption Roadmap", "description": "16-month implementation plan" }
+      ],
+      "documentationSections": [
+        "AI Strategy Development",
+        "Data Engineering Prerequisites",
+        "MLOps Foundation",
+        "Responsible AI Guidelines",
+        "Change Management for AI"
+      ]
+    },
+
+    "cloud-migration": {
+      "name": "Cloud Migration Assessment",
+      "icon": "☁️",
+      "calculatorTabs": [
+        { "id": "discovery", "label": "🔍 Application Discovery", "description": "Current state inventory" },
+        { "id": "6r", "label": "📋 6R Strategy Analysis", "description": "Migration approach selection" },
+        { "id": "readiness", "label": "📊 Cloud Readiness Score", "description": "Migration complexity assessment" },
+        { "id": "dependencies", "label": "🔗 Dependency Mapping", "description": "Application interdependencies" },
+        { "id": "tco", "label": "💰 TCO/ROI Analysis", "description": "Cost comparison and savings" },
+        { "id": "providers", "label": "🏢 Cloud Provider Selection", "description": "AWS vs Azure vs GCP" },
+        { "id": "security", "label": "🔒 Security & Compliance", "description": "Cloud security requirements" },
+        { "id": "risks", "label": "⚠️ Migration Risks", "description": "Risk mitigation planning" },
+        { "id": "waves", "label": "🌊 Migration Waves", "description": "Phased migration schedule" }
+      ],
+      "documentationSections": [
+        "Cloud Migration Strategies",
+        "Application Modernization",
+        "Hybrid Cloud Architecture",
+        "Cloud Cost Management",
+        "Migration Tools & Automation"
+      ]
+    },
+
+    "mlops-audit": {
+      "name": "MLOps Maturity Audit",
+      "icon": "🔧",
+      "calculatorTabs": [
+        { "id": "lifecycle", "label": "🔄 ML Lifecycle Maturity", "description": "End-to-end process assessment" },
+        { "id": "pipelines", "label": "🚰 Data Pipeline Assessment", "description": "Data engineering practices" },
+        { "id": "training", "label": "🎯 Model Training Process", "description": "Experimentation and training" },
+        { "id": "deployment", "label": "🚀 Deployment Automation", "description": "CI/CD for ML models" },
+        { "id": "monitoring", "label": "📈 Model Monitoring", "description": "Drift detection and alerting" },
+        { "id": "governance", "label": "📋 ML Governance", "description": "Model registry and lineage" },
+        { "id": "infrastructure", "label": "🏗️ ML Infrastructure", "description": "Compute and storage resources" },
+        { "id": "team", "label": "👥 Team & Culture", "description": "MLOps practices adoption" },
+        { "id": "roadmap", "label": "🗓️ MLOps Roadmap", "description": "Maturity improvement plan" }
+      ],
+      "documentationSections": [
+        "MLOps Principles",
+        "Feature Engineering Best Practices",
+        "Model Versioning Strategies",
+        "A/B Testing for ML",
+        "Production ML Monitoring"
+      ]
+    },
+
+    "llm-framework": {
+      "name": "LLM Implementation Framework",
+      "icon": "🧠",
+      "calculatorTabs": [
+        { "id": "assessment", "label": "📊 LLM Readiness", "description": "Organization readiness for LLMs" },
+        { "id": "usecases", "label": "🎯 LLM Use Cases", "description": "Application identification" },
+        { "id": "models", "label": "🤖 Model Selection", "description": "GPT vs Claude vs Llama" },
+        { "id": "rag", "label": "📚 RAG Architecture", "description": "Retrieval augmented generation" },
+        { "id": "prompts", "label": "✍️ Prompt Engineering", "description": "Prompt optimization strategies" },
+        { "id": "finetuning", "label": "🎛️ Fine-tuning Strategy", "description": "Model customization approach" },
+        { "id": "costs", "label": "💰 LLM Cost Analysis", "description": "Token usage and pricing" },
+        { "id": "safety", "label": "🛡️ AI Safety & Alignment", "description": "Hallucination mitigation" },
+        { "id": "deployment", "label": "🚀 LLM Deployment Plan", "description": "Production implementation" }
+      ],
+      "documentationSections": [
+        "LLM Fundamentals",
+        "Prompt Engineering Patterns",
+        "Vector Database Selection",
+        "LLM Security Best Practices",
+        "Evaluation Metrics for LLMs"
+      ]
+    },
+
+    "security-audit": {
+      "name": "Security Audit Framework",
+      "icon": "🔒",
+      "calculatorTabs": [
+        { "id": "posture", "label": "📊 Security Posture", "description": "Overall security maturity" },
+        { "id": "vulnerabilities", "label": "🔍 Vulnerability Assessment", "description": "Security gap analysis" },
+        { "id": "compliance", "label": "📋 Compliance Check", "description": "NIST, ISO, SOC2 alignment" },
+        { "id": "identity", "label": "👤 Identity & Access", "description": "IAM and authentication" },
+        { "id": "network", "label": "🌐 Network Security", "description": "Perimeter and segmentation" },
+        { "id": "data", "label": "💾 Data Protection", "description": "Encryption and privacy" },
+        { "id": "incident", "label": "🚨 Incident Response", "description": "Security operations readiness" },
+        { "id": "zerotrust", "label": "🛡️ Zero Trust Maturity", "description": "Zero trust architecture" },
+        { "id": "remediation", "label": "🔧 Remediation Plan", "description": "Security improvement roadmap" }
+      ],
+      "documentationSections": [
+        "Security Frameworks Overview",
+        "Threat Modeling",
+        "Security Controls Catalog",
+        "Incident Response Playbooks",
+        "Security Metrics & KPIs"
+      ]
+    },
+
+    "genai-security": {
+      "name": "GenAI Security Framework",
+      "icon": "🛡️",
+      "calculatorTabs": [
+        { "id": "threats", "label": "⚠️ GenAI Threat Model", "description": "AI-specific threat landscape" },
+        { "id": "injection", "label": "💉 Prompt Injection Defense", "description": "Input validation strategies" },
+        { "id": "privacy", "label": "🔐 Data Privacy", "description": "PII and sensitive data protection" },
+        { "id": "hallucination", "label": "🎭 Hallucination Detection", "description": "Output validation mechanisms" },
+        { "id": "access", "label": "👥 Access Controls", "description": "AI system permissions" },
+        { "id": "monitoring", "label": "📊 AI Security Monitoring", "description": "Anomaly detection for AI" },
+        { "id": "compliance", "label": "⚖️ AI Regulations", "description": "EU AI Act, governance" },
+        { "id": "redteam", "label": "🔴 Red Team Exercises", "description": "AI security testing" },
+        { "id": "response", "label": "🚨 Incident Response", "description": "AI-specific IR procedures" }
+      ],
+      "documentationSections": [
+        "GenAI Security Principles",
+        "Prompt Injection Patterns",
+        "LLM Output Validation",
+        "AI Supply Chain Security",
+        "Responsible AI Security"
+      ]
+    },
+
+    "cost-optimization": {
+      "name": "Cost Optimization Framework",
+      "icon": "💰",
+      "calculatorTabs": [
+        { "id": "assessment", "label": "📊 FinOps Maturity", "description": "Cost management maturity" },
+        { "id": "analysis", "label": "💸 Cost Analysis", "description": "Current spend breakdown" },
+        { "id": "waste", "label": "🗑️ Waste Identification", "description": "Unused resource detection" },
+        { "id": "rightsizing", "label": "📏 Right-sizing", "description": "Resource optimization" },
+        { "id": "reservations", "label": "🎫 Reserved Instances", "description": "Commitment optimization" },
+        { "id": "budgets", "label": "📊 Budget Planning", "description": "Cost allocation and budgets" },
+        { "id": "automation", "label": "🤖 Cost Automation", "description": "Auto-scaling and policies" },
+        { "id": "vendors", "label": "🏢 Vendor Management", "description": "Multi-cloud optimization" },
+        { "id": "savings", "label": "💵 Savings Roadmap", "description": "Cost reduction plan" }
+      ],
+      "documentationSections": [
+        "FinOps Principles",
+        "Cloud Cost Allocation",
+        "Tagging Strategies",
+        "Cost Optimization Patterns",
+        "Showback vs Chargeback"
+      ]
+    },
+
+    "well-architected": {
+      "name": "Well-Architected Framework",
+      "icon": "🏗️",
+      "calculatorTabs": [
+        { "id": "operational", "label": "⚙️ Operational Excellence", "description": "Operations best practices" },
+        { "id": "security", "label": "🔒 Security Pillar", "description": "Security architecture review" },
+        { "id": "reliability", "label": "🔄 Reliability", "description": "Availability and resilience" },
+        { "id": "performance", "label": "⚡ Performance Efficiency", "description": "Resource optimization" },
+        { "id": "cost", "label": "💰 Cost Optimization", "description": "Cost-effective resources" },
+        { "id": "sustainability", "label": "🌱 Sustainability", "description": "Environmental impact" },
+        { "id": "gaps", "label": "📊 Gap Analysis", "description": "Improvement opportunities" },
+        { "id": "priorities", "label": "🎯 Prioritization", "description": "Risk-based priorities" },
+        { "id": "roadmap", "label": "🗓️ Improvement Plan", "description": "Architecture roadmap" }
+      ],
+      "documentationSections": [
+        "Well-Architected Pillars",
+        "Architecture Decision Records",
+        "Design Patterns",
+        "Anti-Patterns to Avoid",
+        "Architecture Review Process"
+      ]
+    },
+
+    "data-governance": {
+      "name": "Data Governance Framework",
+      "icon": "📊",
+      "calculatorTabs": [
+        { "id": "maturity", "label": "📊 Data Maturity", "description": "Data management maturity" },
+        { "id": "quality", "label": "✅ Data Quality", "description": "Quality metrics and issues" },
+        { "id": "catalog", "label": "📚 Data Catalog", "description": "Metadata management" },
+        { "id": "lineage", "label": "🔄 Data Lineage", "description": "Data flow tracking" },
+        { "id": "privacy", "label": "🔐 Data Privacy", "description": "GDPR, CCPA compliance" },
+        { "id": "stewardship", "label": "👥 Data Stewardship", "description": "Roles and responsibilities" },
+        { "id": "policies", "label": "📋 Data Policies", "description": "Governance policies" },
+        { "id": "mdm", "label": "🏢 Master Data", "description": "Master data management" },
+        { "id": "roadmap", "label": "🗓️ Governance Roadmap", "description": "Implementation plan" }
+      ],
+      "documentationSections": [
+        "Data Governance Fundamentals",
+        "Data Quality Dimensions",
+        "Metadata Management",
+        "Data Privacy Regulations",
+        "Data Governance Operating Model"
+      ]
+    },
+
+    "devsecops": {
+      "name": "DevSecOps Maturity Assessment",
+      "icon": "🔐",
+      "calculatorTabs": [
+        { "id": "culture", "label": "👥 Security Culture", "description": "Security-first mindset" },
+        { "id": "sast", "label": "🔍 SAST Integration", "description": "Static code analysis" },
+        { "id": "dast", "label": "🎯 DAST Implementation", "description": "Dynamic testing" },
+        { "id": "sca", "label": "📦 Dependency Scanning", "description": "Third-party vulnerabilities" },
+        { "id": "containers", "label": "🐳 Container Security", "description": "Image scanning and runtime" },
+        { "id": "secrets", "label": "🔑 Secrets Management", "description": "Credential protection" },
+        { "id": "compliance", "label": "📋 Compliance as Code", "description": "Policy automation" },
+        { "id": "monitoring", "label": "📊 Security Monitoring", "description": "Runtime protection" },
+        { "id": "maturity", "label": "🎯 Maturity Roadmap", "description": "DevSecOps evolution" }
+      ],
+      "documentationSections": [
+        "DevSecOps Principles",
+        "Security Tool Chain",
+        "Shift-Left Security",
+        "Security Gates and Policies",
+        "DevSecOps Metrics"
+      ]
+    },
+
+    "api-strategy": {
+      "name": "API Strategy Assessment",
+      "icon": "🔌",
+      "calculatorTabs": [
+        { "id": "inventory", "label": "📚 API Inventory", "description": "Current API landscape" },
+        { "id": "design", "label": "🎨 API Design Maturity", "description": "REST, GraphQL, gRPC standards" },
+        { "id": "gateway", "label": "🚪 API Gateway", "description": "Gateway and management" },
+        { "id": "security", "label": "🔒 API Security", "description": "Authentication and authorization" },
+        { "id": "versioning", "label": "🔢 Versioning Strategy", "description": "API lifecycle management" },
+        { "id": "documentation", "label": "📖 API Documentation", "description": "OpenAPI and developer experience" },
+        { "id": "monitoring", "label": "📊 API Analytics", "description": "Usage and performance" },
+        { "id": "monetization", "label": "💰 API Monetization", "description": "Business model" },
+        { "id": "roadmap", "label": "🗓️ API Roadmap", "description": "Strategy implementation" }
+      ],
+      "documentationSections": [
+        "API-First Design",
+        "API Standards and Guidelines",
+        "API Security Best Practices",
+        "API Product Management",
+        "Developer Experience (DX)"
+      ]
+    },
+
+    "kubernetes-readiness": {
+      "name": "Kubernetes Readiness Assessment",
+      "icon": "☸️",
+      "calculatorTabs": [
+        { "id": "readiness", "label": "📊 K8s Readiness", "description": "Container adoption maturity" },
+        { "id": "architecture", "label": "🏗️ Architecture Review", "description": "Microservices readiness" },
+        { "id": "skills", "label": "👥 Team Skills", "description": "Kubernetes expertise" },
+        { "id": "workloads", "label": "📦 Workload Analysis", "description": "Application suitability" },
+        { "id": "networking", "label": "🌐 Network Design", "description": "Service mesh and ingress" },
+        { "id": "storage", "label": "💾 Storage Strategy", "description": "Persistent volumes" },
+        { "id": "security", "label": "🔒 K8s Security", "description": "RBAC and policies" },
+        { "id": "operations", "label": "⚙️ Day-2 Operations", "description": "Monitoring and maintenance" },
+        { "id": "migration", "label": "🚀 Migration Plan", "description": "Kubernetes adoption roadmap" }
+      ],
+      "documentationSections": [
+        "Kubernetes Fundamentals",
+        "Container Best Practices",
+        "Kubernetes Security",
+        "GitOps for Kubernetes",
+        "Kubernetes Cost Management"
+      ]
+    },
+
+    "zero-trust": {
+      "name": "Zero Trust Maturity Assessment",
+      "icon": "🔐",
+      "calculatorTabs": [
+        { "id": "assessment", "label": "📊 ZT Maturity", "description": "Current zero trust posture" },
+        { "id": "identity", "label": "👤 Identity Foundation", "description": "Identity-centric security" },
+        { "id": "devices", "label": "💻 Device Trust", "description": "Endpoint verification" },
+        { "id": "network", "label": "🌐 Network Segmentation", "description": "Micro-segmentation" },
+        { "id": "applications", "label": "📱 Application Access", "description": "App-level controls" },
+        { "id": "data", "label": "💾 Data Protection", "description": "Data-centric security" },
+        { "id": "visibility", "label": "👁️ Visibility & Analytics", "description": "Monitoring and SIEM" },
+        { "id": "automation", "label": "🤖 Automation", "description": "Policy orchestration" },
+        { "id": "roadmap", "label": "🗓️ ZT Journey", "description": "Implementation roadmap" }
+      ],
+      "documentationSections": [
+        "Zero Trust Principles",
+        "NIST Zero Trust Architecture",
+        "Identity and Access Management",
+        "Software-Defined Perimeter",
+        "Zero Trust Network Access (ZTNA)"
+      ]
+    },
+
+    "agile-transformation": {
+      "name": "Agile Transformation Assessment",
+      "icon": "🔄",
+      "calculatorTabs": [
+        { "id": "maturity", "label": "📊 Agile Maturity", "description": "Current agile practices" },
+        { "id": "teams", "label": "👥 Team Dynamics", "description": "Cross-functional teams" },
+        { "id": "practices", "label": "🎯 Agile Practices", "description": "Scrum, Kanban, SAFe" },
+        { "id": "culture", "label": "🌟 Cultural Readiness", "description": "Organizational mindset" },
+        { "id": "delivery", "label": "🚀 Delivery Metrics", "description": "Velocity and quality" },
+        { "id": "tools", "label": "🛠️ Agile Tooling", "description": "ALM and collaboration" },
+        { "id": "scaling", "label": "📈 Scaling Agile", "description": "Enterprise agility" },
+        { "id": "coaching", "label": "🎓 Coaching Needs", "description": "Training requirements" },
+        { "id": "roadmap", "label": "🗓️ Transformation Plan", "description": "Agile adoption roadmap" }
+      ],
+      "documentationSections": [
+        "Agile Manifesto and Principles",
+        "Scrum Framework",
+        "Kanban Method",
+        "Scaled Agile Framework (SAFe)",
+        "Agile Metrics and KPIs"
+      ]
+    }
+  }
+}

@@ -1,0 +1,40 @@
+# Robots.txt for AI Architecture Audit
+# https://aiarchitectureaudit.com
+
+# Allow all bots
+User-agent: *
+Allow: /
+Disallow: /test/
+Disallow: /temp/
+Disallow: *.pdf$
+
+# Specific bot rules
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Block bad bots
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+# Sitemap location
+Sitemap: https://aiarchitectureaudit.com/sitemap.xml
+
+# Cache-Control for crawlers
+# Tells search engines to re-crawl important pages frequently
+# Homepage: daily
+# Calculators: weekly
+# Docs: monthly

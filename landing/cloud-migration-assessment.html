@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Migration Assessment Tool - AWS, Azure, GCP Readiness | Free</title>
+    <meta name="description" content="Free cloud migration assessment tool. Evaluate readiness for AWS, Azure, or GCP. Get 6R strategy analysis, TCO calculations, and migration roadmap instantly.">
+    <meta name="keywords" content="cloud migration assessment, aws migration tool, azure migration assessment, gcp migration, cloud readiness assessment, 6r migration strategy, cloud tco calculator">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Cloud Migration Assessment Tool - AWS, Azure, GCP">
+    <meta property="og:description" content="Free tool to evaluate cloud migration readiness. Get instant TCO analysis and migration roadmap.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://architectureaudit.com/landing/cloud-migration-assessment">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Cloud Migration Assessment Tool">
+    <meta name="twitter:description" content="Evaluate AWS, Azure, GCP readiness. Free TCO calculator and migration roadmap.">
+
+    <link rel="canonical" href="https://architectureaudit.com/landing/cloud-migration-assessment">
+
+    <!-- Site CSS -->
+    <link rel="stylesheet" href="/docs/assets/css/site-navigation.css">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            color: #1e293b;
+        }
+        .hero {
+            background: linear-gradient(135deg, #0ea5e9 0%, #6366f1 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+        .cta-button {
+            display: inline-block;
+            background: #10b981;
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1.125rem;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        section {
+            padding: 4rem 0;
+        }
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: #1e293b;
+            text-align: center;
+        }
+        .cloud-providers {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .provider-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        .provider-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+        .provider-logo {
+            height: 60px;
+            margin-bottom: 1rem;
+            font-size: 3rem;
+        }
+        .provider-name {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        .aws { color: #ff9900; }
+        .azure { color: #0078d4; }
+        .gcp { color: #4285f4; }
+        .comparison-table {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-top: 2rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th {
+            background: #f8fafc;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .check { color: #10b981; font-weight: bold; }
+        .strategy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .strategy-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .strategy-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .strategy-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .features {
+            background: #f8fafc;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .feature {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        .feature-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #6366f1;
+        }
+        .process {
+            background: white;
+        }
+        .process-timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+        .process-step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        .step-number {
+            flex-shrink: 0;
+            width: 60px;
+            height: 60px;
+            background: #6366f1;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-right: 2rem;
+        }
+        .step-content h3 {
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+        .testimonial-section {
+            background: #f8fafc;
+        }
+        .testimonial {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            margin: 2rem 0;
+        }
+        .testimonial-text {
+            font-style: italic;
+            font-size: 1.125rem;
+            margin-bottom: 1rem;
+            color: #475569;
+        }
+        .testimonial-author {
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .testimonial-role {
+            color: #64748b;
+        }
+        .footer-cta {
+            background: linear-gradient(135deg, #0ea5e9 0%, #6366f1 100%);
+            color: white;
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .comparison-table { overflow-x: auto; }
+            table { min-width: 600px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Site Navigation -->
+    <div id="site-navigation"></div>
+    <script src="/docs/assets/js/site-navigation.js"></script>
+    <div class="hero">
+        <div class="container">
+            <h1>Cloud Migration Assessment Tool</h1>
+            <p>Evaluate your readiness for AWS, Azure, or Google Cloud Platform migration</p>
+            <a href="/calculators/cloud-migration/" class="cta-button">Start Free Assessment →</a>
+        </div>
+    </div>
+
+    <section>
+        <div class="container">
+            <h2>Choose Your Cloud Platform</h2>
+            <div class="cloud-providers">
+                <div class="provider-card">
+                    <div class="provider-logo aws">☁️</div>
+                    <div class="provider-name aws">AWS</div>
+                    <p>Comprehensive services, global reach, and mature ecosystem for enterprise workloads</p>
+                    <ul style="text-align: left; margin-top: 1rem;">
+                        <li>200+ services</li>
+                        <li>25 regions worldwide</li>
+                        <li>Largest market share</li>
+                    </ul>
+                </div>
+                <div class="provider-card">
+                    <div class="provider-logo azure">☁️</div>
+                    <div class="provider-name azure">Azure</div>
+                    <p>Seamless Microsoft integration, hybrid cloud excellence, and enterprise focus</p>
+                    <ul style="text-align: left; margin-top: 1rem;">
+                        <li>Active Directory integration</li>
+                        <li>Office 365 synergy</li>
+                        <li>Hybrid cloud leader</li>
+                    </ul>
+                </div>
+                <div class="provider-card">
+                    <div class="provider-logo gcp">☁️</div>
+                    <div class="provider-name gcp">Google Cloud</div>
+                    <p>AI/ML leadership, data analytics excellence, and competitive pricing</p>
+                    <ul style="text-align: left; margin-top: 1rem;">
+                        <li>Best-in-class AI tools</li>
+                        <li>BigQuery analytics</li>
+                        <li>Kubernetes native</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section style="background: #f8fafc;">
+        <div class="container">
+            <h2>6R Migration Strategy Analysis</h2>
+            <div class="strategy-grid">
+                <div class="strategy-card">
+                    <div class="strategy-icon">♻️</div>
+                    <div class="strategy-name">Rehost</div>
+                    <p>Lift and shift to cloud</p>
+                </div>
+                <div class="strategy-card">
+                    <div class="strategy-icon">🔧</div>
+                    <div class="strategy-name">Replatform</div>
+                    <p>Optimize for cloud</p>
+                </div>
+                <div class="strategy-card">
+                    <div class="strategy-icon">🏗️</div>
+                    <div class="strategy-name">Refactor</div>
+                    <p>Re-architect for cloud</p>
+                </div>
+                <div class="strategy-card">
+                    <div class="strategy-icon">🛒</div>
+                    <div class="strategy-name">Repurchase</div>
+                    <p>Move to SaaS</p>
+                </div>
+                <div class="strategy-card">
+                    <div class="strategy-icon">🗄️</div>
+                    <div class="strategy-name">Retain</div>
+                    <p>Keep on-premise</p>
+                </div>
+                <div class="strategy-card">
+                    <div class="strategy-icon">🗑️</div>
+                    <div class="strategy-name">Retire</div>
+                    <p>Decommission</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <h2>Complete Migration Assessment Features</h2>
+            <div class="features-grid">
+                <div class="feature">
+                    <div class="feature-icon">💰</div>
+                    <div class="feature-title">TCO Calculator</div>
+                    <p>Compare total cost of ownership between on-premise and cloud platforms with detailed breakdowns.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-title">Application Portfolio Analysis</div>
+                    <p>Assess each application's cloud readiness and recommended migration strategy.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🔒</div>
+                    <div class="feature-title">Security & Compliance</div>
+                    <p>Evaluate security requirements and compliance needs for your industry.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">⚡</div>
+                    <div class="feature-title">Performance Modeling</div>
+                    <p>Predict application performance in cloud environments with sizing recommendations.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">👥</div>
+                    <div class="feature-title">Skills Gap Analysis</div>
+                    <p>Identify training needs and skill requirements for successful cloud adoption.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🗺️</div>
+                    <div class="feature-title">Migration Roadmap</div>
+                    <p>Get a phased migration plan with timelines, dependencies, and milestones.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="process">
+        <div class="container">
+            <h2>Our Assessment Process</h2>
+            <div class="process-timeline">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Discovery</h3>
+                        <p>Inventory your current infrastructure, applications, and dependencies</p>
+                    </div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Analysis</h3>
+                        <p>Evaluate technical requirements, costs, and migration complexity</p>
+                    </div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Strategy</h3>
+                        <p>Determine optimal migration approach for each workload (6R analysis)</p>
+                    </div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Planning</h3>
+                        <p>Create detailed migration plan with phases, timelines, and risk mitigation</p>
+                    </div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h3>Report</h3>
+                        <p>Download comprehensive assessment report with recommendations</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2>Cloud Provider Comparison</h2>
+            <div class="comparison-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>AWS</th>
+                            <th>Azure</th>
+                            <th>Google Cloud</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Global Regions</td>
+                            <td>25+</td>
+                            <td>60+</td>
+                            <td>35+</td>
+                        </tr>
+                        <tr>
+                            <td>Compute Services</td>
+                            <td class="check">✓ EC2, Lambda</td>
+                            <td class="check">✓ VMs, Functions</td>
+                            <td class="check">✓ Compute Engine</td>
+                        </tr>
+                        <tr>
+                            <td>AI/ML Services</td>
+                            <td class="check">✓ SageMaker</td>
+                            <td class="check">✓ Azure ML</td>
+                            <td class="check">✓ Vertex AI</td>
+                        </tr>
+                        <tr>
+                            <td>Kubernetes</td>
+                            <td class="check">✓ EKS</td>
+                            <td class="check">✓ AKS</td>
+                            <td class="check">✓ GKE (Native)</td>
+                        </tr>
+                        <tr>
+                            <td>Pricing Model</td>
+                            <td>Per-second billing</td>
+                            <td>Per-minute billing</td>
+                            <td>Per-second billing</td>
+                        </tr>
+                        <tr>
+                            <td>Free Tier</td>
+                            <td class="check">✓ 12 months</td>
+                            <td class="check">✓ 12 months</td>
+                            <td class="check">✓ 90 days + Always Free</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonial-section">
+        <div class="container">
+            <h2>Success Stories</h2>
+            <div class="testimonial">
+                <p class="testimonial-text">"The cloud migration assessment helped us identify $2M in annual savings by moving to AWS. The TCO calculator was incredibly accurate, and the migration roadmap made our transition smooth."</p>
+                <p class="testimonial-author">Michael Rodriguez</p>
+                <p class="testimonial-role">VP of Infrastructure, FinTech Solutions</p>
+            </div>
+            <div class="testimonial">
+                <p class="testimonial-text">"We were unsure whether to choose Azure or AWS. This assessment tool compared both platforms against our specific requirements and made the decision clear. Azure's hybrid capabilities were perfect for us."</p>
+                <p class="testimonial-author">Jennifer Park</p>
+                <p class="testimonial-role">CTO, Healthcare Systems Inc.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="footer-cta">
+        <div class="container">
+            <h2>Start Your Cloud Migration Journey</h2>
+            <p style="margin: 1rem 0 2rem;">Get instant insights into your cloud readiness and migration strategy</p>
+            <a href="/calculators/cloud-migration/" class="cta-button">Begin Free Assessment →</a>
+        </div>
+    </div>
+
+    <!-- Schema Markup -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Cloud Migration Assessment Tool",
+        "description": "Free tool to evaluate cloud migration readiness for AWS, Azure, and Google Cloud Platform",
+        "applicationCategory": "BusinessApplication",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "reviewCount": "500"
+        }
+    }
+    </script>
+</body>
+</html>

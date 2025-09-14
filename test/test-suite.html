@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Architecture Audit - Complete Test Suite</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            color: #1e293b;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: #f8fafc;
+        }
+
+        h1 {
+            color: #1e293b;
+            border-bottom: 3px solid #10b981;
+            padding-bottom: 1rem;
+        }
+
+        .test-section {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .test-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .test-item {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            margin: 0.5rem 0;
+            background: #f1f5f9;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .test-item:hover {
+            background: #e2e8f0;
+        }
+
+        .status {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 1rem;
+            background: #cbd5e1;
+        }
+
+        .status.pass { background: #10b981; }
+        .status.fail { background: #ef4444; }
+        .status.warning { background: #f59e0b; }
+        .status.running {
+            background: #3b82f6;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .test-controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #6366f1;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #4f46e5;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #1e293b;
+            border: 2px solid #e2e8f0;
+        }
+
+        .btn-secondary:hover {
+            background: #f1f5f9;
+        }
+
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid #e2e8f0;
+        }
+
+        .summary-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.25rem;
+        }
+
+        .summary-label {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .log-output {
+            background: #1e293b;
+            color: #10b981;
+            padding: 1rem;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        .error { color: #ef4444; }
+        .success { color: #10b981; }
+        .warning { color: #f59e0b; }
+        .info { color: #3b82f6; }
+    </style>
+</head>
+<body>
+    <h1>🧪 AI Architecture Audit - Complete Test Suite</h1>
+
+    <div class="test-controls">
+        <button class="btn-primary" onclick="runAllTests()">▶️ Run All Tests</button>
+        <button class="btn-secondary" onclick="runSelectedTests()">Run Selected</button>
+        <button class="btn-secondary" onclick="clearResults()">Clear Results</button>
+        <button class="btn-secondary" onclick="exportReport()">📄 Export Report</button>
+    </div>
+
+    <div class="summary">
+        <div class="summary-card">
+            <div class="summary-value" id="totalTests">0</div>
+            <div class="summary-label">Total Tests</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-value success" id="passedTests">0</div>
+            <div class="summary-label">Passed</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-value error" id="failedTests">0</div>
+            <div class="summary-label">Failed</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-value warning" id="warningTests">0</div>
+            <div class="summary-label">Warnings</div>
+        </div>
+    </div>
+
+    <!-- Test Sections -->
+
+    <div class="test-section">
+        <h2>🌐 Page Load & Structure Tests</h2>
+        <div class="test-group">
+            <div class="test-item" data-test="homepage-load">
+                <span class="status"></span>
+                <span>Homepage loads successfully</span>
+            </div>
+            <div class="test-item" data-test="catalog-load">
+                <span class="status"></span>
+                <span>Catalog page loads successfully</span>
+            </div>
+            <div class="test-item" data-test="docs-load">
+                <span class="status"></span>
+                <span>Documentation hub loads successfully</span>
+            </div>
+            <div class="test-item" data-test="calculators-load">
+                <span class="status"></span>
+                <span>All calculator pages load successfully</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>🧭 Navigation Tests</h2>
+        <div class="test-group">
+            <div class="test-item" data-test="nav-presence">
+                <span class="status"></span>
+                <span>Navigation bar present on all pages</span>
+            </div>
+            <div class="test-item" data-test="nav-dropdowns">
+                <span class="status"></span>
+                <span>Dropdown menus function correctly</span>
+            </div>
+            <div class="test-item" data-test="nav-mobile">
+                <span class="status"></span>
+                <span>Mobile menu toggles properly</span>
+            </div>
+            <div class="test-item" data-test="nav-links">
+                <span class="status"></span>
+                <span>All navigation links are valid</span>
+            </div>
+            <div class="test-item" data-test="nav-active">
+                <span class="status"></span>
+                <span>Active page highlighting works</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>🔍 Search & Filter Tests</h2>
+        <div class="test-group">
+            <div class="test-item" data-test="catalog-search">
+                <span class="status"></span>
+                <span>Catalog search filters correctly</span>
+            </div>
+            <div class="test-item" data-test="search-instant">
+                <span class="status"></span>
+                <span>Search works from first character</span>
+            </div>
+            <div class="test-item" data-test="search-keyboard">
+                <span class="status"></span>
+                <span>Keyboard shortcuts (/ and Escape) work</span>
+            </div>
+            <div class="test-item" data-test="filter-checkboxes">
+                <span class="status"></span>
+                <span>Category filters work correctly</span>
+            </div>
+            <div class="test-item" data-test="filter-clear">
+                <span class="status"></span>
+                <span>Clear filters button works</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>🧮 Calculator Functionality Tests</h2>
+        <div class="test-group">
+            <div class="test-item" data-test="calc-navigation">
+                <span class="status"></span>
+                <span>Calculator tab navigation works</span>
+            </div>
+            <div class="test-item" data-test="calc-progress">
+                <span class="status"></span>
+                <span>Progress tracking functions correctly</span>
+            </div>
+            <div class="test-item" data-test="calc-storage">
+                <span class="status"></span>
+                <span>LocalStorage saves/loads data</span>
+            </div>
+            <div class="test-item" data-test="calc-validation">
+                <span class="status"></span>
+                <span>Form validation works properly</span>
+            </div>
+            <div class="test-item" data-test="calc-results">
+                <span class="status"></span>
+                <span>Results calculation is accurate</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>🔗 Link Validation Tests</h2>
+        <div class="test-group">
+            <div class="test-item" data-test="internal-links">
+                <span class="status"></span>
+                <span>All internal links are valid</span>
+            </div>
+            <div class="test-item" data-test="doc-links">
+                <span class="status"></span>
+                <span>Documentation links work correctly</span>
+            </div>
+            <div class="test-item" data-test="calc-links">
+                <span class="status"></span>
+                <span>Calculator links are functional</span>
+            </div>
+            <div class="test-item" data-test="anchor-links">
+                <span class="status"></span>
+                <span>Anchor links scroll properly</span>
+            </div>
+            <div class="test-item" data-test="footer-links">
+                <span class="status"></span>
+                <span>Footer links are valid</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>♿ Accessibility Tests</h2>
+        <div class="test-group">
+            <div class="test-item" data-test="aria-labels">
+                <span class="status"></span>
+                <span>ARIA labels present and correct</span>
+            </div>
+            <div class="test-item" data-test="keyboard-nav">
+                <span class="status"></span>
+                <span>Keyboard navigation works throughout</span>
+            </div>
+            <div class="test-item" data-test="focus-visible">
+                <span class="status"></span>
+                <span>Focus indicators are visible</span>
+            </div>
+            <div class="test-item" data-test="skip-links">
+                <span class="status"></span>
+                <span>Skip navigation links work</span>
+            </div>
+            <div class="test-item" data-test="alt-text">
+                <span class="status"></span>
+                <span>Images have appropriate alt text</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>📱 Responsive Design Tests</h2>
+        <div class="test-group">
+            <div class="test-item" data-test="mobile-layout">
+                <span class="status"></span>
+                <span>Mobile layout renders correctly</span>
+            </div>
+            <div class="test-item" data-test="tablet-layout">
+                <span class="status"></span>
+                <span>Tablet layout renders correctly</span>
+            </div>
+            <div class="test-item" data-test="desktop-layout">
+                <span class="status"></span>
+                <span>Desktop layout renders correctly</span>
+            </div>
+            <div class="test-item" data-test="touch-targets">
+                <span class="status"></span>
+                <span>Touch targets meet 44px minimum</span>
+            </div>
+            <div class="test-item" data-test="viewport-meta">
+                <span class="status"></span>
+                <span>Viewport meta tag configured properly</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>⚡ Performance Tests</h2>
+        <div class="test-group">
+            <div class="test-item" data-test="page-speed">
+                <span class="status"></span>
+                <span>Pages load within 3 seconds</span>
+            </div>
+            <div class="test-item" data-test="js-errors">
+                <span class="status"></span>
+                <span>No JavaScript console errors</span>
+            </div>
+            <div class="test-item" data-test="css-valid">
+                <span class="status"></span>
+                <span>CSS loads without errors</span>
+            </div>
+            <div class="test-item" data-test="resource-404">
+                <span class="status"></span>
+                <span>No 404 errors for resources</span>
+            </div>
+            <div class="test-item" data-test="image-optimization">
+                <span class="status"></span>
+                <span>Images are optimized</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>🛡️ Security Tests</h2>
+        <div class="test-group">
+            <div class="test-item" data-test="https-ready">
+                <span class="status"></span>
+                <span>HTTPS compatibility</span>
+            </div>
+            <div class="test-item" data-test="xss-protection">
+                <span class="status"></span>
+                <span>XSS protection in forms</span>
+            </div>
+            <div class="test-item" data-test="external-links">
+                <span class="status"></span>
+                <span>External links use rel="noopener"</span>
+            </div>
+            <div class="test-item" data-test="input-sanitization">
+                <span class="status"></span>
+                <span>Input sanitization works</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>📊 Test Output Log</h2>
+        <div class="log-output" id="testLog">
+            Test results will appear here...
+        </div>
+    </div>
+
+    <script src="test-runner.js"></script>
+</body>
+</html>

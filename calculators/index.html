@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Calculators - AI Architecture Audit</title>
+    <meta name="description" content="Browse all enterprise assessment calculators and audit tools">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🧮</text></svg>">
+
+    <!-- Navigation CSS -->
+    <link rel="stylesheet" href="../docs/assets/css/site-navigation.css">
+    <link rel="stylesheet" href="../docs/assets/css/bottom-nav.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: var(--light);
+            padding-top: 60px;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1e293b, #334155);
+            color: white;
+            padding: 4rem 0 3rem 0;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .header p {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Category Filter */
+        .filter-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: -2rem auto 3rem;
+            max-width: 1200px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .filter-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1.25rem;
+            border: 1px solid var(--border);
+            background: white;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+            color: var(--gray);
+        }
+
+        .filter-btn:hover {
+            background: var(--light);
+            border-color: var(--primary);
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Calculators Grid */
+        .calculators-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .calculator-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .calculator-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+
+        .calculator-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+        }
+
+        .card-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            line-height: 1;
+        }
+
+        .card-content {
+            flex: 1;
+        }
+
+        .card-badge {
+            background: var(--primary);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .card-badge.new {
+            background: #8b5cf6;
+        }
+
+        .card-badge.trending {
+            background: #f59e0b;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .card-category {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-description {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .card-stats {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stat-item {
+            flex: 1;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--gray);
+            text-transform: uppercase;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--light);
+            color: var(--dark);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .calculators-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card-stats {
+                gap: 1rem;
+            }
+
+            .filter-buttons {
+                gap: 0.5rem;
+            }
+
+            .filter-btn {
+                padding: 0.4rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation will be injected by JS -->
+    <div id="site-navigation"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <h1>
+            <span>🧮</span>
+            <span>All Calculators</span>
+        </h1>
+        <p>Interactive enterprise assessment tools for digital transformation</p>
+    </header>
+
+    <!-- Main Content -->
+    <main id="main-content" class="container" role="main">
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <h2 class="filter-title">Filter by Category</h2>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">All Calculators</button>
+                <button class="filter-btn" data-filter="ai-ml">AI & ML</button>
+                <button class="filter-btn" data-filter="cloud">Cloud & Infrastructure</button>
+                <button class="filter-btn" data-filter="security">Security & Compliance</button>
+                <button class="filter-btn" data-filter="cost">Cost & Optimization</button>
+            </div>
+        </div>
+
+        <!-- Calculators Grid -->
+        <div class="calculators-grid">
+            <!-- AI Readiness -->
+            <div class="calculator-card" data-category="ai-ml">
+                <div class="card-header">
+                    <div class="card-icon">🤖</div>
+                    <div class="card-content">
+                        <span class="card-badge">Popular</span>
+                    </div>
+                </div>
+                <h3 class="card-title">AI Readiness Assessment</h3>
+                <p class="card-category">AI & Machine Learning</p>
+                <p class="card-description">Evaluate your organization's AI maturity across data, skills, infrastructure, and governance. Get actionable insights for AI adoption.</p>
+                <div class="card-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">9</div>
+                        <div class="stat-label">Modules</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">45</div>
+                        <div class="stat-label">Questions</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">15min</div>
+                        <div class="stat-label">Duration</div>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <a href="./ai-readiness/" class="btn btn-primary">Start Assessment</a>
+                    <a href="../docs/ai-readiness/" class="btn btn-secondary">View Guide</a>
+                </div>
+            </div>
+
+            <!-- Cloud Migration -->
+            <div class="calculator-card" data-category="cloud">
+                <div class="card-header">
+                    <div class="card-icon">☁️</div>
+                    <div class="card-content">
+                        <span class="card-badge">Popular</span>
+                    </div>
+                </div>
+                <h3 class="card-title">Cloud Migration Readiness</h3>
+                <p class="card-category">Cloud & Infrastructure</p>
+                <p class="card-description">Assess your cloud migration readiness with 6R strategies, TCO analysis, and vendor comparison across AWS, Azure, and GCP.</p>
+                <div class="card-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">9</div>
+                        <div class="stat-label">Modules</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">50</div>
+                        <div class="stat-label">Questions</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">20min</div>
+                        <div class="stat-label">Duration</div>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <a href="./cloud-migration/" class="btn btn-primary">Start Assessment</a>
+                    <a href="../docs/cloud-migration/" class="btn btn-secondary">View Guide</a>
+                </div>
+            </div>
+
+            <!-- Security Audit -->
+            <div class="calculator-card" data-category="security">
+                <div class="card-header">
+                    <div class="card-icon">🔒</div>
+                    <div class="card-content">
+                        <span class="card-badge">Essential</span>
+                    </div>
+                </div>
+                <h3 class="card-title">Security Audit Framework</h3>
+                <p class="card-category">Security & Compliance</p>
+                <p class="card-description">Comprehensive security assessment based on NIST and ISO standards. Includes zero trust architecture and incident response.</p>
+                <div class="card-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">9</div>
+                        <div class="stat-label">Modules</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">60</div>
+                        <div class="stat-label">Questions</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">25min</div>
+                        <div class="stat-label">Duration</div>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <a href="./security-audit/" class="btn btn-primary">Start Assessment</a>
+                    <a href="../docs/security-audit/" class="btn btn-secondary">View Guide</a>
+                </div>
+            </div>
+
+            <!-- MLOps Audit -->
+            <div class="calculator-card" data-category="ai-ml">
+                <div class="card-header">
+                    <div class="card-icon">🔧</div>
+                    <div class="card-content">
+                        <span class="card-badge trending">Trending</span>
+                    </div>
+                </div>
+                <h3 class="card-title">MLOps Maturity Audit</h3>
+                <p class="card-category">AI & Machine Learning</p>
+                <p class="card-description">Evaluate ML operations maturity from experimentation to production. Assess pipelines, monitoring, and governance practices.</p>
+                <div class="card-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">9</div>
+                        <div class="stat-label">Modules</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">45</div>
+                        <div class="stat-label">Questions</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">20min</div>
+                        <div class="stat-label">Duration</div>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <a href="./mlops-audit/" class="btn btn-primary">Start Assessment</a>
+                    <a href="../docs/mlops-audit/" class="btn btn-secondary">View Guide</a>
+                </div>
+            </div>
+
+            <!-- LLM Framework -->
+            <div class="calculator-card" data-category="ai-ml">
+                <div class="card-header">
+                    <div class="card-icon">🧠</div>
+                    <div class="card-content">
+                        <span class="card-badge new">New</span>
+                    </div>
+                </div>
+                <h3 class="card-title">LLM Implementation Framework</h3>
+                <p class="card-category">AI & Machine Learning</p>
+                <p class="card-description">Strategic assessment for Large Language Model deployment. Covers model selection, RAG architecture, and prompt engineering.</p>
+                <div class="card-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">9</div>
+                        <div class="stat-label">Modules</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">40</div>
+                        <div class="stat-label">Questions</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">18min</div>
+                        <div class="stat-label">Duration</div>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <a href="./llm-framework/" class="btn btn-primary">Start Assessment</a>
+                    <a href="../docs/llm-framework/" class="btn btn-secondary">View Guide</a>
+                </div>
+            </div>
+
+            <!-- GenAI Security -->
+            <div class="calculator-card" data-category="security">
+                <div class="card-header">
+                    <div class="card-icon">🛡️</div>
+                    <div class="card-content">
+                        <span class="card-badge new">New</span>
+                    </div>
+                </div>
+                <h3 class="card-title">GenAI Security Assessment</h3>
+                <p class="card-category">Security & Compliance</p>
+                <p class="card-description">Specialized security framework for generative AI. Assess prompt injection defense, hallucination detection, and AI-specific threats.</p>
+                <div class="card-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">9</div>
+                        <div class="stat-label">Modules</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">35</div>
+                        <div class="stat-label">Questions</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">15min</div>
+                        <div class="stat-label">Duration</div>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <a href="./genai-security/" class="btn btn-primary">Start Assessment</a>
+                    <a href="../docs/genai-security/" class="btn btn-secondary">View Guide</a>
+                </div>
+            </div>
+
+            <!-- Well-Architected -->
+            <div class="calculator-card" data-category="cloud">
+                <div class="card-header">
+                    <div class="card-icon">🏗️</div>
+                    <div class="card-content">
+                        <span class="card-badge">Essential</span>
+                    </div>
+                </div>
+                <h3 class="card-title">Well-Architected Review</h3>
+                <p class="card-category">Cloud & Infrastructure</p>
+                <p class="card-description">Build secure, high-performing infrastructure based on AWS Well-Architected Framework with six pillars of excellence.</p>
+                <div class="card-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">9</div>
+                        <div class="stat-label">Modules</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">55</div>
+                        <div class="stat-label">Questions</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">25min</div>
+                        <div class="stat-label">Duration</div>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <a href="./well-architected/" class="btn btn-primary">Start Assessment</a>
+                    <a href="../docs/well-architected/" class="btn btn-secondary">View Guide</a>
+                </div>
+            </div>
+
+            <!-- Cost Optimization -->
+            <div class="calculator-card" data-category="cost">
+                <div class="card-header">
+                    <div class="card-icon">💰</div>
+                    <div class="card-content">
+                        <span class="card-badge trending">Trending</span>
+                    </div>
+                </div>
+                <h3 class="card-title">Cost Optimization Audit</h3>
+                <p class="card-category">Cost & Optimization</p>
+                <p class="card-description">FinOps principles and cloud cost optimization. Identify waste, implement budgets, and maximize cloud ROI across providers.</p>
+                <div class="card-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">9</div>
+                        <div class="stat-label">Modules</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">42</div>
+                        <div class="stat-label">Questions</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">18min</div>
+                        <div class="stat-label">Duration</div>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <a href="./cost-optimization/" class="btn btn-primary">Start Assessment</a>
+                    <a href="../docs/cost-optimization/" class="btn btn-secondary">View Guide</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>Built with ❤️ by architects, for architects! 🚀</p>
+        <p style="margin-top: 1rem; opacity: 0.8;">© 2024 AI Architecture Audit</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../docs/assets/js/site-navigation.js"></script>
+    <script src="../docs/assets/js/bottom-nav.js"></script>
+
+    <script>
+        // Filter functionality
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const calculatorCards = document.querySelectorAll('.calculator-card');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Update active button
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                // Filter cards
+                const filter = button.dataset.filter;
+                calculatorCards.forEach(card => {
+                    if (filter === 'all' || card.dataset.category === filter) {
+                        card.style.display = '';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Add animation on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            calculatorCards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    card.style.transition = 'all 0.5s ease';
+
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 50);
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>

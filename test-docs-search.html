@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Docs Search</title>
+</head>
+<body>
+    <h1>Documentation Search Test</h1>
+    <p>Open the console to see test results</p>
+
+    <script>
+        // Test the search functionality
+        fetch('http://localhost:8888/docs/')
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+
+                console.log('=== SEARCH TEST RESULTS ===');
+
+                // Check if search input exists
+                const searchInput = doc.getElementById('docSearch');
+                console.log('1. Search input found:', searchInput ? '✅' : '❌');
+
+                // Check category sections
+                const categorySections = doc.querySelectorAll('.category-section');
+                console.log('2. Category sections found:', categorySections.length, categorySections.length > 0 ? '✅' : '❌');
+
+                // Check doc cards
+                const docCards = doc.querySelectorAll('.doc-card');
+                console.log('3. Doc cards found:', docCards.length, docCards.length > 0 ? '✅' : '❌');
+
+                // Check for title and description elements
+                const titles = doc.querySelectorAll('.doc-title');
+                const descriptions = doc.querySelectorAll('.doc-description');
+                console.log('4. Titles found:', titles.length, titles.length > 0 ? '✅' : '❌');
+                console.log('5. Descriptions found:', descriptions.length, descriptions.length > 0 ? '✅' : '❌');
+
+                // Test search simulation
+                if (searchInput && docCards.length > 0) {
+                    console.log('\n=== SIMULATING SEARCH ===');
+                    const testSearchTerm = 'cloud';
+                    let matchCount = 0;
+
+                    docCards.forEach(card => {
+                        const title = card.querySelector('.doc-title')?.textContent.toLowerCase() || '';
+                        const description = card.querySelector('.doc-description')?.textContent.toLowerCase() || '';
+
+                        if (title.includes(testSearchTerm) || description.includes(testSearchTerm)) {
+                            matchCount++;
+                            console.log(`Match found: ${card.querySelector('.doc-title')?.textContent}`);
+                        }
+                    });
+
+                    console.log(`Total matches for "${testSearchTerm}":`, matchCount);
+                }
+
+                // Check navigation
+                console.log('\n=== NAVIGATION CHECK ===');
+                const siteNav = doc.querySelector('.site-nav');
+                const navContainer = doc.getElementById('site-navigation');
+                console.log('6. Navigation container found:', navContainer ? '✅' : '❌');
+                console.log('7. Site nav element found:', siteNav ? '✅' : '❌');
+
+                // If no site-nav, it means JS hasn't run yet (expected)
+                if (!siteNav && navContainer) {
+                    console.log('   Note: Navigation will be injected by JavaScript on page load');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    </script>
+</body>
+</html>

@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[Framework Name] Assessment Calculator - AI Architecture Audit</title>
+    <meta name="description" content="Comprehensive [framework] assessment with maturity scoring, gap analysis, and implementation roadmap">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🎯</text></svg>">
+
+    <!-- Navigation CSS -->
+    <link rel="stylesheet" href="/docs/assets/css/site-navigation.css">
+    <link rel="stylesheet" href="/docs/assets/css/mobile-fixes.css">
+    <link rel="stylesheet" href="/docs/assets/css/bottom-nav.css">
+
+    <!-- Calculator Base CSS -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            color: #1e293b;
+            background: #f8fafc;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            padding: 6rem 0 3rem 0;
+            margin-top: 60px; /* Account for fixed navigation */
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Container */
+        .calculator-container {
+            max-width: 1200px;
+            margin: -2rem auto 4rem;
+            padding: 0 2rem;
+        }
+
+        .calculator-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+            padding: 2rem;
+        }
+
+        /* Tab Panels */
+        .tab-panel {
+            padding: 2rem 0;
+        }
+
+        .tab-panel h2 {
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+
+        .tab-panel p {
+            color: #64748b;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        /* Form Groups */
+        .form-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .form-section h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #475569;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        /* Radio/Checkbox Groups */
+        .option-group {
+            display: grid;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-item:hover {
+            border-color: #6366f1;
+            background: #f0f9ff;
+        }
+
+        .option-item input {
+            margin-top: 0.25rem;
+        }
+
+        .option-content {
+            flex: 1;
+        }
+
+        .option-title {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .option-desc {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+
+        /* Score Display */
+        .score-display {
+            background: linear-gradient(135deg, #f0f9ff, #e0e7ff);
+            border: 2px solid #6366f1;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .score-value {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #6366f1;
+            margin-bottom: 0.5rem;
+        }
+
+        .score-label {
+            font-size: 1.25rem;
+            color: #475569;
+        }
+
+        .score-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .score-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .score-item-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .score-item-label {
+            font-size: 0.875rem;
+            color: #64748b;
+            margin-top: 0.25rem;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-primary {
+            background: #6366f1;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #4f46e5;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        /* Results Summary */
+        .results-summary {
+            background: linear-gradient(135deg, #fef3c7, #fed7aa);
+            border: 2px solid #f59e0b;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .result-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .result-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+
+        .result-card p {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .calculator-card {
+                padding: 1.5rem;
+            }
+
+            .score-breakdown {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Site Navigation (injected by JS) -->
+    <div id="site-navigation"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1>
+                <span>🎯</span>
+                <span>[Framework Name] Assessment</span>
+            </h1>
+            <p>Comprehensive evaluation of your [domain] readiness with actionable insights and implementation roadmap</p>
+        </div>
+    </header>
+
+    <!-- Calculator Container -->
+    <div class="calculator-container">
+        <div class="calculator-card">
+            <!-- Navigation will be injected here -->
+            <div id="calculator-navigation"></div>
+
+            <!-- Tab Content -->
+            <div class="tab-content">
+                <!-- Tab 1: Maturity Assessment -->
+                <div class="tab-panel active" id="assessment-tab">
+                    <h2>📊 Maturity Assessment</h2>
+                    <p>Evaluate your organization's current maturity level across key dimensions.</p>
+
+                    <div class="form-section">
+                        <h3>Organizational Readiness</h3>
+
+                        <div class="form-group">
+                            <label>Leadership Support Level</label>
+                            <select name="leadership_support">
+                                <option value="">Select level...</option>
+                                <option value="1">Ad-hoc - No formal support</option>
+                                <option value="2">Initial - Some awareness</option>
+                                <option value="3">Defined - Active sponsorship</option>
+                                <option value="4">Managed - Strategic priority</option>
+                                <option value="5">Optimized - Full commitment</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Current Initiatives</label>
+                            <div class="option-group">
+                                <label class="option-item">
+                                    <input type="checkbox" name="initiatives[]" value="pilot">
+                                    <div class="option-content">
+                                        <div class="option-title">Pilot Projects</div>
+                                        <div class="option-desc">Running proof of concepts</div>
+                                    </div>
+                                </label>
+                                <label class="option-item">
+                                    <input type="checkbox" name="initiatives[]" value="production">
+                                    <div class="option-content">
+                                        <div class="option-title">Production Systems</div>
+                                        <div class="option-desc">Live systems in production</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="score-display">
+                        <div class="score-value">2.8</div>
+                        <div class="score-label">Initial Maturity Level</div>
+                        <div class="score-breakdown">
+                            <div class="score-item">
+                                <div class="score-item-value">3.2</div>
+                                <div class="score-item-label">Technical</div>
+                            </div>
+                            <div class="score-item">
+                                <div class="score-item-value">2.5</div>
+                                <div class="score-item-label">Process</div>
+                            </div>
+                            <div class="score-item">
+                                <div class="score-item-value">2.7</div>
+                                <div class="score-item-label">People</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 2: Skills Gap Analysis -->
+                <div class="tab-panel" id="skills-tab">
+                    <h2>👥 Skills Gap Analysis</h2>
+                    <p>Identify skill gaps and training needs across your teams.</p>
+
+                    <div class="form-section">
+                        <h3>Team Composition</h3>
+
+                        <div class="form-group">
+                            <label>Team Size</label>
+                            <input type="number" name="team_size" placeholder="Number of team members">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Current Skill Levels</label>
+                            <div class="option-group">
+                                <!-- Add skill assessment options -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 3: Use Case Prioritization -->
+                <div class="tab-panel" id="usecases-tab">
+                    <h2>🎯 Use Case Prioritization</h2>
+                    <p>Identify and prioritize high-value use cases for implementation.</p>
+
+                    <div class="form-section">
+                        <h3>Business Value Matrix</h3>
+                        <!-- Add use case prioritization matrix -->
+                    </div>
+                </div>
+
+                <!-- Tab 4: Data Readiness -->
+                <div class="tab-panel" id="data-tab">
+                    <h2>💾 Data Readiness</h2>
+                    <p>Assess your data quality, governance, and infrastructure readiness.</p>
+
+                    <div class="form-section">
+                        <h3>Data Quality Assessment</h3>
+                        <!-- Add data readiness questions -->
+                    </div>
+                </div>
+
+                <!-- Tab 5: Infrastructure -->
+                <div class="tab-panel" id="infrastructure-tab">
+                    <h2>🏗️ Infrastructure Assessment</h2>
+                    <p>Evaluate your technical infrastructure and platform capabilities.</p>
+
+                    <div class="form-section">
+                        <h3>Current Infrastructure</h3>
+                        <!-- Add infrastructure assessment -->
+                    </div>
+                </div>
+
+                <!-- Tab 6: ROI Calculator -->
+                <div class="tab-panel" id="roi-tab">
+                    <h2>💰 ROI Calculator</h2>
+                    <p>Calculate the expected return on investment for your initiative.</p>
+
+                    <div class="form-section">
+                        <h3>Cost-Benefit Analysis</h3>
+                        <!-- Add ROI calculator -->
+                    </div>
+                </div>
+
+                <!-- Tab 7: Vendor Selection -->
+                <div class="tab-panel" id="vendors-tab">
+                    <h2>🏢 Vendor Selection</h2>
+                    <p>Compare and evaluate potential vendors and solutions.</p>
+
+                    <div class="form-section">
+                        <h3>Vendor Comparison Matrix</h3>
+                        <!-- Add vendor comparison -->
+                    </div>
+                </div>
+
+                <!-- Tab 8: Risk Assessment -->
+                <div class="tab-panel" id="risks-tab">
+                    <h2>⚠️ Risk Assessment</h2>
+                    <p>Identify and plan mitigation strategies for potential risks.</p>
+
+                    <div class="form-section">
+                        <h3>Risk Identification</h3>
+                        <!-- Add risk assessment -->
+                    </div>
+                </div>
+
+                <!-- Tab 9: Implementation Roadmap -->
+                <div class="tab-panel" id="roadmap-tab">
+                    <h2>🗓️ Implementation Roadmap</h2>
+                    <p>Your personalized implementation plan with milestones and deliverables.</p>
+
+                    <div class="results-summary">
+                        <h3>Recommended Roadmap</h3>
+                        <div class="results-grid">
+                            <div class="result-card">
+                                <h4>Phase 1: Foundation (Months 1-3)</h4>
+                                <p>Establish governance, build team, set up infrastructure</p>
+                            </div>
+                            <div class="result-card">
+                                <h4>Phase 2: Pilot (Months 4-6)</h4>
+                                <p>Launch pilot projects, validate approach, gather learnings</p>
+                            </div>
+                            <div class="result-card">
+                                <h4>Phase 3: Scale (Months 7-12)</h4>
+                                <p>Expand to production, optimize processes, measure ROI</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn btn-success" onclick="exportResults()">
+                            📥 Export to Excel
+                        </button>
+                        <button class="btn btn-primary" onclick="shareResults()">
+                            🔗 Share Results
+                        </button>
+                        <button class="btn btn-secondary" onclick="printResults()">
+                            🖨️ Print Report
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer style="background: #1e293b; color: white; text-align: center; padding: 2rem; margin-top: 4rem;">
+        <p>Built with ❤️ by architects, for architects! 🚀</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/docs/assets/js/site-navigation.js"></script>
+    <script src="/docs/assets/js/calculator-navigation.js"></script>
+    <script>
+        // Initialize calculator navigation
+        const calcNav = new CalculatorNavigation('framework-id', [
+            { id: 'assessment', icon: '📊', label: 'Maturity Assessment', description: 'Evaluate current state' },
+            { id: 'skills', icon: '👥', label: 'Skills Gap Analysis', description: 'Team capability assessment' },
+            { id: 'usecases', icon: '🎯', label: 'Use Case Prioritization', description: 'Business value identification' },
+            { id: 'data', icon: '💾', label: 'Data Readiness', description: 'Data quality and governance' },
+            { id: 'infrastructure', icon: '🏗️', label: 'Infrastructure', description: 'Platform evaluation' },
+            { id: 'roi', icon: '💰', label: 'ROI Calculator', description: 'Financial analysis' },
+            { id: 'vendors', icon: '🏢', label: 'Vendor Selection', description: 'Solution comparison' },
+            { id: 'risks', icon: '⚠️', label: 'Risk Assessment', description: 'Risk mitigation planning' },
+            { id: 'roadmap', icon: '🗓️', label: 'Implementation Roadmap', description: 'Phased delivery plan' }
+        ]);
+
+        // Listen for tab changes
+        document.addEventListener('tabChange', (e) => {
+            console.log('Tab changed to:', e.detail);
+            // Add any custom logic here
+        });
+
+        // Export functionality
+        function exportResults() {
+            // Implement Excel export
+            alert('Exporting results to Excel...');
+        }
+
+        function shareResults() {
+            // Implement share functionality
+            alert('Generating shareable link...');
+        }
+
+        function printResults() {
+            // Implement print functionality
+            window.print();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assessment Framework Catalog - 9 Free Enterprise Tools | AI Architecture Audit</title>
+    <meta name="description" content="Browse our catalog of free enterprise assessment frameworks. AI readiness, cloud migration, security audits, MLOps maturity assessments with instant PDF reports.">
+    <meta name="keywords" content="assessment catalog, enterprise frameworks, AI tools, cloud assessment, security audit tools, MLOps framework, digital transformation tools">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Free Enterprise Assessment Framework Catalog">
+    <meta property="og:description" content="9 comprehensive assessment tools for digital transformation. Free PDF reports and Excel exports.">
+    <meta property="og:url" content="https://aiarchitectureaudit.com/catalog.html">
+    <meta property="og:type" content="website">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://aiarchitectureaudit.com/catalog.html">
+    <meta name="description" content="Browse 50+ enterprise assessment frameworks for cloud transformation and AI adoption">
+
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🏢</text></svg>">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+        }
+
+        /* Navigation */
+        .nav {
+            background: #1e293b;
+            color: white;
+            padding: 1rem 2rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: white;
+            white-space: nowrap;
+        }
+
+        /* Search Bar */
+        .search-container {
+            flex: 1;
+            max-width: 600px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 3rem;
+            border-radius: 8px;
+            border: none;
+            font-size: 1rem;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .search-input::placeholder {
+            color: rgba(255,255,255,0.6);
+        }
+
+        .search-input:focus {
+            outline: none;
+            background: white;
+            color: #1e293b;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.6;
+        }
+
+        /* Main Content */
+        .catalog {
+            margin-top: 80px;
+            padding: 2rem;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Filters Sidebar */
+        .catalog-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 2rem;
+        }
+
+        .filters {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .filter-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-title {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: #64748b;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .filter-option:hover {
+            background: #f1f5f9;
+        }
+
+        .filter-option input {
+            cursor: pointer;
+        }
+
+        .filter-option label {
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .filter-count {
+            color: #94a3b8;
+            font-size: 0.875rem;
+        }
+
+        /* Framework Grid */
+        .frameworks-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .results-count {
+            color: #64748b;
+        }
+
+        .sort-dropdown {
+            padding: 0.5rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+        }
+
+        .frameworks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .framework-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .framework-card:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            transform: translateY(-2px);
+        }
+
+        .framework-card.hidden {
+            display: none;
+        }
+
+        .framework-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #10b981;
+            color: white;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .framework-badge.trending {
+            background: #f59e0b;
+        }
+
+        .framework-badge.new {
+            background: #8b5cf6;
+        }
+
+        .framework-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .framework-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+
+        .framework-description {
+            color: #64748b;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .framework-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.875rem;
+            color: #94a3b8;
+        }
+
+        .framework-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            text-align: center;
+            flex: 1;
+        }
+
+        .btn-primary {
+            background: #6366f1;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #4f46e5;
+        }
+
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .catalog-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .filters {
+                position: static;
+                margin-bottom: 2rem;
+            }
+
+            .frameworks-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Clear filters button */
+        .clear-filters {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .clear-filters.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="/" class="logo">🏢 AI Architecture Audit</a>
+
+            <div class="search-container">
+                <span class="search-icon">🔍</span>
+                <input type="search"
+                       class="search-input"
+                       placeholder="Search frameworks..."
+                       id="globalSearch">
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Catalog -->
+    <div class="catalog">
+        <div class="catalog-layout">
+            <!-- Filters Sidebar -->
+            <aside class="filters">
+                <div class="filter-group">
+                    <div class="filter-title">Category</div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="ai-ml" data-category="ai-ml">
+                        <label for="ai-ml">AI & Machine Learning</label>
+                        <span class="filter-count" data-count="ai-ml">4</span>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="cloud" data-category="cloud">
+                        <label for="cloud">Cloud & Infrastructure</label>
+                        <span class="filter-count" data-count="cloud">3</span>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="security" data-category="security">
+                        <label for="security">Security & Compliance</label>
+                        <span class="filter-count" data-count="security">2</span>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <div class="filter-title">Complexity</div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="beginner" data-level="beginner">
+                        <label for="beginner">Beginner</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="intermediate" data-level="intermediate">
+                        <label for="intermediate">Intermediate</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="advanced" data-level="advanced">
+                        <label for="advanced">Advanced</label>
+                    </div>
+                </div>
+
+                <button class="clear-filters" id="clearFilters">Clear All Filters</button>
+            </aside>
+
+            <!-- Frameworks Grid -->
+            <main>
+                <div class="frameworks-header">
+                    <h1>Framework Catalog</h1>
+                    <div style="display: flex; gap: 1rem; align-items: center;">
+                        <span class="results-count" id="resultsCount">Showing all frameworks</span>
+                        <select class="sort-dropdown" id="sortDropdown">
+                            <option value="name">A-Z</option>
+                            <option value="category">By Category</option>
+                            <option value="popular">Most Popular</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="frameworks-grid" id="frameworksGrid">
+                    <!-- AI Readiness -->
+                    <div class="framework-card" data-category="ai-ml" data-level="intermediate" data-name="AI Readiness Assessment">
+                        <span class="framework-badge">POPULAR</span>
+                        <div class="framework-icon">🤖</div>
+                        <h3 class="framework-title">AI Readiness Assessment</h3>
+                        <p class="framework-description">Comprehensive 24-dimension maturity assessment for AI adoption including data readiness and ROI calculation.</p>
+                        <div class="framework-meta">
+                            <span>⏱ 45 min</span>
+                            <span>📊 9 modules</span>
+                        </div>
+                        <div class="framework-actions">
+                            <a href="/calculators/ai-readiness/" class="btn btn-primary">Start Assessment</a>
+                            <a href="/docs/ai-readiness/" class="btn btn-secondary">View Guide</a>
+                        </div>
+                    </div>
+
+                    <!-- Cloud Migration -->
+                    <div class="framework-card" data-category="cloud" data-level="intermediate" data-name="Cloud Migration Assessment">
+                        <span class="framework-badge trending">TRENDING</span>
+                        <div class="framework-icon">☁️</div>
+                        <h3 class="framework-title">Cloud Migration Assessment</h3>
+                        <p class="framework-description">Multi-cloud migration planning with TCO/ROI analysis, risk assessment, and 6R strategy evaluation.</p>
+                        <div class="framework-meta">
+                            <span>⏱ 60 min</span>
+                            <span>📊 12 modules</span>
+                        </div>
+                        <div class="framework-actions">
+                            <a href="/calculators/cloud-migration/" class="btn btn-primary">Start Assessment</a>
+                            <a href="/docs/cloud-migration/" class="btn btn-secondary">View Guide</a>
+                        </div>
+                    </div>
+
+                    <!-- MLOps -->
+                    <div class="framework-card" data-category="ai-ml" data-level="advanced" data-name="MLOps Maturity Audit">
+                        <div class="framework-icon">🔧</div>
+                        <h3 class="framework-title">MLOps Maturity Audit</h3>
+                        <p class="framework-description">Machine learning operations evaluation across data pipelines, model lifecycle, and deployment automation.</p>
+                        <div class="framework-meta">
+                            <span>⏱ 30 min</span>
+                            <span>📊 8 modules</span>
+                        </div>
+                        <div class="framework-actions">
+                            <a href="/calculators/mlops-audit/" class="btn btn-primary">Start Assessment</a>
+                            <a href="/docs/mlops-audit/" class="btn btn-secondary">View Guide</a>
+                        </div>
+                    </div>
+
+                    <!-- LLM Framework -->
+                    <div class="framework-card" data-category="ai-ml" data-level="advanced" data-name="LLM Implementation Framework">
+                        <span class="framework-badge new">NEW</span>
+                        <div class="framework-icon">🧠</div>
+                        <h3 class="framework-title">LLM Implementation Framework</h3>
+                        <p class="framework-description">Strategic LLM deployment guide including model selection, RAG architecture, and prompt engineering.</p>
+                        <div class="framework-meta">
+                            <span>⏱ 40 min</span>
+                            <span>📊 10 modules</span>
+                        </div>
+                        <div class="framework-actions">
+                            <a href="/calculators/llm-framework/" class="btn btn-primary">Start Assessment</a>
+                            <a href="/docs/llm-framework/" class="btn btn-secondary">View Guide</a>
+                        </div>
+                    </div>
+
+                    <!-- Security Audit -->
+                    <div class="framework-card" data-category="security" data-level="intermediate" data-name="Security Audit Framework">
+                        <div class="framework-icon">🔒</div>
+                        <h3 class="framework-title">Security Audit Framework</h3>
+                        <p class="framework-description">Comprehensive security assessment covering NIST/ISO framework compliance and zero trust architecture.</p>
+                        <div class="framework-meta">
+                            <span>⏱ 50 min</span>
+                            <span>📊 11 modules</span>
+                        </div>
+                        <div class="framework-actions">
+                            <a href="/calculators/security-audit/" class="btn btn-primary">Start Assessment</a>
+                            <a href="/docs/security-audit/" class="btn btn-secondary">View Guide</a>
+                        </div>
+                    </div>
+
+                    <!-- GenAI Security -->
+                    <div class="framework-card" data-category="security" data-level="advanced" data-name="GenAI Security Framework">
+                        <span class="framework-badge new">NEW</span>
+                        <div class="framework-icon">🛡️</div>
+                        <h3 class="framework-title">GenAI Security Framework</h3>
+                        <p class="framework-description">Specialized security framework for generative AI systems including prompt injection defense.</p>
+                        <div class="framework-meta">
+                            <span>⏱ 35 min</span>
+                            <span>📊 9 modules</span>
+                        </div>
+                        <div class="framework-actions">
+                            <a href="/calculators/genai-security/" class="btn btn-primary">Start Assessment</a>
+                            <a href="/docs/genai-security/" class="btn btn-secondary">View Guide</a>
+                        </div>
+                    </div>
+
+                    <!-- Cost Optimization -->
+                    <div class="framework-card" data-category="cloud" data-level="beginner" data-name="Cost Optimization Framework">
+                        <div class="framework-icon">💰</div>
+                        <h3 class="framework-title">Cost Optimization Framework</h3>
+                        <p class="framework-description">FinOps maturity assessment with cloud cost analysis, waste identification, and savings opportunities.</p>
+                        <div class="framework-meta">
+                            <span>⏱ 25 min</span>
+                            <span>📊 7 modules</span>
+                        </div>
+                        <div class="framework-actions">
+                            <a href="/calculators/cost-optimization/" class="btn btn-primary">Start Assessment</a>
+                            <a href="/docs/cost-optimization/" class="btn btn-secondary">View Guide</a>
+                        </div>
+                    </div>
+
+                    <!-- Well-Architected -->
+                    <div class="framework-card" data-category="cloud" data-level="intermediate" data-name="Well-Architected Framework">
+                        <div class="framework-icon">🏗️</div>
+                        <h3 class="framework-title">Well-Architected Framework</h3>
+                        <p class="framework-description">Build secure, high-performing, resilient, and efficient infrastructure based on AWS best practices.</p>
+                        <div class="framework-meta">
+                            <span>⏱ 55 min</span>
+                            <span>📊 6 pillars</span>
+                        </div>
+                        <div class="framework-actions">
+                            <a href="/calculators/well-architected/" class="btn btn-primary">Start Assessment</a>
+                            <a href="/docs/well-architected/" class="btn btn-secondary">View Guide</a>
+                        </div>
+                    </div>
+
+                    <!-- AI Governance (Future) -->
+                    <div class="framework-card" data-category="ai-ml" data-level="advanced" data-name="AI Governance Framework">
+                        <span class="framework-badge">COMING SOON</span>
+                        <div class="framework-icon">⚖️</div>
+                        <h3 class="framework-title">AI Governance Framework</h3>
+                        <p class="framework-description">Establish responsible AI practices with ethics, compliance, and risk management frameworks.</p>
+                        <div class="framework-meta">
+                            <span>⏱ 45 min</span>
+                            <span>📊 8 modules</span>
+                        </div>
+                        <div class="framework-actions">
+                            <a href="#" class="btn btn-primary" style="opacity: 0.5; cursor: not-allowed;">Coming Soon</a>
+                            <a href="#" class="btn btn-secondary" style="opacity: 0.5; cursor: not-allowed;">Preview</a>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Unified Search Component -->
+    <script src="docs/assets/js/unified-search.js"></script>
+
+    <script>
+        // Initialize unified search for catalog
+        const unifiedSearch = new UnifiedSearch({
+            searchInputId: 'globalSearch',
+            cardSelector: '.framework-card',
+            containerSelector: '.frameworks-grid',
+            titleSelector: '.framework-title',
+            descriptionSelector: '.framework-description',
+            noResultsMessage: 'No frameworks found',
+            searchPlaceholder: 'Search frameworks...',
+            minSearchLength: 1,
+            onSearch: (results) => {
+                // Update results count
+                const resultsCount = document.getElementById('resultsCount');
+                if (resultsCount) {
+                    resultsCount.textContent = `Showing ${results.visibleCount} framework${results.visibleCount !== 1 ? 's' : ''}`;
+                }
+            }
+        });
+
+        // Original filtering functionality (kept for checkboxes)
+        const frameworksGrid = document.getElementById('frameworksGrid');
+        const frameworks = frameworksGrid.querySelectorAll('.framework-card');
+        const resultsCount = document.getElementById('resultsCount');
+        const clearButton = document.getElementById('clearFilters');
+        const searchInput = document.getElementById('globalSearch');
+        const sortDropdown = document.getElementById('sortDropdown');
+
+        // Active filters
+        let activeFilters = {
+            categories: [],
+            levels: [],
+            searchTerm: ''
+        };
+
+        // Update filter counts
+        function updateFilterCounts() {
+            const counts = {};
+            frameworks.forEach(card => {
+                const category = card.dataset.category;
+                if (category) {
+                    counts[category] = (counts[category] || 0) + 1;
+                }
+            });
+
+            Object.keys(counts).forEach(key => {
+                const countElement = document.querySelector(`[data-count="${key}"]`);
+                if (countElement) {
+                    countElement.textContent = counts[key];
+                }
+            });
+        }
+
+        // Apply filters
+        function applyFilters() {
+            let visibleCount = 0;
+
+            frameworks.forEach(card => {
+                let show = true;
+
+                // Category filter
+                if (activeFilters.categories.length > 0) {
+                    show = show && activeFilters.categories.includes(card.dataset.category);
+                }
+
+                // Level filter
+                if (activeFilters.levels.length > 0) {
+                    show = show && activeFilters.levels.includes(card.dataset.level);
+                }
+
+                // Skip search filter - handled by UnifiedSearch component
+
+                if (show) {
+                    card.classList.remove('hidden');
+                    visibleCount++;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+
+            // Update results count
+            resultsCount.textContent = `Showing ${visibleCount} framework${visibleCount !== 1 ? 's' : ''}`;
+
+            // Show/hide clear button
+            if (activeFilters.categories.length > 0 || activeFilters.levels.length > 0 || activeFilters.searchTerm) {
+                clearButton.classList.add('active');
+            } else {
+                clearButton.classList.remove('active');
+            }
+        }
+
+        // Category filter handlers
+        document.querySelectorAll('[data-category]').forEach(checkbox => {
+            checkbox.addEventListener('change', (e) => {
+                const category = e.target.dataset.category;
+                if (e.target.checked) {
+                    activeFilters.categories.push(category);
+                } else {
+                    activeFilters.categories = activeFilters.categories.filter(c => c !== category);
+                }
+                applyFilters();
+            });
+        });
+
+        // Level filter handlers
+        document.querySelectorAll('[data-level]').forEach(checkbox => {
+            checkbox.addEventListener('change', (e) => {
+                const level = e.target.dataset.level;
+                if (e.target.checked) {
+                    activeFilters.levels.push(level);
+                } else {
+                    activeFilters.levels = activeFilters.levels.filter(l => l !== level);
+                }
+                applyFilters();
+            });
+        });
+
+        // Search is handled by UnifiedSearch - no need for duplicate handler
+
+        // Clear filters
+        clearButton.addEventListener('click', () => {
+            activeFilters = {
+                categories: [],
+                levels: [],
+                searchTerm: ''
+            };
+            document.querySelectorAll('.filters input[type="checkbox"]').forEach(cb => cb.checked = false);
+            // Clear unified search
+            if (unifiedSearch) {
+                unifiedSearch.clearSearch();
+            }
+            applyFilters();
+        });
+
+        // Sort functionality
+        sortDropdown.addEventListener('change', (e) => {
+            const sortBy = e.target.value;
+            const cardsArray = Array.from(frameworks);
+
+            cardsArray.sort((a, b) => {
+                switch(sortBy) {
+                    case 'name':
+                        return a.dataset.name.localeCompare(b.dataset.name);
+                    case 'category':
+                        return a.dataset.category.localeCompare(b.dataset.category);
+                    case 'popular':
+                        // Put cards with badges first
+                        const aBadge = a.querySelector('.framework-badge') ? 0 : 1;
+                        const bBadge = b.querySelector('.framework-badge') ? 0 : 1;
+                        return aBadge - bBadge;
+                    default:
+                        return 0;
+                }
+            });
+
+            // Re-append sorted cards
+            cardsArray.forEach(card => frameworksGrid.appendChild(card));
+        });
+
+        // Initialize
+        updateFilterCounts();
+    </script>
+</body>
+</html>

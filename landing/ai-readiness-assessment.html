@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Readiness Assessment Tool - Free Enterprise Evaluation | 2024</title>
+    <meta name="description" content="Evaluate your organization's AI maturity in 15 minutes. Free assessment tool with instant PDF reports. Used by 500+ enterprises. No signup required.">
+    <meta name="keywords" content="ai readiness assessment, ai maturity model, artificial intelligence evaluation, ml readiness checklist, ai adoption strategy, enterprise ai assessment, ai readiness questionnaire">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="AI Readiness Assessment Tool - Free Enterprise Evaluation">
+    <meta property="og:description" content="Evaluate your organization's AI maturity in 15 minutes. Free tool with instant PDF reports.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://architectureaudit.com/landing/ai-readiness-assessment">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="AI Readiness Assessment Tool">
+    <meta name="twitter:description" content="Free AI maturity evaluation for enterprises. Instant PDF reports.">
+
+    <link rel="canonical" href="https://architectureaudit.com/landing/ai-readiness-assessment">
+
+    <!-- Site CSS -->
+    <link rel="stylesheet" href="/docs/assets/css/site-navigation.css">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            color: #1e293b;
+        }
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+        .cta-button {
+            display: inline-block;
+            background: #10b981;
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1.125rem;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        section {
+            padding: 4rem 0;
+        }
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: #1e293b;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .feature-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        .feature-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: #6366f1;
+        }
+        .stats {
+            background: #f8fafc;
+            text-align: center;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+        .stat-item {
+            padding: 1.5rem;
+        }
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #6366f1;
+        }
+        .stat-label {
+            color: #64748b;
+            margin-top: 0.5rem;
+        }
+        .process {
+            background: white;
+        }
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .step {
+            text-align: center;
+            padding: 1.5rem;
+        }
+        .step-number {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            background: #6366f1;
+            color: white;
+            border-radius: 50%;
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        .step-title {
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+        .testimonial {
+            background: #f8fafc;
+            padding: 2rem;
+            border-left: 4px solid #6366f1;
+            margin: 2rem 0;
+            border-radius: 4px;
+        }
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1rem;
+            color: #475569;
+        }
+        .testimonial-author {
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .faq {
+            background: white;
+        }
+        .faq-item {
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 8px;
+        }
+        .faq-question {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+        .faq-answer {
+            color: #64748b;
+        }
+        .footer-cta {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .hero p { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Site Navigation -->
+    <div id="site-navigation"></div>
+    <script src="/docs/assets/js/site-navigation.js"></script>
+    <div class="hero">
+        <div class="container">
+            <h1>AI Readiness Assessment Tool for Enterprises</h1>
+            <p>Evaluate your organization's AI maturity in 15 minutes. Get instant, actionable insights.</p>
+            <a href="/calculators/ai-readiness/" class="cta-button">Start Free Assessment →</a>
+        </div>
+    </div>
+
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Enterprises Assessed</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">15 min</div>
+                    <div class="stat-label">Average Completion Time</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">9</div>
+                    <div class="stat-label">Assessment Dimensions</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Free Forever</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2>Comprehensive AI Readiness Evaluation</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-title">Data Infrastructure</div>
+                    <p>Assess data quality, governance, accessibility, and integration capabilities for AI initiatives.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <div class="feature-title">Technical Capabilities</div>
+                    <p>Evaluate ML infrastructure, computing resources, and technical skills across your teams.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <div class="feature-title">Business Alignment</div>
+                    <p>Measure how well AI initiatives align with strategic goals and ROI expectations.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">👥</div>
+                    <div class="feature-title">Cultural Readiness</div>
+                    <p>Understand organizational readiness for AI adoption and change management needs.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <div class="feature-title">Governance & Ethics</div>
+                    <p>Review AI governance frameworks, ethical guidelines, and regulatory compliance.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <div class="feature-title">Maturity Benchmarking</div>
+                    <p>Compare your AI maturity against industry standards and best practices.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="process">
+        <div class="container">
+            <h2>How Our AI Assessment Works</h2>
+            <div class="process-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Answer Questions</div>
+                    <p>Complete 45 targeted questions across 9 key dimensions of AI readiness.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Get Instant Score</div>
+                    <p>Receive your AI maturity score immediately with dimension-by-dimension breakdown.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Download Report</div>
+                    <p>Get a professional PDF report with detailed recommendations and roadmap.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-title">Take Action</div>
+                    <p>Follow our prioritized recommendations to advance your AI capabilities.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section style="background: #f8fafc;">
+        <div class="container">
+            <h2>What Makes Our Assessment Different</h2>
+            <div class="testimonial">
+                <p class="testimonial-text">"This AI readiness assessment gave us clarity on where to focus our efforts. The recommendations were practical and immediately actionable. We've already seen improvements in our data governance based on the insights."</p>
+                <p class="testimonial-author">- Sarah Chen, CTO at TechCorp</p>
+            </div>
+            <ul style="margin-top: 2rem; list-style: none;">
+                <li style="padding: 0.5rem 0;">✅ <strong>No Sign-up Required:</strong> Start immediately without creating an account</li>
+                <li style="padding: 0.5rem 0;">✅ <strong>Industry-Specific Insights:</strong> Tailored recommendations for your sector</li>
+                <li style="padding: 0.5rem 0;">✅ <strong>Actionable Roadmap:</strong> Clear next steps with priority rankings</li>
+                <li style="padding: 0.5rem 0;">✅ <strong>Export Options:</strong> PDF reports and Excel data for further analysis</li>
+                <li style="padding: 0.5rem 0;">✅ <strong>Progress Tracking:</strong> Save and resume your assessment anytime</li>
+                <li style="padding: 0.5rem 0;">✅ <strong>Shareable Results:</strong> Generate links to share with stakeholders</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="faq">
+        <div class="container">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <div class="faq-question">How long does the AI readiness assessment take?</div>
+                <div class="faq-answer">The assessment typically takes 15-20 minutes to complete. You can save your progress and return anytime to finish it.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Is the assessment really free?</div>
+                <div class="faq-answer">Yes, our AI readiness assessment is 100% free with no hidden costs. You get full access to all features including PDF reports and Excel exports without any payment.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">What's included in the PDF report?</div>
+                <div class="faq-answer">The report includes your overall AI maturity score, detailed scores for each dimension, benchmarking against industry standards, specific recommendations, and a prioritized implementation roadmap.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Can I retake the assessment?</div>
+                <div class="faq-answer">Yes, you can retake the assessment as many times as you want to track your progress over time. We recommend reassessing every quarter to measure improvements.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">How is my data handled?</div>
+                <div class="faq-answer">All data is processed locally in your browser. We don't store any personal or company information on our servers. You can export your results for your records.</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="footer-cta">
+        <div class="container">
+            <h2>Ready to Assess Your AI Readiness?</h2>
+            <p style="margin: 1rem 0 2rem;">Join 500+ organizations that have already evaluated their AI maturity</p>
+            <a href="/calculators/ai-readiness/" class="cta-button">Start Free Assessment →</a>
+        </div>
+    </div>
+
+    <!-- FAQ Schema Markup -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "How long does the AI readiness assessment take?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "The assessment typically takes 15-20 minutes to complete. You can save your progress and return anytime to finish it."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Is the assessment really free?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes, our AI readiness assessment is 100% free with no hidden costs. You get full access to all features including PDF reports and Excel exports without any payment."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What's included in the PDF report?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "The report includes your overall AI maturity score, detailed scores for each dimension, benchmarking against industry standards, specific recommendations, and a prioritized implementation roadmap."
+                }
+            }
+        ]
+    }
+    </script>
+</body>
+</html>

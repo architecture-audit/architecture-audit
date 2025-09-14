@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Audit Tool - AI Architecture Audit</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: #f8fafc;
+        }
+        h1 { color: #1e293b; }
+        .audit-section {
+            background: white;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .pass { color: #10b981; font-weight: bold; }
+        .fail { color: #ef4444; font-weight: bold; }
+        .warning { color: #f59e0b; font-weight: bold; }
+        .check-item {
+            padding: 0.5rem;
+            margin: 0.5rem 0;
+            background: #f1f5f9;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+        }
+        button {
+            background: #6366f1;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        button:hover { background: #4f46e5; }
+        .score {
+            font-size: 3rem;
+            font-weight: bold;
+            text-align: center;
+            padding: 2rem;
+        }
+        .recommendations {
+            background: #fef3c7;
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 SEO Audit Tool</h1>
+
+    <button onclick="runAudit()">Run SEO Audit</button>
+
+    <div class="audit-section">
+        <h2>SEO Score</h2>
+        <div class="score" id="seoScore">-</div>
+    </div>
+
+    <div class="audit-section">
+        <h2>Technical SEO</h2>
+        <div id="technicalChecks"></div>
+    </div>
+
+    <div class="audit-section">
+        <h2>On-Page SEO</h2>
+        <div id="onPageChecks"></div>
+    </div>
+
+    <div class="audit-section">
+        <h2>Content Quality</h2>
+        <div id="contentChecks"></div>
+    </div>
+
+    <div class="audit-section">
+        <h2>Performance</h2>
+        <div id="performanceChecks"></div>
+    </div>
+
+    <div class="audit-section recommendations">
+        <h2>🎯 Top Recommendations</h2>
+        <div id="recommendations"></div>
+    </div>
+
+    <script>
+        async function runAudit() {
+            const results = {
+                technical: [],
+                onPage: [],
+                content: [],
+                performance: []
+            };
+
+            // Technical SEO Checks
+            results.technical.push({
+                check: 'Title Tag',
+                status: document.title ? 'pass' : 'fail',
+                message: document.title ? `✓ ${document.title.length} chars` : '✗ Missing'
+            });
+
+            results.technical.push({
+                check: 'Meta Description',
+                status: document.querySelector('meta[name="description"]') ? 'pass' : 'fail',
+                message: document.querySelector('meta[name="description"]') ? '✓ Present' : '✗ Missing'
+            });
+
+            results.technical.push({
+                check: 'Canonical URL',
+                status: document.querySelector('link[rel="canonical"]') ? 'pass' : 'fail',
+                message: document.querySelector('link[rel="canonical"]') ? '✓ Set' : '✗ Missing'
+            });
+
+            results.technical.push({
+                check: 'Robots Meta',
+                status: !document.querySelector('meta[name="robots"][content*="noindex"]') ? 'pass' : 'fail',
+                message: !document.querySelector('meta[name="robots"][content*="noindex"]') ? '✓ Indexable' : '✗ Blocked'
+            });
+
+            results.technical.push({
+                check: 'Sitemap',
+                status: 'warning',
+                message: '⚠ Check manually at /sitemap.xml'
+            });
+
+            // On-Page SEO
+            results.onPage.push({
+                check: 'H1 Tag',
+                status: document.querySelector('h1') ? 'pass' : 'fail',
+                message: document.querySelector('h1') ? '✓ Found' : '✗ Missing'
+            });
+
+            const h2Count = document.querySelectorAll('h2').length;
+            results.onPage.push({
+                check: 'H2 Tags',
+                status: h2Count > 0 ? 'pass' : 'fail',
+                message: h2Count > 0 ? `✓ ${h2Count} found` : '✗ None found'
+            });
+
+            results.onPage.push({
+                check: 'Image Alt Text',
+                status: checkImageAlt(),
+                message: getImageAltMessage()
+            });
+
+            results.onPage.push({
+                check: 'Internal Links',
+                status: document.querySelectorAll('a[href^="/"]').length > 5 ? 'pass' : 'warning',
+                message: `${document.querySelectorAll('a[href^="/"]').length} internal links`
+            });
+
+            // Content Quality
+            const wordCount = document.body.innerText.split(' ').length;
+            results.content.push({
+                check: 'Word Count',
+                status: wordCount > 300 ? 'pass' : 'warning',
+                message: `${wordCount} words`
+            });
+
+            results.content.push({
+                check: 'Keywords in Title',
+                status: checkKeywordsInTitle(),
+                message: getKeywordMessage()
+            });
+
+            results.content.push({
+                check: 'Structured Data',
+                status: document.querySelector('script[type="application/ld+json"]') ? 'pass' : 'warning',
+                message: document.querySelector('script[type="application/ld+json"]') ? '✓ Found' : '⚠ Consider adding'
+            });
+
+            // Performance
+            results.performance.push({
+                check: 'Page Load Time',
+                status: 'pass',
+                message: `${performance.timing.loadEventEnd - performance.timing.navigationStart}ms`
+            });
+
+            results.performance.push({
+                check: 'Mobile Responsive',
+                status: document.querySelector('meta[name="viewport"]') ? 'pass' : 'fail',
+                message: document.querySelector('meta[name="viewport"]') ? '✓ Yes' : '✗ No'
+            });
+
+            results.performance.push({
+                check: 'HTTPS',
+                status: location.protocol === 'https:' ? 'pass' : 'warning',
+                message: location.protocol === 'https:' ? '✓ Secure' : '⚠ Not secure'
+            });
+
+            // Display results
+            displayResults('technicalChecks', results.technical);
+            displayResults('onPageChecks', results.onPage);
+            displayResults('contentChecks', results.content);
+            displayResults('performanceChecks', results.performance);
+
+            // Calculate score
+            const allChecks = [...results.technical, ...results.onPage, ...results.content, ...results.performance];
+            const passCount = allChecks.filter(c => c.status === 'pass').length;
+            const score = Math.round((passCount / allChecks.length) * 100);
+
+            document.getElementById('seoScore').innerHTML = `${score}%`;
+            document.getElementById('seoScore').style.color = score > 80 ? '#10b981' : score > 60 ? '#f59e0b' : '#ef4444';
+
+            // Recommendations
+            generateRecommendations(allChecks);
+        }
+
+        function displayResults(elementId, checks) {
+            const container = document.getElementById(elementId);
+            container.innerHTML = checks.map(check => `
+                <div class="check-item">
+                    <span>${check.check}</span>
+                    <span class="${check.status}">${check.message}</span>
+                </div>
+            `).join('');
+        }
+
+        function checkImageAlt() {
+            const images = document.querySelectorAll('img');
+            const withAlt = Array.from(images).filter(img => img.alt).length;
+            return withAlt === images.length ? 'pass' : withAlt > images.length / 2 ? 'warning' : 'fail';
+        }
+
+        function getImageAltMessage() {
+            const images = document.querySelectorAll('img');
+            const withAlt = Array.from(images).filter(img => img.alt).length;
+            return `${withAlt}/${images.length} have alt text`;
+        }
+
+        function checkKeywordsInTitle() {
+            const title = document.title.toLowerCase();
+            const keywords = ['ai', 'assessment', 'audit', 'enterprise', 'tool'];
+            return keywords.some(kw => title.includes(kw)) ? 'pass' : 'warning';
+        }
+
+        function getKeywordMessage() {
+            const title = document.title.toLowerCase();
+            const keywords = ['ai', 'assessment', 'audit', 'enterprise', 'tool'];
+            const found = keywords.filter(kw => title.includes(kw));
+            return found.length > 0 ? `✓ ${found.join(', ')}` : '⚠ Add keywords';
+        }
+
+        function generateRecommendations(checks) {
+            const failed = checks.filter(c => c.status === 'fail');
+            const warnings = checks.filter(c => c.status === 'warning');
+
+            let recs = '<ol>';
+
+            if (failed.length > 0) {
+                recs += '<h3>🔴 Critical Issues</h3>';
+                failed.forEach(check => {
+                    recs += `<li><strong>${check.check}:</strong> ${getRecommendation(check.check)}</li>`;
+                });
+            }
+
+            if (warnings.length > 0) {
+                recs += '<h3>🟡 Improvements</h3>';
+                warnings.forEach(check => {
+                    recs += `<li><strong>${check.check}:</strong> ${getRecommendation(check.check)}</li>`;
+                });
+            }
+
+            recs += '</ol>';
+            document.getElementById('recommendations').innerHTML = recs;
+        }
+
+        function getRecommendation(checkName) {
+            const recommendations = {
+                'Title Tag': 'Add a descriptive title tag (50-60 characters)',
+                'Meta Description': 'Add meta description (150-160 characters)',
+                'Canonical URL': 'Add <link rel="canonical" href="...">',
+                'H1 Tag': 'Add one H1 tag with main keyword',
+                'H2 Tags': 'Add H2 tags to structure content',
+                'Image Alt Text': 'Add descriptive alt text to all images',
+                'Structured Data': 'Add JSON-LD structured data',
+                'Word Count': 'Increase content to at least 500 words',
+                'Keywords in Title': 'Include target keywords in title',
+                'Mobile Responsive': 'Add viewport meta tag',
+                'HTTPS': 'Enable SSL certificate',
+                'Sitemap': 'Create and submit sitemap.xml'
+            };
+
+            return recommendations[checkName] || 'Review and optimize';
+        }
+
+        // Auto-run on page load
+        window.addEventListener('load', runAudit);
+    </script>
+</body>
+</html>

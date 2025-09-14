@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Search</title>
+</head>
+<body>
+    <h1>Search Test</h1>
+    <iframe src="http://localhost:8888/docs/" width="100%" height="600"></iframe>
+
+    <script>
+        setTimeout(() => {
+            console.log('Testing search functionality...');
+
+            // Try to access the iframe's search
+            const iframe = document.querySelector('iframe');
+            iframe.onload = function() {
+                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                const searchInput = iframeDoc.getElementById('docSearch');
+
+                if (searchInput) {
+                    console.log('✅ Search input found in iframe');
+
+                    // Test search
+                    searchInput.value = 'cloud';
+                    searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+
+                    setTimeout(() => {
+                        const visibleCards = iframeDoc.querySelectorAll('.doc-card:not([style*="none"])');
+                        console.log('Visible cards after searching "cloud":', visibleCards.length);
+
+                        visibleCards.forEach(card => {
+                            const title = card.querySelector('.doc-title')?.textContent;
+                            console.log('  - ' + title);
+                        });
+                    }, 500);
+                } else {
+                    console.log('❌ Search input not found');
+                }
+            };
+        }, 1000);
+    </script>
+</body>
+</html>
