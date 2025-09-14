@@ -69,7 +69,7 @@ So I open-sourced EVERYTHING:
 • My AI readiness framework (used by 3 unicorns)
 • Cloud migration calculator (saved clients $10M+)
 • MLOps maturity model (deployed at scale)
-• LLM selection matrix (2024 updated)
+• LLM selection matrix (2025 updated)
 • Security audit checklist (NIST/ISO/SOC2)
 • Cost optimization playbook (30% average savings)
 
@@ -171,7 +171,7 @@ The frameworks:
 🎯 AI Readiness Assessment (10 min)
 🎯 Cloud Migration Calculator (TCO/ROI)
 🎯 MLOps Maturity Audit (5 levels)
-🎯 LLM Framework Selector (2024)
+🎯 LLM Framework Selector (2025)
 🎯 Security Compliance Checker
 🎯 Cost Optimization Analyzer
 

@@ -342,7 +342,7 @@ function addVulnerabilityRow() {
     const tbody = document.getElementById('vulnerability-tbody');
     const newRow = document.createElement('tr');
     newRow.innerHTML = `
-        <td><input type="text" placeholder="CVE-2024-XXXX"></td>
+        <td><input type="text" placeholder="CVE-2025-XXXX"></td>
         <td>
             <select>
                 <option>Critical</option>

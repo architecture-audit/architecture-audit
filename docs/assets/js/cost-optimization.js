@@ -257,9 +257,9 @@ const CostOptimization = {
     initializeVendors() {
         if (!this.data.vendors.length) {
             this.data.vendors = [
-                { vendor: 'AWS', spend: 85000, commitment: 70000, discount: 12, renewalDate: '2024-06-01', savingsPotential: 8500 },
-                { vendor: 'Azure', spend: 45000, commitment: 35000, discount: 8, renewalDate: '2024-09-15', savingsPotential: 4500 },
-                { vendor: 'GCP', spend: 25000, commitment: 20000, discount: 10, renewalDate: '2024-12-01', savingsPotential: 2500 }
+                { vendor: 'AWS', spend: 85000, commitment: 70000, discount: 12, renewalDate: '2025-06-01', savingsPotential: 8500 },
+                { vendor: 'Azure', spend: 45000, commitment: 35000, discount: 8, renewalDate: '2025-09-15', savingsPotential: 4500 },
+                { vendor: 'GCP', spend: 25000, commitment: 20000, discount: 10, renewalDate: '2025-12-01', savingsPotential: 2500 }
             ];
         }
         this.renderVendors();
@@ -269,9 +269,9 @@ const CostOptimization = {
     initializeRoadmap() {
         if (!this.data.roadmap.length) {
             this.data.roadmap = [
-                { initiative: 'Implement FinOps governance', phase: 'Phase 1', startDate: '2024-01-01', endDate: '2024-03-31', savings: 15000, status: 'In Progress' },
-                { initiative: 'Right-size all resources', phase: 'Phase 2', startDate: '2024-02-01', endDate: '2024-05-31', savings: 35000, status: 'Planned' },
-                { initiative: 'Reserved capacity optimization', phase: 'Phase 3', startDate: '2024-04-01', endDate: '2024-08-31', savings: 45000, status: 'Planned' }
+                { initiative: 'Implement FinOps governance', phase: 'Phase 1', startDate: '2025-01-01', endDate: '2025-03-31', savings: 15000, status: 'In Progress' },
+                { initiative: 'Right-size all resources', phase: 'Phase 2', startDate: '2025-02-01', endDate: '2025-05-31', savings: 35000, status: 'Planned' },
+                { initiative: 'Reserved capacity optimization', phase: 'Phase 3', startDate: '2025-04-01', endDate: '2025-08-31', savings: 45000, status: 'Planned' }
             ];
         }
         this.renderRoadmap();

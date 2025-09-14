@@ -322,5 +322,5 @@ For questions about navigation structure:
 
 ---
 
-*Last Updated: September 2024*
+*Last Updated: September 2025*
 *Version: 1.0*

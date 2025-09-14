@@ -192,7 +192,7 @@
 
 ### Phase 1: Core Extensions (Q1)
 - Add Kubernetes framework (most requested)
-- Enhance existing frameworks with 2024 updates
+- Enhance existing frameworks with 2025 updates
 - Create framework interconnections
 
 ### Phase 2: Platform Expansion (Q2)

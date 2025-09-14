@@ -511,10 +511,10 @@ function addRoadmapRow() {
         <td><input type="text" placeholder="Initiative name"></td>
         <td>
             <select>
-                <option>Q1 2024</option>
-                <option>Q2 2024</option>
-                <option>Q3 2024</option>
-                <option>Q4 2024</option>
+                <option>Q1 2025</option>
+                <option>Q2 2025</option>
+                <option>Q3 2025</option>
+                <option>Q4 2025</option>
                 <option>Q1 2025</option>
                 <option>Q2 2025</option>
             </select>

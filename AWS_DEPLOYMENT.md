@@ -65,7 +65,7 @@ aws s3 sync . s3://aiarchitectureaudit-origin \
 **CloudFront Configuration:**
 ```json
 {
-  "CallerReference": "aiarchitectureaudit-2024",
+  "CallerReference": "aiarchitectureaudit-2025",
   "Comment": "AI Architecture Audit CDN",
   "DefaultRootObject": "index.html",
   "Origins": {
