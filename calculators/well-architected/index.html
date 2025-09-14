@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Well-Architected Framework Assessment - Enterprise Architecture Tool</title>
+    <meta name="description" content="Comprehensive Well-Architected Framework assessment covering Security, Reliability, Performance, Cost Optimization, Operational Excellence, and Sustainability">
+    
+    <!-- Core Styles -->
+    <link rel="stylesheet" href="../../docs/assets/css/calculator-framework.css">
+    <link rel="stylesheet" href="../../docs/assets/css/site-navigation.css">
+    <link rel="stylesheet" href="../../docs/assets/css/bottom-nav.css">
+    
+    <style>
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --secondary: #3b82f6;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --success: #10b981;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --light: #f1f5f9;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+            padding-top: 60px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #94a3b8;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Pillar Cards */
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .pillar-card {
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .pillar-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary);
+        }
+
+        .pillar-card.active {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: var(--primary);
+        }
+
+        .pillar-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .pillar-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .pillar-score {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        /* Tab Navigation */
+        .tabs-container {
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 16px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+        }
+
+        .tab {
+            padding: 0.75rem 1.5rem;
+            background: rgba(51, 65, 85, 0.5);
+            border: none;
+            border-radius: 8px;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+
+        .tab:hover {
+            background: rgba(51, 65, 85, 0.8);
+        }
+
+        .tab.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Assessment Questions */
+        .assessment-section {
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .question-group {
+            margin-bottom: 2rem;
+        }
+
+        .question {
+            background: rgba(51, 65, 85, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .question-text {
+            font-size: 1.05rem;
+            margin-bottom: 1rem;
+            color: #e2e8f0;
+        }
+
+        .rating-group {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .rating-btn {
+            padding: 0.5rem 1rem;
+            background: rgba(51, 65, 85, 0.5);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .rating-btn:hover {
+            background: rgba(51, 65, 85, 0.8);
+            border-color: var(--primary);
+        }
+
+        .rating-btn.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Dashboard */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-card {
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .dashboard-card h3 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        /* Score Visualization */
+        .score-chart {
+            width: 100%;
+            height: 300px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            padding: 1rem;
+            background: rgba(51, 65, 85, 0.2);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+
+        .score-bar {
+            width: 60px;
+            background: linear-gradient(to top, var(--primary), var(--secondary));
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 0.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .score-bar:hover {
+            transform: translateY(-5px);
+        }
+
+        .score-value {
+            position: absolute;
+            top: -30px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .score-label {
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+
+        /* Maturity Levels */
+        .maturity-scale {
+            display: flex;
+            justify-content: space-between;
+            margin: 2rem 0;
+            padding: 1rem;
+            background: rgba(51, 65, 85, 0.2);
+            border-radius: 12px;
+        }
+
+        .maturity-level {
+            flex: 1;
+            text-align: center;
+            padding: 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .maturity-level.active {
+            background: var(--primary);
+            transform: scale(1.05);
+        }
+
+        .maturity-level h4 {
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .maturity-level .score-range {
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+
+        /* Roadmap */
+        .roadmap-timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .roadmap-line {
+            position: absolute;
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--primary);
+        }
+
+        .roadmap-item {
+            position: relative;
+            padding-left: 60px;
+            margin-bottom: 2rem;
+        }
+
+        .roadmap-marker {
+            position: absolute;
+            left: 20px;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 50%;
+            border: 3px solid #1e293b;
+        }
+
+        .roadmap-content {
+            background: rgba(51, 65, 85, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .roadmap-content h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .roadmap-content .timeline {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Best Practices */
+        .best-practices {
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .practice-item {
+            background: rgba(51, 65, 85, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--primary);
+        }
+
+        .practice-item h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .practice-item ul {
+            margin-left: 1.5rem;
+            color: #94a3b8;
+        }
+
+        /* Results */
+        .results-summary {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(59, 130, 246, 0.1));
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 2px solid var(--primary);
+        }
+
+        .overall-score {
+            font-size: 3rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .score-interpretation {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #94a3b8;
+        }
+
+        /* Export Options */
+        .export-section {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .export-btn {
+            padding: 0.75rem 2rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .export-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .pillars-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .tabs {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <div id="site-navigation"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🏗️ Well-Architected Framework Assessment</h1>
+            <p>Evaluate your architecture across six pillars of excellence: Security, Reliability, Performance Efficiency, Cost Optimization, Operational Excellence, and Sustainability</p>
+        </div>
+
+        <!-- Pillar Overview Cards -->
+        <div class="pillars-grid">
+            <div class="pillar-card active" data-pillar="security">
+                <div class="pillar-icon">🔒</div>
+                <div class="pillar-name">Security</div>
+                <div class="pillar-score">0%</div>
+            </div>
+            <div class="pillar-card" data-pillar="reliability">
+                <div class="pillar-icon">⚡</div>
+                <div class="pillar-name">Reliability</div>
+                <div class="pillar-score">0%</div>
+            </div>
+            <div class="pillar-card" data-pillar="performance">
+                <div class="pillar-icon">🚀</div>
+                <div class="pillar-name">Performance</div>
+                <div class="pillar-score">0%</div>
+            </div>
+            <div class="pillar-card" data-pillar="cost">
+                <div class="pillar-icon">💰</div>
+                <div class="pillar-name">Cost</div>
+                <div class="pillar-score">0%</div>
+            </div>
+            <div class="pillar-card" data-pillar="operations">
+                <div class="pillar-icon">⚙️</div>
+                <div class="pillar-name">Operations</div>
+                <div class="pillar-score">0%</div>
+            </div>
+            <div class="pillar-card" data-pillar="sustainability">
+                <div class="pillar-icon">🌱</div>
+                <div class="pillar-name">Sustainability</div>
+                <div class="pillar-score">0%</div>
+            </div>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="tabs-container">
+            <div class="tabs">
+                <button class="tab active" data-tab="assessment">📋 Assessment</button>
+                <button class="tab" data-tab="dashboard">📊 Dashboard</button>
+                <button class="tab" data-tab="maturity">📈 Maturity Model</button>
+                <button class="tab" data-tab="roadmap">🗺️ Roadmap</button>
+                <button class="tab" data-tab="practices">📚 Best Practices</button>
+                <button class="tab" data-tab="results">🎯 Results</button>
+            </div>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="tab-content active" id="assessment">
+            <div class="assessment-section">
+                <h2>Security Pillar Assessment</h2>
+                <div class="question-group">
+                    <div class="question">
+                        <div class="question-text">1. How mature is your identity and access management (IAM) implementation?</div>
+                        <div class="rating-group">
+                            <button class="rating-btn" data-value="1">Ad-hoc</button>
+                            <button class="rating-btn" data-value="2">Basic</button>
+                            <button class="rating-btn" data-value="3">Developing</button>
+                            <button class="rating-btn" data-value="4">Advanced</button>
+                            <button class="rating-btn" data-value="5">Optimized</button>
+                        </div>
+                    </div>
+                    <div class="question">
+                        <div class="question-text">2. How well do you implement data protection and encryption?</div>
+                        <div class="rating-group">
+                            <button class="rating-btn" data-value="1">No encryption</button>
+                            <button class="rating-btn" data-value="2">Basic encryption</button>
+                            <button class="rating-btn" data-value="3">Partial coverage</button>
+                            <button class="rating-btn" data-value="4">Comprehensive</button>
+                            <button class="rating-btn" data-value="5">Full encryption</button>
+                        </div>
+                    </div>
+                    <div class="question">
+                        <div class="question-text">3. How comprehensive is your security monitoring and incident response?</div>
+                        <div class="rating-group">
+                            <button class="rating-btn" data-value="1">None</button>
+                            <button class="rating-btn" data-value="2">Basic logging</button>
+                            <button class="rating-btn" data-value="3">Some monitoring</button>
+                            <button class="rating-btn" data-value="4">24/7 monitoring</button>
+                            <button class="rating-btn" data-value="5">AI-powered SOC</button>
+                        </div>
+                    </div>
+                    <div class="question">
+                        <div class="question-text">4. How well do you manage infrastructure and application security?</div>
+                        <div class="rating-group">
+                            <button class="rating-btn" data-value="1">Manual</button>
+                            <button class="rating-btn" data-value="2">Some automation</button>
+                            <button class="rating-btn" data-value="3">Regular scanning</button>
+                            <button class="rating-btn" data-value="4">Automated DevSecOps</button>
+                            <button class="rating-btn" data-value="5">Zero-trust model</button>
+                        </div>
+                    </div>
+                    <div class="question">
+                        <div class="question-text">5. How mature is your compliance and governance framework?</div>
+                        <div class="rating-group">
+                            <button class="rating-btn" data-value="1">None</button>
+                            <button class="rating-btn" data-value="2">Basic policies</button>
+                            <button class="rating-btn" data-value="3">Documented</button>
+                            <button class="rating-btn" data-value="4">Audited regularly</button>
+                            <button class="rating-btn" data-value="5">Continuous compliance</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="dashboard">
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <h3>📊 Overall Maturity Score</h3>
+                    <div class="overall-score">0%</div>
+                    <div class="score-interpretation">Not Yet Assessed</div>
+                </div>
+                <div class="dashboard-card">
+                    <h3>📈 Pillar Scores</h3>
+                    <div class="score-chart">
+                        <div class="score-bar" style="height: 20%">
+                            <span class="score-value">0%</span>
+                            <span class="score-label">Security</span>
+                        </div>
+                        <div class="score-bar" style="height: 20%">
+                            <span class="score-value">0%</span>
+                            <span class="score-label">Reliability</span>
+                        </div>
+                        <div class="score-bar" style="height: 20%">
+                            <span class="score-value">0%</span>
+                            <span class="score-label">Performance</span>
+                        </div>
+                        <div class="score-bar" style="height: 20%">
+                            <span class="score-value">0%</span>
+                            <span class="score-label">Cost</span>
+                        </div>
+                        <div class="score-bar" style="height: 20%">
+                            <span class="score-value">0%</span>
+                            <span class="score-label">Operations</span>
+                        </div>
+                        <div class="score-bar" style="height: 20%">
+                            <span class="score-value">0%</span>
+                            <span class="score-label">Sustainability</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="dashboard-card">
+                    <h3>🎯 Top Risks</h3>
+                    <ul id="top-risks">
+                        <li>Complete assessment to identify risks</li>
+                    </ul>
+                </div>
+                <div class="dashboard-card">
+                    <h3>✅ Quick Wins</h3>
+                    <ul id="quick-wins">
+                        <li>Complete assessment to identify opportunities</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="maturity">
+            <div class="assessment-section">
+                <h2>Maturity Model</h2>
+                <div class="maturity-scale">
+                    <div class="maturity-level" data-level="1">
+                        <h4>🔴 Initial</h4>
+                        <div class="score-range">0-20%</div>
+                        <p>Ad-hoc processes</p>
+                    </div>
+                    <div class="maturity-level" data-level="2">
+                        <h4>🟠 Developing</h4>
+                        <div class="score-range">21-40%</div>
+                        <p>Basic standards</p>
+                    </div>
+                    <div class="maturity-level" data-level="3">
+                        <h4>🟡 Defined</h4>
+                        <div class="score-range">41-60%</div>
+                        <p>Documented processes</p>
+                    </div>
+                    <div class="maturity-level" data-level="4">
+                        <h4>🟢 Managed</h4>
+                        <div class="score-range">61-80%</div>
+                        <p>Measured & controlled</p>
+                    </div>
+                    <div class="maturity-level" data-level="5">
+                        <h4>💚 Optimized</h4>
+                        <div class="score-range">81-100%</div>
+                        <p>Continuous improvement</p>
+                    </div>
+                </div>
+                <div class="best-practices">
+                    <h3>Current State Analysis</h3>
+                    <div id="maturity-analysis">
+                        <p>Complete the assessment to see your maturity analysis</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="roadmap">
+            <div class="assessment-section">
+                <h2>Implementation Roadmap</h2>
+                <div class="roadmap-timeline">
+                    <div class="roadmap-line"></div>
+                    <div class="roadmap-item">
+                        <div class="roadmap-marker"></div>
+                        <div class="roadmap-content">
+                            <h4>Phase 1: Foundation</h4>
+                            <div class="timeline">Months 1-3</div>
+                            <ul>
+                                <li>Establish governance framework</li>
+                                <li>Define security baselines</li>
+                                <li>Implement basic monitoring</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="roadmap-item">
+                        <div class="roadmap-marker"></div>
+                        <div class="roadmap-content">
+                            <h4>Phase 2: Core Implementation</h4>
+                            <div class="timeline">Months 4-6</div>
+                            <ul>
+                                <li>Deploy automation tools</li>
+                                <li>Enhance reliability measures</li>
+                                <li>Optimize performance</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="roadmap-item">
+                        <div class="roadmap-marker"></div>
+                        <div class="roadmap-content">
+                            <h4>Phase 3: Advanced Capabilities</h4>
+                            <div class="timeline">Months 7-9</div>
+                            <ul>
+                                <li>Implement AI/ML operations</li>
+                                <li>Advanced cost optimization</li>
+                                <li>Sustainability initiatives</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="roadmap-item">
+                        <div class="roadmap-marker"></div>
+                        <div class="roadmap-content">
+                            <h4>Phase 4: Continuous Optimization</h4>
+                            <div class="timeline">Months 10-12</div>
+                            <ul>
+                                <li>Continuous improvement culture</li>
+                                <li>Advanced automation</li>
+                                <li>Innovation practices</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="practices">
+            <div class="best-practices">
+                <h2>Best Practices Guide</h2>
+                <div class="practice-item">
+                    <h4>🔒 Security Best Practices</h4>
+                    <ul>
+                        <li>Implement least privilege access</li>
+                        <li>Enable MFA for all users</li>
+                        <li>Encrypt data at rest and in transit</li>
+                        <li>Regular security audits and penetration testing</li>
+                        <li>Automated compliance monitoring</li>
+                    </ul>
+                </div>
+                <div class="practice-item">
+                    <h4>⚡ Reliability Best Practices</h4>
+                    <ul>
+                        <li>Design for failure with redundancy</li>
+                        <li>Implement automated backup and recovery</li>
+                        <li>Use health checks and auto-healing</li>
+                        <li>Practice chaos engineering</li>
+                        <li>Monitor SLIs, SLOs, and SLAs</li>
+                    </ul>
+                </div>
+                <div class="practice-item">
+                    <h4>🚀 Performance Best Practices</h4>
+                    <ul>
+                        <li>Use caching strategically</li>
+                        <li>Implement CDN for global distribution</li>
+                        <li>Optimize database queries</li>
+                        <li>Auto-scaling based on metrics</li>
+                        <li>Regular performance testing</li>
+                    </ul>
+                </div>
+                <div class="practice-item">
+                    <h4>💰 Cost Optimization Best Practices</h4>
+                    <ul>
+                        <li>Right-size resources regularly</li>
+                        <li>Use reserved instances for predictable workloads</li>
+                        <li>Implement tagging strategy</li>
+                        <li>Set up cost alerts and budgets</li>
+                        <li>Regular cost reviews and optimization</li>
+                    </ul>
+                </div>
+                <div class="practice-item">
+                    <h4>⚙️ Operational Excellence Best Practices</h4>
+                    <ul>
+                        <li>Infrastructure as Code (IaC)</li>
+                        <li>CI/CD pipelines</li>
+                        <li>Comprehensive monitoring and alerting</li>
+                        <li>Runbook automation</li>
+                        <li>Regular disaster recovery drills</li>
+                    </ul>
+                </div>
+                <div class="practice-item">
+                    <h4>🌱 Sustainability Best Practices</h4>
+                    <ul>
+                        <li>Choose efficient instance types</li>
+                        <li>Optimize resource utilization</li>
+                        <li>Use renewable energy regions</li>
+                        <li>Implement data lifecycle policies</li>
+                        <li>Monitor and reduce carbon footprint</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="results">
+            <div class="results-summary">
+                <h2>Assessment Results</h2>
+                <div class="overall-score" id="final-score">0%</div>
+                <div class="score-interpretation" id="score-interpretation">Complete the assessment to see your results</div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <h3>📊 Detailed Scores</h3>
+                    <div id="detailed-scores">
+                        <p>Assessment not yet completed</p>
+                    </div>
+                </div>
+                <div class="dashboard-card">
+                    <h3>🎯 Priority Actions</h3>
+                    <ol id="priority-actions">
+                        <li>Complete the assessment</li>
+                    </ol>
+                </div>
+                <div class="dashboard-card">
+                    <h3>💡 Recommendations</h3>
+                    <ul id="recommendations">
+                        <li>Start with the assessment</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="export-section">
+                <button class="export-btn" onclick="exportPDF()">📄 Export PDF</button>
+                <button class="export-btn" onclick="exportCSV()">📊 Export CSV</button>
+                <button class="export-btn" onclick="shareResults()">🔗 Share Results</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../docs/assets/js/bottom-nav.js"></script>
+    <script>
+        // State management
+        const assessmentData = {
+            security: { scores: [], total: 0 },
+            reliability: { scores: [], total: 0 },
+            performance: { scores: [], total: 0 },
+            cost: { scores: [], total: 0 },
+            operations: { scores: [], total: 0 },
+            sustainability: { scores: [], total: 0 }
+        };
+
+        let currentPillar = 'security';
+
+        // Pillar questions
+        const pillarQuestions = {
+            security: [
+                "How mature is your identity and access management (IAM) implementation?",
+                "How well do you implement data protection and encryption?",
+                "How comprehensive is your security monitoring and incident response?",
+                "How well do you manage infrastructure and application security?",
+                "How mature is your compliance and governance framework?"
+            ],
+            reliability: [
+                "How well do you design for high availability and fault tolerance?",
+                "How comprehensive is your backup and disaster recovery strategy?",
+                "How effectively do you monitor system health and performance?",
+                "How well do you manage change and configuration?",
+                "How mature is your incident management process?"
+            ],
+            performance: [
+                "How well do you optimize for latency and response time?",
+                "How effectively do you implement caching strategies?",
+                "How well do you scale resources based on demand?",
+                "How comprehensive is your performance testing?",
+                "How well do you optimize database and storage performance?"
+            ],
+            cost: [
+                "How well do you track and allocate costs?",
+                "How effectively do you optimize resource utilization?",
+                "How well do you leverage pricing models and discounts?",
+                "How mature is your cost governance and controls?",
+                "How well do you forecast and budget for cloud costs?"
+            ],
+            operations: [
+                "How mature is your automation and orchestration?",
+                "How well do you implement Infrastructure as Code?",
+                "How comprehensive is your monitoring and observability?",
+                "How effective is your CI/CD pipeline?",
+                "How well do you manage operational knowledge and documentation?"
+            ],
+            sustainability: [
+                "How well do you measure and track carbon footprint?",
+                "How effectively do you optimize for energy efficiency?",
+                "How well do you manage data lifecycle and storage?",
+                "How mature is your sustainable architecture design?",
+                "How well do you leverage green cloud regions and services?"
+            ]
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEventListeners();
+            updateDisplay();
+        });
+
+        // Event listeners
+        function setupEventListeners() {
+            // Tab navigation
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    this.classList.add('active');
+                    document.getElementById(this.dataset.tab).classList.add('active');
+                });
+            });
+
+            // Pillar selection
+            document.querySelectorAll('.pillar-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    document.querySelectorAll('.pillar-card').forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+                    currentPillar = this.dataset.pillar;
+                    loadPillarQuestions(currentPillar);
+                });
+            });
+
+            // Rating buttons
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('rating-btn')) {
+                    const questionDiv = e.target.closest('.question');
+                    const buttons = questionDiv.querySelectorAll('.rating-btn');
+                    buttons.forEach(b => b.classList.remove('selected'));
+                    e.target.classList.add('selected');
+                    
+                    updatePillarScore();
+                }
+            });
+        }
+
+        // Load questions for selected pillar
+        function loadPillarQuestions(pillar) {
+            const container = document.querySelector('#assessment .question-group');
+            const questions = pillarQuestions[pillar];
+            const pillarName = pillar.charAt(0).toUpperCase() + pillar.slice(1);
+            
+            document.querySelector('#assessment h2').textContent = `${pillarName} Pillar Assessment`;
+            
+            container.innerHTML = questions.map((q, i) => `
+                <div class="question" data-question="${i}">
+                    <div class="question-text">${i + 1}. ${q}</div>
+                    <div class="rating-group">
+                        <button class="rating-btn" data-value="1">Level 1</button>
+                        <button class="rating-btn" data-value="2">Level 2</button>
+                        <button class="rating-btn" data-value="3">Level 3</button>
+                        <button class="rating-btn" data-value="4">Level 4</button>
+                        <button class="rating-btn" data-value="5">Level 5</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Update pillar score
+        function updatePillarScore() {
+            const questions = document.querySelectorAll('#assessment .question');
+            const scores = [];
+            
+            questions.forEach(q => {
+                const selected = q.querySelector('.rating-btn.selected');
+                if (selected) {
+                    scores.push(parseInt(selected.dataset.value));
+                }
+            });
+            
+            if (scores.length > 0) {
+                const average = scores.reduce((a, b) => a + b, 0) / scores.length;
+                const percentage = (average / 5) * 100;
+                
+                assessmentData[currentPillar].scores = scores;
+                assessmentData[currentPillar].total = percentage;
+                
+                // Update pillar card
+                const card = document.querySelector(`[data-pillar="${currentPillar}"] .pillar-score`);
+                card.textContent = `${Math.round(percentage)}%`;
+                
+                updateDashboard();
+                updateResults();
+            }
+        }
+
+        // Update dashboard
+        function updateDashboard() {
+            const pillars = Object.keys(assessmentData);
+            const scores = pillars.map(p => assessmentData[p].total);
+            const overallScore = scores.reduce((a, b) => a + b, 0) / pillars.length;
+            
+            // Update overall score
+            document.querySelectorAll('.overall-score').forEach(el => {
+                el.textContent = `${Math.round(overallScore)}%`;
+            });
+            
+            // Update interpretation
+            let interpretation = '';
+            if (overallScore >= 80) interpretation = 'Optimized - Industry Leading';
+            else if (overallScore >= 60) interpretation = 'Managed - Well Architected';
+            else if (overallScore >= 40) interpretation = 'Defined - Progressing Well';
+            else if (overallScore >= 20) interpretation = 'Developing - Needs Improvement';
+            else interpretation = 'Initial - Significant Gaps';
+            
+            document.querySelectorAll('.score-interpretation').forEach(el => {
+                el.textContent = interpretation;
+            });
+            
+            // Update score bars
+            const bars = document.querySelectorAll('.score-bar');
+            pillars.forEach((pillar, i) => {
+                if (bars[i]) {
+                    const score = assessmentData[pillar].total;
+                    bars[i].style.height = `${Math.max(20, score)}%`;
+                    bars[i].querySelector('.score-value').textContent = `${Math.round(score)}%`;
+                }
+            });
+            
+            // Update maturity level
+            updateMaturityLevel(overallScore);
+            
+            // Update risks and wins
+            updateRisksAndWins();
+        }
+
+        // Update maturity level
+        function updateMaturityLevel(score) {
+            const levels = document.querySelectorAll('.maturity-level');
+            levels.forEach(l => l.classList.remove('active'));
+            
+            let activeLevel = 1;
+            if (score >= 80) activeLevel = 5;
+            else if (score >= 60) activeLevel = 4;
+            else if (score >= 40) activeLevel = 3;
+            else if (score >= 20) activeLevel = 2;
+            
+            document.querySelector(`[data-level="${activeLevel}"]`)?.classList.add('active');
+        }
+
+        // Update risks and wins
+        function updateRisksAndWins() {
+            const risks = [];
+            const wins = [];
+            
+            Object.keys(assessmentData).forEach(pillar => {
+                const score = assessmentData[pillar].total;
+                if (score < 40 && score > 0) {
+                    risks.push(`${pillar.charAt(0).toUpperCase() + pillar.slice(1)} needs improvement (${Math.round(score)}%)`);
+                }
+                if (score >= 60) {
+                    wins.push(`Strong ${pillar} implementation (${Math.round(score)}%)`);
+                }
+            });
+            
+            document.getElementById('top-risks').innerHTML = risks.length > 0 
+                ? risks.map(r => `<li>${r}</li>`).join('') 
+                : '<li>No critical risks identified</li>';
+                
+            document.getElementById('quick-wins').innerHTML = wins.length > 0 
+                ? wins.map(w => `<li>${w}</li>`).join('') 
+                : '<li>Complete more assessments</li>';
+        }
+
+        // Update results
+        function updateResults() {
+            const pillars = Object.keys(assessmentData);
+            const scores = pillars.map(p => ({ name: p, score: assessmentData[p].total }));
+            scores.sort((a, b) => a.score - b.score);
+            
+            // Priority actions based on lowest scores
+            const actions = scores.slice(0, 3).map(s => 
+                `Improve ${s.name} capabilities (current: ${Math.round(s.score)}%)`
+            );
+            
+            document.getElementById('priority-actions').innerHTML = 
+                actions.map(a => `<li>${a}</li>`).join('');
+            
+            // Recommendations
+            const recommendations = [];
+            scores.forEach(s => {
+                if (s.score < 40) {
+                    recommendations.push(`Critical: Address ${s.name} gaps immediately`);
+                } else if (s.score < 60) {
+                    recommendations.push(`Important: Enhance ${s.name} practices`);
+                }
+            });
+            
+            document.getElementById('recommendations').innerHTML = 
+                recommendations.length > 0 
+                    ? recommendations.map(r => `<li>${r}</li>`).join('')
+                    : '<li>Continue optimization efforts</li>';
+        }
+
+        // Export functions
+        function exportPDF() {
+            alert('PDF export would generate a comprehensive report with all scores, recommendations, and roadmap');
+        }
+
+        function exportCSV() {
+            const csv = Object.keys(assessmentData).map(pillar => 
+                `${pillar},${Math.round(assessmentData[pillar].total)}`
+            ).join('\n');
+            
+            alert('CSV Export:\n' + csv);
+        }
+
+        function shareResults() {
+            const url = window.location.href;
+            navigator.clipboard.writeText(url);
+            alert('Results link copied to clipboard!');
+        }
+
+        // Update display
+        function updateDisplay() {
+            updateDashboard();
+        }
+    </script>
+</body>
+</html>

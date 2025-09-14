@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Well-Architected Framework Documentation - Complete Guide</title>
+    <meta name="description" content="Comprehensive guide to implementing the Well-Architected Framework across six pillars of architectural excellence">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="../assets/css/documentation.css">
+    <link rel="stylesheet" href="../assets/css/site-navigation.css">
+    <link rel="stylesheet" href="../assets/css/bottom-nav.css">
+    
+    <style>
+        :root {
+            --primary: #10b981;
+            --secondary: #3b82f6;
+            --dark: #1e293b;
+            --gray: #64748b;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 16px;
+            margin-bottom: 3rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .toc {
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .toc h2 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .toc li {
+            margin-bottom: 0.75rem;
+        }
+
+        .toc a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .toc a:hover {
+            color: var(--primary);
+        }
+
+        .section {
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .section h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+
+        .section h3 {
+            color: var(--secondary);
+            margin: 2rem 0 1rem;
+        }
+
+        .pillar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .pillar-card {
+            background: rgba(51, 65, 85, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            border-left: 4px solid var(--primary);
+        }
+
+        .pillar-card h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .pillar-card .icon {
+            font-size: 2rem;
+        }
+
+        .best-practice {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+
+        .warning {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid #ef4444;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+
+        .info {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--secondary);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+
+        .checklist {
+            background: rgba(51, 65, 85, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .checklist h4 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .checklist ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .checklist li {
+            padding: 0.5rem 0;
+            padding-left: 2rem;
+            position: relative;
+        }
+
+        .checklist li::before {
+            content: '☐';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+        }
+
+        .maturity-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+        }
+
+        .maturity-table th,
+        .maturity-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+        }
+
+        .maturity-table th {
+            background: rgba(51, 65, 85, 0.3);
+            color: var(--primary);
+        }
+
+        .cta-section {
+            text-align: center;
+            padding: 3rem;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(59, 130, 246, 0.1));
+            border-radius: 16px;
+            margin: 3rem 0;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 3rem;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .cta-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        code {
+            background: rgba(51, 65, 85, 0.5);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+
+        pre {
+            background: rgba(51, 65, 85, 0.3);
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .pillar-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <div id="site-navigation"></div>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1>🏗️ Well-Architected Framework</h1>
+            <p>Build secure, high-performing, resilient, and efficient infrastructure for your applications</p>
+        </div>
+
+        <!-- Table of Contents -->
+        <div class="toc">
+            <h2>📚 Table of Contents</h2>
+            <ul>
+                <li><a href="#overview">Framework Overview</a></li>
+                <li><a href="#pillars">The Six Pillars</a></li>
+                <li><a href="#security">Security Pillar</a></li>
+                <li><a href="#reliability">Reliability Pillar</a></li>
+                <li><a href="#performance">Performance Efficiency Pillar</a></li>
+                <li><a href="#cost">Cost Optimization Pillar</a></li>
+                <li><a href="#operations">Operational Excellence Pillar</a></li>
+                <li><a href="#sustainability">Sustainability Pillar</a></li>
+                <li><a href="#maturity">Maturity Model</a></li>
+                <li><a href="#implementation">Implementation Guide</a></li>
+                <li><a href="#tools">Tools & Resources</a></li>
+            </ul>
+        </div>
+
+        <!-- Framework Overview -->
+        <section class="section" id="overview">
+            <h2>Framework Overview</h2>
+            <p>The Well-Architected Framework provides a consistent approach for customers and partners to evaluate architectures and implement designs that can scale over time. It's based on six pillars:</p>
+            
+            <div class="info">
+                <strong>Key Benefits:</strong>
+                <ul>
+                    <li>Build and deploy faster</li>
+                    <li>Lower or mitigate risks</li>
+                    <li>Make informed decisions</li>
+                    <li>Learn architectural best practices</li>
+                </ul>
+            </div>
+
+            <h3>Core Design Principles</h3>
+            <ul>
+                <li><strong>Stop guessing capacity needs:</strong> Use auto-scaling to match demand</li>
+                <li><strong>Test at production scale:</strong> Create environments on-demand</li>
+                <li><strong>Automate architectural experimentation:</strong> Use templates and automation</li>
+                <li><strong>Allow for evolutionary architectures:</strong> Design for change</li>
+                <li><strong>Drive architectures using data:</strong> Make fact-based decisions</li>
+                <li><strong>Improve through game days:</strong> Simulate events and practice response</li>
+            </ul>
+        </section>
+
+        <!-- The Six Pillars -->
+        <section class="section" id="pillars">
+            <h2>The Six Pillars</h2>
+            
+            <div class="pillar-grid">
+                <div class="pillar-card">
+                    <h3><span class="icon">🔒</span> Security</h3>
+                    <p>Protect information, systems, and assets while delivering business value through risk assessments and mitigation strategies.</p>
+                </div>
+                
+                <div class="pillar-card">
+                    <h3><span class="icon">⚡</span> Reliability</h3>
+                    <p>Ensure a workload performs its intended function correctly and consistently when expected.</p>
+                </div>
+                
+                <div class="pillar-card">
+                    <h3><span class="icon">🚀</span> Performance Efficiency</h3>
+                    <p>Use computing resources efficiently to meet system requirements and maintain efficiency as demand changes.</p>
+                </div>
+                
+                <div class="pillar-card">
+                    <h3><span class="icon">💰</span> Cost Optimization</h3>
+                    <p>Avoid unnecessary costs, understand spending, and control fund allocation.</p>
+                </div>
+                
+                <div class="pillar-card">
+                    <h3><span class="icon">⚙️</span> Operational Excellence</h3>
+                    <p>Support development and run workloads effectively, gain insight into operations, and continuously improve.</p>
+                </div>
+                
+                <div class="pillar-card">
+                    <h3><span class="icon">🌱</span> Sustainability</h3>
+                    <p>Minimize environmental impacts of running cloud workloads.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Security Pillar -->
+        <section class="section" id="security">
+            <h2>🔒 Security Pillar</h2>
+            
+            <h3>Design Principles</h3>
+            <ul>
+                <li>Implement a strong identity foundation</li>
+                <li>Enable traceability</li>
+                <li>Apply security at all layers</li>
+                <li>Automate security best practices</li>
+                <li>Protect data in transit and at rest</li>
+                <li>Keep people away from data</li>
+                <li>Prepare for security events</li>
+            </ul>
+
+            <div class="checklist">
+                <h4>Security Checklist</h4>
+                <ul>
+                    <li>Implement least privilege access</li>
+                    <li>Enable MFA for all users</li>
+                    <li>Encrypt sensitive data</li>
+                    <li>Regular security audits</li>
+                    <li>Incident response plan</li>
+                    <li>Compliance monitoring</li>
+                    <li>Security training program</li>
+                </ul>
+            </div>
+
+            <div class="best-practice">
+                <strong>Best Practice:</strong> Use AWS Identity and Access Management (IAM) to control access to AWS services and resources. Create individual IAM users, grant least privilege, and enable MFA.
+            </div>
+
+            <h3>Key Services</h3>
+            <ul>
+                <li><strong>Identity:</strong> IAM, AWS SSO, Cognito</li>
+                <li><strong>Detective Controls:</strong> CloudTrail, CloudWatch, GuardDuty</li>
+                <li><strong>Infrastructure Protection:</strong> VPC, Shield, WAF</li>
+                <li><strong>Data Protection:</strong> KMS, Certificate Manager, Secrets Manager</li>
+                <li><strong>Incident Response:</strong> CloudFormation, Systems Manager</li>
+            </ul>
+        </section>
+
+        <!-- Reliability Pillar -->
+        <section class="section" id="reliability">
+            <h2>⚡ Reliability Pillar</h2>
+            
+            <h3>Design Principles</h3>
+            <ul>
+                <li>Automatically recover from failure</li>
+                <li>Test recovery procedures</li>
+                <li>Scale horizontally</li>
+                <li>Stop guessing capacity</li>
+                <li>Manage change through automation</li>
+            </ul>
+
+            <div class="checklist">
+                <h4>Reliability Checklist</h4>
+                <ul>
+                    <li>Design for failure</li>
+                    <li>Implement health checks</li>
+                    <li>Backup data automatically</li>
+                    <li>Test disaster recovery</li>
+                    <li>Monitor availability</li>
+                    <li>Use multiple availability zones</li>
+                    <li>Implement circuit breakers</li>
+                </ul>
+            </div>
+
+            <div class="best-practice">
+                <strong>Best Practice:</strong> Design your workload to be resilient to failures. Use multiple Availability Zones, implement health checks, and automate recovery procedures.
+            </div>
+
+            <h3>Key Areas</h3>
+            <ul>
+                <li><strong>Foundations:</strong> Service limits, network topology</li>
+                <li><strong>Workload Architecture:</strong> Distributed system design</li>
+                <li><strong>Change Management:</strong> Deployment frequency, automation</li>
+                <li><strong>Failure Management:</strong> Backup, disaster recovery</li>
+            </ul>
+        </section>
+
+        <!-- Performance Efficiency Pillar -->
+        <section class="section" id="performance">
+            <h2>🚀 Performance Efficiency Pillar</h2>
+            
+            <h3>Design Principles</h3>
+            <ul>
+                <li>Democratize advanced technologies</li>
+                <li>Go global in minutes</li>
+                <li>Use serverless architectures</li>
+                <li>Experiment more often</li>
+                <li>Consider mechanical sympathy</li>
+            </ul>
+
+            <div class="checklist">
+                <h4>Performance Checklist</h4>
+                <ul>
+                    <li>Choose appropriate compute resources</li>
+                    <li>Implement caching strategies</li>
+                    <li>Use CDN for content delivery</li>
+                    <li>Optimize database queries</li>
+                    <li>Monitor performance metrics</li>
+                    <li>Load test regularly</li>
+                    <li>Use auto-scaling</li>
+                </ul>
+            </div>
+
+            <div class="best-practice">
+                <strong>Best Practice:</strong> Use data to drive architecture decisions. Gather performance metrics, analyze them, and make informed choices about resource types and configurations.
+            </div>
+
+            <h3>Focus Areas</h3>
+            <ul>
+                <li><strong>Selection:</strong> Compute, storage, database, network</li>
+                <li><strong>Review:</strong> Benchmarking, load testing</li>
+                <li><strong>Monitoring:</strong> Metrics, alarms, dashboards</li>
+                <li><strong>Trade-offs:</strong> Caching, read replicas, CDN</li>
+            </ul>
+        </section>
+
+        <!-- Cost Optimization Pillar -->
+        <section class="section" id="cost">
+            <h2>💰 Cost Optimization Pillar</h2>
+            
+            <h3>Design Principles</h3>
+            <ul>
+                <li>Implement cloud financial management</li>
+                <li>Adopt a consumption model</li>
+                <li>Measure overall efficiency</li>
+                <li>Stop spending money on undifferentiated heavy lifting</li>
+                <li>Analyze and attribute expenditure</li>
+            </ul>
+
+            <div class="checklist">
+                <h4>Cost Optimization Checklist</h4>
+                <ul>
+                    <li>Right-size resources</li>
+                    <li>Use reserved instances</li>
+                    <li>Implement tagging strategy</li>
+                    <li>Set up cost alerts</li>
+                    <li>Review unused resources</li>
+                    <li>Use spot instances</li>
+                    <li>Optimize data transfer</li>
+                </ul>
+            </div>
+
+            <div class="best-practice">
+                <strong>Best Practice:</strong> Implement a tagging strategy to track costs by project, environment, and owner. Use AWS Cost Explorer to analyze spending patterns.
+            </div>
+
+            <h3>Cost Management</h3>
+            <ul>
+                <li><strong>Expenditure Awareness:</strong> Budgets, cost allocation</li>
+                <li><strong>Cost-Effective Resources:</strong> Right-sizing, purchasing options</li>
+                <li><strong>Matching Supply with Demand:</strong> Auto-scaling, Lambda</li>
+                <li><strong>Optimizing Over Time:</strong> Regular reviews, new services</li>
+            </ul>
+        </section>
+
+        <!-- Operational Excellence Pillar -->
+        <section class="section" id="operations">
+            <h2>⚙️ Operational Excellence Pillar</h2>
+            
+            <h3>Design Principles</h3>
+            <ul>
+                <li>Perform operations as code</li>
+                <li>Make frequent, small, reversible changes</li>
+                <li>Refine operations procedures frequently</li>
+                <li>Anticipate failure</li>
+                <li>Learn from all operational failures</li>
+            </ul>
+
+            <div class="checklist">
+                <h4>Operations Checklist</h4>
+                <ul>
+                    <li>Infrastructure as Code</li>
+                    <li>CI/CD pipelines</li>
+                    <li>Monitoring and alerting</li>
+                    <li>Runbook automation</li>
+                    <li>Change management process</li>
+                    <li>Incident management</li>
+                    <li>Knowledge sharing</li>
+                </ul>
+            </div>
+
+            <div class="best-practice">
+                <strong>Best Practice:</strong> Use Infrastructure as Code (IaC) to manage your infrastructure. This enables version control, peer review, and automated testing of infrastructure changes.
+            </div>
+
+            <h3>Focus Areas</h3>
+            <ul>
+                <li><strong>Organization:</strong> Priorities, operating model</li>
+                <li><strong>Prepare:</strong> Design for operations, readiness</li>
+                <li><strong>Operate:</strong> Health monitoring, response</li>
+                <li><strong>Evolve:</strong> Learn, improve, share</li>
+            </ul>
+        </section>
+
+        <!-- Sustainability Pillar -->
+        <section class="section" id="sustainability">
+            <h2>🌱 Sustainability Pillar</h2>
+            
+            <h3>Design Principles</h3>
+            <ul>
+                <li>Understand your impact</li>
+                <li>Establish sustainability goals</li>
+                <li>Maximize utilization</li>
+                <li>Anticipate and adopt new, more efficient offerings</li>
+                <li>Use managed services</li>
+                <li>Reduce the downstream impact</li>
+            </ul>
+
+            <div class="checklist">
+                <h4>Sustainability Checklist</h4>
+                <ul>
+                    <li>Measure carbon footprint</li>
+                    <li>Optimize resource utilization</li>
+                    <li>Use renewable energy regions</li>
+                    <li>Implement data lifecycle policies</li>
+                    <li>Choose efficient instance types</li>
+                    <li>Reduce data transfer</li>
+                    <li>Use serverless when possible</li>
+                </ul>
+            </div>
+
+            <div class="best-practice">
+                <strong>Best Practice:</strong> Choose regions powered by renewable energy when possible. Optimize workloads to use resources efficiently and shut down unused resources.
+            </div>
+
+            <h3>Improvement Areas</h3>
+            <ul>
+                <li><strong>Region Selection:</strong> Choose sustainable regions</li>
+                <li><strong>User Behavior:</strong> Optimize user patterns</li>
+                <li><strong>Software Patterns:</strong> Efficient algorithms</li>
+                <li><strong>Data Patterns:</strong> Data lifecycle management</li>
+                <li><strong>Hardware Patterns:</strong> Use efficient instances</li>
+                <li><strong>Development Process:</strong> Sustainable practices</li>
+            </ul>
+        </section>
+
+        <!-- Maturity Model -->
+        <section class="section" id="maturity">
+            <h2>📈 Maturity Model</h2>
+            
+            <table class="maturity-table">
+                <thead>
+                    <tr>
+                        <th>Level</th>
+                        <th>Score Range</th>
+                        <th>Characteristics</th>
+                        <th>Focus Areas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Initial</strong></td>
+                        <td>0-20%</td>
+                        <td>Ad-hoc processes, reactive</td>
+                        <td>Basic documentation, initial automation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Developing</strong></td>
+                        <td>21-40%</td>
+                        <td>Some standards, basic monitoring</td>
+                        <td>Process definition, tool adoption</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Defined</strong></td>
+                        <td>41-60%</td>
+                        <td>Documented processes, proactive</td>
+                        <td>Standardization, metrics collection</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Managed</strong></td>
+                        <td>61-80%</td>
+                        <td>Measured and controlled</td>
+                        <td>Optimization, predictive analytics</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Optimized</strong></td>
+                        <td>81-100%</td>
+                        <td>Continuous improvement</td>
+                        <td>Innovation, industry leadership</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="info">
+                <strong>Progression Path:</strong>
+                <ol>
+                    <li>Assess current state across all pillars</li>
+                    <li>Identify gaps and prioritize improvements</li>
+                    <li>Create implementation roadmap</li>
+                    <li>Execute improvements iteratively</li>
+                    <li>Measure progress and adjust</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Implementation Guide -->
+        <section class="section" id="implementation">
+            <h2>🚀 Implementation Guide</h2>
+            
+            <h3>Phase 1: Assessment (Weeks 1-2)</h3>
+            <ul>
+                <li>Complete Well-Architected Review</li>
+                <li>Identify critical workloads</li>
+                <li>Document current state</li>
+                <li>Gap analysis</li>
+            </ul>
+
+            <h3>Phase 2: Planning (Weeks 3-4)</h3>
+            <ul>
+                <li>Prioritize improvements</li>
+                <li>Create remediation roadmap</li>
+                <li>Allocate resources</li>
+                <li>Define success metrics</li>
+            </ul>
+
+            <h3>Phase 3: Implementation (Weeks 5-12)</h3>
+            <ul>
+                <li>Quick wins first</li>
+                <li>Iterative improvements</li>
+                <li>Regular checkpoints</li>
+                <li>Document changes</li>
+            </ul>
+
+            <h3>Phase 4: Optimization (Ongoing)</h3>
+            <ul>
+                <li>Monitor metrics</li>
+                <li>Regular reviews</li>
+                <li>Continuous improvement</li>
+                <li>Knowledge sharing</li>
+            </ul>
+
+            <div class="warning">
+                <strong>Common Pitfalls:</strong>
+                <ul>
+                    <li>Trying to fix everything at once</li>
+                    <li>Ignoring operational readiness</li>
+                    <li>Underestimating cultural change</li>
+                    <li>Not measuring progress</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Tools & Resources -->
+        <section class="section" id="tools">
+            <h2>🛠️ Tools & Resources</h2>
+            
+            <h3>Assessment Tools</h3>
+            <ul>
+                <li><strong>AWS Well-Architected Tool:</strong> Free assessment tool</li>
+                <li><strong>Azure Well-Architected Review:</strong> Azure assessment</li>
+                <li><strong>Google Cloud Architecture Framework:</strong> GCP assessment</li>
+            </ul>
+
+            <h3>Automation Tools</h3>
+            <ul>
+                <li><strong>Terraform:</strong> Infrastructure as Code</li>
+                <li><strong>CloudFormation:</strong> AWS native IaC</li>
+                <li><strong>Ansible:</strong> Configuration management</li>
+                <li><strong>Jenkins:</strong> CI/CD automation</li>
+            </ul>
+
+            <h3>Monitoring Tools</h3>
+            <ul>
+                <li><strong>CloudWatch:</strong> AWS monitoring</li>
+                <li><strong>Datadog:</strong> Multi-cloud monitoring</li>
+                <li><strong>New Relic:</strong> Application performance</li>
+                <li><strong>Prometheus:</strong> Open-source monitoring</li>
+            </ul>
+
+            <h3>Learning Resources</h3>
+            <ul>
+                <li>AWS Well-Architected Labs</li>
+                <li>Architecture Decision Records (ADRs)</li>
+                <li>Cloud provider documentation</li>
+                <li>Community best practices</li>
+            </ul>
+        </section>
+
+        <!-- CTA Section -->
+        <div class="cta-section">
+            <h2>Ready to Assess Your Architecture?</h2>
+            <p>Use our interactive Well-Architected Framework calculator to evaluate your current state and get personalized recommendations.</p>
+            <a href="/calculators/well-architected/" class="cta-button">Start Assessment →</a>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/bottom-nav.js"></script>
+</body>
+</html>
