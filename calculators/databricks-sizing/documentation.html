@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Databricks Sizing Calculator - Comprehensive Documentation</title>
+    <meta name="description" content="Complete guide to Databricks pricing, sizing, and cost optimization across AWS, Azure, and GCP">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🚀</text></svg>">
+
+    <!-- Navigation CSS -->
+    <link rel="stylesheet" href="/docs/assets/css/site-navigation.css">
+    <link rel="stylesheet" href="/docs/assets/css/mobile-fixes.css">
+    <link rel="stylesheet" href="/docs/assets/css/mobile-dropdown-fix.css">
+    <link rel="stylesheet" href="/docs/assets/css/bottom-nav.css">
+
+    <style>
+        nav.site-nav { display: block; visibility: visible; }
+        body {
+            padding-top: 0;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #f8fafc;
+            line-height: 1.6;
+        }
+
+        .documentation-container {
+            max-width: 1200px;
+            margin: 80px auto 40px;
+            padding: 0 20px;
+        }
+
+        .doc-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 40px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .doc-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+
+        .doc-header p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+        }
+
+        .toc {
+            background: white;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .toc h2 {
+            color: #1f2937;
+            margin-bottom: 16px;
+            font-size: 1.5rem;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .toc li {
+            margin-bottom: 8px;
+        }
+
+        .toc a {
+            color: #6366f1;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .toc a:hover {
+            color: #4f46e5;
+            text-decoration: underline;
+        }
+
+        .content-section {
+            background: white;
+            border-radius: 8px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .content-section h2 {
+            color: #1f2937;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .content-section h3 {
+            color: #374151;
+            margin-top: 24px;
+            margin-bottom: 16px;
+        }
+
+        .pricing-table {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        .pricing-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .pricing-table th {
+            background: #f3f4f6;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            border: 1px solid #e5e7eb;
+        }
+
+        .pricing-table td {
+            padding: 12px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .pricing-table tr:hover {
+            background: #f9fafb;
+        }
+
+        .formula-box {
+            background: #f0f9ff;
+            border-left: 4px solid #3b82f6;
+            padding: 16px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .formula-box code {
+            background: #dbeafe;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .tip-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 16px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .tip-box strong {
+            color: #d97706;
+        }
+
+        .reference-links {
+            background: #f3f4f6;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 40px;
+        }
+
+        .reference-links h3 {
+            color: #1f2937;
+            margin-bottom: 12px;
+        }
+
+        .reference-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .reference-links li {
+            margin-bottom: 8px;
+        }
+
+        .reference-links a {
+            color: #6366f1;
+            text-decoration: none;
+        }
+
+        .reference-links a:hover {
+            text-decoration: underline;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .comparison-card {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .comparison-card h4 {
+            color: #1f2937;
+            margin-bottom: 12px;
+        }
+
+        .comparison-card ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .back-to-calculator {
+            display: inline-block;
+            background: #6366f1;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            margin-bottom: 20px;
+            transition: background 0.2s;
+        }
+
+        .back-to-calculator:hover {
+            background: #4f46e5;
+        }
+    </style>
+</head>
+<body>
+    <!-- Site Navigation -->
+    <nav class="site-nav">
+        <div class="site-nav-container">
+            <a href="/" class="site-logo">🏢 AI Architecture Audit</a>
+
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+
+            <ul class="site-menu" id="siteMenu">
+                <li class="site-menu-item"><a href="/">Home</a></li>
+
+                <li class="site-menu-item has-dropdown">
+                    <a href="#" onclick="event.preventDefault()">Calculators</a>
+                    <div class="dropdown-menu">
+                        <a href="/calculators/databricks-sizing/">🚀 Databricks Sizing</a>
+                        <a href="/calculators/cost-optimization/">💰 Cost Optimization</a>
+                        <a href="/calculators/ai-readiness/">🤖 AI Readiness</a>
+                        <a href="/calculators/cloud-migration/">☁️ Cloud Migration</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="documentation-container">
+        <a href="/calculators/databricks-sizing/" class="back-to-calculator">← Back to Calculator</a>
+
+        <div class="doc-header">
+            <h1>📚 Databricks Sizing Calculator Documentation</h1>
+            <p>Complete guide to understanding Databricks pricing, sizing best practices, and cost optimization strategies across AWS, Azure, and GCP</p>
+        </div>
+
+        <!-- Table of Contents -->
+        <div class="toc">
+            <h2>📑 Table of Contents</h2>
+            <ul>
+                <li><a href="#overview">1. Overview & Key Concepts</a></li>
+                <li><a href="#pricing-structure">2. Databricks Pricing Structure</a></li>
+                <li><a href="#azure-specifics">3. Azure Databricks Native Integration</a></li>
+                <li><a href="#cluster-types">4. Cluster Types & Workloads</a></li>
+                <li><a href="#advanced-features">5. Advanced Features & Add-ons</a></li>
+                <li><a href="#optimization">6. Cost Optimization Strategies</a></li>
+                <li><a href="#formulas">7. Calculation Formulas</a></li>
+                <li><a href="#regional-pricing">8. Regional Pricing Variations</a></li>
+                <li><a href="#best-practices">9. Best Practices & Recommendations</a></li>
+                <li><a href="#references">10. Official References & Links</a></li>
+            </ul>
+        </div>
+
+        <!-- Section 1: Overview -->
+        <div class="content-section" id="overview">
+            <h2>1. Overview & Key Concepts</h2>
+
+            <h3>What is Databricks?</h3>
+            <p>Databricks is a unified analytics platform that provides a collaborative environment for data engineering, data science, machine learning, and business analytics. It combines the best of data warehouses and data lakes into a lakehouse architecture.</p>
+
+            <h3>Key Components of Databricks Costs</h3>
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <h4>💠 DBU (Databricks Units)</h4>
+                    <ul>
+                        <li>Processing capability units</li>
+                        <li>Varies by workload type</li>
+                        <li>Charged per hour</li>
+                        <li>Different rates for All-Purpose, Jobs, SQL</li>
+                    </ul>
+                </div>
+                <div class="comparison-card">
+                    <h4>🖥️ Infrastructure</h4>
+                    <ul>
+                        <li>Virtual machines/instances</li>
+                        <li>Charged by cloud provider</li>
+                        <li>Varies by instance type</li>
+                        <li>Spot/preemptible options available</li>
+                    </ul>
+                </div>
+                <div class="comparison-card">
+                    <h4>💾 Storage</h4>
+                    <ul>
+                        <li>Delta Lake storage</li>
+                        <li>Object storage (S3/Blob/GCS)</li>
+                        <li>Checkpoint & cache storage</li>
+                        <li>ML model artifacts</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="formula-box">
+                <strong>Total Databricks Cost Formula:</strong><br>
+                <code>Total Cost = DBU Cost + Infrastructure Cost + Storage Cost + Networking Cost + Feature Add-ons</code>
+            </div>
+        </div>
+
+        <!-- Section 2: Pricing Structure -->
+        <div class="content-section" id="pricing-structure">
+            <h2>2. Databricks Pricing Structure</h2>
+
+            <h3>DBU Pricing by Workload Type</h3>
+            <div class="pricing-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Workload Type</th>
+                            <th>AWS ($/DBU)</th>
+                            <th>Azure ($/DBU)</th>
+                            <th>GCP ($/DBU)</th>
+                            <th>Use Case</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>All-Purpose Compute</strong></td>
+                            <td>$0.55 - $0.75</td>
+                            <td>$0.40 - $0.65</td>
+                            <td>$0.52 - $0.72</td>
+                            <td>Interactive analysis, development, ad-hoc queries</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Jobs Compute</strong></td>
+                            <td>$0.30 - $0.40</td>
+                            <td>$0.15 - $0.40</td>
+                            <td>$0.29 - $0.39</td>
+                            <td>Scheduled ETL, batch processing</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Jobs Light</strong></td>
+                            <td>$0.10</td>
+                            <td>$0.07</td>
+                            <td>$0.10</td>
+                            <td>Lightweight tasks, short jobs</td>
+                        </tr>
+                        <tr>
+                            <td><strong>SQL Compute</strong></td>
+                            <td>$0.22 - $0.70</td>
+                            <td>$0.22 - $0.70</td>
+                            <td>$0.21 - $0.68</td>
+                            <td>SQL analytics, BI workloads</td>
+                        </tr>
+                        <tr>
+                            <td><strong>DLT (Delta Live Tables)</strong></td>
+                            <td>$0.36 - $0.72</td>
+                            <td>$0.25 - $0.54</td>
+                            <td>$0.35 - $0.70</td>
+                            <td>Streaming ETL pipelines</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 Pro Tip:</strong> Jobs Compute is 40-50% cheaper than All-Purpose Compute. Use it for all scheduled and automated workloads to significantly reduce costs.
+            </div>
+
+            <h3>Instance Pricing Examples</h3>
+            <div class="pricing-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Instance Type</th>
+                            <th>vCPUs</th>
+                            <th>Memory (GB)</th>
+                            <th>AWS ($/hr)</th>
+                            <th>Azure ($/hr)</th>
+                            <th>GCP ($/hr)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>General Purpose</strong></td>
+                            <td>4</td>
+                            <td>16</td>
+                            <td>$0.192</td>
+                            <td>$0.192</td>
+                            <td>$0.194</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Memory Optimized</strong></td>
+                            <td>4</td>
+                            <td>32</td>
+                            <td>$0.252</td>
+                            <td>$0.246</td>
+                            <td>$0.262</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Compute Optimized</strong></td>
+                            <td>4</td>
+                            <td>8</td>
+                            <td>$0.170</td>
+                            <td>$0.166</td>
+                            <td>$0.174</td>
+                        </tr>
+                        <tr>
+                            <td><strong>GPU (V100)</strong></td>
+                            <td>8</td>
+                            <td>61</td>
+                            <td>$3.06</td>
+                            <td>$3.06</td>
+                            <td>$2.48</td>
+                        </tr>
+                        <tr>
+                            <td><strong>GPU (A100)</strong></td>
+                            <td>12</td>
+                            <td>85</td>
+                            <td>$5.12</td>
+                            <td>$4.93</td>
+                            <td>$3.67</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Section 3: Azure Specifics -->
+        <div class="content-section" id="azure-specifics">
+            <h2>3. Azure Databricks Native Integration</h2>
+
+            <p>Azure Databricks is uniquely positioned as a first-party Microsoft service, resulting in a different billing and integration model compared to AWS and GCP.</p>
+
+            <h3>Billing Structure</h3>
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <h4>Azure Databricks Service</h4>
+                    <ul>
+                        <li>DBU charges only</li>
+                        <li>Billed as "Azure Databricks"</li>
+                        <li>Pre-purchase commitments available</li>
+                        <li>18% discount (1-year)</li>
+                        <li>37% discount (3-year)</li>
+                    </ul>
+                </div>
+                <div class="comparison-card">
+                    <h4>Virtual Machines</h4>
+                    <ul>
+                        <li>Infrastructure charges</li>
+                        <li>Billed as "Virtual Machines"</li>
+                        <li>Reserved VM instances available</li>
+                        <li>Up to 72% discount</li>
+                        <li>Spot instances up to 90% off</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Azure-Specific Benefits</h3>
+            <ul>
+                <li><strong>Native Azure AD Integration:</strong> Single sign-on and RBAC at no extra cost</li>
+                <li><strong>Azure Key Vault:</strong> Seamless secrets management</li>
+                <li><strong>Azure Storage Integration:</strong> Direct access to ADLS Gen2</li>
+                <li><strong>Azure Monitor:</strong> Unified logging and monitoring</li>
+                <li><strong>Private Link:</strong> Secure network connectivity</li>
+                <li><strong>Photon Optimization:</strong> Lower multiplier (1.5x vs 2x) due to better integration</li>
+            </ul>
+
+            <div class="formula-box">
+                <strong>Azure Databricks Total Cost:</strong><br>
+                <code>Total = (DBU Rate × Hours × Nodes × Commitment Discount) + (VM Rate × Hours × Nodes × Reserved Discount)</code>
+            </div>
+        </div>
+
+        <!-- Section 4: Cluster Types -->
+        <div class="content-section" id="cluster-types">
+            <h2>4. Cluster Types & Workloads</h2>
+
+            <h3>Cluster Type Comparison</h3>
+            <div class="pricing-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cluster Type</th>
+                            <th>Best For</th>
+                            <th>DBU Cost</th>
+                            <th>Auto-termination</th>
+                            <th>Cluster Pools</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>All-Purpose</strong></td>
+                            <td>Interactive development, notebooks, ad-hoc analysis</td>
+                            <td>High</td>
+                            <td>Configurable</td>
+                            <td>Supported</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Job Clusters</strong></td>
+                            <td>Scheduled jobs, ETL pipelines, batch processing</td>
+                            <td>Low (45% less)</td>
+                            <td>Automatic</td>
+                            <td>Not needed</td>
+                        </tr>
+                        <tr>
+                            <td><strong>SQL Warehouses</strong></td>
+                            <td>SQL analytics, BI tools, dashboards</td>
+                            <td>Variable</td>
+                            <td>Auto-suspend</td>
+                            <td>N/A</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ML Clusters</strong></td>
+                            <td>Model training, deep learning, GPU workloads</td>
+                            <td>Standard</td>
+                            <td>Configurable</td>
+                            <td>Recommended</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Workload Patterns & Sizing</h3>
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <h4>Small (Starter)</h4>
+                    <ul>
+                        <li>1-3 clusters</li>
+                        <li>2-8 nodes per cluster</li>
+                        <li>General purpose instances</li>
+                        <li>&lt; 10 TB data</li>
+                        <li>Cost: $2K-5K/month</li>
+                    </ul>
+                </div>
+                <div class="comparison-card">
+                    <h4>Medium (Growth)</h4>
+                    <ul>
+                        <li>3-10 clusters</li>
+                        <li>5-20 nodes per cluster</li>
+                        <li>Mix of instance types</li>
+                        <li>10-100 TB data</li>
+                        <li>Cost: $10K-50K/month</li>
+                    </ul>
+                </div>
+                <div class="comparison-card">
+                    <h4>Large (Enterprise)</h4>
+                    <ul>
+                        <li>10+ clusters</li>
+                        <li>20-100 nodes per cluster</li>
+                        <li>Specialized instances</li>
+                        <li>100+ TB data</li>
+                        <li>Cost: $50K+/month</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 5: Advanced Features -->
+        <div class="content-section" id="advanced-features">
+            <h2>5. Advanced Features & Add-ons</h2>
+
+            <h3>Photon Acceleration</h3>
+            <p>Photon is Databricks' native vectorized query engine that provides up to 3x performance improvement.</p>
+            <ul>
+                <li><strong>Performance:</strong> 3x faster query execution</li>
+                <li><strong>Cost:</strong> 2x DBU rate (1.5x on Azure)</li>
+                <li><strong>ROI:</strong> Net savings of 33% due to faster completion</li>
+                <li><strong>Best for:</strong> SQL workloads, ETL pipelines, data transformation</li>
+            </ul>
+
+            <h3>Unity Catalog</h3>
+            <p>Unified governance solution for all data and AI assets.</p>
+            <div class="pricing-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Pricing</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Metastore</td>
+                            <td>$0.25/hour</td>
+                            <td>Per metastore instance</td>
+                        </tr>
+                        <tr>
+                            <td>Catalog Storage</td>
+                            <td>$25/TB/month</td>
+                            <td>Metadata storage</td>
+                        </tr>
+                        <tr>
+                            <td>API Requests</td>
+                            <td>$1/million</td>
+                            <td>Governance API calls</td>
+                        </tr>
+                        <tr>
+                            <td>User Access</td>
+                            <td>$5/user/month</td>
+                            <td>Per active user</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Delta Live Tables (DLT)</h3>
+            <p>Declarative ETL framework for reliable data pipelines.</p>
+            <ul>
+                <li><strong>Core:</strong> $0.25-0.36/DBU - Basic ETL capabilities</li>
+                <li><strong>Pro:</strong> $0.36-0.54/DBU - Advanced features, monitoring</li>
+                <li><strong>Advanced:</strong> $0.54-0.72/DBU - Enterprise features, SLAs</li>
+            </ul>
+
+            <h3>MLflow & Model Serving</h3>
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <h4>MLflow Tracking</h4>
+                    <ul>
+                        <li>$0.02/experiment/hour</li>
+                        <li>$1/model/month</li>
+                        <li>Included with workspace</li>
+                    </ul>
+                </div>
+                <div class="comparison-card">
+                    <h4>Model Serving</h4>
+                    <ul>
+                        <li>CPU: $0.07/DBU</li>
+                        <li>GPU: $0.35/DBU</li>
+                        <li>$0.002/1000 requests</li>
+                    </ul>
+                </div>
+                <div class="comparison-card">
+                    <h4>Vector Search</h4>
+                    <ul>
+                        <li>$0.35/million vectors</li>
+                        <li>$0.10/million queries</li>
+                        <li>Storage included</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 6: Optimization -->
+        <div class="content-section" id="optimization">
+            <h2>6. Cost Optimization Strategies</h2>
+
+            <h3>Top 10 Cost Optimization Techniques</h3>
+            <ol>
+                <li><strong>Use Job Clusters:</strong> 45% cheaper than All-Purpose for scheduled workloads</li>
+                <li><strong>Enable Auto-scaling:</strong> Scale down during low usage, save 20-40%</li>
+                <li><strong>Spot/Preemptible Instances:</strong> Up to 90% discount for fault-tolerant workloads</li>
+                <li><strong>Reserved Instances:</strong> 20-72% savings with 1-3 year commitments</li>
+                <li><strong>DBU Pre-purchase (Azure):</strong> 18-37% discount on DBU costs</li>
+                <li><strong>Cluster Pools:</strong> Reduce startup time and costs by 50%</li>
+                <li><strong>Auto-termination:</strong> Shut down idle clusters automatically</li>
+                <li><strong>Right-sizing:</strong> Choose appropriate instance types for workloads</li>
+                <li><strong>Photon Optimization:</strong> 3x performance at 2x cost = net savings</li>
+                <li><strong>Storage Tiering:</strong> Move cold data to cheaper storage tiers</li>
+            </ol>
+
+            <h3>Cost Savings by Strategy</h3>
+            <div class="pricing-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Strategy</th>
+                            <th>Potential Savings</th>
+                            <th>Implementation Effort</th>
+                            <th>Risk Level</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Job Clusters</td>
+                            <td>45%</td>
+                            <td>Low</td>
+                            <td>None</td>
+                        </tr>
+                        <tr>
+                            <td>Spot Instances</td>
+                            <td>50-90%</td>
+                            <td>Medium</td>
+                            <td>Medium (interruptions)</td>
+                        </tr>
+                        <tr>
+                            <td>Reserved Instances</td>
+                            <td>20-72%</td>
+                            <td>Low</td>
+                            <td>Low (commitment)</td>
+                        </tr>
+                        <tr>
+                            <td>Auto-scaling</td>
+                            <td>20-40%</td>
+                            <td>Low</td>
+                            <td>None</td>
+                        </tr>
+                        <tr>
+                            <td>Photon</td>
+                            <td>33% (net)</td>
+                            <td>Low</td>
+                            <td>None</td>
+                        </tr>
+                        <tr>
+                            <td>Storage Tiering</td>
+                            <td>40-80%</td>
+                            <td>Medium</td>
+                            <td>Low</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Section 7: Formulas -->
+        <div class="content-section" id="formulas">
+            <h2>7. Calculation Formulas</h2>
+
+            <h3>Basic Cost Calculations</h3>
+
+            <div class="formula-box">
+                <strong>DBU Cost:</strong><br>
+                <code>DBU Cost = DBU Rate × Number of DBUs × Hours × Regional Multiplier</code><br><br>
+                <strong>Number of DBUs:</strong><br>
+                <code>DBUs = Instance DBU Value × Number of Nodes</code>
+            </div>
+
+            <div class="formula-box">
+                <strong>Infrastructure Cost:</strong><br>
+                <code>Infra Cost = Instance Rate × Number of Nodes × Hours × (1 - Spot Discount)</code>
+            </div>
+
+            <div class="formula-box">
+                <strong>Storage Cost:</strong><br>
+                <code>Storage Cost = Storage GB × Storage Rate × Retention Period</code>
+            </div>
+
+            <h3>Advanced Calculations</h3>
+
+            <div class="formula-box">
+                <strong>Photon-Optimized Cost:</strong><br>
+                <code>Photon Cost = Base DBU Cost × 2 (multiplier)</code><br>
+                <code>Time Saved = Original Time / 3 (3x performance)</code><br>
+                <code>Net Cost = (Photon Cost × Time Saved) = 67% of original</code>
+            </div>
+
+            <div class="formula-box">
+                <strong>Auto-scaling Savings:</strong><br>
+                <code>Avg Nodes = (Min Nodes + Max Nodes) / 2 × Utilization Rate</code><br>
+                <code>Savings = (Max Nodes - Avg Nodes) × Node Cost × Hours</code>
+            </div>
+
+            <h3>TCO Calculation Example</h3>
+            <div class="tip-box">
+                <strong>Example: 10-node cluster, m5.2xlarge, All-Purpose, 24/7 operation</strong><br><br>
+                • Instance cost: $0.384 × 10 nodes × 720 hours = <strong>$2,765/month</strong><br>
+                • DBU cost: $0.55 × 2 DBUs × 10 nodes × 720 hours = <strong>$7,920/month</strong><br>
+                • Storage: 50TB × $23 = <strong>$1,150/month</strong><br>
+                • Networking: <strong>$200/month</strong><br><br>
+                <strong>Total: $12,035/month</strong><br><br>
+                With optimizations (Spot 50%, Reserved 30%, Auto-scaling):<br>
+                <strong>Optimized: $7,220/month (40% savings)</strong>
+            </div>
+        </div>
+
+        <!-- Section 8: Regional Pricing -->
+        <div class="content-section" id="regional-pricing">
+            <h2>8. Regional Pricing Variations</h2>
+
+            <p>Pricing varies significantly by region due to infrastructure costs, demand, and local regulations.</p>
+
+            <h3>Regional Price Multipliers</h3>
+            <div class="pricing-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Region</th>
+                            <th>AWS</th>
+                            <th>Azure</th>
+                            <th>GCP</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>US East</strong></td>
+                            <td>1.00x</td>
+                            <td>1.00x</td>
+                            <td>1.00x</td>
+                            <td>Baseline pricing</td>
+                        </tr>
+                        <tr>
+                            <td><strong>US West</strong></td>
+                            <td>1.00-1.05x</td>
+                            <td>1.00-1.02x</td>
+                            <td>1.00-1.09x</td>
+                            <td>California premium</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Europe</strong></td>
+                            <td>1.02-1.08x</td>
+                            <td>1.02-1.15x</td>
+                            <td>1.02-1.15x</td>
+                            <td>GDPR compliance</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Asia Pacific</strong></td>
+                            <td>1.08-1.15x</td>
+                            <td>1.08-1.15x</td>
+                            <td>1.08-1.15x</td>
+                            <td>Infrastructure costs</td>
+                        </tr>
+                        <tr>
+                            <td><strong>India</strong></td>
+                            <td>0.95x</td>
+                            <td>0.92-0.95x</td>
+                            <td>0.95-0.97x</td>
+                            <td>Lower costs</td>
+                        </tr>
+                        <tr>
+                            <td><strong>South America</strong></td>
+                            <td>1.20x</td>
+                            <td>1.20x</td>
+                            <td>1.15-1.20x</td>
+                            <td>Import duties</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 Regional Strategy:</strong> Consider running development/test workloads in cheaper regions (India) and production in regions closer to users for lower latency.
+            </div>
+        </div>
+
+        <!-- Section 9: Best Practices -->
+        <div class="content-section" id="best-practices">
+            <h2>9. Best Practices & Recommendations</h2>
+
+            <h3>Cluster Configuration Best Practices</h3>
+            <ul>
+                <li><strong>Development:</strong> Use small All-Purpose clusters with auto-termination (30 mins)</li>
+                <li><strong>Production ETL:</strong> Use Job clusters with auto-scaling and spot instances</li>
+                <li><strong>ML Training:</strong> Use GPU clusters with cluster pools for faster startup</li>
+                <li><strong>SQL Analytics:</strong> Use SQL warehouses with auto-suspend (10 mins)</li>
+                <li><strong>Streaming:</strong> Use Delta Live Tables with appropriate tier</li>
+            </ul>
+
+            <h3>Instance Selection Guide</h3>
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <h4>General Purpose</h4>
+                    <p><strong>When to use:</strong></p>
+                    <ul>
+                        <li>Balanced workloads</li>
+                        <li>Development/testing</li>
+                        <li>Small to medium data</li>
+                    </ul>
+                    <p><strong>Examples:</strong> m5, Standard_D, n2-standard</p>
+                </div>
+                <div class="comparison-card">
+                    <h4>Memory Optimized</h4>
+                    <p><strong>When to use:</strong></p>
+                    <ul>
+                        <li>Large datasets in memory</li>
+                        <li>Caching operations</li>
+                        <li>Complex joins</li>
+                    </ul>
+                    <p><strong>Examples:</strong> r5, Standard_E, n2-highmem</p>
+                </div>
+                <div class="comparison-card">
+                    <h4>Compute Optimized</h4>
+                    <p><strong>When to use:</strong></p>
+                    <ul>
+                        <li>CPU-intensive tasks</li>
+                        <li>Real-time processing</li>
+                        <li>Complex calculations</li>
+                    </ul>
+                    <p><strong>Examples:</strong> c5, Standard_F, c2-standard</p>
+                </div>
+                <div class="comparison-card">
+                    <h4>GPU Instances</h4>
+                    <p><strong>When to use:</strong></p>
+                    <ul>
+                        <li>Deep learning</li>
+                        <li>Large-scale ML</li>
+                        <li>Computer vision</li>
+                    </ul>
+                    <p><strong>Examples:</strong> p3/p4, NC-series, a2-highgpu</p>
+                </div>
+            </div>
+
+            <h3>Monitoring & Optimization Checklist</h3>
+            <ol>
+                <li>✅ Monitor cluster utilization daily (target >70%)</li>
+                <li>✅ Review auto-scaling metrics weekly</li>
+                <li>✅ Analyze job completion times for Photon candidates</li>
+                <li>✅ Check storage growth and implement lifecycle policies</li>
+                <li>✅ Review spot instance interruption rates</li>
+                <li>✅ Validate DBU consumption against budget</li>
+                <li>✅ Optimize SQL queries using Query Profile</li>
+                <li>✅ Implement cost allocation tags</li>
+                <li>✅ Set up budget alerts</li>
+                <li>✅ Quarterly review of reserved capacity needs</li>
+            </ol>
+        </div>
+
+        <!-- Section 10: References -->
+        <div class="content-section" id="references">
+            <h2>10. Official References & Links</h2>
+
+            <div class="reference-links">
+                <h3>📚 Official Databricks Documentation</h3>
+                <ul>
+                    <li>🔗 <a href="https://www.databricks.com/product/pricing" target="_blank">Databricks Official Pricing</a></li>
+                    <li>🔗 <a href="https://docs.databricks.com/administration-guide/capacity-planning/sizing.html" target="_blank">Cluster Sizing Guide</a></li>
+                    <li>🔗 <a href="https://docs.databricks.com/clusters/cluster-config-best-practices.html" target="_blank">Cluster Configuration Best Practices</a></li>
+                    <li>🔗 <a href="https://www.databricks.com/product/photon" target="_blank">Photon Acceleration Engine</a></li>
+                    <li>🔗 <a href="https://docs.databricks.com/data-governance/unity-catalog/index.html" target="_blank">Unity Catalog Documentation</a></li>
+                </ul>
+            </div>
+
+            <div class="reference-links">
+                <h3>☁️ Cloud Provider Pricing</h3>
+                <ul>
+                    <li>🔗 <a href="https://aws.amazon.com/ec2/pricing/" target="_blank">AWS EC2 Pricing</a></li>
+                    <li>🔗 <a href="https://azure.microsoft.com/en-us/pricing/details/databricks/" target="_blank">Azure Databricks Pricing</a></li>
+                    <li>🔗 <a href="https://azure.microsoft.com/en-us/pricing/details/virtual-machines/" target="_blank">Azure VM Pricing</a></li>
+                    <li>🔗 <a href="https://cloud.google.com/compute/pricing" target="_blank">GCP Compute Engine Pricing</a></li>
+                    <li>🔗 <a href="https://cloud.google.com/databricks" target="_blank">Databricks on Google Cloud</a></li>
+                </ul>
+            </div>
+
+            <div class="reference-links">
+                <h3>🛠️ Tools & Calculators</h3>
+                <ul>
+                    <li>🔗 <a href="https://calculator.aws" target="_blank">AWS Pricing Calculator</a></li>
+                    <li>🔗 <a href="https://azure.microsoft.com/en-us/pricing/calculator/" target="_blank">Azure Pricing Calculator</a></li>
+                    <li>🔗 <a href="https://cloud.google.com/products/calculator" target="_blank">Google Cloud Pricing Calculator</a></li>
+                    <li>🔗 <a href="https://www.databricks.com/resources/tco-calculator" target="_blank">Databricks TCO Calculator</a></li>
+                </ul>
+            </div>
+
+            <div class="reference-links">
+                <h3>📖 Learning Resources</h3>
+                <ul>
+                    <li>🔗 <a href="https://academy.databricks.com" target="_blank">Databricks Academy</a></li>
+                    <li>🔗 <a href="https://www.databricks.com/blog/category/engineering" target="_blank">Databricks Engineering Blog</a></li>
+                    <li>🔗 <a href="https://docs.databricks.com/optimizations/index.html" target="_blank">Performance Optimization Guide</a></li>
+                    <li>🔗 <a href="https://www.databricks.com/glossary" target="_blank">Databricks Glossary</a></li>
+                </ul>
+            </div>
+
+            <div class="tip-box">
+                <strong>📞 Need Help?</strong><br>
+                • Databricks Support: support@databricks.com<br>
+                • Community Forum: <a href="https://community.databricks.com" target="_blank">community.databricks.com</a><br>
+                • Stack Overflow: Tag with 'databricks'<br>
+                • GitHub: <a href="https://github.com/databricks" target="_blank">github.com/databricks</a>
+            </div>
+        </div>
+
+        <div class="reference-links" style="text-align: center; margin-top: 40px;">
+            <p>Last Updated: December 2024 | Version 2.0</p>
+            <p>© 2024 AI Architecture Audit - Databricks Sizing Calculator</p>
+        </div>
+    </div>
+
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('siteMenu');
+            menu.classList.toggle('mobile-active');
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

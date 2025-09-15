@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Databricks Calculation</title>
+</head>
+<body>
+    <h1>Databricks Calculator Test</h1>
+
+    <div>
+        <h2>Input Values</h2>
+        <p>Min Workers: <span id="min-val">2</span></p>
+        <p>Max Workers: <span id="max-val">8</span></p>
+        <p>Runtime Hours: <span id="runtime-val">8</span></p>
+        <p>Storage TB: <span id="storage-val">8</span></p>
+    </div>
+
+    <div>
+        <h2>Calculated Results</h2>
+        <p>AWS DBU Cost: $<span id="aws-dbu">0</span></p>
+        <p>AWS Compute Cost: $<span id="aws-compute">0</span></p>
+        <p>AWS Storage Cost: $<span id="aws-storage">0</span></p>
+        <p>AWS Total: $<span id="aws-total">0</span></p>
+    </div>
+
+    <button onclick="testCalc()">Calculate</button>
+
+    <script>
+        function testCalc() {
+            const minWorkers = 2;
+            const maxWorkers = 8;
+            const avgWorkers = (minWorkers + maxWorkers) / 2; // 5
+            const runtimeHours = 8;
+            const monthlyHours = runtimeHours * 30; // 240
+            const storageTB = 8;
+            const storageGB = storageTB * 1024; // 8192
+
+            // DBU calculation
+            const dbuRate = 0.55; // All-purpose AWS rate
+            const instanceDBUs = 2.0; // per instance
+            const totalDBUs = instanceDBUs * avgWorkers * monthlyHours; // 2 * 5 * 240 = 2400
+            const dbuCost = totalDBUs * dbuRate; // 2400 * 0.55 = 1320
+
+            // Compute calculation
+            const instanceCost = 0.384; // m5.2xlarge hourly
+            const spotDiscount = 0.3; // 30% discount
+            const hourlyRate = instanceCost * (1 - spotDiscount); // 0.384 * 0.7 = 0.2688
+            const computeCost = hourlyRate * avgWorkers * monthlyHours; // 0.2688 * 5 * 240 = 322.56
+
+            // Storage calculation
+            const storageRate = 0.023; // AWS S3 per GB/month
+            const storageCost = storageGB * storageRate; // 8192 * 0.023 = 188.42
+
+            // Total
+            const totalCost = dbuCost + computeCost + storageCost;
+
+            // Display results
+            document.getElementById('aws-dbu').textContent = Math.round(dbuCost);
+            document.getElementById('aws-compute').textContent = Math.round(computeCost);
+            document.getElementById('aws-storage').textContent = Math.round(storageCost);
+            document.getElementById('aws-total').textContent = Math.round(totalCost);
+
+            console.log('Calculation details:', {
+                avgWorkers,
+                monthlyHours,
+                totalDBUs,
+                dbuCost,
+                computeCost,
+                storageCost,
+                totalCost
+            });
+        }
+    </script>
+</body>
+</html>

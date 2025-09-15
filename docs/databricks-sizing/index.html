@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Databricks Sizing Guide - Best Practices & Cost Optimization</title>
+    <meta name="description" content="Complete guide to Databricks cluster sizing, DBU optimization, and cost management. Learn how to size Spark clusters and reduce costs by 40%.">
+
+    <link rel="stylesheet" href="../assets/css/documentation.css">
+    <style>
+        .doc-header {
+            background: linear-gradient(135deg, #ff6b35 0%, #f72b1c 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .toc {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+
+        .content-section {
+            margin: 2rem 0;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .pricing-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        .pricing-table th,
+        .pricing-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .pricing-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+        }
+
+        .best-practice {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .formula-box {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="doc-header">
+        <h1>🚀 Databricks Sizing Guide</h1>
+        <p>Complete guide to cluster sizing, DBU optimization, and cost management</p>
+        <div style="margin-top: 1rem;">
+            <a href="../../calculators/databricks-sizing/" style="background: white; color: #ff6b35; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600;">
+                🧮 Use Sizing Calculator
+            </a>
+        </div>
+    </div>
+
+    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+        <div class="toc">
+            <h2>Table of Contents</h2>
+            <ol>
+                <li><a href="#overview">Databricks Overview</a></li>
+                <li><a href="#sizing-fundamentals">Sizing Fundamentals</a></li>
+                <li><a href="#cluster-types">Cluster Types & When to Use</a></li>
+                <li><a href="#instance-selection">Instance Selection Guide</a></li>
+                <li><a href="#dbu-calculations">DBU Calculations & Pricing</a></li>
+                <li><a href="#optimization">Cost Optimization Strategies</a></li>
+                <li><a href="#workload-patterns">Workload Patterns</a></li>
+                <li><a href="#best-practices">Best Practices</a></li>
+                <li><a href="#common-mistakes">Common Mistakes to Avoid</a></li>
+                <li><a href="#case-studies">Real-World Case Studies</a></li>
+            </ol>
+        </div>
+
+        <div class="content-section" id="overview">
+            <h2>Databricks Overview</h2>
+            <p>Databricks is a unified analytics platform that combines the best of data warehouses and data lakes. Understanding how to properly size your Databricks clusters is crucial for balancing performance and cost.</p>
+
+            <h3>Key Concepts</h3>
+            <ul>
+                <li><strong>DBU (Databricks Unit):</strong> Processing capability per hour of computation</li>
+                <li><strong>Cluster:</strong> Set of computation resources and configurations</li>
+                <li><strong>Worker Node:</strong> Compute instance that executes Spark tasks</li>
+                <li><strong>Driver Node:</strong> Coordinates work distribution among workers</li>
+                <li><strong>Photon:</strong> Native vectorized query engine for 3x performance</li>
+            </ul>
+        </div>
+
+        <div class="content-section" id="sizing-fundamentals">
+            <h2>Sizing Fundamentals</h2>
+
+            <h3>Key Sizing Factors</h3>
+            <ol>
+                <li><strong>Data Volume:</strong> Total data to be processed</li>
+                <li><strong>Data Velocity:</strong> Frequency of processing</li>
+                <li><strong>Complexity:</strong> Computational intensity of operations</li>
+                <li><strong>Concurrency:</strong> Number of simultaneous users/jobs</li>
+                <li><strong>SLA Requirements:</strong> Performance expectations</li>
+            </ol>
+
+            <div class="formula-box">
+                <strong>Basic Sizing Formula:</strong><br>
+                Cluster Size = (Data Volume × Complexity Factor) / (Processing Time × Parallelism)<br><br>
+
+                <strong>DBU Consumption:</strong><br>
+                DBUs = (Number of Nodes) × (Hours Run) × (DBU Rate)
+            </div>
+
+            <div class="best-practice">
+                <strong>💡 Best Practice:</strong> Start with a smaller cluster and scale up based on actual performance metrics. Over-provisioning is the #1 cause of excessive Databricks costs.
+            </div>
+        </div>
+
+        <div class="content-section" id="cluster-types">
+            <h2>Cluster Types & When to Use</h2>
+
+            <table class="pricing-table">
+                <thead>
+                    <tr>
+                        <th>Cluster Type</th>
+                        <th>DBU Rate</th>
+                        <th>Use Case</th>
+                        <th>Cost Impact</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>All-Purpose</strong></td>
+                        <td>0.65 DBU/hour</td>
+                        <td>Interactive analysis, notebooks</td>
+                        <td>2x more expensive</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Job Compute</strong></td>
+                        <td>0.30 DBU/hour</td>
+                        <td>Scheduled jobs, ETL</td>
+                        <td>Best for production</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SQL Warehouse</strong></td>
+                        <td>0.70 DBU/hour</td>
+                        <td>SQL analytics, BI tools</td>
+                        <td>Serverless option available</td>
+                    </tr>
+                    <tr>
+                        <td><strong>ML Compute</strong></td>
+                        <td>0.65 DBU/hour</td>
+                        <td>Machine learning workloads</td>
+                        <td>GPU instances available</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="warning-box">
+                <strong>⚠️ Warning:</strong> Never use All-Purpose clusters for scheduled jobs. This simple mistake doubles your costs!
+            </div>
+        </div>
+
+        <div class="content-section" id="instance-selection">
+            <h2>Instance Selection Guide</h2>
+
+            <h3>Instance Categories</h3>
+
+            <h4>Memory Optimized (r5, r6i series)</h4>
+            <ul>
+                <li>Best for: Caching, interactive queries, ML feature engineering</li>
+                <li>Memory/CPU ratio: 8:1</li>
+                <li>Cost: $$$ (Higher)</li>
+            </ul>
+
+            <h4>Compute Optimized (c5, c6i series)</h4>
+            <ul>
+                <li>Best for: CPU-intensive transformations, ML training</li>
+                <li>Memory/CPU ratio: 2:1</li>
+                <li>Cost: $ (Lower)</li>
+            </ul>
+
+            <h4>Storage Optimized (i3, i4i series)</h4>
+            <ul>
+                <li>Best for: Shuffle-heavy operations, large joins</li>
+                <li>Local NVMe SSD storage</li>
+                <li>Cost: $$ (Medium)</li>
+            </ul>
+
+            <h4>General Purpose (m5, m6i series)</h4>
+            <ul>
+                <li>Best for: Balanced workloads, development</li>
+                <li>Memory/CPU ratio: 4:1</li>
+                <li>Cost: $$ (Medium)</li>
+            </ul>
+
+            <div class="best-practice">
+                <strong>💡 Recommendation:</strong> Start with i3.2xlarge for most workloads. It provides good balance of compute, memory, and local storage for Spark shuffle operations.
+            </div>
+        </div>
+
+        <div class="content-section" id="dbu-calculations">
+            <h2>DBU Calculations & Pricing</h2>
+
+            <h3>DBU Pricing by Cloud Provider (2025)</h3>
+            <table class="pricing-table">
+                <thead>
+                    <tr>
+                        <th>Cloud</th>
+                        <th>Standard</th>
+                        <th>Premium</th>
+                        <th>Jobs</th>
+                        <th>SQL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>AWS</td>
+                        <td>$0.55</td>
+                        <td>$0.65</td>
+                        <td>$0.30</td>
+                        <td>$0.70</td>
+                    </tr>
+                    <tr>
+                        <td>Azure</td>
+                        <td>$0.50</td>
+                        <td>$0.60</td>
+                        <td>$0.28</td>
+                        <td>$0.67</td>
+                    </tr>
+                    <tr>
+                        <td>GCP</td>
+                        <td>$0.52</td>
+                        <td>$0.62</td>
+                        <td>$0.29</td>
+                        <td>$0.68</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Cost Calculation Example</h3>
+            <div class="formula-box">
+                <strong>Scenario:</strong> 10-node cluster, i3.2xlarge, running 8 hours/day<br><br>
+
+                <strong>DBU Cost:</strong><br>
+                10 nodes × 8 hours × 30 days × $0.30 = $720/month<br><br>
+
+                <strong>Compute Cost:</strong><br>
+                10 nodes × 8 hours × 30 days × $1.248 = $2,995/month<br><br>
+
+                <strong>Total:</strong> $3,715/month
+            </div>
+        </div>
+
+        <div class="content-section" id="optimization">
+            <h2>Cost Optimization Strategies</h2>
+
+            <h3>Top 10 Optimization Techniques</h3>
+            <ol>
+                <li><strong>Use Job Compute (50% savings):</strong> Switch from All-Purpose to Job clusters</li>
+                <li><strong>Spot Instances (up to 90% savings):</strong> Use for fault-tolerant batch jobs</li>
+                <li><strong>Auto-termination (30% savings):</strong> Set aggressive idle timeouts</li>
+                <li><strong>Cluster Pools (20% faster startup):</strong> Pre-warm instances</li>
+                <li><strong>Photon (3x performance):</strong> Enable for SQL and Python workloads</li>
+                <li><strong>Right-sizing (40% savings):</strong> Match instance type to workload</li>
+                <li><strong>Autoscaling (25% savings):</strong> Scale based on demand</li>
+                <li><strong>Z-ordering (40% query improvement):</strong> Optimize Delta Lake</li>
+                <li><strong>Caching (60% faster):</strong> Cache frequently accessed data</li>
+                <li><strong>Scheduled scaling:</strong> Reduce clusters during off-hours</li>
+            </ol>
+
+            <div class="best-practice">
+                <strong>💰 Quick Win:</strong> Enable auto-termination with 30-minute timeout. This single change typically saves 30% on interactive cluster costs.
+            </div>
+        </div>
+
+        <div class="content-section" id="workload-patterns">
+            <h2>Workload Patterns</h2>
+
+            <h3>Batch Processing</h3>
+            <ul>
+                <li>Use Job Compute clusters</li>
+                <li>Enable autoscaling (2-20 nodes)</li>
+                <li>Use spot instances (80%)</li>
+                <li>Choose storage-optimized instances</li>
+            </ul>
+
+            <h3>Real-time Streaming</h3>
+            <ul>
+                <li>Fixed-size clusters for predictable latency</li>
+                <li>On-demand instances only</li>
+                <li>Memory-optimized instances</li>
+                <li>Enable Photon for structured streaming</li>
+            </ul>
+
+            <h3>Interactive Analytics</h3>
+            <ul>
+                <li>All-Purpose clusters with pools</li>
+                <li>Aggressive auto-termination (20 min)</li>
+                <li>Mix of on-demand (30%) and spot (70%)</li>
+                <li>SQL Warehouses for BI tools</li>
+            </ul>
+
+            <h3>Machine Learning</h3>
+            <ul>
+                <li>GPU instances for deep learning</li>
+                <li>High-memory instances for feature engineering</li>
+                <li>MLflow for experiment tracking</li>
+                <li>Separate clusters for training vs inference</li>
+            </ul>
+        </div>
+
+        <div class="content-section" id="best-practices">
+            <h2>Best Practices</h2>
+
+            <h3>Cluster Configuration</h3>
+            <div class="best-practice">
+                <ol>
+                    <li>Start with 2-8 worker autoscaling range</li>
+                    <li>Use Spark 3.x for better performance</li>
+                    <li>Enable adaptive query execution</li>
+                    <li>Set spark.sql.shuffle.partitions based on cluster size</li>
+                    <li>Use Delta Cache for repeated queries</li>
+                </ol>
+            </div>
+
+            <h3>Monitoring & Alerts</h3>
+            <ul>
+                <li>Set cost alerts at 80% of budget</li>
+                <li>Monitor DBU consumption trends</li>
+                <li>Track job duration changes</li>
+                <li>Review cluster utilization weekly</li>
+                <li>Analyze Spark UI for bottlenecks</li>
+            </ul>
+
+            <h3>Development vs Production</h3>
+            <table class="pricing-table">
+                <thead>
+                    <tr>
+                        <th>Environment</th>
+                        <th>Configuration</th>
+                        <th>Cost Strategy</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Development</td>
+                        <td>Small clusters (2-4 nodes)</td>
+                        <td>Aggressive termination, 100% spot</td>
+                    </tr>
+                    <tr>
+                        <td>Staging</td>
+                        <td>Production-like sizing</td>
+                        <td>50% spot, standard termination</td>
+                    </tr>
+                    <tr>
+                        <td>Production</td>
+                        <td>Right-sized with headroom</td>
+                        <td>30% spot, monitoring enabled</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="content-section" id="common-mistakes">
+            <h2>Common Mistakes to Avoid</h2>
+
+            <div class="warning-box">
+                <h3>❌ Top 10 Costly Mistakes</h3>
+                <ol>
+                    <li><strong>Using All-Purpose for jobs:</strong> Doubles your cost</li>
+                    <li><strong>No auto-termination:</strong> Clusters run idle</li>
+                    <li><strong>Over-provisioning:</strong> Too many/large nodes</li>
+                    <li><strong>Ignoring spot instances:</strong> Missing 90% savings</li>
+                    <li><strong>Not using cluster pools:</strong> Slow startup times</li>
+                    <li><strong>Wrong instance types:</strong> Memory for compute jobs</li>
+                    <li><strong>No autoscaling:</strong> Fixed size for variable load</li>
+                    <li><strong>Photon for incompatible workloads:</strong> 2x cost, no benefit</li>
+                    <li><strong>Long retention periods:</strong> Excessive storage costs</li>
+                    <li><strong>No monitoring:</strong> Unaware of cost creep</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="content-section" id="case-studies">
+            <h2>Real-World Case Studies</h2>
+
+            <h3>Case Study 1: E-commerce Company</h3>
+            <div style="background: #e7f3ff; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <strong>Challenge:</strong> $50K/month Databricks bill<br>
+                <strong>Solution:</strong>
+                <ul>
+                    <li>Switched to Job Compute: -50%</li>
+                    <li>Implemented spot instances: -30%</li>
+                    <li>Enabled Photon for SQL: -20% runtime</li>
+                </ul>
+                <strong>Result:</strong> $20K/month (60% reduction)
+            </div>
+
+            <h3>Case Study 2: Financial Services</h3>
+            <div style="background: #e7f3ff; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <strong>Challenge:</strong> 6-hour batch processing window<br>
+                <strong>Solution:</strong>
+                <ul>
+                    <li>Upgraded to i3.8xlarge instances</li>
+                    <li>Enabled Delta Cache</li>
+                    <li>Implemented Z-ordering</li>
+                </ul>
+                <strong>Result:</strong> 2-hour processing (67% faster)
+            </div>
+
+            <h3>Case Study 3: Healthcare Analytics</h3>
+            <div style="background: #e7f3ff; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <strong>Challenge:</strong> Unpredictable workloads<br>
+                <strong>Solution:</strong>
+                <ul>
+                    <li>Autoscaling 2-50 nodes</li>
+                    <li>Cluster pools for fast scaling</li>
+                    <li>SQL Warehouses for BI users</li>
+                </ul>
+                <strong>Result:</strong> 40% cost reduction, 5x faster queries
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Next Steps</h2>
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem; border-radius: 12px; text-align: center;">
+                <h3 style="color: white;">Ready to Optimize Your Databricks Costs?</h3>
+                <p>Use our interactive calculator to get personalized sizing recommendations</p>
+                <div style="margin-top: 1.5rem;">
+                    <a href="../../calculators/databricks-sizing/" style="background: white; color: #667eea; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-block;">
+                        🧮 Launch Databricks Calculator
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Additional Resources</h2>
+            <ul>
+                <li><a href="https://docs.databricks.com/clusters/cluster-config-best-practices.html">Databricks Official Best Practices</a></li>
+                <li><a href="#">DBU Calculator Spreadsheet Template</a></li>
+                <li><a href="#">Spark Configuration Cheat Sheet</a></li>
+                <li><a href="#">Cost Monitoring Dashboard Template</a></li>
+                <li><a href="#">Migration Assessment Guide</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Databricks Sizing Calculator - Optimize Cluster Costs & Performance</title>
+    <meta name="description" content="Free Databricks sizing calculator. Estimate DBU consumption, cluster costs, and optimize configurations for Spark workloads. Save 40% on Databricks costs.">
+    <meta name="keywords" content="databricks sizing, databricks calculator, DBU calculator, databricks cost optimization, spark cluster sizing, databricks pricing">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .calculator-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff6b35 0%, #f72b1c 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+            overflow-x: auto;
+        }
+
+        .nav-tab {
+            padding: 1rem 2rem;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+            color: #495057;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .nav-tab:hover {
+            background: #e9ecef;
+        }
+
+        .nav-tab.active {
+            color: #ff6b35;
+            border-bottom-color: #ff6b35;
+            background: white;
+        }
+
+        .tab-content {
+            padding: 2rem;
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #212529;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 0.75rem;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #ff6b35;
+        }
+
+        .form-group small {
+            margin-top: 0.25rem;
+            color: #6c757d;
+            font-size: 0.85rem;
+        }
+
+        .cluster-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 2px solid #dee2e6;
+        }
+
+        .cluster-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .cluster-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #212529;
+        }
+
+        .remove-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .remove-btn:hover {
+            background: #c82333;
+        }
+
+        .add-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 1rem 0;
+        }
+
+        .add-btn:hover {
+            background: #218838;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .result-card.cost {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .result-card.savings {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .result-card.performance {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .result-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-value {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .result-subtext {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            margin-top: 0.5rem;
+        }
+
+        .recommendation-box {
+            background: #d4edda;
+            border: 2px solid #c3e6cb;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .recommendation-box h3 {
+            color: #155724;
+            margin-bottom: 1rem;
+        }
+
+        .recommendation-list {
+            list-style: none;
+        }
+
+        .recommendation-list li {
+            padding: 0.5rem 0;
+            color: #155724;
+        }
+
+        .recommendation-list li:before {
+            content: "✓ ";
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .comparison-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .comparison-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .toggle-switch {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #ff6b35;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #ff6b35;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #ff5722;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-tabs {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <div class="header">
+            <h1>🚀 Databricks Sizing Calculator</h1>
+            <p>Optimize your Databricks clusters and save up to 40% on costs</p>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="switchTab('workload')">📊 Workload Analysis</button>
+            <button class="nav-tab" onclick="switchTab('clusters')">🖥️ Cluster Configuration</button>
+            <button class="nav-tab" onclick="switchTab('jobs')">⚡ Jobs & Workflows</button>
+            <button class="nav-tab" onclick="switchTab('storage')">💾 Storage & Delta</button>
+            <button class="nav-tab" onclick="switchTab('optimization')">🎯 Cost Optimization</button>
+            <button class="nav-tab" onclick="switchTab('comparison')">📈 Cloud Comparison</button>
+            <button class="nav-tab" onclick="switchTab('results')">💰 Results & Report</button>
+        </div>
+
+        <!-- Workload Analysis Tab -->
+        <div class="tab-content active" id="workload-tab">
+            <h2>Workload Characteristics</h2>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Workload Type</label>
+                    <select id="workload-type" onchange="updateCalculations()">
+                        <option value="batch">Batch Processing</option>
+                        <option value="streaming">Real-time Streaming</option>
+                        <option value="ml">Machine Learning</option>
+                        <option value="sql">SQL Analytics</option>
+                        <option value="etl">ETL/Data Engineering</option>
+                        <option value="mixed">Mixed Workloads</option>
+                    </select>
+                    <small>Primary use case for Databricks</small>
+                </div>
+
+                <div class="form-group">
+                    <label>Data Volume (TB)</label>
+                    <input type="number" id="data-volume" value="10" min="0" step="1" onchange="updateCalculations()">
+                    <small>Total data to be processed</small>
+                </div>
+
+                <div class="form-group">
+                    <label>Daily Processing (TB)</label>
+                    <input type="number" id="daily-processing" value="2" min="0" step="0.1" onchange="updateCalculations()">
+                    <small>Data processed per day</small>
+                </div>
+
+                <div class="form-group">
+                    <label>Concurrent Users</label>
+                    <input type="number" id="concurrent-users" value="10" min="1" onchange="updateCalculations()">
+                    <small>Peak concurrent users</small>
+                </div>
+
+                <div class="form-group">
+                    <label>Job Complexity</label>
+                    <select id="job-complexity" onchange="updateCalculations()">
+                        <option value="simple">Simple (Basic transformations)</option>
+                        <option value="moderate" selected>Moderate (Joins, aggregations)</option>
+                        <option value="complex">Complex (ML, graph processing)</option>
+                        <option value="intensive">Intensive (Deep learning, NLP)</option>
+                    </select>
+                    <small>Computational complexity</small>
+                </div>
+
+                <div class="form-group">
+                    <label>SLA Requirements</label>
+                    <select id="sla-requirements" onchange="updateCalculations()">
+                        <option value="relaxed">Relaxed (Best effort)</option>
+                        <option value="standard" selected>Standard (4 hours)</option>
+                        <option value="tight">Tight (1 hour)</option>
+                        <option value="realtime">Real-time (< 5 minutes)</option>
+                    </select>
+                    <small>Processing time requirements</small>
+                </div>
+            </div>
+
+            <div class="alert alert-info">
+                💡 <strong>Tip:</strong> Accurate workload characterization can reduce costs by 30-40% through proper cluster sizing.
+            </div>
+        </div>
+
+        <!-- Cluster Configuration Tab -->
+        <div class="tab-content" id="clusters-tab">
+            <h2>Cluster Configuration</h2>
+
+            <div id="clusters-container">
+                <div class="cluster-card">
+                    <div class="cluster-header">
+                        <span class="cluster-title">Cluster 1: Interactive</span>
+                        <button class="remove-btn" onclick="removeCluster(this)">Remove</button>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Cloud Provider</label>
+                            <select id="cloud-provider-1" onchange="updateInstanceTypes(1)">
+                                <option value="aws" selected>Amazon Web Services (AWS)</option>
+                                <option value="azure">Microsoft Azure</option>
+                                <option value="gcp">Google Cloud Platform (GCP)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Cluster Type</label>
+                            <select id="cluster-type-1" onchange="updateCalculations()">
+                                <option value="all-purpose">All-Purpose Compute</option>
+                                <option value="job">Job Compute</option>
+                                <option value="sql">SQL Warehouse</option>
+                                <option value="ml">ML Compute</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Instance Type</label>
+                            <select id="instance-type-1" onchange="updateCalculations()">
+                                <option value="general-medium" selected>m5.2xlarge (8 vCPU, 32 GB, 2.0 DBU/hr)</option>
+                                <option value="memory-medium">r5.2xlarge (8 vCPU, 64 GB, 3.0 DBU/hr)</option>
+                                <option value="compute-medium">c5.2xlarge (8 vCPU, 16 GB, 1.5 DBU/hr)</option>
+                                <option value="storage-medium">i3.2xlarge (8 vCPU, 61 GB, 2.5 DBU/hr)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Min Workers</label>
+                            <input type="number" value="2" min="0" onchange="updateCalculations()">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Max Workers</label>
+                            <input type="number" value="8" min="1" onchange="updateCalculations()">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Autoscaling</label>
+                            <div class="toggle-switch">
+                                <label class="switch">
+                                    <input type="checkbox" checked onchange="updateCalculations()">
+                                    <span class="slider"></span>
+                                </label>
+                                <span>Enabled</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Spot Instances (%)</label>
+                            <input type="number" value="50" min="0" max="100" onchange="updateCalculations()">
+                            <small>Percentage of spot instances</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Runtime Hours/Day</label>
+                            <input type="number" value="8" min="0" max="24" onchange="updateCalculations()">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Photon Acceleration</label>
+                            <div class="toggle-switch">
+                                <label class="switch">
+                                    <input type="checkbox" onchange="updateCalculations()">
+                                    <span class="slider"></span>
+                                </label>
+                                <span>Enable (2x DBU cost, 3x performance)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="add-btn" onclick="addCluster()">+ Add Another Cluster</button>
+
+            <div class="recommendation-box">
+                <h3>💡 Cluster Recommendations</h3>
+                <ul class="recommendation-list" id="cluster-recommendations">
+                    <li>Consider using Photon for SQL and Python workloads - 3x performance improvement</li>
+                    <li>Enable autoscaling to handle variable workloads efficiently</li>
+                    <li>Use spot instances for fault-tolerant batch jobs (up to 90% savings)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Jobs & Workflows Tab -->
+        <div class="tab-content" id="jobs-tab">
+            <h2>Jobs & Workflows Configuration</h2>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Number of Scheduled Jobs</label>
+                    <input type="number" id="num-jobs" value="10" min="0" onchange="updateCalculations()">
+                    <small>Total scheduled jobs</small>
+                </div>
+
+                <div class="form-group">
+                    <label>Average Job Duration (minutes)</label>
+                    <input type="number" id="job-duration" value="30" min="1" onchange="updateCalculations()">
+                    <small>Average runtime per job</small>
+                </div>
+
+                <div class="form-group">
+                    <label>Job Frequency</label>
+                    <select id="job-frequency" onchange="updateCalculations()">
+                        <option value="hourly">Hourly</option>
+                        <option value="daily" selected>Daily</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="monthly">Monthly</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Workflow Orchestration</label>
+                    <select id="orchestration" onchange="updateCalculations()">
+                        <option value="databricks">Databricks Workflows</option>
+                        <option value="airflow">Apache Airflow</option>
+                        <option value="adf">Azure Data Factory</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Retry Policy</label>
+                    <select id="retry-policy" onchange="updateCalculations()">
+                        <option value="none">No Retries</option>
+                        <option value="standard" selected>Standard (3 retries)</option>
+                        <option value="aggressive">Aggressive (5 retries)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Job Compute Reuse</label>
+                    <div class="toggle-switch">
+                        <label class="switch">
+                            <input type="checkbox" checked onchange="updateCalculations()">
+                            <span class="slider"></span>
+                        </label>
+                        <span>Enable cluster reuse</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert alert-warning">
+                ⚠️ <strong>Cost Alert:</strong> Running jobs on All-Purpose clusters costs 2x more than Job clusters. Always use Job clusters for scheduled workloads.
+            </div>
+        </div>
+
+        <!-- Storage & Delta Tab -->
+        <div class="tab-content" id="storage-tab">
+            <h2>Storage & Delta Lake Configuration</h2>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Delta Lake Tables (TB)</label>
+                    <input type="number" id="delta-storage" value="5" min="0" step="0.1" onchange="updateCalculations()">
+                    <small>Total Delta Lake storage</small>
+                </div>
+
+                <div class="form-group">
+                    <label>Non-Delta Storage (TB)</label>
+                    <input type="number" id="other-storage" value="3" min="0" step="0.1" onchange="updateCalculations()">
+                    <small>Parquet, JSON, CSV storage</small>
+                </div>
+
+                <div class="form-group">
+                    <label>Storage Type</label>
+                    <select id="storage-type" onchange="updateCalculations()">
+                        <option value="s3">AWS S3</option>
+                        <option value="adls">Azure Data Lake Storage</option>
+                        <option value="gcs">Google Cloud Storage</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Delta Features</label>
+                    <select id="delta-features" onchange="updateCalculations()">
+                        <option value="basic">Basic (ACID transactions)</option>
+                        <option value="advanced" selected>Advanced (Time travel, Z-ordering)</option>
+                        <option value="premium">Premium (Change data feed, Live tables)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Vacuum Frequency</label>
+                    <select id="vacuum-frequency" onchange="updateCalculations()">
+                        <option value="daily">Daily</option>
+                        <option value="weekly" selected>Weekly</option>
+                        <option value="monthly">Monthly</option>
+                    </select>
+                    <small>Delta table maintenance</small>
+                </div>
+
+                <div class="form-group">
+                    <label>Time Travel Retention (days)</label>
+                    <input type="number" id="time-travel" value="7" min="0" max="30" onchange="updateCalculations()">
+                    <small>Historical data retention</small>
+                </div>
+            </div>
+
+            <div class="alert alert-info">
+                💾 <strong>Storage Tip:</strong> Delta Lake can reduce storage costs by 50% through compression and eliminate the need for separate staging tables.
+            </div>
+        </div>
+
+        <!-- Cost Optimization Tab -->
+        <div class="tab-content" id="optimization-tab">
+            <h2>Cost Optimization Settings</h2>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Environment</label>
+                    <select id="environment" onchange="updateCalculations()">
+                        <option value="dev">Development</option>
+                        <option value="staging">Staging</option>
+                        <option value="production" selected>Production</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Region</label>
+                    <select id="region" onchange="updateCalculations()">
+                        <option value="us-east-1" selected>US East (N. Virginia)</option>
+                        <option value="us-west-2">US West (Oregon)</option>
+                        <option value="eu-west-1">EU (Ireland)</option>
+                        <option value="ap-southeast-1">Asia Pacific (Singapore)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Commitment Type</label>
+                    <select id="commitment" onchange="updateCalculations()">
+                        <option value="on-demand">On-Demand</option>
+                        <option value="committed-1yr" selected>1-Year Commitment (22% off)</option>
+                        <option value="committed-3yr">3-Year Commitment (37% off)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Auto-termination (minutes)</label>
+                    <input type="number" id="auto-termination" value="120" min="10" onchange="updateCalculations()">
+                    <small>Idle time before shutdown</small>
+                </div>
+
+                <div class="form-group">
+                    <label>Cluster Pools</label>
+                    <div class="toggle-switch">
+                        <label class="switch">
+                            <input type="checkbox" checked onchange="updateCalculations()">
+                            <span class="slider"></span>
+                        </label>
+                        <span>Use cluster pools (faster startup)</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Cost Alerts Threshold ($)</label>
+                    <input type="number" id="cost-threshold" value="10000" min="100" onchange="updateCalculations()">
+                    <small>Monthly spend alert</small>
+                </div>
+            </div>
+
+            <div class="recommendation-box">
+                <h3>🎯 Optimization Opportunities</h3>
+                <ul class="recommendation-list">
+                    <li>Switch to Job Compute for scheduled workloads - Save 50%</li>
+                    <li>Enable auto-termination for interactive clusters - Save 30%</li>
+                    <li>Use spot instances for batch processing - Save up to 90%</li>
+                    <li>Implement cluster pools to reduce startup time by 80%</li>
+                    <li>Consider Photon for SQL workloads - 3x performance at 2x cost</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Cloud Comparison Tab -->
+        <div class="tab-content" id="comparison-tab">
+            <h2>Cloud Platform Comparison</h2>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>AWS</th>
+                        <th>Azure</th>
+                        <th>GCP</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>DBU Price (Standard)</strong></td>
+                        <td>$0.55/DBU</td>
+                        <td>$0.50/DBU</td>
+                        <td>$0.52/DBU</td>
+                    </tr>
+                    <tr>
+                        <td><strong>DBU Price (Premium)</strong></td>
+                        <td>$0.65/DBU</td>
+                        <td>$0.60/DBU</td>
+                        <td>$0.62/DBU</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Compute Cost (m5.xlarge equivalent)</strong></td>
+                        <td>$0.192/hour</td>
+                        <td>$0.185/hour</td>
+                        <td>$0.189/hour</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Storage (per GB/month)</strong></td>
+                        <td>$0.023 (S3)</td>
+                        <td>$0.021 (ADLS)</td>
+                        <td>$0.020 (GCS)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Spot Instance Savings</strong></td>
+                        <td>Up to 90%</td>
+                        <td>Up to 90%</td>
+                        <td>Up to 91%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Native Integration</strong></td>
+                        <td>EMR, Glue, Athena</td>
+                        <td>Synapse, Data Factory</td>
+                        <td>Dataproc, BigQuery</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Serverless SQL</strong></td>
+                        <td>✓ Available</td>
+                        <td>✓ Available</td>
+                        <td>✓ Available</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Unity Catalog</strong></td>
+                        <td>✓ Supported</td>
+                        <td>✓ Supported</td>
+                        <td>✓ Supported</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="results-grid" style="margin-top: 2rem;">
+                <div class="result-card">
+                    <div class="result-label">AWS Monthly Cost</div>
+                    <div class="result-value" id="aws-cost">$12,450</div>
+                    <div class="result-subtext">Based on your configuration</div>
+                </div>
+
+                <div class="result-card cost">
+                    <div class="result-label">Azure Monthly Cost</div>
+                    <div class="result-value" id="azure-cost">$11,890</div>
+                    <div class="result-subtext">5% cheaper than AWS</div>
+                </div>
+
+                <div class="result-card savings">
+                    <div class="result-label">GCP Monthly Cost</div>
+                    <div class="result-value" id="gcp-cost">$12,150</div>
+                    <div class="result-subtext">2% cheaper than AWS</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Tab -->
+        <div class="tab-content" id="results-tab">
+            <h2>Sizing Results & Recommendations</h2>
+
+            <div class="results-grid">
+                <div class="result-card">
+                    <div class="result-label">Total DBUs/Month</div>
+                    <div class="result-value" id="total-dbus">15,680</div>
+                    <div class="result-subtext">Across all clusters</div>
+                </div>
+
+                <div class="result-card cost">
+                    <div class="result-label">Monthly Cost</div>
+                    <div class="result-value" id="monthly-cost">$18,450</div>
+                    <div class="result-subtext">DBU + Compute + Storage</div>
+                </div>
+
+                <div class="result-card savings">
+                    <div class="result-label">Potential Savings</div>
+                    <div class="result-value" id="savings">$7,380</div>
+                    <div class="result-subtext">40% cost reduction possible</div>
+                </div>
+
+                <div class="result-card performance">
+                    <div class="result-label">Performance Score</div>
+                    <div class="result-value" id="performance">85/100</div>
+                    <div class="result-subtext">Good configuration</div>
+                </div>
+            </div>
+
+            <div class="recommendation-box">
+                <h3>🎯 Personalized Recommendations</h3>
+                <ul class="recommendation-list" id="final-recommendations">
+                    <li>Switch 60% of workloads to Job Compute clusters - Save $4,420/month</li>
+                    <li>Implement aggressive auto-termination (30 min) - Save $1,850/month</li>
+                    <li>Increase spot instance usage to 80% for batch jobs - Save $920/month</li>
+                    <li>Enable Photon for SQL workloads - Reduce runtime by 65%</li>
+                    <li>Use cluster pools for interactive workloads - Reduce startup by 5 minutes</li>
+                    <li>Optimize Delta Lake with Z-ordering - Improve query performance by 40%</li>
+                </ul>
+            </div>
+
+            <h3 style="margin-top: 2rem;">Cost Breakdown</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Component</th>
+                        <th>Current Cost</th>
+                        <th>Optimized Cost</th>
+                        <th>Savings</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>DBU Costs</td>
+                        <td>$8,624</td>
+                        <td>$5,174</td>
+                        <td>$3,450 (40%)</td>
+                    </tr>
+                    <tr>
+                        <td>Compute (EC2/VMs)</td>
+                        <td>$7,326</td>
+                        <td>$4,396</td>
+                        <td>$2,930 (40%)</td>
+                    </tr>
+                    <tr>
+                        <td>Storage</td>
+                        <td>$2,500</td>
+                        <td>$1,500</td>
+                        <td>$1,000 (40%)</td>
+                    </tr>
+                    <tr style="font-weight: bold;">
+                        <td>Total Monthly</td>
+                        <td>$18,450</td>
+                        <td>$11,070</td>
+                        <td>$7,380 (40%)</td>
+                    </tr>
+                    <tr style="font-weight: bold; color: #28a745;">
+                        <td>Annual Projection</td>
+                        <td>$221,400</td>
+                        <td>$132,840</td>
+                        <td>$88,560 (40%)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="generateReport()">📄 Generate PDF Report</button>
+                <button class="btn btn-secondary" onclick="exportToExcel()">📊 Export to Excel</button>
+                <button class="btn btn-secondary" onclick="shareResults()">🔗 Share Results</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="databricks-multicloud.js"></script>
+    <script>
+        // Initialize multi-cloud support
+        const multiCloud = typeof DatabricksMultiCloud !== 'undefined' ? DatabricksMultiCloud : null;
+        const pricing = multiCloud ? multiCloud.pricing : {
+            dbu: {
+                aws: { standard: 0.55, premium: 0.65, jobs: 0.30 },
+                azure: { standard: 0.50, premium: 0.60, jobs: 0.28 },
+                gcp: { standard: 0.52, premium: 0.62, jobs: 0.29 }
+            },
+            instances: {
+                aws: {
+                    'general-medium': { name: 'm5.2xlarge', cpu: 8, memory: 32, hourly: 0.384, dbus: 2.0 },
+                    'memory-medium': { name: 'r5.2xlarge', cpu: 8, memory: 64, hourly: 0.504, dbus: 3.0 },
+                    'compute-medium': { name: 'c5.2xlarge', cpu: 8, memory: 16, hourly: 0.34, dbus: 1.5 },
+                    'storage-medium': { name: 'i3.2xlarge', cpu: 8, memory: 61, hourly: 1.248, dbus: 2.5 }
+                },
+                azure: {
+                    'general-medium': { name: 'Standard_D8s_v3', cpu: 8, memory: 32, hourly: 0.384, dbus: 2.0 },
+                    'memory-medium': { name: 'Standard_E8s_v3', cpu: 8, memory: 64, hourly: 0.504, dbus: 3.0 },
+                    'compute-medium': { name: 'Standard_F8s_v2', cpu: 8, memory: 16, hourly: 0.338, dbus: 1.5 },
+                    'storage-medium': { name: 'Standard_L8s_v2', cpu: 8, memory: 64, hourly: 0.692, dbus: 2.5 }
+                },
+                gcp: {
+                    'general-medium': { name: 'n2-standard-8', cpu: 8, memory: 32, hourly: 0.388, dbus: 2.0 },
+                    'memory-medium': { name: 'n2-highmem-8', cpu: 8, memory: 64, hourly: 0.523, dbus: 3.0 },
+                    'compute-medium': { name: 'n2-highcpu-8', cpu: 8, memory: 8, hourly: 0.291, dbus: 1.5 },
+                    'storage-medium': { name: 'n1-standard-8', cpu: 8, memory: 30, hourly: 0.38, dbus: 2.5 }
+                }
+            },
+            storage: {
+                aws: 0.023,
+                azure: 0.021,
+                gcp: 0.020
+            }
+        };
+
+        let clusters = [];
+
+        function updateInstanceTypes(clusterId) {
+            if (multiCloud) {
+                const provider = document.getElementById(`cloud-provider-${clusterId}`).value;
+                multiCloud.updateInstanceTypes(clusterId, provider);
+            } else {
+                // Fallback to simple update
+                const provider = document.getElementById(`cloud-provider-${clusterId}`).value;
+                const select = document.getElementById(`instance-type-${clusterId}`);
+                const instances = pricing.instances[provider];
+
+                if (instances) {
+                    Object.keys(instances).forEach(key => {
+                        const instance = instances[key];
+                        const option = select.querySelector(`option[value="${key}"]`);
+                        if (option) {
+                            option.textContent = `${instance.name} (${instance.cpu} vCPU, ${instance.memory} GB, ${instance.dbus} DBU/hr)`;
+                        }
+                    });
+                }
+            }
+            updateCalculations();
+        }
+
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Remove active class from all nav tabs
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+
+            // Add active class to clicked nav tab
+            event.target.classList.add('active');
+
+            // Update calculations when switching to results tab
+            if (tabName === 'results') {
+                calculateFinalResults();
+            }
+        }
+
+        function addCluster() {
+            const clustersContainer = document.getElementById('clusters-container');
+            const clusterCount = clustersContainer.children.length + 1;
+
+            const clusterCard = document.createElement('div');
+            clusterCard.className = 'cluster-card';
+            clusterCard.innerHTML = `
+                <div class="cluster-header">
+                    <span class="cluster-title">Cluster ${clusterCount}: New Cluster</span>
+                    <button class="remove-btn" onclick="removeCluster(this)">Remove</button>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Cluster Type</label>
+                        <select onchange="updateCalculations()">
+                            <option value="all-purpose">All-Purpose Compute</option>
+                            <option value="job">Job Compute</option>
+                            <option value="sql">SQL Warehouse</option>
+                            <option value="ml">ML Compute</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Instance Type</label>
+                        <select onchange="updateCalculations()">
+                            <option value="i3.xlarge">i3.xlarge (4 vCPU, 30.5 GB)</option>
+                            <option value="i3.2xlarge" selected>i3.2xlarge (8 vCPU, 61 GB)</option>
+                            <option value="i3.4xlarge">i3.4xlarge (16 vCPU, 122 GB)</option>
+                            <option value="i3.8xlarge">i3.8xlarge (32 vCPU, 244 GB)</option>
+                            <option value="r5.xlarge">r5.xlarge (4 vCPU, 32 GB)</option>
+                            <option value="r5.2xlarge">r5.2xlarge (8 vCPU, 64 GB)</option>
+                            <option value="r5.4xlarge">r5.4xlarge (16 vCPU, 128 GB)</option>
+                            <option value="c5.xlarge">c5.xlarge (4 vCPU, 8 GB)</option>
+                            <option value="c5.2xlarge">c5.2xlarge (8 vCPU, 16 GB)</option>
+                            <option value="c5.4xlarge">c5.4xlarge (16 vCPU, 32 GB)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Min Workers</label>
+                        <input type="number" value="2" min="0" onchange="updateCalculations()">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Max Workers</label>
+                        <input type="number" value="8" min="1" onchange="updateCalculations()">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Autoscaling</label>
+                        <div class="toggle-switch">
+                            <label class="switch">
+                                <input type="checkbox" checked onchange="updateCalculations()">
+                                <span class="slider"></span>
+                            </label>
+                            <span>Enabled</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Spot Instances (%)</label>
+                        <input type="number" value="50" min="0" max="100" onchange="updateCalculations()">
+                        <small>Percentage of spot instances</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Runtime Hours/Day</label>
+                        <input type="number" value="8" min="0" max="24" onchange="updateCalculations()">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Photon Acceleration</label>
+                        <div class="toggle-switch">
+                            <label class="switch">
+                                <input type="checkbox" onchange="updateCalculations()">
+                                <span class="slider"></span>
+                            </label>
+                            <span>Enable (2x DBU cost, 3x performance)</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            clustersContainer.appendChild(clusterCard);
+            updateCalculations();
+        }
+
+        function removeCluster(button) {
+            button.closest('.cluster-card').remove();
+            updateCalculations();
+        }
+
+        function updateCalculations() {
+            // This would contain the full calculation logic
+            // For now, just update some sample values
+            calculateFinalResults();
+        }
+
+        function calculateFinalResults() {
+            // Get workload parameters
+            const dataVolume = parseFloat(document.getElementById('data-volume').value) || 0;
+            const dailyProcessing = parseFloat(document.getElementById('daily-processing').value) || 0;
+            const workloadType = document.getElementById('workload-type').value;
+
+            // Prepare configuration for multi-cloud calculation
+            const config = {
+                clusters: [],
+                totalStorageGB: 0,
+                dataTransferGB: dataVolume * 0.1 // Assume 10% data transfer
+            };
+
+            // Collect cluster configurations
+            const clusterCards = document.querySelectorAll('.cluster-card');
+            clusterCards.forEach((card, index) => {
+                const clusterId = index + 1;
+                const provider = document.getElementById(`cloud-provider-${clusterId}`)?.value || 'aws';
+                const clusterType = document.getElementById(`cluster-type-${clusterId}`)?.value || 'all-purpose';
+                const instanceType = document.getElementById(`instance-type-${clusterId}`)?.value || 'general-medium';
+                const minWorkers = parseInt(card.querySelectorAll('input[type="number"]')[0].value) || 0;
+                const maxWorkers = parseInt(card.querySelectorAll('input[type="number"]')[1].value) || 0;
+                const hoursPerDay = parseFloat(card.querySelectorAll('input[type="number"]')[3].value) || 0;
+                const spotPercent = parseFloat(card.querySelectorAll('input[type="number"]')[2].value) || 0;
+
+                config.clusters.push({
+                    provider,
+                    clusterType,
+                    instanceType,
+                    minWorkers,
+                    maxWorkers,
+                    hoursPerDay,
+                    spotPercent,
+                    useSpot: spotPercent > 0
+                });
+            });
+
+            // Calculate storage
+            const deltaStorage = parseFloat(document.getElementById('delta-storage').value) || 0;
+            const otherStorage = parseFloat(document.getElementById('other-storage').value) || 0;
+            config.totalStorageGB = (deltaStorage + otherStorage) * 1024;
+
+            // Calculate costs for each cloud provider
+            const cloudCosts = {
+                aws: { dbu: 0, compute: 0, storage: 0, total: 0 },
+                azure: { dbu: 0, compute: 0, storage: 0, total: 0 },
+                gcp: { dbu: 0, compute: 0, storage: 0, total: 0 }
+            };
+
+            ['aws', 'azure', 'gcp'].forEach(cloud => {
+                let totalDBUs = 0;
+                let totalCompute = 0;
+
+                config.clusters.forEach(cluster => {
+                    const instances = pricing.instances[cloud];
+                    const instance = instances ? instances[cluster.instanceType] : null;
+
+                    if (instance) {
+                        const avgWorkers = (cluster.minWorkers + cluster.maxWorkers) / 2;
+                        const monthlyHours = cluster.hoursPerDay * 30;
+
+                        // Calculate DBUs
+                        const dbuRate = cluster.clusterType === 'job' ?
+                            pricing.dbu[cloud].jobs : pricing.dbu[cloud].standard;
+                        const clusterDBUs = instance.dbus * avgWorkers * monthlyHours;
+                        totalDBUs += clusterDBUs;
+
+                        // Calculate compute costs
+                        const spotDiscount = cluster.useSpot ? (cluster.spotPercent / 100) * 0.7 : 0;
+                        const hourlyRate = instance.hourly * (1 - spotDiscount);
+                        totalCompute += hourlyRate * avgWorkers * monthlyHours;
+                    }
+                });
+
+                // Calculate storage cost
+                const storageRate = pricing.storage[cloud] || 0.02;
+                const storageCost = config.totalStorageGB * storageRate;
+
+                // Calculate DBU cost
+                const dbuCost = totalDBUs * (pricing.dbu[cloud].standard || 0.5);
+
+                cloudCosts[cloud] = {
+                    dbu: dbuCost,
+                    compute: totalCompute,
+                    storage: storageCost,
+                    total: dbuCost + totalCompute + storageCost
+                };
+            });
+
+            // Find cheapest cloud
+            const cheapest = Object.keys(cloudCosts).reduce((a, b) =>
+                cloudCosts[a].total < cloudCosts[b].total ? a : b
+            );
+
+            // Update main results with cheapest option
+            const primaryCost = cloudCosts[cheapest].total;
+            const optimizedCost = primaryCost * 0.6;
+            const savings = primaryCost - optimizedCost;
+
+            document.getElementById('total-dbus').textContent = Math.round(cloudCosts[cheapest].dbu / pricing.dbu[cheapest].standard).toLocaleString();
+            document.getElementById('monthly-cost').textContent = '$' + Math.round(primaryCost).toLocaleString();
+            document.getElementById('savings').textContent = '$' + Math.round(savings).toLocaleString();
+
+            // Performance score
+            let performanceScore = 85;
+            if (document.querySelector('input[type="checkbox"]:checked')) {
+                performanceScore += 5;
+            }
+            document.getElementById('performance').textContent = performanceScore + '/100';
+
+            // Update cloud comparison with actual calculated values
+            document.getElementById('aws-cost').textContent = '$' + Math.round(cloudCosts.aws.total).toLocaleString();
+            document.getElementById('azure-cost').textContent = '$' + Math.round(cloudCosts.azure.total).toLocaleString();
+            document.getElementById('gcp-cost').textContent = '$' + Math.round(cloudCosts.gcp.total).toLocaleString();
+
+            // Update comparison percentages
+            const awsCost = cloudCosts.aws.total;
+            if (awsCost > 0) {
+                const azureDiff = ((awsCost - cloudCosts.azure.total) / awsCost * 100).toFixed(1);
+                const gcpDiff = ((awsCost - cloudCosts.gcp.total) / awsCost * 100).toFixed(1);
+
+                const azureText = document.querySelector('#azure-cost').nextElementSibling;
+                const gcpText = document.querySelector('#gcp-cost').nextElementSibling;
+
+                if (azureText) {
+                    azureText.textContent = azureDiff > 0 ?
+                        `${azureDiff}% cheaper than AWS` :
+                        `${Math.abs(azureDiff)}% more than AWS`;
+                }
+
+                if (gcpText) {
+                    gcpText.textContent = gcpDiff > 0 ?
+                        `${gcpDiff}% cheaper than AWS` :
+                        `${Math.abs(gcpDiff)}% more than AWS`;
+                }
+            }
+        }
+
+        function generateReport() {
+            alert('PDF Report generation would be implemented here');
+        }
+
+        function exportToExcel() {
+            alert('Excel export would be implemented here');
+        }
+
+        function shareResults() {
+            alert('Share functionality would be implemented here');
+        }
+
+        // Initialize calculations on load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCalculations();
+        });
+    </script>
+</body>
+</html>
