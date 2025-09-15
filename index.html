@@ -536,47 +536,167 @@
                 </a>
             </div>
 
-            <div class="cta-buttons">
-                <a href="calculators/ai-readiness/" class="btn btn-primary">
-                    🤖 AI Readiness
-                </a>
-                <a href="calculators/cloud-migration/" class="btn btn-primary">
-                    ☁️ Cloud Migration
-                </a>
-                <a href="calculators/mlops-audit/" class="btn btn-primary">
-                    🔧 MLOps Audit
-                </a>
-                <a href="calculators/llm-framework/" class="btn btn-primary">
-                    🧠 LLM Framework
-                </a>
-                <a href="calculators/security-audit/" class="btn btn-primary">
-                    🔒 Security Audit
-                </a>
-                <a href="calculators/genai-security/" class="btn btn-primary">
-                    🤖 GenAI Security
-                </a>
-                <a href="calculators/cost-optimization/" class="btn btn-primary">
-                    💰 Cost Optimization
-                </a>
+            <!-- Visual Journey Workflow -->
+            <div style="background: linear-gradient(135deg, #f0f9ff, #e0f2fe); padding: 1.5rem; border-radius: 12px; margin: 2rem auto 1rem; max-width: 900px;">
+                <h3 style="text-align: center; color: #0369a1; margin-bottom: 1rem; font-size: 1.2rem;">Your Architecture Journey</h3>
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                    <div style="text-align: center; flex: 1;">
+                        <div style="font-size: 2rem;">📋</div>
+                        <div style="font-weight: 600; color: #1e40af;">1. Assess</div>
+                        <div style="font-size: 0.75rem; color: #64748b;">Readiness & Maturity</div>
+                    </div>
+                    <div style="color: #cbd5e1;">→</div>
+                    <div style="text-align: center; flex: 1;">
+                        <div style="font-size: 2rem;">🏗️</div>
+                        <div style="font-weight: 600; color: #1e40af;">2. Plan</div>
+                        <div style="font-size: 0.75rem; color: #64748b;">Architecture & Strategy</div>
+                    </div>
+                    <div style="color: #cbd5e1;">→</div>
+                    <div style="text-align: center; flex: 1;">
+                        <div style="font-size: 2rem;">⚡</div>
+                        <div style="font-weight: 600; color: #1e40af;">3. Calculate</div>
+                        <div style="font-size: 0.75rem; color: #64748b;">Size & Cost</div>
+                    </div>
+                    <div style="color: #cbd5e1;">→</div>
+                    <div style="text-align: center; flex: 1;">
+                        <div style="font-size: 2rem;">🚀</div>
+                        <div style="font-weight: 600; color: #1e40af;">4. Deploy</div>
+                        <div style="font-size: 0.75rem; color: #64748b;">Implement & Optimize</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Complexity Legend -->
+            <div style="text-align: center; margin-bottom: 1.5rem;">
+                <span style="font-size: 0.75rem; color: #64748b; margin-right: 1rem;">
+                    <span style="color: #10b981;">●</span> Beginner
+                </span>
+                <span style="font-size: 0.75rem; color: #64748b; margin-right: 1rem;">
+                    <span style="color: #f59e0b;">●</span> Intermediate
+                </span>
+                <span style="font-size: 0.75rem; color: #64748b;">
+                    <span style="color: #ef4444;">●</span> Advanced
+                </span>
+            </div>
+
+            <!-- Organized Tool Categories -->
+            <div class="cta-buttons" style="display: block;">
+                <!-- Planning & Assessment -->
+                <div style="margin-bottom: 1.5rem;">
+                    <h4 style="text-align: center; color: #64748b; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">📋 Planning & Assessment</h4>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center;">
+                        <a href="calculators/ai-readiness/" class="btn btn-primary" title="Beginner-friendly">
+                            <span style="color: #10b981;">●</span> AI Readiness
+                        </a>
+                        <a href="calculators/cloud-migration/" class="btn btn-primary" title="Beginner-friendly">
+                            <span style="color: #10b981;">●</span> Cloud Migration
+                        </a>
+                        <a href="calculators/well-architected/" class="btn btn-primary" title="Intermediate">
+                            <span style="color: #f59e0b;">●</span> Well-Architected
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Technical Implementation -->
+                <div style="margin-bottom: 1.5rem;">
+                    <h4 style="text-align: center; color: #64748b; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">⚡ Technical Implementation</h4>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center;">
+                        <a href="calculators/databricks-sizing/" class="btn btn-primary" style="background: linear-gradient(135deg, #ff6b6b, #ff8e53);" title="Advanced - Requires Databricks knowledge">
+                            <span style="color: #fff;">●</span> Databricks Sizing
+                        </a>
+                        <a href="calculators/mlops-audit/" class="btn btn-primary" title="Intermediate">
+                            <span style="color: #f59e0b;">●</span> MLOps Audit
+                        </a>
+                        <a href="calculators/llm-framework/" class="btn btn-primary" title="Advanced">
+                            <span style="color: #ef4444;">●</span> LLM Framework
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Security & Optimization -->
+                <div style="margin-bottom: 1.5rem;">
+                    <h4 style="text-align: center; color: #64748b; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">🛡️ Security & Optimization</h4>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center;">
+                        <a href="calculators/security-audit/" class="btn btn-primary">
+                            <span style="color: #f59e0b;">●</span> Security Audit
+                        </a>
+                        <a href="calculators/genai-security/" class="btn btn-primary">
+                            <span style="color: #f59e0b;">●</span> GenAI Security
+                        </a>
+                        <a href="calculators/cost-optimization/" class="btn btn-primary">
+                            <span style="color: #10b981;">●</span> Cost Optimization
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
         
         <div class="stats">
             <div class="stat">
-                <div class="stat-value">9</div>
-                <div class="stat-label">Assessment Frameworks</div>
+                <div class="stat-value">10</div>
+                <div class="stat-label">Architecture Tools</div>
             </div>
             <div class="stat">
-                <div class="stat-value">9</div>
-                <div class="stat-label">Interactive Tools</div>
+                <div class="stat-value">80+</div>
+                <div class="stat-label">Cloud Regions</div>
             </div>
             <div class="stat">
                 <div class="stat-value">PDF</div>
-                <div class="stat-label">Report Generation</div>
+                <div class="stat-label">Instant Reports</div>
             </div>
             <div class="stat">
                 <div class="stat-value">100%</div>
-                <div class="stat-label">Free</div>
+                <div class="stat-label">Free & Open</div>
+            </div>
+        </div>
+
+        <!-- Audience Segmentation -->
+        <div style="background: #f8fafc; padding: 2rem; border-radius: 12px; margin: 2rem auto; max-width: 1200px;">
+            <h3 style="text-align: center; color: #1e293b; margin-bottom: 2rem;">Find Your Starting Point</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                <!-- CTO/Architect -->
+                <div style="background: white; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #6366f1;">
+                    <h4 style="color: #6366f1; margin-bottom: 0.5rem;">👔 I'm a CTO/Architect</h4>
+                    <p style="color: #64748b; font-size: 0.875rem; margin-bottom: 1rem;">Strategic planning and assessment tools</p>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <a href="calculators/ai-readiness/" style="color: #6366f1; text-decoration: none; font-size: 0.875rem;">→ AI Readiness Assessment</a>
+                        <a href="calculators/cloud-migration/" style="color: #6366f1; text-decoration: none; font-size: 0.875rem;">→ Cloud Migration Planning</a>
+                        <a href="calculators/well-architected/" style="color: #6366f1; text-decoration: none; font-size: 0.875rem;">→ Well-Architected Review</a>
+                    </div>
+                </div>
+
+                <!-- Data Engineer -->
+                <div style="background: white; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #ff6b6b;">
+                    <h4 style="color: #ff6b6b; margin-bottom: 0.5rem;">⚙️ I'm a Data Engineer</h4>
+                    <p style="color: #64748b; font-size: 0.875rem; margin-bottom: 1rem;">Technical calculators and sizing tools</p>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <a href="calculators/databricks-sizing/" style="color: #ff6b6b; text-decoration: none; font-size: 0.875rem;">→ Databricks Sizing Calculator</a>
+                        <a href="calculators/mlops-audit/" style="color: #ff6b6b; text-decoration: none; font-size: 0.875rem;">→ MLOps Maturity Audit</a>
+                        <a href="calculators/llm-framework/" style="color: #ff6b6b; text-decoration: none; font-size: 0.875rem;">→ LLM Implementation Guide</a>
+                    </div>
+                </div>
+
+                <!-- Security Lead -->
+                <div style="background: white; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #10b981;">
+                    <h4 style="color: #10b981; margin-bottom: 0.5rem;">🔒 I'm a Security Lead</h4>
+                    <p style="color: #64748b; font-size: 0.875rem; margin-bottom: 1rem;">Security and compliance frameworks</p>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <a href="calculators/security-audit/" style="color: #10b981; text-decoration: none; font-size: 0.875rem;">→ Security Audit Framework</a>
+                        <a href="calculators/genai-security/" style="color: #10b981; text-decoration: none; font-size: 0.875rem;">→ GenAI Security Assessment</a>
+                        <a href="calculators/well-architected/" style="color: #10b981; text-decoration: none; font-size: 0.875rem;">→ Well-Architected Security</a>
+                    </div>
+                </div>
+
+                <!-- FinOps Team -->
+                <div style="background: white; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #f59e0b;">
+                    <h4 style="color: #f59e0b; margin-bottom: 0.5rem;">💰 I'm in FinOps</h4>
+                    <p style="color: #64748b; font-size: 0.875rem; margin-bottom: 1rem;">Cost optimization and sizing tools</p>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <a href="calculators/cost-optimization/" style="color: #f59e0b; text-decoration: none; font-size: 0.875rem;">→ Cost Optimization Audit</a>
+                        <a href="calculators/databricks-sizing/" style="color: #f59e0b; text-decoration: none; font-size: 0.875rem;">→ Databricks TCO Calculator</a>
+                        <a href="calculators/cloud-migration/" style="color: #f59e0b; text-decoration: none; font-size: 0.875rem;">→ Cloud Migration ROI</a>
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -602,6 +722,152 @@
                 </a>
             </div>
         </div>
+
+        <!-- Quick Start Guide -->
+        <section style="background: linear-gradient(135deg, #fef3c7, #fde68a); padding: 2rem; border-radius: 12px; margin: 2rem auto; max-width: 1000px;">
+            <h3 style="text-align: center; color: #92400e; margin-bottom: 1.5rem;">🚀 New Here? Start With These</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    <strong style="color: #92400e;">First Time?</strong>
+                    <p style="font-size: 0.875rem; color: #64748b; margin: 0.5rem 0;">Start with <a href="calculators/ai-readiness/" style="color: #6366f1;">AI Readiness</a> to assess your organization's maturity</p>
+                </div>
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    <strong style="color: #92400e;">Planning Migration?</strong>
+                    <p style="font-size: 0.875rem; color: #64748b; margin: 0.5rem 0;">Use <a href="calculators/cloud-migration/" style="color: #6366f1;">Cloud Migration</a> for multi-cloud comparison</p>
+                </div>
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    <strong style="color: #92400e;">Ready to Deploy?</strong>
+                    <p style="font-size: 0.875rem; color: #64748b; margin: 0.5rem 0;">Calculate costs with <a href="calculators/databricks-sizing/" style="color: #6366f1;">Databricks Sizing</a> (technical)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Use Case Examples -->
+        <section style="background: #fff; padding: 2rem; border-radius: 12px; margin: 2rem auto; max-width: 1200px; border: 1px solid #e2e8f0;">
+            <h3 style="text-align: center; color: #1e293b; margin-bottom: 2rem;">Common Use Cases</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                <div>
+                    <h4 style="color: #6366f1; margin-bottom: 0.5rem;">📊 "We need an AI strategy"</h4>
+                    <ol style="font-size: 0.875rem; color: #64748b; padding-left: 1.5rem;">
+                        <li>Start: <a href="calculators/ai-readiness/">AI Readiness Assessment</a></li>
+                        <li>Then: <a href="calculators/mlops-audit/">MLOps Maturity Audit</a></li>
+                        <li>Finally: <a href="calculators/llm-framework/">LLM Implementation</a></li>
+                    </ol>
+                </div>
+                <div>
+                    <h4 style="color: #10b981; margin-bottom: 0.5rem;">☁️ "Planning Databricks migration"</h4>
+                    <ol style="font-size: 0.875rem; color: #64748b; padding-left: 1.5rem;">
+                        <li>Start: <a href="calculators/cloud-migration/">Cloud Migration Assessment</a></li>
+                        <li>Then: <a href="calculators/databricks-sizing/">Databricks Sizing Calculator</a></li>
+                        <li>Finally: <a href="calculators/cost-optimization/">Cost Optimization</a></li>
+                    </ol>
+                </div>
+                <div>
+                    <h4 style="color: #f59e0b; margin-bottom: 0.5rem;">💰 "Reducing cloud costs"</h4>
+                    <ol style="font-size: 0.875rem; color: #64748b; padding-left: 1.5rem;">
+                        <li>Start: <a href="calculators/cost-optimization/">Cost Optimization Audit</a></li>
+                        <li>Then: <a href="calculators/well-architected/">Well-Architected Review</a></li>
+                        <li>Finally: <a href="calculators/databricks-sizing/">Right-size with calculators</a></li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tool Relationships -->
+        <section style="background: #f8fafc; padding: 2rem; border-radius: 12px; margin: 2rem auto; max-width: 1200px;">
+            <h3 style="text-align: center; color: #1e293b; margin-bottom: 2rem;">🔗 How Tools Work Together</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 1.5rem;">
+                <div style="background: white; padding: 1.5rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+                    <h4 style="color: #3b82f6; margin-bottom: 1rem; display: flex; align-items: center;">
+                        <span style="margin-right: 0.5rem;">🤖</span> AI Readiness Assessment
+                    </h4>
+                    <p style="font-size: 0.875rem; color: #64748b; margin-bottom: 1rem;">Strategic starting point for AI initiatives</p>
+                    <div style="background: #f1f5f9; padding: 0.75rem; border-radius: 6px;">
+                        <strong style="font-size: 0.875rem; color: #475569;">Complements:</strong>
+                        <ul style="margin: 0.5rem 0 0 1.5rem; padding: 0; font-size: 0.875rem; color: #64748b;">
+                            <li><strong>MLOps Audit</strong> - Technical implementation depth</li>
+                            <li><strong>Databricks Sizing</strong> - Infrastructure planning</li>
+                            <li><strong>GenAI Security</strong> - AI-specific risk assessment</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="background: white; padding: 1.5rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+                    <h4 style="color: #10b981; margin-bottom: 1rem; display: flex; align-items: center;">
+                        <span style="margin-right: 0.5rem;">☁️</span> Cloud Migration Assessment
+                    </h4>
+                    <p style="font-size: 0.875rem; color: #64748b; margin-bottom: 1rem;">Foundation for cloud transformation</p>
+                    <div style="background: #f1f5f9; padding: 0.75rem; border-radius: 6px;">
+                        <strong style="font-size: 0.875rem; color: #475569;">Complements:</strong>
+                        <ul style="margin: 0.5rem 0 0 1.5rem; padding: 0; font-size: 0.875rem; color: #64748b;">
+                            <li><strong>Well-Architected</strong> - Best practices validation</li>
+                            <li><strong>Cost Optimization</strong> - FinOps implementation</li>
+                            <li><strong>Security Audit</strong> - Cloud security posture</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="background: white; padding: 1.5rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+                    <h4 style="color: #ff6b6b; margin-bottom: 1rem; display: flex; align-items: center;">
+                        <span style="margin-right: 0.5rem;">🚀</span> Databricks Sizing Calculator
+                    </h4>
+                    <p style="font-size: 0.875rem; color: #64748b; margin-bottom: 1rem;">Technical deployment planning</p>
+                    <div style="background: #f1f5f9; padding: 0.75rem; border-radius: 6px;">
+                        <strong style="font-size: 0.875rem; color: #475569;">Complements:</strong>
+                        <ul style="margin: 0.5rem 0 0 1.5rem; padding: 0; font-size: 0.875rem; color: #64748b;">
+                            <li><strong>Cloud Migration</strong> - Platform selection</li>
+                            <li><strong>Cost Optimization</strong> - Budget planning</li>
+                            <li><strong>MLOps Audit</strong> - Workload requirements</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="background: white; padding: 1.5rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+                    <h4 style="color: #f59e0b; margin-bottom: 1rem; display: flex; align-items: center;">
+                        <span style="margin-right: 0.5rem;">💰</span> Cost Optimization Framework
+                    </h4>
+                    <p style="font-size: 0.875rem; color: #64748b; margin-bottom: 1rem;">FinOps maturity and savings</p>
+                    <div style="background: #f1f5f9; padding: 0.75rem; border-radius: 6px;">
+                        <strong style="font-size: 0.875rem; color: #475569;">Complements:</strong>
+                        <ul style="margin: 0.5rem 0 0 1.5rem; padding: 0; font-size: 0.875rem; color: #64748b;">
+                            <li><strong>All Calculators</strong> - Right-sizing resources</li>
+                            <li><strong>Well-Architected</strong> - Cost pillar deep-dive</li>
+                            <li><strong>Cloud Migration</strong> - TCO analysis</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="background: white; padding: 1.5rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+                    <h4 style="color: #8b5cf6; margin-bottom: 1rem; display: flex; align-items: center;">
+                        <span style="margin-right: 0.5rem;">🔒</span> Security Frameworks
+                    </h4>
+                    <p style="font-size: 0.875rem; color: #64748b; margin-bottom: 1rem;">Comprehensive security posture</p>
+                    <div style="background: #f1f5f9; padding: 0.75rem; border-radius: 6px;">
+                        <strong style="font-size: 0.875rem; color: #475569;">Complements:</strong>
+                        <ul style="margin: 0.5rem 0 0 1.5rem; padding: 0; font-size: 0.875rem; color: #64748b;">
+                            <li><strong>GenAI Security</strong> - AI-specific threats</li>
+                            <li><strong>Well-Architected</strong> - Security pillar</li>
+                            <li><strong>All Assessments</strong> - Risk evaluation</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="background: white; padding: 1.5rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+                    <h4 style="color: #06b6d4; margin-bottom: 1rem; display: flex; align-items: center;">
+                        <span style="margin-right: 0.5rem;">🏗️</span> Well-Architected Framework
+                    </h4>
+                    <p style="font-size: 0.875rem; color: #64748b; margin-bottom: 1rem;">Holistic architecture review</p>
+                    <div style="background: #f1f5f9; padding: 0.75rem; border-radius: 6px;">
+                        <strong style="font-size: 0.875rem; color: #475569;">Complements:</strong>
+                        <ul style="margin: 0.5rem 0 0 1.5rem; padding: 0; font-size: 0.875rem; color: #64748b;">
+                            <li><strong>All Tools</strong> - Validates implementation</li>
+                            <li><strong>Cost Optimization</strong> - Cost pillar focus</li>
+                            <li><strong>Security Audit</strong> - Security pillar focus</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <section id="calculators">
             <h2 style="text-align: center; margin-bottom: 2rem; font-size: 2rem;">Strategic Assessments & Technical Calculators</h2>
@@ -811,6 +1077,39 @@
             </div>
         </section>
         
+        <!-- Latest Updates & Community -->
+        <section style="background: linear-gradient(135deg, #f0fdf4, #dcfce7); padding: 2rem; border-radius: 12px; margin: 3rem auto; max-width: 1200px;">
+            <h3 style="text-align: center; color: #166534; margin-bottom: 2rem;">🎉 Latest Updates</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                <div style="background: white; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #10b981;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <strong style="color: #166534;">🚀 NEW: Databricks Sizing Calculator</strong>
+                        <span style="font-size: 0.75rem; color: #64748b;">Jan 2025</span>
+                    </div>
+                    <p style="font-size: 0.875rem; color: #64748b;">Enterprise-grade calculator with real-time pricing across 80+ regions. Features spot instances, Unity Catalog, and Photon optimization.</p>
+                </div>
+                <div style="background: white; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #6366f1;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <strong style="color: #166534;">🔄 Updated: Cloud Migration Tool</strong>
+                        <span style="font-size: 0.75rem; color: #64748b;">Dec 2024</span>
+                    </div>
+                    <p style="font-size: 0.875rem; color: #64748b;">Added support for Google Cloud Platform and enhanced TCO calculations with regional pricing variations.</p>
+                </div>
+                <div style="background: white; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #f59e0b;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <strong style="color: #166534;">🔜 Coming Soon</strong>
+                        <span style="font-size: 0.75rem; color: #64748b;">Q1 2025</span>
+                    </div>
+                    <p style="font-size: 0.875rem; color: #64748b;">Kubernetes Cost Calculator, Infrastructure as Code Generator, and API Access for all tools.</p>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 2rem;">
+                <a href="https://github.com/architecture-audit/architecture-audit" style="color: #6366f1; text-decoration: none; font-weight: 600;">
+                    ⭐ Star us on GitHub | 🐛 Report Issues | 💡 Request Features
+                </a>
+            </div>
+        </section>
+
         <section id="about" style="text-align: center; margin-top: 4rem;">
             <h2 style="font-size: 2rem; margin-bottom: 1rem;">About AI Architecture Audit</h2>
             <p style="max-width: 700px; margin: 0 auto; color: var(--gray); line-height: 1.8; margin-bottom: 2rem;">
