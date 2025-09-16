@@ -7,7 +7,13 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "setup-aws": "bash scripts/setup-parameter-store.sh",
+    "store-key": "bash scripts/store-api-key.sh",
+    "test-cache": "MAX_COMBINATIONS=6 node scripts/generate-llm-cache.js",
+    "generate-cache": "node scripts/generate-llm-cache.js",
+    "generate-full-cache": "node scripts/generate-full-cache.js",
+    "serve": "python3 -m http.server 8888"
   },
   "repository": {
     "type": "git",
@@ -23,7 +29,9 @@
   "dependencies": {
     "@aws-amplify/cli": "^14.0.0",
     "aws-amplify": "^6.15.6",
-    "uglify-js": "^3.19.3"
+    "uglify-js": "^3.19.3",
+    "@aws-sdk/client-ssm": "^3.478.0",
+    "openai": "^4.26.0"
   },
   "devDependencies": {
     "@aws-amplify/backend": "^1.16.1",

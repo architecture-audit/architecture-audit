@@ -1,0 +1,98 @@
+name: Update Databricks LLM Cache
+
+on:
+  # Run monthly on the 1st at 2 AM UTC
+  schedule:
+    - cron: '0 2 1 * *'
+
+  # Allow manual trigger
+  workflow_dispatch:
+    inputs:
+      max_combinations:
+        description: 'Maximum combinations to generate'
+        required: false
+        default: '300'
+
+jobs:
+  generate-cache:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Generate LLM cache
+        env:
+          MAX_COMBINATIONS: ${{ github.event.inputs.max_combinations || '300' }}
+          API_DELAY_MS: '1500'
+          CACHE_OUTPUT_DIR: 'public/data'
+        run: |
+          echo "Generating cache with $MAX_COMBINATIONS combinations..."
+          node scripts/generate-llm-cache.js
+
+      - name: Verify cache file
+        run: |
+          if [ -f "public/data/databricks-llm-cache.json" ]; then
+            echo "✅ Cache file generated successfully"
+            echo "File size: $(ls -lh public/data/databricks-llm-cache.json | awk '{print $5}')"
+            echo "Combinations: $(jq '.totalCombinations' public/data/databricks-llm-cache.json)"
+          else
+            echo "❌ Cache file not found!"
+            exit 1
+          fi
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "actions@github.com"
+
+          git add public/data/databricks-llm-cache.json
+
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "🤖 Update Databricks LLM cache - $(date +'%Y-%m-%d')"
+            git push
+            echo "✅ Cache updated and pushed to repository"
+          fi
+
+      - name: Trigger Amplify deployment
+        if: success()
+        env:
+          AMPLIFY_APP_ID: ${{ secrets.AMPLIFY_APP_ID }}
+          AMPLIFY_BRANCH: main
+        run: |
+          # Trigger Amplify rebuild to deploy new cache
+          aws amplify start-job \
+            --app-id $AMPLIFY_APP_ID \
+            --branch-name $AMPLIFY_BRANCH \
+            --job-type RELEASE
+
+      - name: Send notification
+        if: always()
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          text: |
+            Databricks LLM Cache Update
+            Status: ${{ job.status }}
+            Combinations: ${{ env.MAX_COMBINATIONS }}
+            Commit: ${{ github.sha }}
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+        continue-on-error: true

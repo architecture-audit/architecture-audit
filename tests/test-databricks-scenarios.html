@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Databricks Recommendation Scenarios Test</title>
+    <script src="../calculators/databricks-sizing/workload-templates.js"></script>
+    <script src="../calculators/databricks-sizing/databricks-recommendations.js"></script>
+    <style>
+        body { font-family: monospace; margin: 20px; }
+        .scenario {
+            border: 2px solid #333;
+            margin: 20px 0;
+            padding: 15px;
+            background: #f5f5f5;
+        }
+        .pass { color: green; font-weight: bold; }
+        .fail { color: red; font-weight: bold; }
+        .title { font-size: 1.2em; font-weight: bold; margin-bottom: 10px; }
+        .result { margin: 10px 0; padding: 10px; background: white; }
+        .cost { color: blue; }
+        .instance { color: purple; }
+    </style>
+</head>
+<body>
+    <h1>Testing Databricks Recommendations with Real Scenarios</h1>
+
+    <div id="results"></div>
+
+    <script>
+        const scenarios = [
+            {
+                name: "Azure Cost Optimization - Small",
+                input: {
+                    cloudProvider: 'azure',
+                    workloadType: 'batch_processing',
+                    priority: 'cost',
+                    dataVolume: 100,
+                    userCount: 10,
+                    budget: 5000,
+                    slaRequirement: 'standard'
+                },
+                expectations: {
+                    shouldHaveAzureInstance: true,
+                    maxCost: 5000,
+                    minNodes: 1,
+                    spotPercentage: '>50'
+                }
+            },
+            {
+                name: "200 Users, 2TB Data - Business Intelligence",
+                input: {
+                    cloudProvider: 'azure',
+                    workloadType: 'business_intelligence',
+                    priority: 'balanced',
+                    dataVolume: 2000,
+                    userCount: 200,
+                    budget: 30000,
+                    slaRequirement: 'standard'
+                },
+                expectations: {
+                    shouldHaveAzureInstance: true,
+                    minNodes: 8, // 200 users / 25 users per node
+                    maxCost: 30000
+                }
+            },
+            {
+                name: "AWS ML Training - GPU Required",
+                input: {
+                    cloudProvider: 'aws',
+                    workloadType: 'machine_learning',
+                    priority: 'performance',
+                    dataVolume: 500,
+                    userCount: 20,
+                    budget: 50000,
+                    slaRequirement: 'critical'
+                },
+                expectations: {
+                    shouldHaveGPU: true,
+                    shouldHavePhoton: true,
+                    spotPercentage: 0
+                }
+            },
+            {
+                name: "GCP Streaming - High Throughput",
+                input: {
+                    cloudProvider: 'gcp',
+                    workloadType: 'streaming',
+                    priority: 'performance',
+                    dataVolume: 1000,
+                    userCount: 100,
+                    budget: 40000,
+                    slaRequirement: 'critical'
+                },
+                expectations: {
+                    shouldHaveGCPInstance: true,
+                    minNodes: 2, // 100 users / 50 users per node for streaming
+                    autoScaling: true
+                }
+            },
+            {
+                name: "Serverless Candidate - Small BI",
+                input: {
+                    cloudProvider: 'aws',
+                    workloadType: 'business_intelligence',
+                    priority: 'cost',
+                    dataVolume: 50,
+                    userCount: 5,
+                    budget: 2000,
+                    slaRequirement: 'basic'
+                },
+                expectations: {
+                    serverless: true,
+                    maxCost: 2000
+                }
+            }
+        ];
+
+        function runTests() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '';
+
+            let passCount = 0;
+            let failCount = 0;
+
+            scenarios.forEach(scenario => {
+                const div = document.createElement('div');
+                div.className = 'scenario';
+
+                // Get recommendation
+                const rec = DatabricksRecommendationEngine.recommend(scenario.input);
+                const primary = rec.primary;
+
+                let html = `<div class="title">${scenario.name}</div>`;
+                html += `<div class="result">`;
+
+                // Test results
+                let allTestsPassed = true;
+                const tests = [];
+
+                // Azure instance check
+                if (scenario.expectations.shouldHaveAzureInstance) {
+                    const hasAzure = primary.configuration.instanceType.startsWith('Standard_');
+                    tests.push({
+                        name: 'Azure Instance',
+                        passed: hasAzure,
+                        actual: primary.configuration.instanceType
+                    });
+                    allTestsPassed = allTestsPassed && hasAzure;
+                }
+
+                // GCP instance check
+                if (scenario.expectations.shouldHaveGCPInstance) {
+                    const hasGCP = primary.configuration.instanceType.startsWith('n');
+                    tests.push({
+                        name: 'GCP Instance',
+                        passed: hasGCP,
+                        actual: primary.configuration.instanceType
+                    });
+                    allTestsPassed = allTestsPassed && hasGCP;
+                }
+
+                // Cost check
+                if (scenario.expectations.maxCost) {
+                    const cost = primary.estimatedCost.monthly[scenario.input.cloudProvider];
+                    const underBudget = cost <= scenario.expectations.maxCost;
+                    tests.push({
+                        name: 'Cost Under Budget',
+                        passed: underBudget,
+                        actual: `$${cost} (max: $${scenario.expectations.maxCost})`
+                    });
+                    allTestsPassed = allTestsPassed && underBudget;
+                }
+
+                // Node count check
+                if (scenario.expectations.minNodes) {
+                    const hasEnoughNodes = primary.configuration.nodeCount >= scenario.expectations.minNodes;
+                    tests.push({
+                        name: 'Sufficient Nodes',
+                        passed: hasEnoughNodes,
+                        actual: `${primary.configuration.nodeCount} nodes (min: ${scenario.expectations.minNodes})`
+                    });
+                    allTestsPassed = allTestsPassed && hasEnoughNodes;
+                }
+
+                // Spot instance check
+                if (scenario.expectations.spotPercentage) {
+                    let spotTest = false;
+                    if (scenario.expectations.spotPercentage === '>50') {
+                        spotTest = primary.configuration.spotInstancePercent > 50;
+                    } else {
+                        spotTest = primary.configuration.spotInstancePercent === scenario.expectations.spotPercentage;
+                    }
+                    tests.push({
+                        name: 'Spot Instances',
+                        passed: spotTest,
+                        actual: `${primary.configuration.spotInstancePercent}% (expected: ${scenario.expectations.spotPercentage})`
+                    });
+                    allTestsPassed = allTestsPassed && spotTest;
+                }
+
+                // GPU check
+                if (scenario.expectations.shouldHaveGPU) {
+                    const hasGPU = primary.configuration.instanceType.includes('p3') ||
+                                  primary.configuration.instanceType.includes('NC') ||
+                                  primary.configuration.instanceType.includes('gpu');
+                    tests.push({
+                        name: 'GPU Instance',
+                        passed: hasGPU,
+                        actual: primary.configuration.instanceType
+                    });
+                    allTestsPassed = allTestsPassed && hasGPU;
+                }
+
+                // Photon check
+                if (scenario.expectations.shouldHavePhoton) {
+                    const hasPhoton = primary.configuration.features.photon === true;
+                    tests.push({
+                        name: 'Photon Enabled',
+                        passed: hasPhoton,
+                        actual: hasPhoton ? 'Yes' : 'No'
+                    });
+                    allTestsPassed = allTestsPassed && hasPhoton;
+                }
+
+                // Serverless check
+                if (scenario.expectations.serverless) {
+                    const isServerless = primary.configuration.serverless === true;
+                    tests.push({
+                        name: 'Serverless',
+                        passed: isServerless,
+                        actual: isServerless ? 'Yes' : 'No'
+                    });
+                    allTestsPassed = allTestsPassed && isServerless;
+                }
+
+                // Generate test results HTML
+                html += `<div><strong>Configuration:</strong></div>`;
+                html += `<div class="instance">Instance: ${primary.configuration.instanceType}</div>`;
+                html += `<div>Cluster Type: ${primary.configuration.clusterType}</div>`;
+                html += `<div>Nodes: ${primary.configuration.nodeCount}</div>`;
+                html += `<div class="cost">Cost: $${primary.estimatedCost.monthly[scenario.input.cloudProvider]}/month</div>`;
+                html += `<div>Confidence: ${primary.confidence}%</div>`;
+
+                html += `<div style="margin-top: 10px;"><strong>Tests:</strong></div>`;
+                tests.forEach(test => {
+                    const status = test.passed ? 'pass' : 'fail';
+                    html += `<div class="${status}">${test.name}: ${test.passed ? 'PASS' : 'FAIL'} - ${test.actual}</div>`;
+                });
+
+                if (allTestsPassed) {
+                    passCount++;
+                    html = `<div class="pass">✓ PASSED</div>` + html;
+                } else {
+                    failCount++;
+                    html = `<div class="fail">✗ FAILED</div>` + html;
+                }
+
+                html += `</div>`;
+                div.innerHTML = html;
+                resultsDiv.appendChild(div);
+            });
+
+            // Summary
+            const summary = document.createElement('div');
+            summary.className = 'scenario';
+            summary.innerHTML = `
+                <h2>Test Summary</h2>
+                <div class="pass">Passed: ${passCount}</div>
+                <div class="fail">Failed: ${failCount}</div>
+                <div>Total: ${scenarios.length}</div>
+            `;
+            resultsDiv.insertBefore(summary, resultsDiv.firstChild);
+        }
+
+        // Initialize and run tests
+        DatabricksRecommendationEngine.init();
+        runTests();
+    </script>
+</body>
+</html>

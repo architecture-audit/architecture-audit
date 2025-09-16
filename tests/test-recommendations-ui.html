@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intelligent Recommendations UI Test</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .test-container {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .test-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .test-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+        }
+
+        .test-section h2 {
+            color: #495057;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .input-group select,
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        button.secondary {
+            background: #6c757d;
+        }
+
+        .results-container {
+            margin-top: 30px;
+            padding: 25px;
+            background: #f1f3f4;
+            border-radius: 10px;
+            min-height: 200px;
+        }
+
+        .recommendation-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .recommendation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .confidence-badge {
+            background: #28a745;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .confidence-badge.medium {
+            background: #ffc107;
+        }
+
+        .confidence-badge.low {
+            background: #dc3545;
+        }
+
+        .config-details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .config-item {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 6px;
+        }
+
+        .config-item strong {
+            display: block;
+            color: #495057;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .explanations {
+            background: #e8f4fd;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #0066cc;
+            margin-top: 15px;
+        }
+
+        .explanations h4 {
+            margin-bottom: 10px;
+            color: #0066cc;
+        }
+
+        .explanations ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .test-status {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .test-status.running {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .test-status.success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .test-status.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .iframe-container {
+            display: none;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .loading::after {
+            content: '⏳';
+            font-size: 48px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="header">
+            <h1>🧪 Intelligent Recommendations UI Tester</h1>
+            <p>Test the Databricks sizing recommendation engine with various scenarios</p>
+        </div>
+
+        <div class="test-status" id="testStatus">
+            Ready to test recommendations
+        </div>
+
+        <div class="test-grid">
+            <div class="test-section">
+                <h2>📊 Test Configuration</h2>
+
+                <div class="input-group">
+                    <label>Workload Type</label>
+                    <select id="workloadType">
+                        <option value="streaming">Streaming Analytics</option>
+                        <option value="batch_etl">Batch ETL</option>
+                        <option value="machine_learning">Machine Learning</option>
+                        <option value="data_science">Data Science</option>
+                        <option value="business_intelligence">Business Intelligence</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Data Volume (GB)</label>
+                    <input type="number" id="dataVolume" value="1000" min="1">
+                </div>
+
+                <div class="input-group">
+                    <label>User Count</label>
+                    <input type="number" id="userCount" value="20" min="1">
+                </div>
+
+                <div class="input-group">
+                    <label>Priority</label>
+                    <select id="priority">
+                        <option value="cost">Cost Optimization</option>
+                        <option value="performance">Performance</option>
+                        <option value="balanced">Balanced</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Cloud Provider</label>
+                    <select id="cloudProvider">
+                        <option value="aws">AWS</option>
+                        <option value="azure">Azure</option>
+                        <option value="gcp">Google Cloud</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="test-section">
+                <h2>🎯 Quick Test Scenarios</h2>
+
+                <button onclick="loadScenario('small_streaming')">
+                    Small Streaming
+                </button>
+
+                <button onclick="loadScenario('medium_batch')">
+                    Medium Batch ETL
+                </button>
+
+                <button onclick="loadScenario('large_ml')">
+                    Large ML Training
+                </button>
+
+                <button onclick="loadScenario('interactive_ds')">
+                    Interactive Data Science
+                </button>
+
+                <button onclick="loadScenario('enterprise_bi')">
+                    Enterprise BI
+                </button>
+
+                <button onclick="loadScenario('edge_minimal')">
+                    Edge: Minimal
+                </button>
+
+                <button onclick="loadScenario('edge_massive')">
+                    Edge: Massive Scale
+                </button>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button onclick="getRecommendations()">
+                🚀 Get Recommendations
+            </button>
+            <button onclick="runAutomatedTests()" class="secondary">
+                🤖 Run Automated Tests
+            </button>
+            <button onclick="clearResults()" class="secondary">
+                🗑️ Clear Results
+            </button>
+        </div>
+
+        <div class="results-container" id="results">
+            <div class="loading" style="display: none;">
+                Generating recommendations...
+            </div>
+            <div id="recommendationResults"></div>
+        </div>
+    </div>
+
+    <div class="iframe-container">
+        <iframe id="calcFrame" src="/calculators/databricks-sizing/" width="100%" height="600"></iframe>
+    </div>
+
+    <script>
+        // Load scripts in sequence to ensure dependencies are met
+        function loadScript(src) {
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = src;
+                script.onload = resolve;
+                script.onerror = reject;
+                document.head.appendChild(script);
+            });
+        }
+
+        // Load all required scripts
+        async function initializeScripts() {
+            try {
+                await loadScript('/calculators/databricks-sizing/workload-templates.js');
+                await loadScript('/calculators/databricks-sizing/databricks-recommendations.js');
+                await loadScript('/tests/test-recommendations.js');
+                console.log('✅ All scripts loaded successfully');
+            } catch (error) {
+                console.error('❌ Script loading failed:', error);
+            }
+        }
+
+        // Initialize scripts on page load
+        initializeScripts();
+    </script>
+
+    <script>
+        // Wait for scripts to load before defining main functionality
+        window.addEventListener('load', async () => {
+            // Give scripts time to load
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            initializeTestUI();
+        });
+
+        function initializeTestUI() {
+        const scenarios = {
+            small_streaming: {
+                workloadType: 'streaming',
+                dataVolume: 100,
+                userCount: 10,
+                priority: 'performance',
+                cloudProvider: 'aws'
+            },
+            medium_batch: {
+                workloadType: 'batch_etl',
+                dataVolume: 5000,
+                userCount: 30,
+                priority: 'balanced',
+                cloudProvider: 'azure'
+            },
+            large_ml: {
+                workloadType: 'machine_learning',
+                dataVolume: 10000,
+                userCount: 50,
+                priority: 'performance',
+                cloudProvider: 'gcp'
+            },
+            interactive_ds: {
+                workloadType: 'data_science',
+                dataVolume: 200,
+                userCount: 15,
+                priority: 'balanced',
+                cloudProvider: 'aws'
+            },
+            enterprise_bi: {
+                workloadType: 'business_intelligence',
+                dataVolume: 3000,
+                userCount: 200,
+                priority: 'cost',
+                cloudProvider: 'azure'
+            },
+            edge_minimal: {
+                workloadType: 'batch_etl',
+                dataVolume: 10,
+                userCount: 1,
+                priority: 'cost',
+                cloudProvider: 'aws'
+            },
+            edge_massive: {
+                workloadType: 'streaming',
+                dataVolume: 50000,
+                userCount: 500,
+                priority: 'performance',
+                cloudProvider: 'gcp'
+            }
+        };
+
+        function loadScenario(scenarioId) {
+            const scenario = scenarios[scenarioId];
+            if (!scenario) return;
+
+            document.getElementById('workloadType').value = scenario.workloadType;
+            document.getElementById('dataVolume').value = scenario.dataVolume;
+            document.getElementById('userCount').value = scenario.userCount;
+            document.getElementById('priority').value = scenario.priority;
+            document.getElementById('cloudProvider').value = scenario.cloudProvider;
+
+            updateStatus('Scenario loaded: ' + scenarioId.replace('_', ' '), 'success');
+        }
+
+        async function getRecommendations() {
+            const inputs = {
+                workloadType: document.getElementById('workloadType').value,
+                dataVolume: parseInt(document.getElementById('dataVolume').value),
+                userCount: parseInt(document.getElementById('userCount').value),
+                priority: document.getElementById('priority').value,
+                cloudProvider: document.getElementById('cloudProvider').value
+            };
+
+            updateStatus('Generating recommendations...', 'running');
+            showLoading(true);
+
+            try {
+                // Simulate async operation
+                await new Promise(resolve => setTimeout(resolve, 500));
+
+                const recommendations = await DatabricksRecommendations.recommend(inputs, {});
+                displayRecommendations(recommendations);
+                updateStatus('Recommendations generated successfully', 'success');
+            } catch (error) {
+                updateStatus('Error: ' + error.message, 'error');
+                console.error(error);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        function displayRecommendations(recommendations) {
+            const resultsDiv = document.getElementById('recommendationResults');
+            resultsDiv.innerHTML = '';
+
+            // Display primary recommendation
+            if (recommendations.primary) {
+                const card = createRecommendationCard(recommendations.primary, 'Primary Recommendation');
+                resultsDiv.appendChild(card);
+            }
+
+            // Display alternatives
+            if (recommendations.alternatives && recommendations.alternatives.length > 0) {
+                const altHeader = document.createElement('h3');
+                altHeader.textContent = 'Alternative Configurations';
+                altHeader.style.marginTop = '30px';
+                resultsDiv.appendChild(altHeader);
+
+                recommendations.alternatives.forEach((alt, index) => {
+                    const card = createRecommendationCard(alt, `Alternative ${index + 1}`);
+                    resultsDiv.appendChild(card);
+                });
+            }
+        }
+
+        function createRecommendationCard(recommendation, title) {
+            const card = document.createElement('div');
+            card.className = 'recommendation-card';
+
+            const confidenceClass = recommendation.confidence >= 80 ? '' :
+                                  recommendation.confidence >= 60 ? 'medium' : 'low';
+
+            card.innerHTML = `
+                <div class="recommendation-header">
+                    <h3>${title}</h3>
+                    <span class="confidence-badge ${confidenceClass}">
+                        ${recommendation.confidence}% Confidence
+                    </span>
+                </div>
+
+                <div class="config-details">
+                    <div class="config-item">
+                        <strong>Cluster Type</strong>
+                        ${recommendation.configuration.clusterType}
+                    </div>
+                    <div class="config-item">
+                        <strong>Node Count</strong>
+                        ${recommendation.configuration.nodeCount}
+                    </div>
+                    <div class="config-item">
+                        <strong>Instance Type</strong>
+                        ${recommendation.configuration.instanceType}
+                    </div>
+                    <div class="config-item">
+                        <strong>Monthly Cost</strong>
+                        $${recommendation.estimatedCost?.toLocaleString() || 'N/A'}
+                    </div>
+                    <div class="config-item">
+                        <strong>DBU Hours</strong>
+                        ${recommendation.dbuHours?.toLocaleString() || 'N/A'}
+                    </div>
+                    <div class="config-item">
+                        <strong>Spot Instances</strong>
+                        ${recommendation.configuration.spotInstancePercent || 0}%
+                    </div>
+                </div>
+
+                ${recommendation.explanation ? `
+                    <div class="explanations">
+                        <h4>Why this configuration?</h4>
+                        <ul>
+                            ${Array.isArray(recommendation.explanation)
+                                ? recommendation.explanation.map(e => `<li>${e}</li>`).join('')
+                                : `<li>${recommendation.explanation}</li>`}
+                        </ul>
+                    </div>
+                ` : ''}
+            `;
+
+            return card;
+        }
+
+        async function runAutomatedTests() {
+            updateStatus('Running automated tests...', 'running');
+            const resultsDiv = document.getElementById('recommendationResults');
+            resultsDiv.innerHTML = '<pre id="testOutput" style="background: #000; color: #0f0; padding: 20px; border-radius: 8px; font-family: monospace;"></pre>';
+
+            const output = document.getElementById('testOutput');
+
+            // Capture console output
+            const originalLog = console.log;
+            console.log = function(...args) {
+                output.textContent += args.join(' ') + '\n';
+                originalLog.apply(console, args);
+            };
+
+            try {
+                await RecommendationTestSuite.runAllTests();
+                updateStatus('All tests completed', 'success');
+            } catch (error) {
+                updateStatus('Test failed: ' + error.message, 'error');
+            } finally {
+                console.log = originalLog;
+            }
+        }
+
+        function updateStatus(message, type) {
+            const status = document.getElementById('testStatus');
+            status.textContent = message;
+            status.className = 'test-status ' + type;
+        }
+
+        function showLoading(show) {
+            const loading = document.querySelector('.loading');
+            const results = document.getElementById('recommendationResults');
+
+            if (show) {
+                loading.style.display = 'block';
+                results.style.display = 'none';
+            } else {
+                loading.style.display = 'none';
+                results.style.display = 'block';
+            }
+        }
+
+        function clearResults() {
+            document.getElementById('recommendationResults').innerHTML = '';
+            updateStatus('Ready to test recommendations', '');
+        }
+
+        // Initialize on load
+        console.log('🚀 Recommendation UI Tester Ready');
+        console.log('Use the UI or run: RecommendationTestSuite.runAllTests()');
+
+        // Make functions globally available
+        window.loadScenario = loadScenario;
+        window.getRecommendations = getRecommendations;
+        window.runAutomatedTests = runAutomatedTests;
+        window.clearResults = clearResults;
+        } // End of initializeTestUI
+    </script>
+</body>
+</html>

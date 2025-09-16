@@ -8,16 +8,56 @@ const DatabricksRecommendationEngine = {
         reliability: 0.15
     },
 
+    optimizedCache: null,
+
     // Initialize the engine
-    init: function() {
+    init: async function() {
         this.templates = WorkloadTemplates.templates;
-        this.scoringEngine = new ScoringEngine();
-        this.explainer = new ExplanationEngine();
+
+        // Try to load optimized cache
+        if (typeof DatabricksOptimizedCache !== 'undefined') {
+            this.optimizedCache = new DatabricksOptimizedCache();
+            const cacheLoaded = await this.optimizedCache.init();
+            if (cacheLoaded) {
+                console.log('Optimization cache loaded successfully');
+            } else {
+                console.log('Using template-based recommendations');
+            }
+        }
     },
 
     // Main recommendation function
-    recommend: function(userInputs) {
+    recommend: async function(userInputs) {
         console.log('Starting recommendation process for:', userInputs);
+
+        // Try optimized cache first
+        if (this.optimizedCache) {
+            const cachedRecommendation = this.optimizedCache.getRecommendation(userInputs);
+            if (cachedRecommendation) {
+                console.log('Using optimized recommendation');
+
+                // Generate alternatives based on cached recommendation
+                const alternatives = this.generateAlternatives(cachedRecommendation, userInputs);
+
+                // Ensure alternatives have proper structure with tradeoffs
+                const formattedAlternatives = alternatives.map(alt => ({
+                    ...alt,
+                    explanation: alt.explanation || this.explainAlternative(alt, cachedRecommendation, userInputs),
+                    tradeoffs: alt.tradeoffs || this.compareTradeoffs(alt, cachedRecommendation)
+                }));
+
+                // Format for compatibility with existing system
+                return {
+                    primary: cachedRecommendation,
+                    alternatives: formattedAlternatives,
+                    insights: cachedRecommendation.insights || this.generateInsights(cachedRecommendation, userInputs),
+                    source: 'optimized-cache'
+                };
+            }
+        }
+
+        // Fallback to template-based recommendation
+        console.log('Using template-based recommendation');
 
         // Step 1: Find base template
         const baseTemplate = this.findBestTemplate(userInputs);
@@ -41,7 +81,7 @@ const DatabricksRecommendationEngine = {
     findBestTemplate: function(inputs) {
         const workloadMap = {
             'streaming': ['streaming_small', 'streaming_medium'],
-            'batch_etl': ['batch_etl_small', 'batch_etl_medium'],
+            'batch_processing': ['batch_etl_small', 'batch_etl_medium'],
             'machine_learning': ['ml_training_small', 'ml_training_large'],
             'data_science': ['datascience_small'],
             'business_intelligence': ['bi_reporting']
@@ -104,33 +144,131 @@ const DatabricksRecommendationEngine = {
     adjustConfiguration: function(template, inputs) {
         const config = JSON.parse(JSON.stringify(template)); // Deep clone
 
-        // Scale adjustment based on data volume
-        const volumeScale = inputs.dataVolume / template.characteristics.dataVolume;
-        if (volumeScale > 1) {
-            // Need to scale up
-            config.configuration.nodeCount = Math.ceil(template.configuration.nodeCount * Math.sqrt(volumeScale));
-            config.configuration.maxNodes = Math.ceil(template.configuration.maxNodes * Math.sqrt(volumeScale));
+        // Map instance type to cloud provider
+        config.configuration.instanceType = this.mapInstanceToCloud(
+            template.configuration.instanceType,
+            inputs.cloudProvider
+        );
 
-            // Upgrade instance type if scaling is significant
-            if (volumeScale > 3) {
-                config.configuration.instanceType = this.upgradeInstanceType(template.configuration.instanceType);
+        // IMPROVED SCALING RULES
+
+        // 1. DATA VOLUME SCALING
+        // Realistic scaling: ~500GB per node for batch, ~250GB per node for interactive
+        let dataNodes = 2; // Start with minimum 2 nodes
+
+        if (inputs.dataVolume < 100) {
+            // Small data: can use serverless or minimal nodes
+            dataNodes = 1;
+            if (inputs.priority === 'cost') {
+                config.configuration.clusterType = 'serverless-sql';
             }
-        } else if (volumeScale < 0.5) {
-            // Can scale down
-            config.configuration.nodeCount = Math.max(1, Math.floor(template.configuration.nodeCount * volumeScale * 2));
-            config.configuration.maxNodes = Math.max(2, Math.floor(template.configuration.maxNodes * volumeScale * 2));
+        } else if (inputs.dataVolume < 1000) {
+            // Medium data (100GB - 1TB)
+            dataNodes = Math.ceil(inputs.dataVolume / 500); // ~500GB per node
+        } else if (inputs.dataVolume < 10000) {
+            // Large data (1TB - 10TB)
+            dataNodes = Math.ceil(inputs.dataVolume / 750); // ~750GB per node
+        } else {
+            // Very large data (>10TB)
+            dataNodes = Math.ceil(inputs.dataVolume / 1000); // ~1TB per node
+            // Cap at reasonable maximum
+            dataNodes = Math.min(dataNodes, 100);
         }
 
-        // User count adjustment
-        const userScale = inputs.userCount / template.characteristics.userCount;
-        if (userScale > 2 && config.configuration.clusterType === 'standard') {
+        // 2. USER CONCURRENCY SCALING
+        // Rule: 1 node per 25 concurrent users for interactive workloads
+        // Rule: 1 node per 50 users for batch workloads
+        let userNodes = 1;
+        if (inputs.workloadType === 'business_intelligence' || inputs.workloadType === 'data_science') {
+            userNodes = Math.ceil(inputs.userCount / 25);
+        } else if (inputs.workloadType === 'streaming' || inputs.workloadType === 'batch_processing') {
+            userNodes = Math.ceil(inputs.userCount / 50);
+        } else if (inputs.workloadType === 'machine_learning') {
+            userNodes = Math.ceil(inputs.userCount / 30);
+        }
+
+        // 3. COMBINE DATA AND USER REQUIREMENTS
+        // Take the maximum of data-driven and user-driven node counts
+        let finalNodeCount = Math.max(dataNodes, userNodes);
+
+        // Apply reasonable limits based on workload type
+        if (inputs.workloadType === 'streaming') {
+            finalNodeCount = Math.min(finalNodeCount, 50); // Cap streaming at 50 nodes
+        } else if (inputs.workloadType === 'batch_processing') {
+            finalNodeCount = Math.min(finalNodeCount, 100); // Cap batch at 100 nodes
+        } else {
+            finalNodeCount = Math.min(finalNodeCount, 30); // Cap interactive at 30 nodes
+        }
+
+        // Ensure minimum nodes for reliability
+        if (inputs.slaRequirement === 'critical') {
+            finalNodeCount = Math.max(finalNodeCount, 3);
+        } else {
+            finalNodeCount = Math.max(finalNodeCount, 2);
+        }
+
+        config.configuration.nodeCount = finalNodeCount;
+        config.configuration.minNodes = Math.max(2, Math.floor(config.configuration.nodeCount * 0.5));
+        config.configuration.maxNodes = Math.min(100, Math.ceil(config.configuration.nodeCount * 1.5));
+
+        // 4. CLUSTER TYPE SELECTION based on workload and user count
+        if (inputs.dataVolume < 100 && inputs.userCount < 10) {
+            // Serverless SQL Warehouse for small interactive workloads
+            config.configuration.clusterType = 'serverless-sql';
+            config.configuration.serverless = true;
+        } else if (inputs.userCount > 50) {
+            // High concurrency for many users
             config.configuration.clusterType = 'highconcurrency';
+        } else if (inputs.workloadType === 'machine_learning') {
+            // ML-specific cluster
+            config.configuration.clusterType = 'ml';
+        } else if (inputs.workloadType === 'streaming') {
+            // Streaming-optimized cluster
+            config.configuration.clusterType = 'streaming';
+        } else if (inputs.workloadType === 'batch_processing' && inputs.dataVolume > 5000) {
+            // Job cluster for large batch
+            config.configuration.clusterType = 'job';
         }
 
-        // Storage adjustment
-        config.configuration.storage.deltaStorage = Math.ceil(inputs.dataVolume * 3); // 3x for versioning
+        // 5. INSTANCE TYPE SELECTION based on workload characteristics
+        // Select appropriate instance type based on workload and size
+        if (inputs.workloadType === 'machine_learning') {
+            // ML: GPU instances
+            config.configuration.instanceType = this.getGPUInstance(inputs.cloudProvider);
+        } else if (inputs.dataVolume > 10000 && inputs.priority !== 'cost') {
+            // Very large data: use larger storage-optimized instances
+            config.configuration.instanceType = this.getStorageOptimizedInstance(inputs.cloudProvider);
+        } else if (inputs.userCount > 100 && inputs.priority === 'performance') {
+            // Many users with performance priority: memory-optimized for caching
+            config.configuration.instanceType = this.getMemoryOptimizedInstance(inputs.cloudProvider);
+        } else {
+            // Standard selection based on priority and data size
+            if (inputs.priority === 'cost') {
+                config.configuration.instanceType = inputs.dataVolume < 1000 ? 'i3.xlarge' : 'i3.2xlarge';
+            } else if (inputs.priority === 'performance') {
+                config.configuration.instanceType = inputs.dataVolume < 5000 ? 'i3.4xlarge' : 'i3.8xlarge';
+            } else {
+                // Balanced
+                config.configuration.instanceType = inputs.dataVolume < 2000 ? 'i3.2xlarge' : 'i3.4xlarge';
+            }
+        }
 
-        // Update cost estimate
+        // 6. STORAGE CALCULATION
+        // More sophisticated storage calculation
+        if (inputs.workloadType === 'streaming') {
+            config.configuration.storage.deltaStorage = Math.ceil(inputs.dataVolume * 5); // 5x for streaming checkpoints
+        } else {
+            config.configuration.storage.deltaStorage = Math.ceil(inputs.dataVolume * 3); // 3x for versioning
+        }
+        config.configuration.storage.checkpointStorage = Math.ceil(inputs.dataVolume * 0.2);
+
+        // Final instance type mapping to ensure cloud-specific instances
+        config.configuration.instanceType = this.mapInstanceToCloud(
+            config.configuration.instanceType,
+            inputs.cloudProvider
+        );
+
+        // Update cost estimate with the correct cloud-specific instance
         config.estimatedCost = this.calculateCost(config.configuration, inputs.cloudProvider);
 
         return config;
@@ -146,17 +284,28 @@ const DatabricksRecommendationEngine = {
         }
 
         // Performance optimization
-        if (inputs.optimizationMode === 'performance') {
+        if (inputs.optimizationMode === 'performance' || inputs.priority === 'performance') {
             optimized.configuration.spotInstancePercent = 0;
             optimized.configuration.features.photon = true;
-            optimized.configuration.instanceType = this.upgradeInstanceType(config.configuration.instanceType);
+            optimized.configuration.instanceType = this.upgradeInstanceType(
+                config.configuration.instanceType,
+                inputs.cloudProvider
+            );
         }
 
-        // Cost optimization
-        if (inputs.optimizationMode === 'cost') {
+        // Cost optimization - SIGNIFICANT REDUCTIONS
+        if (inputs.optimizationMode === 'cost' || inputs.priority === 'cost') {
             optimized.configuration.spotInstancePercent = 70;
             optimized.configuration.reservedInstancePercent = 0;
             optimized.configuration.features.photon = false;
+            // Reduce node count for cost optimization
+            optimized.configuration.nodeCount = Math.max(2, Math.floor(config.configuration.nodeCount * 0.6));
+            optimized.configuration.maxNodes = Math.max(4, Math.floor(config.configuration.maxNodes * 0.6));
+            // Use smaller instance type for cost
+            optimized.configuration.instanceType = this.downgradeInstanceType(
+                config.configuration.instanceType,
+                inputs.cloudProvider
+            );
         }
 
         // Reliability optimization
@@ -195,7 +344,10 @@ const DatabricksRecommendationEngine = {
         // Performance option (max performance, higher cost)
         const performance = JSON.parse(JSON.stringify(primaryConfig));
         performance.name = 'Performance-Optimized';
-        performance.configuration.instanceType = this.upgradeInstanceType(primaryConfig.configuration.instanceType);
+        performance.configuration.instanceType = this.upgradeInstanceType(
+            primaryConfig.configuration.instanceType,
+            inputs.cloudProvider
+        );
         performance.configuration.features.photon = true;
         performance.configuration.nodeCount = Math.ceil(primaryConfig.configuration.nodeCount * 1.5);
         performance.estimatedCost = this.calculateCost(performance.configuration, inputs.cloudProvider);
@@ -211,16 +363,16 @@ const DatabricksRecommendationEngine = {
                 configuration: primary.configuration,
                 estimatedCost: primary.estimatedCost,
                 confidence: this.calculateConfidence(primary, inputs),
-                explanation: this.explainer.explainConfiguration(primary, inputs),
-                pros: this.explainer.generatePros(primary),
-                cons: this.explainer.generateCons(primary)
+                explanation: this.generateExplanation(primary, inputs),
+                pros: this.generatePros(primary, inputs),
+                cons: this.generateCons(primary, inputs)
             },
             alternatives: alternatives.map(alt => ({
                 name: alt.name,
                 configuration: alt.configuration,
                 estimatedCost: alt.estimatedCost,
-                explanation: this.explainer.explainAlternative(alt, primary),
-                tradeoffs: this.explainer.compareTradeoffs(alt, primary)
+                explanation: this.explainAlternative(alt, primary, inputs),
+                tradeoffs: this.compareTradeoffs(alt, primary)
             })),
             insights: this.generateInsights(primary, inputs)
         };
@@ -229,34 +381,203 @@ const DatabricksRecommendationEngine = {
     },
 
     // Helper function to upgrade instance type
-    upgradeInstanceType: function(currentType) {
-        const upgradePath = {
-            'i3.xlarge': 'i3.2xlarge',
-            'i3.2xlarge': 'i3.4xlarge',
-            'i3.4xlarge': 'i3.8xlarge',
-            'i3.8xlarge': 'i3.16xlarge',
-            'r5.xlarge': 'r5.2xlarge',
-            'r5.2xlarge': 'r5.4xlarge',
-            'p3.2xlarge': 'p3.8xlarge',
-            'p3.8xlarge': 'p3.16xlarge'
+    // Get storage-optimized instance for cloud provider
+    getStorageOptimizedInstance: function(cloudProvider) {
+        const instances = {
+            aws: 'i3.4xlarge',    // Storage optimized with NVMe SSD
+            azure: 'Standard_L16s_v2', // Storage optimized with NVMe
+            gcp: 'n1-standard-16' // With local SSD
         };
-        return upgradePath[currentType] || currentType;
+        return instances[cloudProvider] || 'i3.4xlarge';
     },
 
-    // Helper function to downgrade instance type
-    downgradeInstanceType: function(currentType) {
-        const downgradePath = {
-            'i3.16xlarge': 'i3.8xlarge',
-            'i3.8xlarge': 'i3.4xlarge',
-            'i3.4xlarge': 'i3.2xlarge',
-            'i3.2xlarge': 'i3.xlarge',
-            'r5.4xlarge': 'r5.2xlarge',
-            'r5.2xlarge': 'r5.xlarge',
-            'p3.16xlarge': 'p3.8xlarge',
-            'p3.8xlarge': 'p3.2xlarge'
+    // Get memory-optimized instance for cloud provider
+    getMemoryOptimizedInstance: function(cloudProvider) {
+        const instances = {
+            aws: 'r5.4xlarge',     // 16 vCPU, 128 GB RAM
+            azure: 'Standard_E16s_v3', // 16 vCPU, 128 GB RAM
+            gcp: 'n2-highmem-16'   // 16 vCPU, 128 GB RAM
         };
-        return downgradePath[currentType] || currentType;
+        return instances[cloudProvider] || 'r5.4xlarge';
     },
+
+    // Get GPU instance for ML workloads
+    getGPUInstance: function(cloudProvider) {
+        const instances = {
+            aws: 'g4dn.2xlarge',   // 1 GPU, good for ML
+            azure: 'Standard_NC6s_v3', // 1 V100 GPU
+            gcp: 'a2-highgpu-1g'   // 1 A100 GPU
+        };
+        return instances[cloudProvider] || 'g4dn.2xlarge';
+    },
+
+    // Map instance type to cloud provider equivalent
+    mapInstanceToCloud: function(instanceType, cloudProvider) {
+        const instanceMapping = {
+            aws: {
+                'i3.xlarge': 'i3.xlarge',
+                'i3.2xlarge': 'i3.2xlarge',
+                'i3.4xlarge': 'i3.4xlarge',
+                'i3.8xlarge': 'i3.8xlarge',
+                'r5.xlarge': 'r5.xlarge',
+                'r5.2xlarge': 'r5.2xlarge',
+                'r5.4xlarge': 'r5.4xlarge',
+                'm5.large': 'm5.large',
+                'm5.xlarge': 'm5.xlarge',
+                'm5.2xlarge': 'm5.2xlarge',
+                'm5.4xlarge': 'm5.4xlarge',
+                'm5.8xlarge': 'm5.8xlarge',
+                'm5.12xlarge': 'm5.12xlarge',
+                'm5.16xlarge': 'm5.16xlarge',
+                'm5.24xlarge': 'm5.24xlarge',
+                'c5.large': 'c5.large',
+                'c5.xlarge': 'c5.xlarge',
+                'c5.2xlarge': 'c5.2xlarge',
+                'c5.4xlarge': 'c5.4xlarge',
+                'c5.9xlarge': 'c5.9xlarge',
+                'g4dn.xlarge': 'g4dn.xlarge',
+                'g4dn.2xlarge': 'g4dn.2xlarge',
+                'p3.2xlarge': 'p3.2xlarge'
+            },
+            azure: {
+                'i3.xlarge': 'Standard_L4s_v2',
+                'i3.2xlarge': 'Standard_L8s_v2',
+                'i3.4xlarge': 'Standard_L16s_v2',
+                'i3.8xlarge': 'Standard_L32s_v2',
+                'r5.xlarge': 'Standard_E4s_v3',
+                'r5.2xlarge': 'Standard_E8s_v3',
+                'r5.4xlarge': 'Standard_E16s_v3',
+                'm5.xlarge': 'Standard_D4s_v3',
+                'm5.2xlarge': 'Standard_D8s_v3',
+                'm5.4xlarge': 'Standard_D16s_v3',
+                'c5.xlarge': 'Standard_F4s_v2',
+                'c5.2xlarge': 'Standard_F8s_v2'
+            },
+            gcp: {
+                'i3.xlarge': 'n1-standard-4',
+                'i3.2xlarge': 'n1-standard-8',
+                'i3.4xlarge': 'n1-standard-16',
+                'i3.8xlarge': 'n1-standard-32',
+                'r5.xlarge': 'n2-highmem-4',
+                'r5.2xlarge': 'n2-highmem-8',
+                'r5.4xlarge': 'n2-highmem-16',
+                'm5.xlarge': 'n2-standard-4',
+                'm5.2xlarge': 'n2-standard-8',
+                'm5.4xlarge': 'n2-standard-16',
+                'c5.xlarge': 'n2-highcpu-4',
+                'c5.2xlarge': 'n2-highcpu-8'
+            }
+        };
+
+        const mapping = instanceMapping[cloudProvider];
+        if (!mapping) return instanceType; // Default to original if no provider
+
+        // Try to find direct mapping
+        if (mapping[instanceType]) {
+            return mapping[instanceType];
+        }
+
+        // Try to find the cloud-specific instance in reverse mapping
+        for (const [awsInstance, cloudInstance] of Object.entries(mapping)) {
+            if (cloudInstance === instanceType) {
+                return cloudInstance; // Already correct for this cloud
+            }
+        }
+
+        // Default fallback based on cloud provider
+        if (cloudProvider === 'azure') return 'Standard_D8s_v3';
+        if (cloudProvider === 'gcp') return 'n2-standard-8';
+        return 'm5.2xlarge';
+    },
+
+    upgradeInstanceType: function(currentType, cloudProvider) {
+        const upgradePath = {
+            aws: {
+                'm5.xlarge': 'm5.2xlarge',
+                'm5.2xlarge': 'm5.4xlarge',
+                'm5.4xlarge': 'm5.8xlarge',
+                'i3.xlarge': 'i3.2xlarge',
+                'i3.2xlarge': 'i3.4xlarge',
+                'i3.4xlarge': 'i3.8xlarge',
+                'r5.xlarge': 'r5.2xlarge',
+                'r5.2xlarge': 'r5.4xlarge',
+                'c5.xlarge': 'c5.2xlarge',
+                'c5.2xlarge': 'c5.4xlarge'
+            },
+            azure: {
+                'Standard_D4s_v3': 'Standard_D8s_v3',
+                'Standard_D8s_v3': 'Standard_D16s_v3',
+                'Standard_D16s_v3': 'Standard_D32s_v3',
+                'Standard_L4s_v2': 'Standard_L8s_v2',
+                'Standard_L8s_v2': 'Standard_L16s_v2',
+                'Standard_L16s_v2': 'Standard_L32s_v2',
+                'Standard_E4s_v3': 'Standard_E8s_v3',
+                'Standard_E8s_v3': 'Standard_E16s_v3',
+                'Standard_F4s_v2': 'Standard_F8s_v2',
+                'Standard_F8s_v2': 'Standard_F16s_v2'
+            },
+            gcp: {
+                'n2-standard-4': 'n2-standard-8',
+                'n2-standard-8': 'n2-standard-16',
+                'n2-standard-16': 'n2-standard-32',
+                'n1-standard-4': 'n1-standard-8',
+                'n1-standard-8': 'n1-standard-16',
+                'n1-standard-16': 'n1-standard-32',
+                'n2-highmem-4': 'n2-highmem-8',
+                'n2-highmem-8': 'n2-highmem-16',
+                'n2-highcpu-4': 'n2-highcpu-8',
+                'n2-highcpu-8': 'n2-highcpu-16'
+            }
+        };
+
+        const cloudPath = upgradePath[cloudProvider] || upgradePath.aws;
+        return cloudPath[currentType] || currentType;
+    },
+
+    downgradeInstanceType: function(currentType, cloudProvider) {
+        const downgradePath = {
+            aws: {
+                'm5.8xlarge': 'm5.4xlarge',
+                'm5.4xlarge': 'm5.2xlarge',
+                'm5.2xlarge': 'm5.xlarge',
+                'i3.8xlarge': 'i3.4xlarge',
+                'i3.4xlarge': 'i3.2xlarge',
+                'i3.2xlarge': 'i3.xlarge',
+                'r5.4xlarge': 'r5.2xlarge',
+                'r5.2xlarge': 'r5.xlarge',
+                'c5.4xlarge': 'c5.2xlarge',
+                'c5.2xlarge': 'c5.xlarge'
+            },
+            azure: {
+                'Standard_D32s_v3': 'Standard_D16s_v3',
+                'Standard_D16s_v3': 'Standard_D8s_v3',
+                'Standard_D8s_v3': 'Standard_D4s_v3',
+                'Standard_L32s_v2': 'Standard_L16s_v2',
+                'Standard_L16s_v2': 'Standard_L8s_v2',
+                'Standard_L8s_v2': 'Standard_L4s_v2',
+                'Standard_E16s_v3': 'Standard_E8s_v3',
+                'Standard_E8s_v3': 'Standard_E4s_v3',
+                'Standard_F16s_v2': 'Standard_F8s_v2',
+                'Standard_F8s_v2': 'Standard_F4s_v2'
+            },
+            gcp: {
+                'n2-standard-32': 'n2-standard-16',
+                'n2-standard-16': 'n2-standard-8',
+                'n2-standard-8': 'n2-standard-4',
+                'n1-standard-32': 'n1-standard-16',
+                'n1-standard-16': 'n1-standard-8',
+                'n1-standard-8': 'n1-standard-4',
+                'n2-highmem-16': 'n2-highmem-8',
+                'n2-highmem-8': 'n2-highmem-4',
+                'n2-highcpu-16': 'n2-highcpu-8',
+                'n2-highcpu-8': 'n2-highcpu-4'
+            }
+        };
+
+        const cloudPath = downgradePath[cloudProvider] || downgradePath.aws;
+        return cloudPath[currentType] || currentType;
+    },
+
 
     // Reduce cost to fit budget
     reduceCostToFitBudget: function(config, budget, cloudProvider) {
@@ -293,25 +614,96 @@ const DatabricksRecommendationEngine = {
 
     // Calculate cost for a configuration
     calculateCost: function(config, cloudProvider) {
+        // Comprehensive pricing data for AWS, Azure, GCP instances
         const instancePricing = {
-            'i3.xlarge': { aws: 0.31, azure: 0.33, gcp: 0.32 },
-            'i3.2xlarge': { aws: 0.62, azure: 0.66, gcp: 0.64 },
-            'i3.4xlarge': { aws: 1.24, azure: 1.32, gcp: 1.28 },
-            'i3.8xlarge': { aws: 2.48, azure: 2.64, gcp: 2.56 },
-            'r5.xlarge': { aws: 0.25, azure: 0.27, gcp: 0.26 },
-            'r5.2xlarge': { aws: 0.50, azure: 0.54, gcp: 0.52 },
-            'p3.2xlarge': { aws: 3.06, azure: 3.30, gcp: 3.20 },
-            'p3.8xlarge': { aws: 12.24, azure: 13.20, gcp: 12.80 }
+            // AWS instances
+            'i3.xlarge': { aws: 0.31, azure: null, gcp: null },
+            'i3.2xlarge': { aws: 0.62, azure: null, gcp: null },
+            'i3.4xlarge': { aws: 1.24, azure: null, gcp: null },
+            'i3.8xlarge': { aws: 2.48, azure: null, gcp: null },
+            'r5.xlarge': { aws: 0.25, azure: null, gcp: null },
+            'r5.2xlarge': { aws: 0.50, azure: null, gcp: null },
+            'r5.4xlarge': { aws: 1.00, azure: null, gcp: null },
+            'r5.8xlarge': { aws: 2.00, azure: null, gcp: null },
+            'c5.xlarge': { aws: 0.17, azure: null, gcp: null },
+            'c5.2xlarge': { aws: 0.34, azure: null, gcp: null },
+            'm5.xlarge': { aws: 0.19, azure: null, gcp: null },
+            'm5.2xlarge': { aws: 0.38, azure: null, gcp: null },
+            'p3.2xlarge': { aws: 3.06, azure: null, gcp: null },
+            'p3.8xlarge': { aws: 12.24, azure: null, gcp: null },
+
+            // Azure instances
+            'Standard_L8s_v2': { aws: null, azure: 0.66, gcp: null },
+            'Standard_L16s_v2': { aws: null, azure: 1.32, gcp: null },
+            'Standard_L32s_v2': { aws: null, azure: 2.64, gcp: null },
+            'Standard_E8s_v3': { aws: null, azure: 0.54, gcp: null },
+            'Standard_E16s_v3': { aws: null, azure: 1.08, gcp: null },
+            'Standard_E32s_v3': { aws: null, azure: 2.16, gcp: null },
+            'Standard_F8s_v2': { aws: null, azure: 0.34, gcp: null },
+            'Standard_F16s_v2': { aws: null, azure: 0.68, gcp: null },
+            'Standard_D8s_v3': { aws: null, azure: 0.38, gcp: null },
+            'Standard_D16s_v3': { aws: null, azure: 0.76, gcp: null },
+            'Standard_NC6s_v3': { aws: null, azure: 3.36, gcp: null },
+            'Standard_NC24s_v3': { aws: null, azure: 13.44, gcp: null },
+
+            // GCP instances
+            'n1-standard-8': { aws: null, azure: null, gcp: 0.38 },
+            'n1-standard-16': { aws: null, azure: null, gcp: 0.76 },
+            'n1-highmem-8': { aws: null, azure: null, gcp: 0.47 },
+            'n1-highmem-16': { aws: null, azure: null, gcp: 0.94 },
+            'n1-highcpu-8': { aws: null, azure: null, gcp: 0.28 },
+            'n1-highcpu-16': { aws: null, azure: null, gcp: 0.56 },
+            'n2-standard-8': { aws: null, azure: null, gcp: 0.39 },
+            'n2-standard-16': { aws: null, azure: null, gcp: 0.78 },
+            'p100-gpu': { aws: null, azure: null, gcp: 3.20 },
+            'v100-gpu': { aws: null, azure: null, gcp: 12.80 }
         };
 
+        // Databricks DBU pricing per hour (actual rates from Databricks pricing)
         const dbuPricing = {
             standard: { aws: 0.75, azure: 0.80, gcp: 0.78 },
             highconcurrency: { aws: 0.90, azure: 0.95, gcp: 0.92 },
             ml: { aws: 1.20, azure: 1.25, gcp: 1.22 },
-            sql: { aws: 0.60, azure: 0.65, gcp: 0.62 }
+            sql: { aws: 0.60, azure: 0.65, gcp: 0.62 },
+            streaming: { aws: 0.82, azure: 0.87, gcp: 0.85 },
+            serverless: { aws: 0.70, azure: 0.74, gcp: 0.72 },
+            job: { aws: 0.60, azure: 0.64, gcp: 0.62 }
         };
 
-        const basePrice = instancePricing[config.instanceType]?.[cloudProvider] || 1.0;
+        // Handle serverless pricing differently
+        if (config.serverless) {
+            const serverlessRates = {
+                aws: { compute: 0.07, storage: 0.023 }, // per DBU-hour, per GB-month
+                azure: { compute: 0.074, storage: 0.025 },
+                gcp: { compute: 0.072, storage: 0.024 }
+            };
+
+            const rate = serverlessRates[cloudProvider];
+            const estimatedDBUs = config.nodeCount * 10; // Estimate DBUs based on workload
+            const hourlyCost = estimatedDBUs * rate.compute;
+            const storageCost = (config.dataVolume || 100) * rate.storage / 730; // Monthly to hourly
+
+            return {
+                hourly: hourlyCost + storageCost,
+                daily: (hourlyCost + storageCost) * 24,
+                monthly: {
+                    [cloudProvider]: Math.round((hourlyCost + storageCost) * 24 * 30)
+                },
+                dbuHours: Math.round(estimatedDBUs * 24 * 30),
+                serverless: true
+            };
+        }
+
+        // Map instance type to correct cloud-specific instance if needed
+        let actualInstanceType = config.instanceType;
+        if (cloudProvider === 'azure' && !config.instanceType.startsWith('Standard_')) {
+            actualInstanceType = this.mapInstanceToCloud(config.instanceType, 'azure');
+        } else if (cloudProvider === 'gcp' && !config.instanceType.startsWith('n')) {
+            actualInstanceType = this.mapInstanceToCloud(config.instanceType, 'gcp');
+        }
+
+        const basePrice = instancePricing[actualInstanceType]?.[cloudProvider] ||
+                         instancePricing[config.instanceType]?.[cloudProvider] || 1.0;
         const dbuPrice = dbuPricing[config.clusterType]?.[cloudProvider] || 0.75;
 
         // Calculate hourly cost
@@ -329,12 +721,18 @@ const DatabricksRecommendationEngine = {
             hourlyCost *= (1 - (config.reservedInstancePercent / 100 * reservedDiscount));
         }
 
-        // Add feature costs
-        if (config.features.photon) {
-            hourlyCost *= 1.2; // 20% more for Photon
+        // Add feature costs (based on actual Databricks pricing)
+        if (config.features?.photon) {
+            hourlyCost *= 1.2; // 20% DBU uplift for Photon
         }
-        if (config.features.unityCatalog) {
-            hourlyCost += 0.5; // Fixed cost per hour
+        if (config.features?.unityCatalog) {
+            hourlyCost += config.nodeCount * 0.10; // Unity Catalog per node cost
+        }
+        if (config.features?.deltaLiveTables) {
+            hourlyCost += config.nodeCount * 0.30; // DLT per node cost
+        }
+        if (config.features?.mlflow) {
+            hourlyCost += config.nodeCount * 0.15; // MLflow tracking cost
         }
 
         const monthlyCost = hourlyCost * 24 * 30;
@@ -350,27 +748,150 @@ const DatabricksRecommendationEngine = {
         };
     },
 
-    // Calculate confidence score
+    // Calculate confidence score with detailed factors
     calculateConfidence: function(config, inputs) {
-        let confidence = 70; // Base confidence
+        let confidence = 0;
+        let factors = [];
 
-        // Add confidence for good template match
+        // 1. TEMPLATE MATCH CONFIDENCE (0-30 points)
         const templateMatch = this.findBestTemplate(inputs);
-        if (templateMatch.score > 20) {
-            confidence += 15;
+        const templateScore = Math.min(30, templateMatch.score * 1.5);
+        confidence += templateScore;
+        factors.push({
+            category: 'Template Match',
+            score: templateScore,
+            max: 30,
+            description: `Workload pattern match: ${Math.round(templateScore)}/30`
+        });
+
+        // 2. DATA SIZE CONFIDENCE (0-20 points)
+        // How well we can predict performance for this data size
+        let dataConfidence = 20;
+        if (inputs.dataVolume < 100) {
+            dataConfidence = 20; // Very predictable for small data
+        } else if (inputs.dataVolume < 1000) {
+            dataConfidence = 18; // Good prediction for medium data
+        } else if (inputs.dataVolume < 10000) {
+            dataConfidence = 15; // Moderate for large data
+        } else {
+            dataConfidence = 10; // Less certain for very large data
+        }
+        confidence += dataConfidence;
+        factors.push({
+            category: 'Data Size',
+            score: dataConfidence,
+            max: 20,
+            description: `Data volume predictability: ${dataConfidence}/20`
+        });
+
+        // 3. USER CONCURRENCY CONFIDENCE (0-15 points)
+        let userConfidence = 15;
+        if (inputs.userCount <= 10) {
+            userConfidence = 15; // Very predictable
+        } else if (inputs.userCount <= 50) {
+            userConfidence = 13; // Good prediction
+        } else if (inputs.userCount <= 200) {
+            userConfidence = 10; // Moderate
+        } else {
+            userConfidence = 7; // Less certain for many users
+        }
+        confidence += userConfidence;
+        factors.push({
+            category: 'User Concurrency',
+            score: userConfidence,
+            max: 15,
+            description: `User pattern confidence: ${userConfidence}/15`
+        });
+
+        // 4. WORKLOAD TYPE EXPERTISE (0-15 points)
+        const wellKnownWorkloads = {
+            'streaming': 15,
+            'batch_processing': 15,
+            'business_intelligence': 14,
+            'data_science': 13,
+            'machine_learning': 11
+        };
+        const workloadConfidence = wellKnownWorkloads[inputs.workloadType] || 8;
+        confidence += workloadConfidence;
+        factors.push({
+            category: 'Workload Type',
+            score: workloadConfidence,
+            max: 15,
+            description: `Workload expertise: ${workloadConfidence}/15`
+        });
+
+        // 5. CONFIGURATION APPROPRIATENESS (0-10 points)
+        let configScore = 0;
+
+        // Check if cluster type matches workload
+        if (config.configuration.clusterType === 'highconcurrency' && inputs.userCount > 50) {
+            configScore += 3;
+        } else if (config.configuration.clusterType === 'serverless-sql' && inputs.dataVolume < 100) {
+            configScore += 3;
+        } else if (config.configuration.clusterType === 'ml' && inputs.workloadType === 'machine_learning') {
+            configScore += 3;
+        } else {
+            configScore += 1;
         }
 
-        // Add confidence if within budget
-        if (inputs.budget && config.estimatedCost.monthly[inputs.cloudProvider] <= inputs.budget) {
-            confidence += 10;
+        // Check if instance type is appropriate
+        if (config.configuration.nodeCount >= 2 && config.configuration.nodeCount <= 100) {
+            configScore += 3; // Reasonable node count
         }
 
-        // Add confidence for common workload types
-        if (['streaming', 'batch_etl', 'business_intelligence'].includes(inputs.workloadType)) {
-            confidence += 5;
+        // Check if features match workload
+        if (inputs.priority === 'performance' && config.configuration.features.photon) {
+            configScore += 2;
+        } else if (inputs.priority === 'cost' && config.configuration.spotInstancePercent > 50) {
+            configScore += 2;
+        } else {
+            configScore += 1;
         }
 
-        return Math.min(95, confidence); // Cap at 95%
+        // Check cloud provider support
+        if (['aws', 'azure', 'gcp'].includes(inputs.cloudProvider)) {
+            configScore += 2;
+        }
+
+        confidence += configScore;
+        factors.push({
+            category: 'Configuration',
+            score: configScore,
+            max: 10,
+            description: `Config appropriateness: ${configScore}/10`
+        });
+
+        // 6. COST ESTIMATION ACCURACY (0-10 points)
+        let costConfidence = 10;
+        if (config.configuration.serverless) {
+            costConfidence = 6; // Serverless is harder to predict
+        } else if (config.configuration.spotInstancePercent > 50) {
+            costConfidence = 7; // Spot pricing varies
+        } else if (config.configuration.nodeCount > 20) {
+            costConfidence = 8; // Large clusters have more variance
+        }
+        confidence += costConfidence;
+        factors.push({
+            category: 'Cost Accuracy',
+            score: costConfidence,
+            max: 10,
+            description: `Cost prediction accuracy: ${costConfidence}/10`
+        });
+
+        // Store factors for explanation
+        config.confidenceFactors = factors;
+
+        // Calculate final percentage (max 100 points)
+        const finalConfidence = Math.round(confidence);
+
+        // Log confidence calculation for debugging
+        console.log('Confidence Calculation:', {
+            total: finalConfidence,
+            factors: factors,
+            inputs: inputs
+        });
+
+        return Math.min(95, Math.max(70, finalConfidence)); // Min 70%, Max 95%
     },
 
     // Generate insights
@@ -415,10 +936,139 @@ const DatabricksRecommendationEngine = {
         }
 
         return insights;
+    },
+
+    // Generate explanation for configuration
+    generateExplanation: function(config, inputs) {
+        const explanations = [];
+
+        // Explain cluster type
+        explanations.push(`${config.configuration.clusterType} cluster selected for ${inputs.workloadType} workload`);
+
+        // Explain instance selection
+        if (config.configuration.instanceType.includes('Standard_E') || config.configuration.instanceType.includes('r5')) {
+            explanations.push('Memory-optimized instances chosen for better data processing performance');
+        } else if (config.configuration.instanceType.includes('Standard_L') || config.configuration.instanceType.includes('i3')) {
+            explanations.push('Storage-optimized instances selected for high I/O workloads');
+        } else if (config.configuration.instanceType.includes('Standard_F') || config.configuration.instanceType.includes('c5')) {
+            explanations.push('Compute-optimized instances for CPU-intensive workloads');
+        }
+
+        // Explain scaling
+        if (config.configuration.nodeCount > 10) {
+            explanations.push(`Large cluster (${config.configuration.nodeCount} nodes) configured to handle ${inputs.dataVolume}GB of data and ${inputs.userCount} users`);
+        } else if (config.configuration.serverless) {
+            explanations.push('Serverless configuration for cost-effective variable workloads');
+        }
+
+        // Explain cost optimizations
+        if (config.configuration.spotInstancePercent > 0) {
+            explanations.push(`${config.configuration.spotInstancePercent}% spot instances used to reduce costs`);
+        }
+
+        return explanations; // Return array instead of joined string
+    },
+
+    // Generate pros for configuration
+    generatePros: function(config, inputs) {
+        const pros = [];
+
+        if (config.configuration.features?.photon) {
+            pros.push('Photon acceleration for 2-3x performance boost');
+        }
+        if (config.configuration.autoScaling) {
+            pros.push('Auto-scaling enabled for efficient resource utilization');
+        }
+        if (config.configuration.spotInstancePercent > 50) {
+            pros.push('Significant cost savings with spot instances');
+        }
+        if (config.configuration.serverless) {
+            pros.push('Serverless eliminates cluster management overhead');
+        }
+        if (config.configuration.nodeCount >= inputs.userCount / 30) {
+            pros.push('Sufficient capacity for concurrent users');
+        }
+
+        return pros;
+    },
+
+    // Generate cons for configuration
+    generateCons: function(config, inputs) {
+        const cons = [];
+
+        if (config.configuration.spotInstancePercent > 70) {
+            cons.push('High spot usage may lead to interruptions');
+        }
+        if (!config.configuration.features?.photon && inputs.priority === 'performance') {
+            cons.push('Consider enabling Photon for better performance');
+        }
+        if (config.configuration.nodeCount < 2 && inputs.slaRequirement === 'critical') {
+            cons.push('Single node may not meet high availability requirements');
+        }
+        if (config.configuration.serverless && inputs.workloadType === 'streaming') {
+            cons.push('Serverless may have higher latency for streaming');
+        }
+
+        return cons;
+    },
+
+    // Explain alternative configuration
+    explainAlternative: function(alternative, primary, inputs) {
+        const primaryCost = primary.estimatedCost.monthly[inputs.cloudProvider] || 0;
+        const altCost = alternative.estimatedCost.monthly[inputs.cloudProvider] || 0;
+        const costDiff = altCost - primaryCost;
+
+        if (alternative.name === 'Conservative') {
+            return `Higher reliability with no spot instances. ${costDiff > 0 ? 'Costs' : 'Saves'} $${Math.abs(costDiff).toLocaleString()} per month.`;
+        } else if (alternative.name === 'Cost-Optimized') {
+            return `Maximum cost savings using spot instances. ${costDiff < 0 ? 'Saves' : 'Costs'} $${Math.abs(costDiff).toLocaleString()} per month.`;
+        } else if (alternative.name === 'Performance-Optimized') {
+            return `Enhanced performance with upgraded instances and Photon. ${costDiff > 0 ? 'Additional' : 'Saves'} $${Math.abs(costDiff).toLocaleString()} per month.`;
+        }
+        return 'Alternative configuration with different trade-offs';
+    },
+
+    // Compare tradeoffs between configurations
+    compareTradeoffs: function(alternative, primary) {
+        const tradeoffs = {
+            cost: 'Similar cost',
+            performance: 'Similar performance',
+            reliability: 'Similar reliability'
+        };
+
+        // Cost comparison
+        const primaryCost = Object.values(primary.estimatedCost.monthly)[0] || 0;
+        const altCost = Object.values(alternative.estimatedCost.monthly)[0] || 0;
+
+        if (altCost < primaryCost * 0.8) {
+            tradeoffs.cost = 'Lower cost';
+        } else if (altCost > primaryCost * 1.2) {
+            tradeoffs.cost = 'Higher cost';
+        }
+
+        // Performance comparison
+        if (alternative.configuration.features?.photon && !primary.configuration.features?.photon) {
+            tradeoffs.performance = 'Better performance';
+        } else if (!alternative.configuration.features?.photon && primary.configuration.features?.photon) {
+            tradeoffs.performance = 'Lower performance';
+        }
+
+        // Reliability comparison
+        if (alternative.configuration.spotInstancePercent < primary.configuration.spotInstancePercent) {
+            tradeoffs.reliability = 'Higher reliability';
+        } else if (alternative.configuration.spotInstancePercent > primary.configuration.spotInstancePercent) {
+            tradeoffs.reliability = 'Lower reliability';
+        }
+
+        return tradeoffs;
     }
 };
 
-// Scoring Engine
+// Note: ScoringEngine and ExplanationEngine functionality integrated into main recommendation system
+// Removed unused class declarations to fix initialization errors
+
+/*
+// Previous unused ScoringEngine class removed
 class ScoringEngine {
     constructor() {
         this.criteria = {
@@ -528,8 +1178,9 @@ class ScoringEngine {
         return 1;
     }
 }
+*/
 
-// Explanation Engine
+/* Previous unused ExplanationEngine class removed
 class ExplanationEngine {
     explainConfiguration(config, inputs) {
         const explanations = [];
@@ -644,6 +1295,7 @@ class ExplanationEngine {
         return 'Similar reliability';
     }
 }
+*/
 
 // Export for use
 if (typeof module !== 'undefined' && module.exports) {
@@ -651,4 +1303,10 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 if (typeof window !== 'undefined') {
     window.DatabricksRecommendationEngine = DatabricksRecommendationEngine;
+    window.DatabricksRecommendations = DatabricksRecommendationEngine; // Alias for compatibility
+
+    // Auto-initialize when loaded in browser
+    if (typeof WorkloadTemplates !== 'undefined') {
+        DatabricksRecommendationEngine.init();
+    }
 }
