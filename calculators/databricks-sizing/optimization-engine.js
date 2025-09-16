@@ -34,6 +34,7 @@ class DatabricksOptimizedCache {
         try {
             // Try multiple paths for local dev and production
             const paths = [
+                'http://localhost:8888/public/data/databricks-optimization-data.json', // Local dev explicit
                 '/public/data/databricks-optimization-data.json',  // Absolute path
                 '../../public/data/databricks-optimization-data.json', // From calculators/databricks-sizing/
                 '/data/databricks-optimization-data.json',         // Production CDN
@@ -151,20 +152,13 @@ class DatabricksOptimizedCache {
             sla: inputs.slaRequirement
         };
 
-        return `${normalized.cloud}_${normalized.workload}_${normalized.dataScale}_${normalized.teamSize}_${normalized.priority}_${normalized.sla}`;
+        return `${normalized.cloud}_${normalized.workload}_${normalized.dataScale}_${normalized.teamSize}_${normalized.priority}`;
     }
 
     // Normalize workload types to match cache
     normalizeWorkload(workloadType) {
-        const mapping = {
-            'streaming': 'streaming',
-            'batch_processing': 'batch',
-            'batch_etl': 'batch',
-            'machine_learning': 'ml',
-            'data_science': 'ml',
-            'business_intelligence': 'analytics'
-        };
-        return mapping[workloadType] || 'analytics';
+        // Return workload as-is since cache uses full names
+        return workloadType;
     }
 
     // Find nearest value in buckets

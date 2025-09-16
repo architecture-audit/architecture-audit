@@ -2111,6 +2111,41 @@
                             ${recommendations.primary.explanation.map(e => `<li>${e}</li>`).join('')}
                         </ul>
                     </div>
+
+                    <!-- Instance Mix & Features -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+                        <div style="background: white; border-radius: 8px; padding: 1rem;">
+                            <strong style="color: #1e293b; display: block; margin-bottom: 0.5rem;">Instance Mix</strong>
+                            <div style="display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.9rem;">
+                                <div style="color: #64748b;">
+                                    <span style="color: #3b82f6;">●</span> Spot: ${recommendations.primary.configuration.spotInstancePercent || 0}%
+                                </div>
+                                <div style="color: #64748b;">
+                                    <span style="color: #10b981;">●</span> Reserved: ${recommendations.primary.configuration.reservedInstancePercent || 0}%
+                                </div>
+                                <div style="color: #64748b;">
+                                    <span style="color: #f59e0b;">●</span> On-Demand: ${100 - (recommendations.primary.configuration.spotInstancePercent || 0) - (recommendations.primary.configuration.reservedInstancePercent || 0)}%
+                                </div>
+                            </div>
+                        </div>
+                        <div style="background: white; border-radius: 8px; padding: 1rem;">
+                            <strong style="color: #1e293b; display: block; margin-bottom: 0.5rem;">Features Enabled</strong>
+                            <div style="display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.9rem;">
+                                <div style="color: #64748b;">
+                                    ${recommendations.primary.configuration.features?.photon ? '✅' : '❌'} Photon Acceleration
+                                </div>
+                                <div style="color: #64748b;">
+                                    ${recommendations.primary.configuration.features?.autoScaling ? '✅' : '❌'} Auto-Scaling
+                                </div>
+                                <div style="color: #64748b;">
+                                    ${recommendations.primary.configuration.features?.unityCatalog ? '✅' : '❌'} Unity Catalog
+                                </div>
+                                <div style="color: #64748b;">
+                                    ${recommendations.primary.configuration.features?.deltaLiveTables ? '✅' : '❌'} Delta Live Tables
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Alternative Options -->
