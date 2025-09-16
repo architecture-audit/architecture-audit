@@ -34,7 +34,8 @@ class DatabricksOptimizedCache {
         try {
             // Try multiple paths for local dev and production
             const paths = [
-                '/public/data/databricks-optimization-data.json',  // Local development
+                '/public/data/databricks-optimization-data.json',  // Absolute path
+                '../../public/data/databricks-optimization-data.json', // From calculators/databricks-sizing/
                 '/data/databricks-optimization-data.json',         // Production CDN
                 './data/databricks-optimization-data.json'         // Relative path
             ];
